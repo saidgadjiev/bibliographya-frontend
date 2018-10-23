@@ -1,5 +1,5 @@
 <template>
-    <v-layout align-center justify-center>
+    <v-layout justify-center>
         <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
                 <v-card-text>
