@@ -7,6 +7,7 @@ import VueResource from 'vue-resource'
 import store from './store/store'
 
 import 'vuetify/dist/vuetify.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 import Biograprhy from './components/Biography.vue'
 
