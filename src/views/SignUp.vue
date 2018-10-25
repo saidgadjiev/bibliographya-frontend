@@ -52,7 +52,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="signUp" color="primary" to="/signIn">Зарегистрироваться</v-btn>
+          <v-btn @click="signUp" color="primary">Зарегистрироваться</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -96,15 +96,19 @@ export default {
   },
   methods: {
     signUp () {
-      this.$store.dispatch('signUp', this.signUpForm)
-        .then(
-          user => {
-            this.$router.push('/signIn')
-          },
-          error => {
-            console.log(error)
-          }
-        )
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          this.$store.dispatch('signUp', this.signUpForm)
+            .then(
+              user => {
+                this.$router.push('/signIn')
+              },
+              error => {
+                console.log(error)
+              }
+            )
+        }
+      })
     }
   }
 }
