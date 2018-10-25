@@ -4,6 +4,8 @@ import router from './router'
 import Vuex from 'vuex'
 import Vuetify from 'vuetify'
 import VueResource from 'vue-resource'
+import VeeValidate from 'vee-validate'
+
 import store from './store/store'
 
 import 'vuetify/dist/vuetify.min.css'
@@ -14,6 +16,7 @@ import Biograprhy from './components/Biography.vue'
 Vue.use(Vuex)
 Vue.use(Vuetify)
 Vue.use(VueResource)
+Vue.use(VeeValidate)
 
 Vue.component('biography', Biograprhy)
 
