@@ -21,13 +21,13 @@ export default new Router({
       component: Profile
     },
     {
-      path: '/signin',
-      name: 'signin',
+      path: '/signIn',
+      name: 'signIn',
       component: SignIn
     },
     {
-      path: '/signup',
-      name: 'signup',
+      path: '/signUp',
+      name: 'signUp',
       component: SignUp
     },
     {

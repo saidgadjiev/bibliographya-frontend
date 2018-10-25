@@ -5,6 +5,8 @@ import Vuex from 'vuex'
 import Vuetify from 'vuetify'
 import VueResource from 'vue-resource'
 import VeeValidate from 'vee-validate'
+import russia from 'vee-validate/dist/locale/ru'
+import Vue2TouchEvents from 'vue2-touch-events'
 
 import store from './store/store'
 
@@ -16,7 +18,19 @@ import Biograprhy from './components/Biography.vue'
 Vue.use(Vuex)
 Vue.use(Vuetify)
 Vue.use(VueResource)
-Vue.use(VeeValidate)
+Vue.use(Vue2TouchEvents)
+
+const config = {
+  locale: 'ru',
+  events: 'input|blur',
+  dictionary: {
+    ru: {
+      messages: russia.messages
+    }
+  }
+}
+
+Vue.use(VeeValidate, config)
 
 Vue.component('biography', Biograprhy)
 

@@ -5,7 +5,7 @@
         <v-card-text>
           <v-form>
             <v-text-field
-              v-validate.immediate="'required'"
+              v-validate="'required'"
               v-model="signUpForm.firstName"
               :error-messages="errors.collect('firstName')"
               label="Имя"
@@ -13,36 +13,38 @@
               name="firstName"
             ></v-text-field>
             <v-text-field
-              v-validate.immediate="'required'"
-              :error-messages="errors.collect('lastName')"
-              name="lastName"
-              placeholder="Фамилия"
-              type="text"
+              class="mt-2"
+              v-validate="'required'"
               v-model="signUpForm.lastName"
+              :error-messages="errors.collect('lastName')"
+              label="Фамилия"
+              type="text"
+              name="lastName"
             ></v-text-field>
             <v-text-field
-              v-validate.immediate="'required'"
+              class="mt-2"
+              v-validate="'required'"
               :error-messages="errors.collect('middleName')"
               name="middleName"
-              placeholder="Отчество"
+              label="Отчество"
               type="text"
               v-model="signUpForm.middleName"
             ></v-text-field>
             <v-text-field
-              v-validate.immediate="'required'"
+              class="mt-2"
+              v-validate="'required'"
               :error-messages="errors.collect('username')"
-              prepend-icon="fas fa-user"
               name="username"
-              placeholder="Логин"
+              label="Логин"
               type="text"
               v-model="signUpForm.username"
             ></v-text-field>
             <v-text-field
-              v-validate.immediate="'required'"
+              class="mt-2"
+              v-validate="'required'"
               :error-messages="errors.collect('password')"
-              prepend-icon="fas fa-key"
               name="password"
-              placeholder="Пароль"
+              label="Пароль"
               type="password"
               v-model="signUpForm.password"
             ></v-text-field>
@@ -71,8 +73,26 @@ export default {
       }
     }
   },
-  mounted () {
-    this.$validator.localize('ru')
+  created () {
+    this.$validator.localize('ru', {
+      custom: {
+        firstName: {
+          required: () => 'Введите имя'
+        },
+        lastName: {
+          required: () => 'Введите фамилию'
+        },
+        middleName: {
+          required: () => 'Введите отчество'
+        },
+        username: {
+          required: () => 'Введите логин'
+        },
+        password: {
+          required: () => 'Введите пароль'
+        }
+      }
+    })
   },
   methods: {
     signUp () {
