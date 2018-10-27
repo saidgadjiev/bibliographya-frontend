@@ -5,15 +5,19 @@ export default {
 }
 
 function signIn (signInForm) {
+  const axios = require('axios')
+
   let json = {
     username: signInForm.username,
     password: signInForm.password
   }
 
-  return this.$http.post(process.env.REST_SERVER + 'api/auth/signIn', json)
+  return axios.post(process.env.REST_SERVER + 'api/auth/signIn', json)
 }
 
 function signUp (signUpForm) {
+  const axios = require('axios')
+
   let json = {
     username: signUpForm.username,
     password: signUpForm.password,
@@ -22,9 +26,11 @@ function signUp (signUpForm) {
     middleName: signUpForm.middleName
   }
 
-  return this.$http.post(process.env.REST_SERVER + 'api/auth/signUp', json)
+  return axios.post(process.env.REST_SERVER + 'api/auth/signUp', json)
 }
 
 function signOut () {
-  return this.$http.signOut(process.env.REST_SERVER + 'api/auth/signOut')
+  const axios = require('axios')
+
+  return axios.post(process.env.REST_SERVER + 'api/auth/signOut')
 }

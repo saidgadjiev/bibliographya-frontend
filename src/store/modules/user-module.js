@@ -1,33 +1,40 @@
 import authService from '../../services/auth-service'
+import biographyService from '../../services/biography-service'
 
-const user = JSON.parse(localStorage.getItem('user'))
-
-const state = user ? { status: { authenticated: true }, user: user } : { status: {}, user: null }
+const state = { authenticated: false, biography: null, roles: null }
 
 const mutations = {
-  signInSuccess (state, user) {
+  signInSuccess (state, biography) {
     state.authenticated = true
-    state.user = user
+    state.biography = biography
   },
   signOutSuccess (state) {
     state.authenticated = false
-    state.user = null
+    state.biography = null
   }
 }
 
 const actions = {
-  signIn ({ commit }, { signInForm }) {
+  signIn ({ commit }, signInForm) {
     authService.signIn(signInForm)
       .then(
         user => {
-          commit('signInSuccess', user)
+          biographyService.getBiographyByUsername(user.username)
+            .then(
+              biography => {
+                commit('signInSuccess', biography)
+              },
+              error => {
+                console.log(error)
+              }
+            )
         },
         error => {
           console.log(error)
         }
       )
   },
-  signUp ({ commit }, { signUpForm }) {
+  signUp ({ commit }, signUpForm) {
     return authService.signUp(signUpForm)
   },
   signOut ({ commit }) {

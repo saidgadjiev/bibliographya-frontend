@@ -3,10 +3,11 @@ import App from './App.vue'
 import router from './router'
 import Vuex from 'vuex'
 import Vuetify from 'vuetify'
-import VueResource from 'vue-resource'
 import VeeValidate from 'vee-validate'
 import russia from 'vee-validate/dist/locale/ru'
 import Vue2TouchEvents from 'vue2-touch-events'
+import VueCookie from 'vue-cookie'
+import axios from 'axios'
 
 import store from './store/store'
 
@@ -17,8 +18,8 @@ import Biograprhy from './components/Biography.vue'
 
 Vue.use(Vuex)
 Vue.use(Vuetify)
-Vue.use(VueResource)
 Vue.use(Vue2TouchEvents)
+Vue.use(VueCookie)
 
 const config = {
   locale: 'ru',
@@ -36,15 +37,19 @@ Vue.component('biography', Biograprhy)
 
 Vue.config.productionTip = false
 
-Vue.http.interceptors.push({
-  request: function (request) {
-    console.log('request: ' + request.data)
-    return request
-  },
-  response: function (response) {
-    console.log('response: ' + response.data)
-    return response
-  }
+axios.interceptors.request.use(function (request) {
+  console.log('request: ' + request.data)
+
+  return request
+}, function (err) {
+  return Promise.reject(err)
+})
+axios.interceptors.response.use(function (response) {
+  console.log('response: ' + response.data)
+
+  return response
+}, function (err) {
+  return Promise.reject(err)
 })
 
 new Vue({

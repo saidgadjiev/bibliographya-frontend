@@ -96,15 +96,17 @@ export default {
   },
   methods: {
     signUp () {
+      let that = this
+
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.$store.dispatch('signUp', this.signUpForm)
+          this.$store.dispatch('signUp', that.signUpForm)
             .then(
               user => {
-                this.$router.push('/signIn')
+                console.log('Success sign up ' + user)
               },
               error => {
-                console.log(error)
+                console.error(error)
               }
             )
         }
