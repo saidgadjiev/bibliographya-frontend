@@ -7,7 +7,6 @@
       readonly
       expand-icon="fas fa-chevron-down"
     >
-      <div slot="header">Фамилия Имя Отчество</div>
       <editable-fio :biography-id="biographyId"></editable-fio>
     </v-expansion-panel-content>
     <v-expansion-panel-content
@@ -28,7 +27,7 @@ export default {
   name: 'profile-biography',
   data () {
     return {
-      defaultExpand: [true]
+      defaultExpand: [true, true]
     }
   },
   computed: {

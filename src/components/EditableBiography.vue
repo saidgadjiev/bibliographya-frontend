@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-text class="grey lighten-3">
+    <v-card-text v-if="items.length > 0" class="grey lighten-3">
       <tree-view :items="items"></tree-view>
       <p v-html="sanitizedBiography"></p>
     </v-card-text>
