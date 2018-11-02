@@ -6,20 +6,20 @@
           <v-form>
             <v-text-field
               v-validate="'required'"
-              v-model="signUpForm.firstName"
-              :error-messages="errors.collect('firstName')"
-              label="Имя"
-              type="text"
-              name="firstName"
-            ></v-text-field>
-            <v-text-field
-              class="mt-2"
-              v-validate="'required'"
               v-model="signUpForm.lastName"
               :error-messages="errors.collect('lastName')"
               label="Фамилия"
               type="text"
               name="lastName"
+            ></v-text-field>
+            <v-text-field
+              class="mt-2"
+              v-validate="'required'"
+              v-model="signUpForm.firstName"
+              :error-messages="errors.collect('firstName')"
+              label="Имя"
+              type="text"
+              name="firstName"
             ></v-text-field>
             <v-text-field
               class="mt-2"
@@ -102,8 +102,9 @@ export default {
         if (result) {
           this.$store.dispatch('signUp', that.signUpForm)
             .then(
-              user => {
-                console.log('Success sign up ' + user)
+              response => {
+                console.log('Success sign up ' + response.data)
+                that.$router.push('/signIn')
               },
               error => {
                 console.error(error)

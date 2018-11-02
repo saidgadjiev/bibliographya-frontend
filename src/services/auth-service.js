@@ -1,12 +1,13 @@
+const axios = require('axios')
+
 export default {
   signIn,
   signUp,
-  signOut
+  signOut,
+  getAccount
 }
 
 function signIn (signInForm) {
-  const axios = require('axios')
-
   let json = {
     username: signInForm.username,
     password: signInForm.password
@@ -16,12 +17,10 @@ function signIn (signInForm) {
 }
 
 function signUp (signUpForm) {
-  const axios = require('axios')
-
   let json = {
     username: signUpForm.username,
     password: signUpForm.password,
-    fistName: signUpForm.fistName,
+    firstName: signUpForm.firstName,
     lastName: signUpForm.lastName,
     middleName: signUpForm.middleName
   }
@@ -30,7 +29,9 @@ function signUp (signUpForm) {
 }
 
 function signOut () {
-  const axios = require('axios')
-
   return axios.post(process.env.REST_SERVER + 'api/auth/signOut')
+}
+
+function getAccount () {
+  return axios.get(process.env.REST_SERVER + 'api/auth/account')
 }

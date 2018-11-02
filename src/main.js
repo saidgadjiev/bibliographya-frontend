@@ -37,8 +37,10 @@ Vue.component('biography', Biograprhy)
 
 Vue.config.productionTip = false
 
+axios.defaults.withCredentials = true
+
 axios.interceptors.request.use(function (request) {
-  console.log('request: ' + request.data)
+  console.log('request.data: ' + request.data)
 
   return request
 }, function (err) {

@@ -18,6 +18,19 @@ export default {
   name: 'App',
   components: {
     NavBar
+  },
+  mounted () {
+    let that = this
+
+    this.$store.dispatch('getAccount')
+      .then(
+        () => {
+          that.$router.push('/')
+        },
+        error => {
+          console.error(error)
+        }
+      )
   }
 }
 </script>
