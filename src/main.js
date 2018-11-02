@@ -14,7 +14,7 @@ import store from './store/store'
 import 'vuetify/dist/vuetify.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import Biograprhy from './components/Biography.vue'
+import BiograprhyCard from './components/BiographyCard.vue'
 
 Vue.use(Vuex)
 Vue.use(Vuetify)
@@ -33,7 +33,7 @@ const config = {
 
 Vue.use(VeeValidate, config)
 
-Vue.component('biography', Biograprhy)
+Vue.component('biography-card', BiograprhyCard)
 
 Vue.config.productionTip = false
 
