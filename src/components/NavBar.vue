@@ -88,9 +88,15 @@ export default {
   }),
   computed: {
     ...mapGetters([
+      'getBiographyByUsername',
       'isAuthenticated',
-      'firstName'
-    ])
+      'getUsername'
+    ]),
+    firstName () {
+      let biography = this.getBiographyByUsername(this.getUsername)
+
+      return biography ? biography.firstName : null
+    }
   },
   methods: {
     signOut () {

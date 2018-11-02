@@ -14,7 +14,7 @@ import store from './store/store'
 import 'vuetify/dist/vuetify.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import BiograprhyCard from './components/BiographyCard.vue'
+import ProfileBiography from './components/ProfileBiography.vue'
 
 Vue.use(Vuex)
 Vue.use(Vuetify)
@@ -33,22 +33,18 @@ const config = {
 
 Vue.use(VeeValidate, config)
 
-Vue.component('biography-card', BiograprhyCard)
+Vue.component('profile-biography', ProfileBiography)
 
 Vue.config.productionTip = false
 
 axios.defaults.withCredentials = true
 
 axios.interceptors.request.use(function (request) {
-  console.log('request.data: ' + request.data)
-
   return request
 }, function (err) {
   return Promise.reject(err)
 })
 axios.interceptors.response.use(function (response) {
-  console.log('response: ' + response.data)
-
   return response
 }, function (err) {
   return Promise.reject(err)

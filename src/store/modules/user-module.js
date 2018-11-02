@@ -1,26 +1,15 @@
 import authService from '../../services/auth-service'
-import biographyService from '../../services/biography-service'
 
-const state = { status: { code: 200, message: null }, authenticated: false, user: null, biography: null, roles: null }
+const state = { status: { code: 200, message: null }, authenticated: false, user: {}, roles: [] }
 
 const mutations = {
-  updateFioSuccess (state, payload) {
-    state.biography.firstName = payload.firstName
-    state.biography.lastName = payload.lastName
-    state.biography.middleName = payload.middleName
-  },
-  updateBiographySuccess (state, payload) {
-    state.biography.biography = payload.biography
-  },
   signInSuccess (state, payload) {
     state.authenticated = true
-    state.user = payload.user
-    state.biography = payload.biography
+    state.user = payload
   },
   signOutSuccess (state) {
     state.authenticated = false
     state.user = null
-    state.biography = null
   },
   signInStatus (state, payload) {
     state.status.code = payload.status
@@ -29,57 +18,31 @@ const mutations = {
 }
 
 const actions = {
-  signIn ({ commit }, signInForm) {
+  signIn ({ dispatch, commit }, signInForm) {
     return new Promise((resolve, reject) => {
       authService.signIn(signInForm)
         .then(
           signInResponse => {
-            if (signInResponse.status !== 200) {
-              commit('signInStatus', {
-                status: signInResponse.status
-              })
-              throw new Error(signInResponse.status)
-            }
-
             return signInResponse.data
           }
         ).then(
           user => {
-            return new Promise((resolve, reject) => {
-              biographyService.getBiographyByUsername(user.username)
-                .then(
-                  biographyResponse => {
-                    if (biographyResponse.status !== 200) {
-                      commit('signInStatus', {
-                        status: biographyResponse.status
-                      })
-                      throw new Error(biographyResponse.status)
-                    }
-
-                    resolve({
-                      user: user,
-                      biography: biographyResponse.data
-                    })
-                  },
-                  e => {
-                    reject(e)
-                  }
-                )
-            })
-          }
-        ).then(
-          response => {
-            commit('signInSuccess', response)
-            commit('signInStatus', {
-              status: 200
-            })
-            resolve()
-          }
-        )
-        .catch(e => {
+            return dispatch('getOrLoadBiography', user.username)
+              .then(
+                () => {
+                  commit('signInSuccess', user)
+                  commit('signInStatus', {
+                    status: 200
+                  })
+                  resolve()
+                },
+                e => {
+                  reject(e)
+                })
+          }).catch(e => {
           console.log(e)
           commit('signInStatus', {
-            status: e.response.status
+            status: e.response ? e.response.status : 500
           })
           reject(e)
         })
@@ -99,42 +62,24 @@ const actions = {
         }
       )
   },
-  getAccount ({commit}) {
+  getAccount ({ dispatch, commit }) {
     return new Promise((resolve, reject) => {
       authService.getAccount()
         .then(
           accountResponse => {
-            if (accountResponse.status !== 200) {
-              commit('signInStatus', {
-                status: accountResponse.status
-              })
-              throw new Error(accountResponse.status)
-            }
-
             return accountResponse.data
           }
         ).then(
           user => {
             return new Promise((resolve, reject) => {
-              biographyService.getBiographyByUsername(user.username)
+              dispatch('getOrLoadBiography', user.username)
                 .then(
-                  biographyResponse => {
-                    if (biographyResponse.status !== 200) {
-                      commit('signInStatus', {
-                        status: biographyResponse.status
-                      })
-                      throw new Error(biographyResponse.status)
-                    }
-
-                    resolve({
-                      user: user,
-                      biography: biographyResponse.data
-                    })
+                  () => {
+                    resolve(user)
                   },
                   e => {
                     reject(e)
-                  }
-                )
+                  })
             })
           }
         ).then(
@@ -151,16 +96,6 @@ const actions = {
           reject(e)
         })
     })
-  },
-  updateFio ({ commit }, payload) {
-    commit('updateFioSuccess', payload)
-
-    return Promise.resolve()
-  },
-  updateBiography ({ commit }, payload) {
-    commit('updateBiographySuccess', payload)
-
-    return Promise.resolve()
   }
 }
 
@@ -171,17 +106,8 @@ const getters = {
   isAuthenticated: state => {
     return state.authenticated
   },
-  firstName: state => {
-    return state.biography ? state.biography.firstName : null
-  },
-  lastName: state => {
-    return state.biography ? state.biography.lastName : null
-  },
-  middleName: state => {
-    return state.biography ? state.biography.middleName : null
-  },
-  biography: state => {
-    return state.biography ? state.biography.biography : null
+  getUsername: state => {
+    return state.user ? state.user.username : null
   }
 }
 
