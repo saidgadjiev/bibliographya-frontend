@@ -24,24 +24,24 @@
           <v-card>
             <v-card-text class="grey lighten-3">
               <strong>{{lastName + ' ' + firstName + ' ' + middleName}}</strong>
-              <v-layout v-if="editFio" row wrap>
+              <v-layout v-if="isEditFio" row wrap>
                 <v-flex xs12 sm6 md3>
                   <v-text-field
-                    v-model="lastName"
+                    v-model="editLastName"
                     label="Фамилия"
                     type="text"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md3>
                   <v-text-field
-                    v-model="firstName"
+                    v-model="editFirstName"
                     label="Имя"
                     type="text"
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md3>
                   <v-text-field
-                    v-model="middleName"
+                    v-model="editMiddleName"
                     label="Отчество"
                     type="text"
                   ></v-text-field>
@@ -49,12 +49,12 @@
               </v-layout>
             </v-card-text>
             <v-card-actions class="grey lighten-3">
-              <div v-if="editFio">
-                <v-btn @click="saveFio" flat color="orange">Сохранить</v-btn>
-                <v-btn @click="editFio = !editFio" flat color="orange">Отменить</v-btn>
+              <div v-if="isEditFio">
+                <v-btn @click="doSaveFio" flat color="orange">Сохранить</v-btn>
+                <v-btn @click="isEditFio = false" flat color="orange">Отменить</v-btn>
               </div>
               <v-spacer></v-spacer>
-              <v-btn icon @click="editFio = !editFio">
+              <v-btn icon @click="doEditFio">
                 <v-icon>edit</v-icon>
               </v-btn>
             </v-card-actions>
@@ -68,7 +68,28 @@
             <v-card-text class="grey lighten-3">
               <tree-view :items="items"></tree-view>
               <p v-html="sanitizedBiography"></p>
+              <v-layout v-if="isEditBiography" row wrap>
+                <v-flex xs12>
+                  <v-textarea
+                    auto-grow
+                    class="w-100"
+                    v-model="editBiography"
+                    label="Биография"
+                    type="text"
+                  ></v-textarea>
+                </v-flex>
+              </v-layout>
             </v-card-text>
+            <v-card-actions class="grey lighten-3">
+              <div v-if="isEditBiography">
+                <v-btn @click="doSaveBiography" flat color="orange">Сохранить</v-btn>
+                <v-btn @click="isEditBiography = !isEditBiography" flat color="orange">Отменить</v-btn>
+              </div>
+              <v-spacer></v-spacer>
+              <v-btn icon @click="doEditBiography">
+                <v-icon>edit</v-icon>
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -81,14 +102,19 @@ import { mapGetters } from 'vuex'
 import TreeView from './TreeView.vue'
 
 const htmlparser = require('htmlparser2')
-const DOMpurify = require('dompurify)
+const DOMPurify = require('dompurify')
 
 export default {
   name: 'biography',
   data () {
     return {
       defaultExpand: [true],
-      editFio: false
+      isEditFio: false,
+      isEditBiography: false,
+      editFirstName: '',
+      editLastName: '',
+      editMiddleName: '',
+      editBiography: ''
     }
   },
   computed: {
@@ -99,9 +125,7 @@ export default {
       'biography'
     ]),
     sanitizedBiography () {
-      let clean = DOMPurify.sanitize(this.biography)
-
-      return ''
+      return DOMPurify.sanitize(this.biography, {ALLOWED_TAGS: ['h1', 'l']})
     },
     items () {
       let html = this.biography
@@ -144,7 +168,57 @@ export default {
     }
   },
   methods: {
-    saveFio () {
+    doEditFio () {
+      this.isEditFio = !this.isEditFio
+      this.editFirstName = this.firstName
+      this.editLastName = this.lastName
+      this.editMiddleName = this.middleName
+    },
+    doSaveFio () {
+      let that = this
+
+      if (this.editFirstName === this.firstName &&
+          this.editLastName === this.lastName &&
+          this.editMiddleName === this.middleName
+      ) {
+        that.isEditFio = false
+
+        return
+      }
+      this.$store.dispatch('updateFio', {
+        firstName: this.editFirstName,
+        lastName: this.editLastName,
+        middleName: this.editMiddleName
+      }).then(
+        () => {
+          that.isEditFio = false
+          that.editFirstName = ''
+          that.editLastName = ''
+          that.editMiddleName = ''
+        }
+      )
+    },
+    doEditBiography () {
+      this.isEditBiography = !this.isEditBiography
+      this.editBiography = this.biography
+    },
+    doSaveBiography () {
+      let that = this
+
+      if (this.editBiography === this.biography) {
+        that.isEditBiography = false
+
+        return
+      }
+
+      this.$store.dispatch('updateBiography', {
+        biography: this.editBiography
+      }).then(
+        () => {
+          that.isEditBiography = false
+          that.eeditBiography = ''
+        }
+      )
     }
   },
   components: {

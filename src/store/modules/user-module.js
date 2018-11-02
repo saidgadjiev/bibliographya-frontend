@@ -4,6 +4,14 @@ import biographyService from '../../services/biography-service'
 const state = { status: { code: 200, message: null }, authenticated: false, user: null, biography: null, roles: null }
 
 const mutations = {
+  updateFioSuccess (state, payload) {
+    state.biography.firstName = payload.firstName
+    state.biography.lastName = payload.lastName
+    state.biography.middleName = payload.middleName
+  },
+  updateBiographySuccess (state, payload) {
+    state.biography.biography = payload.biography
+  },
   signInSuccess (state, payload) {
     state.authenticated = true
     state.user = payload.user
@@ -143,6 +151,16 @@ const actions = {
           reject(e)
         })
     })
+  },
+  updateFio ({ commit }, payload) {
+    commit('updateFioSuccess', payload)
+
+    return Promise.resolve()
+  },
+  updateBiography ({ commit }, payload) {
+    commit('updateBiographySuccess', payload)
+
+    return Promise.resolve()
   }
 }
 
