@@ -4,7 +4,16 @@ const state = {biographies: []}
 
 const mutations = {
   addBiography (state, payload) {
-    state.biographies.push(payload)
+    let biography = state.biographies.find(biography => biography.id === payload.id)
+
+    if (biography) {
+      biography.firstName = payload.firstName
+      biography.lastName = payload.lastName
+      biography.middleName = payload.middleName
+      biography.biography = payload.biography
+    } else {
+      state.biographies.push(payload)
+    }
   },
   updateFioById (state, payload) {
     let biography = state.biographies.find(biography => biography.id === payload.id)
@@ -25,6 +34,9 @@ const mutations = {
 }
 
 const actions = {
+  addBiography ({ commit }, payload) {
+    commit('addBiography', payload)
+  },
   updateFioById ({ commit }, payload) {
     commit('updateFioById', payload)
 

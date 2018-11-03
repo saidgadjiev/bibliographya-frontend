@@ -11,7 +11,7 @@
           <p v-html="sanitize(item.biography)"></p>
         </v-card-text>
         <v-card-actions>
-          <v-btn flat color="orange">Читать дальше</v-btn>
+          <v-btn flat color="orange" @click="openDetails(item)">Читать дальше</v-btn>
         </v-card-actions>
         <v-divider light></v-divider>
         <v-card-actions class="pl-3">
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import sanitize from '../services/sanitize-service'
 import InfiniteLoading from 'vue-infinite-loading'
 import biographyService from '../services/biography-service'
@@ -49,6 +50,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'addBiography'
+    ]),
+    openDetails (biography) {
+      this.addBiography(biography)
+      this.$router.push('/biography/' + biography.id)
+    },
     sanitize (html) {
       return sanitize.sanitize(html)
     },

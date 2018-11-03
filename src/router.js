@@ -4,7 +4,7 @@ import Biographies from './views/Biographies.vue'
 import Profile from './views/Profile.vue'
 import SignIn from './views/SignIn.vue'
 import SignUp from './views/SignUp.vue'
-import Details from './views/Details'
+import BiographyDetails from './views/BiographyDetails.vue'
 
 Vue.use(Router)
 
@@ -14,6 +14,12 @@ export default new Router({
       path: '/',
       name: 'biographies',
       component: Biographies
+    },
+    {
+      path: '/biography/:id',
+      name: 'biography',
+      component: BiographyDetails,
+      props: (route) => ({ biographyId: parseInt(route.params.id) })
     },
     {
       path: '/profile',
@@ -29,11 +35,6 @@ export default new Router({
       path: '/signUp',
       name: 'signUp',
       component: SignUp
-    },
-    {
-      path: '/details',
-      name: 'details',
-      component: Details
     }
   ]
 })
