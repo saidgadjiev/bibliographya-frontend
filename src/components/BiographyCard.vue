@@ -7,38 +7,26 @@
       readonly
       expand-icon="fas fa-chevron-down"
     >
-      <editable-fio :biography-id="biographyId"></editable-fio>
+      <editable-fio v-bind="$attrs"></editable-fio>
     </v-expansion-panel-content>
     <v-expansion-panel-content
       expand-icon="fas fa-chevron-down"
     >
       <div slot="header">Биография</div>
-      <editable-biography :biography-id="biographyId"></editable-biography>
+      <editable-biography v-bind="$attrs"></editable-biography>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import EditableFio from './EditableFio'
 import EditableBiography from './EditableBiography'
 
 export default {
-  name: 'profile-biography',
+  name: 'biography-card',
   data () {
     return {
       defaultExpand: [true, true]
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'getBiographyByUsername',
-      'getUsername'
-    ]),
-    biographyId () {
-      let biography = this.getBiographyByUsername(this.getUsername)
-
-      return biography ? biography.id : null
     }
   },
   components: {

@@ -1,15 +1,15 @@
 <template>
   <v-layout row fill-height="true">
     <v-flex xs8>
-      <profile-biography></profile-biography>
+      <biography-card></biography-card>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-export default {
-  name: 'profile'
-}
+  export default {
+    name: 'BiographyDetails'
+  }
 </script>
 
 <style scoped>

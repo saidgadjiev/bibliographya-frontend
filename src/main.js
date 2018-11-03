@@ -14,8 +14,6 @@ import store from './store/store'
 import 'vuetify/dist/vuetify.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import ProfileBiography from './components/ProfileBiography.vue'
-
 Vue.use(Vuex)
 Vue.use(Vuetify)
 Vue.use(Vue2TouchEvents)
@@ -32,8 +30,6 @@ const config = {
 }
 
 Vue.use(VeeValidate, config)
-
-Vue.component('profile-biography', ProfileBiography)
 
 Vue.config.productionTip = false
 
