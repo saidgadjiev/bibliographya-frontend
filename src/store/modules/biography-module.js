@@ -32,9 +32,19 @@ const actions = {
     commit('addBiography', payload)
   },
   updateBiography ({ commit }, payload) {
-    commit('updateBiography', payload)
-
-    return Promise.resolve()
+    return new Promise((resolve, reject) => {
+      biographyService.update(payload)
+        .then(
+          response => {
+            commit('updateBiography', payload)
+            resolve()
+          },
+          e => {
+            console.log(e)
+            reject(e)
+          }
+        )
+    })
   },
   getOrLoadBiography ({ commit, getters }, username) {
     let biography = getters.getBiographyByUsername(username)

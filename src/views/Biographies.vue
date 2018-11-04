@@ -2,8 +2,16 @@
   <v-layout row wrap justify-center>
     <v-flex xs12 sm6 v-for="item in items" :key="item.id">
       <biography-card2
+        :truncate="150"
+        :tree-size="treeSize"
         :biography="item"
       >
+        <div slot="treeClamp" v-if="treeSize">
+          <a href="#" @click="treeSize = undefined">Показать содержание</a>
+        </div>
+        <div slot="treeClamp" v-else>
+          <a href="#" @click="treeSize = 1">Скрыть содержание</a>
+        </div>
         <div slot="biographyClamp"  class="mt-3">
           <a :href="'#/biography/' + item.id">Читать дальше</a>
         </div>
@@ -39,6 +47,7 @@ import BiographyCard2 from '../components/BiographyCard2'
 export default {
   data () {
     return {
+      treeSize: 1,
       page: 0,
       items: []
     }
@@ -47,8 +56,8 @@ export default {
     ...mapActions([
       'addBiography'
     ]),
-    openDetails (biography) {
-      this.$router.push('/biography/' + biography.id)
+    showTree () {
+      this.treeSize = undefined
     },
     sanitize (html) {
       return sanitize.sanitize(html)

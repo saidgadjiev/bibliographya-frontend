@@ -1,20 +1,20 @@
 <template>
-  <v-layout row fill-height="true">
-    <v-flex xs8>
-      <biography-card2 :biography="biography"></biography-card2>
+  <v-layout row>
+    <v-flex>
+      <edit-biography-card v-if="biography" :biography="biography"></edit-biography-card>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import biographyService from '../services/biography-service'
-import BiographyCard2 from '../components/BiographyCard2'
+import EditBiographyCard from '../components/EditBiographyCard.vue'
 
 export default {
-  name: 'BiographyDetails',
+  name: 'EditBiography',
   data () {
     return {
-      biography: {}
+      biography: undefined
     }
   },
   props: {
@@ -32,7 +32,7 @@ export default {
       )
   },
   components: {
-    BiographyCard2
+    EditBiographyCard
   }
 }
 </script>

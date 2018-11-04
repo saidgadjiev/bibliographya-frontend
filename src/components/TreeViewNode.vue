@@ -39,7 +39,7 @@ export default {
   }
 
   li:before {
-    content: counters(l, ".") " ";
+    content: counters(l, ".") ".";
     counter-increment: l
   }
 </style>

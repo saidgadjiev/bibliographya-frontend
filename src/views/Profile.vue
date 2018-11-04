@@ -1,5 +1,5 @@
 <template>
-  <v-layout row fill-height="true">
+  <v-layout row fill-height>
     <v-flex xs4>
       <v-card class="body-1 grey lighten-3">
         <v-card-title primary-title class="pb-0">

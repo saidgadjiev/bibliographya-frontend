@@ -108,6 +108,28 @@ const getters = {
   },
   getUsername: state => {
     return state.user ? state.user.username : null
+  },
+  isAuthorized: (state, getters) => roles => {
+    if (!getters.isAuthenticated) {
+      return false
+    }
+    if (roles === '*') {
+      return true
+    }
+    var isAuthorized = false
+
+    state.roles.forEach(function (authorizedRole) {
+      if (isAuthorized) {
+        return
+      }
+      if (authorizedRole === '*') {
+        isAuthorized = true
+      } else {
+        isAuthorized = state.roles.indexOf(authorizedRole) !== -1
+      }
+    })
+
+    return isAuthorized
   }
 }
 

@@ -1,16 +1,16 @@
 <template>
-  <edit-biography :biography="biography"></edit-biography>
+  <v-layout row fill-height justify-center>
+    <v-flex xs12>
+    <edit-biography :biography="biography"></edit-biography>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
-import EditBiography from '../components/EditBiography'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'EditProfile',
-  components: {
-    EditBiography
-  },
   computed: {
     ...mapGetters([
       'getBiographyByUsername',

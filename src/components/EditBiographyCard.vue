@@ -1,5 +1,15 @@
 <template>
   <v-card>
+    <v-alert
+      v-model="alert"
+      dismissible
+      type="success"
+      color="light-green darken-2"
+      id="alert"
+    >
+      Изменения сохранены.
+      Новые данные будут отражены на Вашей странице.
+    </v-alert>
     <v-card-text>
       <v-layout row wrap>
         <v-flex xs12 sm6 md3>
@@ -42,64 +52,51 @@
 
 <script>
 export default {
-  name: 'EditProfile',
+  name: 'EditBiographyCard',
   data () {
     return {
-      editFirstName: '',
-      editLastName: '',
-      editMiddleName: '',
-      editBiography: ''
+      options: {
+        duration: 300,
+        offset: -61,
+        easing: 'easeInOutCubic'
+      },
+      alert: false,
+      firstName: '',
+      lastName: '',
+      middleName: '',
+      biographyText: ''
     }
   },
   props: {
-    biography: {
-      required: true,
-      type: Object
-    }
+    biography: Object
   },
-  computed: {
-    firstName: {
-      get () {
-        return this.biography.firstName
-      },
-      set (newVal) {
-        this.editFirstName = newVal
-      }
-    },
-    lastName: {
-      get () {
-        return this.biography.lastName
-      },
-      set (newVal) {
-        this.editLastName = newVal
-      }
-    },
-    middleName: {
-      get () {
-        return this.biography.middleName
-      },
-      set (newVal) {
-        this.editMiddleName = newVal
-      }
-    },
-    biographyText: {
-      get () {
-        return this.biography.biography
-      },
-      set (newVal) {
-        this.editBiography = newVal
-      }
-    }
+  mounted () {
+    this.firstName = this.biography.firstName
+    this.lastName = this.biography.lastName
+    this.middleName = this.biography.middleName
+    this.biographyText = this.biography.biography
   },
   methods: {
     doSave () {
+      let that = this
+
       this.$store.dispatch('updateBiography', {
         id: this.biography.id,
-        firstName: this.editFirstName,
-        lastName: this.editLastName,
-        middleName: this.editMiddleName,
-        biography: this.editBiography
-      })
+        firstName: this.firstName,
+        lastName: this.lastName,
+        middleName: this.middleName,
+        biography: this.biographyText
+      }).then(
+        () => {
+          that.alert = true
+          that.$nextTick(function () {
+            that.$vuetify.goTo('#alert', that.options)
+          })
+        },
+        e => {
+          console.log(e)
+        }
+      )
     }
   }
 }

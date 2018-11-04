@@ -8,7 +8,7 @@
       v-model="drawer"
     >
       <v-list dense>
-        <v-list-tile to="/profile">
+        <v-list-tile v-if="isAuthenticated" to="/profile">
           <v-list-tile-action>
             <v-icon>fas fa-home</v-icon>
           </v-list-tile-action>
@@ -103,6 +103,9 @@ export default {
       'isAuthenticated',
       'getUsername'
     ]),
+    showProfile () {
+      return this.isAuthenticated
+    },
     firstName () {
       let biography = this.getBiographyByUsername(this.getUsername)
 

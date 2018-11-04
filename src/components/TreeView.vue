@@ -1,5 +1,5 @@
 <template>
-  <ol>
+  <ol class="mb-0 pl-0">
     <tree-view-node
       v-for="data in items"
       :key="data.id"
@@ -23,5 +23,7 @@ export default {
 </script>
 
 <style scoped>
-  ol { counter-reset: l }
+  ol {
+    counter-reset: l
+  }
 </style>

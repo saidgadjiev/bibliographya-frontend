@@ -41,7 +41,13 @@ axios.interceptors.request.use(function (request) {
   return Promise.reject(err)
 })
 axios.interceptors.response.use(function (response) {
-  return response
+  if (response.status === 401) {
+    router.push('/401')
+  } else if (response.status === 403) {
+    router.push('/403')
+  } else {
+    return response
+  }
 }, function (err) {
   return Promise.reject(err)
 })
@@ -49,5 +55,18 @@ axios.interceptors.response.use(function (response) {
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  mounted () {
+    let that = this
+
+    this.$store.dispatch('getAccount')
+      .then(
+        () => {
+          that.$router.push('/')
+        },
+        error => {
+          console.error(error)
+        }
+      )
+  }
 }).$mount('#app')

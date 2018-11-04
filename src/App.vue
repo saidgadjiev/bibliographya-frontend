@@ -3,7 +3,7 @@
     <v-app>
       <nav-bar></nav-bar>
       <v-content>
-        <v-container grid-list-lg>
+        <v-container grid-list-lg fill-height>
           <router-view></router-view>
         </v-container>
       </v-content>
@@ -18,19 +18,6 @@ export default {
   name: 'App',
   components: {
     NavBar
-  },
-  mounted () {
-    let that = this
-
-    this.$store.dispatch('getAccount')
-      .then(
-        () => {
-          that.$router.push('/')
-        },
-        error => {
-          console.error(error)
-        }
-      )
   }
 }
 </script>
