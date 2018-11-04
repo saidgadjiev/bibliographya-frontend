@@ -3,7 +3,7 @@
     <v-app>
       <nav-bar></nav-bar>
       <v-content>
-        <v-container grid-list-md fill-height>
+        <v-container grid-list-lg>
           <router-view></router-view>
         </v-container>
       </v-content>

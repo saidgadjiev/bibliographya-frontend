@@ -15,19 +15,13 @@ const mutations = {
       state.biographies.push(payload)
     }
   },
-  updateFioById (state, payload) {
+  updateBiography (state, payload) {
     let biography = state.biographies.find(biography => biography.id === payload.id)
 
     if (biography) {
       biography.firstName = payload.firstName
       biography.lastName = payload.lastName
       biography.middleName = payload.middleName
-    }
-  },
-  updateBiographyById (state, payload) {
-    let biography = state.biographies.find(biography => biography.id === payload.id)
-
-    if (biography) {
       biography.biography = payload.biography
     }
   }
@@ -37,13 +31,8 @@ const actions = {
   addBiography ({ commit }, payload) {
     commit('addBiography', payload)
   },
-  updateFioById ({ commit }, payload) {
-    commit('updateFioById', payload)
-
-    return Promise.resolve()
-  },
-  updateBiographyById ({ commit }, payload) {
-    commit('updateBiographyById', payload)
+  updateBiography ({ commit }, payload) {
+    commit('updateBiography', payload)
 
     return Promise.resolve()
   },
@@ -70,9 +59,6 @@ const actions = {
 const getters = {
   getBiographyByUsername: state => username => {
     return state.biographies.find(biography => biography.userName === username)
-  },
-  getBiographyById: state => id => {
-    return state.biographies.find(biography => biography.id === id)
   }
 }
 

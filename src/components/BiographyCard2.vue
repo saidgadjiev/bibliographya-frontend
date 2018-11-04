@@ -1,40 +1,68 @@
 <template>
   <v-card>
-    <v-card-text class="grey lighten-3">
-      <tree-view v-if="items.length > 0" :items="items"></tree-view>
-      <p v-html="sanitizedBiography"></p>
+    <v-card-title primary-title>
+      <div>
+        <span :class="fioClass">
+          {{lastName + ' ' + firstName + ' ' + middleName}}
+        </span>
+      </div>
+    </v-card-title>
+    <v-divider class="m-0"></v-divider>
+    <v-card-text>
+      <span :class="biographyTitleClass">Биография:</span>
+      <tree-view :class="biographyTreeClass" v-if="items.length > 0" :items="items"></tree-view>
+      <p class="m-0" :class="biographyClass" v-html="sanitizedBiography"></p>
+      <slot name="biographyClamp"></slot>
     </v-card-text>
-    <edit-biography :biography-id="biographyId"></edit-biography>
+    <slot name="actions"></slot>
   </v-card>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import sanitize from '../services/sanitize-service'
 import TreeView from './TreeView.vue'
-import EditBiography from './EditBiography.vue'
+import sanitize from '../services/sanitize-service'
 
 const htmlparser = require('htmlparser2')
 
 export default {
-  name: 'EditableBiography',
+  name: 'biography-card',
   props: {
-    biographyId: Number
+    biography: {
+      default: () => {},
+      type: Object
+    },
+    fioClass: {
+      default: 'headline',
+      type: String
+    },
+    biographyTitleClass: {
+      default: 'subheading',
+      type: String
+    },
+    biographyTreeClass: String,
+    biographyClass: {
+      default: 'subheading',
+      type: String
+    }
   },
   computed: {
-    ...mapGetters([
-      'getBiographyById'
-    ]),
-    biography () {
-      let biography = this.getBiographyById(this.biographyId)
-
-      return biography ? biography.biography : ''
+    firstName () {
+      return this.biography ? this.biography.firstName : ''
+    },
+    lastName () {
+      return this.biography ? this.biography.lastName : ''
+    },
+    middleName () {
+      return this.biography ? this.biography.middleName : ''
+    },
+    biographyText () {
+      return this.biography.biography
     },
     sanitizedBiography () {
-      return sanitize.sanitize(this.biography)
+      return sanitize.sanitize(this.biographyText)
     },
     items () {
-      let html = this.biography
+      let html = this.biographyText
       let tree = []
 
       if (html) {
@@ -77,8 +105,7 @@ export default {
     }
   },
   components: {
-    TreeView,
-    EditBiography
+    TreeView
   }
 }
 </script>

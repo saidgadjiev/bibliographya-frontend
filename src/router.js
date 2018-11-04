@@ -5,6 +5,7 @@ import Profile from './views/Profile.vue'
 import SignIn from './views/SignIn.vue'
 import SignUp from './views/SignUp.vue'
 import BiographyDetails from './views/BiographyDetails.vue'
+import EditProfile from './views/EditProfile'
 
 Vue.use(Router)
 
@@ -19,12 +20,20 @@ export default new Router({
       path: '/biography/:id',
       name: 'biography',
       component: BiographyDetails,
-      props: (route) => ({ biographyId: parseInt(route.params.id) })
+      props: (route) => ({ biographyId: parseInt(route.params.id), name: route.params.name })
+    },
+    {
+      path: '/edit/profile',
+      name: 'editProfile',
+      component: EditProfile
     },
     {
       path: '/profile',
       name: 'profile',
-      component: Profile
+      component: Profile,
+      meta: {
+        loginRequired: true
+      }
     },
     {
       path: '/signIn',

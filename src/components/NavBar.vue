@@ -60,6 +60,15 @@
                 <v-list-tile-title>Моя биография</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
+            <v-list-tile @click="goto('/edit/profile')">
+            <v-list-tile-action>
+              <v-icon>edit</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Редактировать</v-list-tile-title>
+            </v-list-tile-content>
+            </v-list-tile>
+            <v-divider></v-divider>
             <v-list-tile @click="signOut">
               <v-list-tile-action>
                 <v-icon>fa-sign-out-alt</v-icon>
@@ -80,9 +89,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import VListTile from 'vuetify/lib/components/VList/VListTile'
 
 export default {
   name: 'NavBar',
+  components: { VListTile },
   data: () => ({
     drawer: true
   }),

@@ -1,14 +1,32 @@
 <template>
   <v-layout row fill-height="true">
+    <v-flex xs4>
+      <v-card class="body-1 grey lighten-3">
+        <v-card-title primary-title class="pb-0">
+          <div>
+            <h5>
+               Это вам может быть интересно
+            </h5>
+          </div>
+        </v-card-title>
+        <v-container
+          fluid
+          grid-list-lg
+        >
+      <interesting-biographies></interesting-biographies>
+        </v-container>
+      </v-card>
+    </v-flex>
     <v-flex xs8>
-      <biography-card :biography-id="biographyId"></biography-card>
+      <biography-card2 :biography="biography"></biography-card2>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import BiographyCard from '../components/BiographyCard'
+import BiographyCard2 from '../components/BiographyCard2'
+import InterestingBiographies from '../components/InterestingBiographies.vue'
 
 export default {
   name: 'profile',
@@ -17,14 +35,13 @@ export default {
       'getBiographyByUsername',
       'getUsername'
     ]),
-    biographyId () {
-      let biography = this.getBiographyByUsername(this.getUsername)
-
-      return biography ? biography.id : null
+    biography () {
+      return this.getBiographyByUsername(this.getUsername)
     }
   },
   components: {
-    BiographyCard
+    BiographyCard2,
+    InterestingBiographies
   }
 }
 </script>
