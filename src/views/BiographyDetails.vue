@@ -1,35 +1,35 @@
 <template>
   <v-layout row fill-height="true">
     <v-flex xs8>
-      <biography-card2 :biography="biography"></biography-card2>
+      <biography-card2 v-if="biography" show-comments :biography="biography"></biography-card2>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import biographyService from '../services/biography-service'
-import BiographyCard2 from '../components/BiographyCard2'
+import BiographyCard2 from '../components/BiographyCard'
 
 export default {
   name: 'BiographyDetails',
-  data () {
-    return {
-      biography: {}
+  props: {
+    biographyId: {
+      type: Number,
+      required: true
     }
   },
-  props: {
-    biographyId: Number
-  },
-  created () {
-    biographyService.getBiographyById(this.biographyId)
-      .then(
-        response => {
-          this.biography = response.data
-        },
-        e => {
-          console.log(e)
-        }
-      )
+  asyncComputed: {
+    biography () {
+      return biographyService.getBiographyById(this.biographyId)
+        .then(
+          response => {
+            return response.data
+          },
+          e => {
+            console.log(e)
+          }
+        )
+    }
   },
   components: {
     BiographyCard2

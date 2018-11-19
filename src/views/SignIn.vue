@@ -1,56 +1,57 @@
 <template>
-    <v-layout justify-center>
-        <v-flex xs12 sm8 md6>
-            <v-card class="elevation-12">
-                <v-card-text v-if="signInStatusCode !== 200" class="deep-orange accent-2">
-                  <strong class="d-block">
-                    Не удается войти.
-                  </strong>
-                  <span class="d-block mt-1">
-                    Пожалуйста, проверьте правильность написания логина и пароля.
-                  </span>
-                  <ul class="mt-3">
-                    <li>Возможно, нажата клавиша CAPS-lock?</li>
-                    <li>Может быть, у Вас включена неправильная <strong>раскладка</strong>? (русская или английская)</li>
-                    <li>Попробуйте набрать свой пароль в текстовом редакторе и <strong>скопировать</strong> в графу «Пароль».</li>
-                  </ul>
-                </v-card-text>
-                <v-card-text>
-                    <v-form>
-                        <v-text-field
-                          v-validate="'required'"
-                          :error-messages="errors.collect('username')"
-                          v-model="signInForm.username"
-                          prepend-icon="fas fa-user"
-                          name="username"
-                          label="Логин"
-                          type="text"
-                        ></v-text-field>
-                        <v-text-field
-                          v-validate="'required'"
-                          :error-messages="errors.collect('password')"
-                          v-model="signInForm.password"
-                          class="mt-2"
-                          prepend-icon="fas fa-key"
-                          name="password"
-                          label="Пароль"
-                          type="password"
-                        ></v-text-field>
-                    </v-form>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" @click="signIn">Войти</v-btn>
-                    <v-btn color="primary" to="/signup">Регистрация</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-flex>
-    </v-layout>
+  <v-layout justify-center>
+    <v-flex xs12 sm8 md6>
+      <v-card class="elevation-12">
+        <v-card-text v-if="type === 'alert-danger'">
+          <strong class="error--text">
+            Логин или пароль введены неправильно.
+          </strong>
+        </v-card-text>
+        <v-card-text>
+          <v-form>
+            <v-text-field
+              v-validate="'required'"
+              :error-messages="errors.collect('username')"
+              v-model="signInForm.username"
+              name="username"
+              label="Логин"
+              type="text"
+            ></v-text-field>
+            <v-text-field
+              v-validate="'required'"
+              :error-messages="errors.collect('password')"
+              :append-icon="showPassword ? 'visibility_off' : 'visibility'"
+              :type="showPassword ? 'text' : 'password'"
+              @click:append="showPassword = !showPassword"
+              v-model="signInForm.password"
+              class="mt-2"
+              name="password"
+              label="Пароль"
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-layout>
+            <v-flex xs12 sm4>
+              <v-btn
+                block
+                color="primary"
+                @click="signIn"
+                :loading="status.signingIn"
+              >Войти</v-btn>
+            </v-flex>
+            <v-flex xs12 sm8>
+              <v-btn block color="primary" to="/signUp">Регистрация</v-btn>
+            </v-flex>
+          </v-layout>
+        </v-card-actions>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 
 export default {
   name: 'SignIn',
@@ -59,13 +60,15 @@ export default {
       signInForm: {
         username: '',
         password: ''
-      }
+      },
+      showPassword: false
     }
   },
   computed: {
     ...mapGetters([
-      'signInStatusCode'
-    ])
+      'status'
+    ]),
+    ...mapState('alert', ['type'])
   },
   created () {
     this.$validator.localize('ru', {
@@ -80,6 +83,9 @@ export default {
     })
   },
   methods: {
+    ...mapActions('alert', [
+      'clear'
+    ]),
     signIn () {
       let that = this
 
@@ -89,14 +95,15 @@ export default {
             .then(
               () => {
                 that.$router.push('/')
-              },
-              error => {
-                console.error(error)
               }
             )
         }
       })
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    this.clear()
+    next()
   }
 }
 </script>

@@ -4,7 +4,8 @@ export default {
   signIn,
   signUp,
   signOut,
-  getAccount
+  getAccount,
+  isExistUsername
 }
 
 function signIn (signInForm) {
@@ -34,4 +35,8 @@ function signOut () {
 
 function getAccount () {
   return axios.get(process.env.REST_SERVER + 'api/auth/account')
+}
+
+function isExistUsername (username) {
+  return axios.head(process.env.REST_SERVER + 'api/auth/username/exist/' + username)
 }

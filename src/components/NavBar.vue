@@ -34,8 +34,12 @@
       fixed
       dense
     >
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title class="ml-0">Библиография</v-toolbar-title>
+      <v-toolbar-side-icon @click.stop="drawer = !drawer"
+      >
+      </v-toolbar-side-icon>
+      <v-toolbar-title class="ml-0">
+        <a @click="$router.push('/')">Библиография</a>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <div v-if="isAuthenticated" class="d-flex align-items-center">
       <span class="h5 mb-0">

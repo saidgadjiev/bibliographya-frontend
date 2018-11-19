@@ -1,19 +1,10 @@
 import biographyService from '../../services/biography-service'
 
-const state = {biographies: []}
+const state = { biographies: [] }
 
 const mutations = {
   addBiography (state, payload) {
-    let biography = state.biographies.find(biography => biography.id === payload.id)
-
-    if (biography) {
-      biography.firstName = payload.firstName
-      biography.lastName = payload.lastName
-      biography.middleName = payload.middleName
-      biography.biography = payload.biography
-    } else {
-      state.biographies.push(payload)
-    }
+    state.biographies.push(payload)
   },
   updateBiography (state, payload) {
     let biography = state.biographies.find(biography => biography.id === payload.id)
@@ -46,7 +37,7 @@ const actions = {
         )
     })
   },
-  getOrLoadBiography ({ commit, getters }, username) {
+  loadOrGetBiography ({ commit, getters }, username) {
     let biography = getters.getBiographyByUsername(username)
 
     if (biography) {

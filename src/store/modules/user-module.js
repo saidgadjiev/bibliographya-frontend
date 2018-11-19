@@ -1,113 +1,115 @@
 import authService from '../../services/auth-service'
 
-const state = { status: { code: 200, message: null }, authenticated: false, user: {}, roles: [] }
+const state = { status: { signedIn: false }, user: {}, roles: [] }
 
 const mutations = {
   signInSuccess (state, payload) {
-    state.authenticated = true
+    state.status = { signedIn: true }
     state.user = payload
   },
   signOutSuccess (state) {
-    state.authenticated = false
-    state.user = null
+    state.status = { signedIn: false }
+    state.user = {}
+    state.roles = {}
   },
-  signInStatus (state, payload) {
-    state.status.code = payload.status
-    state.status.message = payload.message
+  signInRequest (state) {
+    state.status = { signingIn: true }
+  },
+  signInFailure (state) {
+    state.status = {}
+    state.user = {}
+    state.roles = {}
+  },
+  signUpSuccess (state) {
+    state.status = { signedUp: true }
+  },
+  signUpRequest (state) {
+    state.status = { signingUp: true }
+  },
+  signUpFailure (state) {
+    state.status = {}
   }
 }
 
 const actions = {
   signIn ({ dispatch, commit }, signInForm) {
-    return new Promise((resolve, reject) => {
-      authService.signIn(signInForm)
-        .then(
-          signInResponse => {
-            return signInResponse.data
-          }
-        ).then(
-          user => {
-            return dispatch('getOrLoadBiography', user.username)
-              .then(
-                () => {
-                  commit('signInSuccess', user)
-                  commit('signInStatus', {
-                    status: 200
-                  })
-                  resolve()
-                },
-                e => {
-                  reject(e)
-                })
-          }).catch(e => {
-          console.log(e)
-          commit('signInStatus', {
-            status: e.response ? e.response.status : 500
-          })
-          reject(e)
+    commit('signInRequest')
+
+    return authService.signIn(signInForm)
+      .then(
+        signInResponse => {
+          return signInResponse.data
+        },
+        e => {
+          commit('signInFailure')
+          dispatch('alert/error', e)
+        }
+      ).then(
+        user => {
+          return dispatch('loadOrGetBiography', user.username)
+            .then(
+              () => {
+                commit('signInSuccess', user)
+              },
+              e => {
+                commit('signInFailure')
+                dispatch('alert/error', e)
+              })
         })
-    })
   },
-  signUp ({ commit }, signUpForm) {
-    return authService.signUp(signUpForm)
+  signUp ({ dispatch, commit }, signUpForm) {
+    commit('signUpRequest')
+
+    authService.signUp(signUpForm)
+      .then(
+        response => {
+          console.log('Success sign up ' + response.data)
+          commit('signUpSuccess')
+        },
+        error => {
+          commit('signUpFailure')
+          dispatch('alert/error', error)
+        }
+      )
   },
   signOut ({ commit }) {
     authService.signOut()
       .then(
-        response => {
+        () => {
           commit('signOutSuccess')
-        },
-        error => {
-          console.log(error)
         }
       )
   },
   getAccount ({ dispatch, commit }) {
-    return new Promise((resolve, reject) => {
-      authService.getAccount()
-        .then(
-          accountResponse => {
-            return accountResponse.data
-          }
-        ).then(
-          user => {
-            return new Promise((resolve, reject) => {
-              dispatch('getOrLoadBiography', user.username)
-                .then(
-                  () => {
-                    resolve(user)
-                  },
-                  e => {
-                    reject(e)
-                  })
-            })
-          }
-        ).then(
-          response => {
-            commit('signInSuccess', response)
-            commit('signInStatus', {
-              status: 200
-            })
-            resolve()
-          }
-        )
-        .catch(e => {
-          console.log(e)
-          reject(e)
-        })
-    })
+    authService.getAccount()
+      .then(
+        accountResponse => {
+          return accountResponse.data
+        }
+      ).then(
+        user => {
+          return dispatch('loadOrGetBiography', user.username)
+            .then(
+              () => {
+                commit('signInSuccess', user)
+              },
+              e => {
+                console.log(e)
+              })
+        }
+      )
   }
 }
 
 const getters = {
-  signInStatusCode: state => {
-    return state.status.code
+  status: state => {
+    return state.status
   },
   isAuthenticated: state => {
-    return state.authenticated
+    return state.status.signedIn
   },
   getUsername: state => {
-    return state.user ? state.user.username : null
+    return state.user.username
   },
   isAuthorized: (state, getters) => roles => {
     if (!getters.isAuthenticated) {
@@ -116,7 +118,7 @@ const getters = {
     if (roles === '*') {
       return true
     }
-    var isAuthorized = false
+    let isAuthorized = false
 
     state.roles.forEach(function (authorizedRole) {
       if (isAuthorized) {

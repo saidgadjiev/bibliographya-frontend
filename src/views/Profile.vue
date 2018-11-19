@@ -1,31 +1,20 @@
 <template>
   <v-layout row fill-height>
     <v-flex xs4>
-      <v-card class="body-1 grey lighten-3">
-        <v-card-title primary-title class="pb-0">
-          <div>
-            <h5>
-               Это вам может быть интересно
-            </h5>
-          </div>
-        </v-card-title>
-        <v-container
-          fluid
-          grid-list-lg
-        >
+      <h5>
+        Это вам может быть интересно
+      </h5>
       <interesting-biographies></interesting-biographies>
-        </v-container>
-      </v-card>
     </v-flex>
     <v-flex xs8>
-      <biography-card2 :biography="biography"></biography-card2>
+      <biography-card :biography="biography"></biography-card>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import BiographyCard2 from '../components/BiographyCard2'
+import BiographyCard from '../components/BiographyCard'
 import InterestingBiographies from '../components/InterestingBiographies.vue'
 
 export default {
@@ -40,7 +29,7 @@ export default {
     }
   },
   components: {
-    BiographyCard2,
+    BiographyCard,
     InterestingBiographies
   }
 }

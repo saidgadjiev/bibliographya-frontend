@@ -15,25 +15,21 @@
         <div slot="biographyClamp"  class="mt-3">
           <a :href="'#/biography/' + item.id">Читать дальше</a>
         </div>
-        <template slot="actions">
-          <v-divider class="m-0"></v-divider>
-          <v-card-actions>
-            <v-btn icon>
-              <v-icon color="primary" style="font-size:20px">fas fa-heart</v-icon>
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-icon color="primary" style="font-size:14px">fas fa-eye</v-icon>
-          </v-card-actions>
-        </template>
       </biography-card2>
     </v-flex>
+    <v-flex xs12>
     <infinite-loading @infinite="infiniteLoad">
       <div slot="spinner">
-        <i class="fa fa-spinner fa-pulse" style="font-size:36px;color: #1565c0;"></i>
+        <v-progress-circular
+          :size="50"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
       </div>
       <div slot="no-more"></div>
       <div slot="no-results"></div>
     </infinite-loading>
+    </v-flex>
   </v-layout>
 </template>
 
@@ -42,7 +38,7 @@ import { mapActions } from 'vuex'
 import sanitize from '../services/sanitize-service'
 import InfiniteLoading from 'vue-infinite-loading'
 import biographyService from '../services/biography-service'
-import BiographyCard2 from '../components/BiographyCard2'
+import BiographyCard2 from '../components/BiographyCard'
 
 export default {
   data () {

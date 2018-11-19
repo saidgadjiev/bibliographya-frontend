@@ -1,6 +1,6 @@
 <template>
   <v-layout justify-center>
-    <v-flex xs12 sm8 md4>
+    <v-flex xs12 sm8 md6>
       <v-card class="elevation-12">
         <v-card-text>
           <v-form>
@@ -32,7 +32,7 @@
             ></v-text-field>
             <v-text-field
               class="mt-2"
-              v-validate="'required'"
+              v-validate="'required|unique'"
               :error-messages="errors.collect('username')"
               name="username"
               label="Логин"
@@ -45,14 +45,15 @@
               :error-messages="errors.collect('password')"
               name="password"
               label="Пароль"
-              type="password"
               v-model="signUpForm.password"
+              :append-icon="showPassword ? 'visibility_off' : 'visibility'"
+              :type="showPassword ? 'text' : 'password'"
+              @click:append="showPassword = !showPassword"
             ></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn @click="signUp" color="primary">Зарегистрироваться</v-btn>
+          <v-btn block @click="signUp" color="primary">Зарегистрироваться</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -60,6 +61,9 @@
 </template>
 
 <script>
+import { Validator } from 'vee-validate'
+import authService from '../services/auth-service'
+
 export default {
   name: 'SignUp',
   data () {
@@ -70,7 +74,8 @@ export default {
         firstName: '',
         lastName: '',
         middleName: ''
-      }
+      },
+      showPassword: false
     }
   },
   created () {
@@ -101,18 +106,35 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.$store.dispatch('signUp', that.signUpForm)
-            .then(
-              response => {
-                console.log('Success sign up ' + response.data)
-                that.$router.push('/signIn')
-              },
-              error => {
-                console.error(error)
-              }
-            )
         }
       })
     }
+  },
+  mounted () {
+    const isUnique = value =>
+      new Promise(resolve => {
+        return authService.isExistUsername(value)
+          .then(
+            () => {
+              resolve({
+                valid: true
+              })
+            },
+            e => {
+              resolve({
+                valid: false,
+                data: {
+                  message: `Логин ${value} уже занят выберите другой`
+                }
+              })
+            }
+          )
+      })
+
+    Validator.extend('unique', {
+      validate: isUnique,
+      getMessage: (field, params, data) => data.message
+    })
   }
 }
 </script>

@@ -8,6 +8,7 @@ import russia from 'vee-validate/dist/locale/ru'
 import Vue2TouchEvents from 'vue2-touch-events'
 import VueCookie from 'vue-cookie'
 import axios from 'axios'
+import AsyncComputed from 'vue-async-computed'
 
 import store from './store/store'
 
@@ -18,6 +19,7 @@ Vue.use(Vuex)
 Vue.use(Vuetify)
 Vue.use(Vue2TouchEvents)
 Vue.use(VueCookie)
+Vue.use(AsyncComputed)
 
 const config = {
   locale: 'ru',
@@ -57,16 +59,6 @@ new Vue({
   store,
   render: h => h(App),
   mounted () {
-    let that = this
-
     this.$store.dispatch('getAccount')
-      .then(
-        () => {
-          that.$router.push('/')
-        },
-        error => {
-          console.error(error)
-        }
-      )
   }
 }).$mount('#app')

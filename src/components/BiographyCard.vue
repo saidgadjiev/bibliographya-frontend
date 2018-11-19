@@ -1,15 +1,32 @@
 <template>
   <v-card>
-    <v-card-title primary-title>
-      <v-layout row>
+    <v-card-title>
         <span :class="fioClass">
           {{lastName + ' ' + firstName + ' ' + middleName}}
         </span>
-        <v-spacer></v-spacer>
-        <v-btn v-if="showEdit" icon @click="$router.push('/edit/biography/' + biography.id)">
-          <v-icon>edit</v-icon>
+      <v-spacer></v-spacer>
+      <v-menu bottom left>
+        <v-btn
+          slot="activator"
+          icon
+        >
+          <v-icon>fas fa-caret-down</v-icon>
         </v-btn>
-      </v-layout>
+
+        <v-list>
+          <v-list-tile
+            @click="$router.push('/edit/biography/' + biography.id)"
+          >
+            <v-list-tile-title>Редактировать</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-tile-title>Пожаловаться</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-tile-title>Предложить исправление</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
     </v-card-title>
     <v-divider class="m-0"></v-divider>
     <v-card-text>
@@ -19,7 +36,23 @@
       <p class="m-0" :class="biographyClass" v-html="sanitizedBiography"></p>
       <slot name="biographyClamp"></slot>
     </v-card-text>
-    <slot name="actions"></slot>
+    <v-divider class="m-0"></v-divider>
+    <v-card-actions>
+      <like
+        @like-toggled="onLikeToggled"
+        :biography="biography" class="ml-1"></like>
+      <a :href="'#/biography/' + biography.id + '#comments'" class="ml-2" style="text-decoration: none">
+        <v-icon color="blue darken-1">mdi-comment-outline</v-icon>
+        <span style="font-size: 18px">{{ biography.commentsCount }}</span>
+      </a>
+      <v-spacer></v-spacer>
+      <v-icon color="blue darken-1" style="font-size:14px">fas fa-eye</v-icon>
+      <span class="ml-1">0</span>
+    </v-card-actions>
+    <div v-if="showComments">
+      <v-divider class="m-0"></v-divider>
+      <comments id="comments" :biography-id="biography.id"></comments>
+    </div>
   </v-card>
 </template>
 
@@ -27,6 +60,8 @@
 import { mapGetters } from 'vuex'
 import TreeView from './TreeView.vue'
 import sanitize from '../services/sanitize-service'
+import Like from '../components/Like.vue'
+import Comments from '../components/Comments'
 
 const htmlparser = require('htmlparser2')
 const htmlTruncate = require('html-truncate')
@@ -35,7 +70,7 @@ export default {
   name: 'biography-card',
   props: {
     biography: {
-      default: () => {},
+      required: true,
       type: Object
     },
     fioClass: {
@@ -51,6 +86,10 @@ export default {
       default: 'subheading',
       type: String
     },
+    showComments: {
+      default: false,
+      type: Boolean
+    },
     truncate: Number,
     treeSize: Number
   },
@@ -59,15 +98,6 @@ export default {
       'isAuthorized',
       'getUsername'
     ]),
-    showEdit () {
-      let username = this.getUsername
-
-      if (username === this.biography.creatorName) {
-        return true
-      }
-
-      return this.isAuthorized(['ROLE_ADMIN'])
-    },
     firstName () {
       return this.biography ? this.biography.firstName : ''
     },
@@ -151,8 +181,25 @@ export default {
       return tree
     }
   },
+  methods: {
+    onLikeToggled () {
+      this.biography.likesCount += (this.biography.liked ? -1 : 1)
+      this.biography.liked = !this.biography.liked
+    }
+  },
+  mounted () {
+    if (this.$route.hash) {
+      this.$vuetify.goTo(this.$route.hash, {
+        duration: 300,
+        offset: 0,
+        easing: 'easeInOutCubic'
+      })
+    }
+  },
   components: {
-    TreeView
+    TreeView,
+    Like,
+    Comments
   }
 }
 </script>

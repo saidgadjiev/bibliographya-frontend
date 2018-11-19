@@ -23,7 +23,8 @@
     "htmlparser2": "^3.10.0",
     "dompurify": "^1.0.8",
     "vue-infinite-loading": "^2.4.0",
-    "html-truncate": "^1.2.2"
+    "html-truncate": "^1.2.2",
+    "vue-async-computed": "^3.5.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
