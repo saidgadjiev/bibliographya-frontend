@@ -28,10 +28,9 @@ const actions = {
         .then(
           response => {
             commit('updateBiography', payload)
-            resolve()
+            resolve(response)
           },
           e => {
-            console.log(e)
             reject(e)
           }
         )

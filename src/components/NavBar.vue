@@ -38,55 +38,53 @@
       >
       </v-toolbar-side-icon>
       <v-toolbar-title class="ml-0">
-        <a @click="$router.push('/')">Библиография</a>
+        <a class="white--text" @click="$router.push('/')">Библиография</a>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <div v-if="isAuthenticated" class="d-flex align-items-center">
-      <span class="h5 mb-0">
-        {{firstName}}
-      </span>
-        <v-menu
-          min-width="200px"
-          offset-y
-          origin="center center"
-          transition="scale-transition"
-        >
-          <v-btn slot="activator" icon>
-            <v-icon>fas fa-user</v-icon>
-          </v-btn>
-
-          <v-list>
-            <v-list-tile @click="goto('/profile')">
-              <v-list-tile-action>
-                <v-icon>fas fa-home</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>Моя биография</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile @click="goto('/edit/profile')">
-            <v-list-tile-action>
-              <v-icon>edit</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Редактировать</v-list-tile-title>
-            </v-list-tile-content>
-            </v-list-tile>
-            <v-divider></v-divider>
-            <v-list-tile @click="signOut">
-              <v-list-tile-action>
-                <v-icon>fa-sign-out-alt</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>Выйти</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
-      </div>
-      <v-btn v-else icon @click="goto('/signIn')">
-        <v-icon>fas fa-sign-in-alt</v-icon>
-      </v-btn>
+      <v-toolbar-items class="hidden-sm-and-down">
+          <v-menu
+            v-if="isAuthenticated"
+            min-width="200px"
+            offset-y
+            origin="center center"
+            transition="scale-transition"
+          >
+            <v-btn flat class="white--text" slot="activator">
+              {{firstName}}
+              <v-icon right dark>fas fa-user</v-icon>
+            </v-btn>
+            <v-list>
+              <v-list-tile @click="goto('/profile')">
+                <v-list-tile-action>
+                  <v-icon>fas fa-home</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>Моя биография</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile @click="goto('/edit/profile')">
+                <v-list-tile-action>
+                  <v-icon>edit</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>Редактировать</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-divider></v-divider>
+              <v-list-tile @click="signOut">
+                <v-list-tile-action>
+                  <v-icon>fa-sign-out-alt</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>Выйти</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
+        <v-btn v-else icon @click="goto('/signIn')">
+          <v-icon>fas fa-sign-in-alt</v-icon>
+        </v-btn>
+      </v-toolbar-items>
     </v-toolbar>
   </div>
 </template>

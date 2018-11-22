@@ -1,7 +1,7 @@
 <template>
   <v-layout row>
     <v-flex>
-      <edit-biography-card v-if="biography" :biography="biography"></edit-biography-card>
+      <edit-biography-card v-if="biography" :in-biography="biography"></edit-biography-card>
     </v-flex>
   </v-layout>
 </template>

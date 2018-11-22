@@ -15,10 +15,10 @@ function getBiographyById (id) {
   return axios.get(process.env.REST_SERVER + 'api/biography/id/' + id)
 }
 
-function getBiographies (page) {
-  return axios.get(process.env.REST_SERVER + 'api/biography?page=' + page + '&size=' + 20)
+function getBiographies (limit, offset) {
+  return axios.get(process.env.REST_SERVER + 'api/biography?limit=' + limit + '&offset=' + offset)
 }
 
 function update (biography) {
-  return axios.patch(process.env.REST_SERVER + 'api/biography/update/' + biography.id, biography)
+  return axios.put(process.env.REST_SERVER + 'api/biography/update/' + biography.id, biography)
 }

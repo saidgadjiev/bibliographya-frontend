@@ -1,36 +1,67 @@
 <template>
-  <v-list-tile :id="'c' + comment.id">
-    <v-list-tile-content>
-      <v-list-tile-title v-if="comment.reply">
-        <a tabindex>{{ comment.lastName + ' ' + comment.firstName }}</a>
-        <small class="grey--text">ответил</small>
-        <a tabindex @click="gotoReply()"><strong
-          class="grey--text">{{comment.replyToFirstName}}</strong></a>
-      </v-list-tile-title>
-      <v-list-tile-title v-else>
-        <a tabindex>{{ comment.lastName + ' ' + comment.firstName }}</a>
-      </v-list-tile-title>
-      <V-list-tile-sub-title class="text--primary" v-if="comment.reply">
-        <a tabindex>{{ comment.replyToFirstName }}</a>{{ ', ' + comment.content }}
-      </V-list-tile-sub-title>
-      <V-list-tile-sub-title class="text--primary" v-else>
-        {{ comment.content }}
-      </V-list-tile-sub-title>
-      <V-list-tile-sub-title>
-        {{ getTimeDiff + ', ' }}<a tabindex @click="reply">Ответить</a>
-      </V-list-tile-sub-title>
-    </v-list-tile-content>
-  </v-list-tile>
+  <v-hover>
+  <v-card
+    slot-scope="{ hover }"
+    flat
+    :id="'c' + comment.id"
+    class="list-group-item pa-2">
+      <v-card-title primary-title class="pa-0">
+        <div v-if="comment.parentId">
+          <a :href="'#/biography/' + comment.biographyId">{{ comment.lastName + ' ' + comment.firstName }}</a>
+          <small class="grey--text">&nbsp;ответил&nbsp;</small>
+          <a tabindex @click="gotoReply()"><strong
+            class="grey--text">{{comment.replyToFirstName}}</strong></a>
+        </div>
+        <div v-else>
+          <a :href="'#/biography/' + comment.biographyId">{{ comment.lastName + ' ' + comment.firstName }}</a>
+        </div>
+        <v-spacer></v-spacer>
+        <div v-if="hover">
+          <v-icon small @click="clickEdit" v-if="!edit">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="doDeleted" class="ml-1">
+          fa fa-times
+        </v-icon>
+        </div>
+      </v-card-title>
+      <v-card-text class="pa-0">
+        <edit-comment
+          v-if="edit"
+          @cancel="edit = !edit"
+          @ok="edit = !edit"
+          :comment-id="comment.id"
+          v-bind:content.sync="comment.content"
+        >
+        </edit-comment>
+        <div v-else>
+        <span v-if="comment.parentId">
+          <a :href="'#/biography/' + comment.replyToBiographyId">{{ comment.replyToFirstName }}</a>{{ ', ' + comment.content }}
+        </span>
+          <span v-else>{{ comment.content }}</span>
+        </div>
+      </v-card-text>
+      <v-card-actions class="pa-0">
+        {{ getTimeDiff + ',' }}&nbsp;<a tabindex @click="reply">Ответить</a>
+      </v-card-actions>
+  </v-card>
+  </v-hover>
 </template>
 
 <script>
+import biographyCommentService from '../services/biography-comment-service'
+import EditComment from '../components/EditComment'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Comment',
   data () {
     return {
+      edit: false,
+      editContent: '',
       options: {
         duration: 300,
-        offset: 0,
+        offset: -100,
         easing: 'easeInOutCubic'
       }
     }
@@ -45,6 +76,12 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'getUsername'
+    ]),
+    isMyComment () {
+      return this.getUsername === this.comment.userName
+    },
     getTimeDiff () {
       const date1 = new Date(this.comment.createdAt)
       const date2 = new Date(Date.now())
@@ -77,6 +114,22 @@ export default {
     }
   },
   methods: {
+    commentEdited (value) {
+      this.comment.content = value
+      this.edit = !this.edit
+    },
+    clickEdit () {
+      this.edit = !this.edit
+      this.editContent = this.comment.content
+    },
+    doDeleted () {
+      biographyCommentService.deleteComment(this.comment.id)
+        .then(
+          () => {
+            this.$emit('comment-deleted')
+          }
+        )
+    },
     gotoReply () {
       this.$vuetify.goTo('#c' + this.comment.parentId, this.options)
       let el = document.getElementById('c' + this.comment.parentId)
@@ -90,9 +143,13 @@ export default {
     reply () {
       this.$emit('click-reply', this.comment)
     }
+  },
+  components: {
+    EditComment
   }
 }
 </script>
 
 <style scoped>
+  @import '../../static/bibliography.css';
 </style>

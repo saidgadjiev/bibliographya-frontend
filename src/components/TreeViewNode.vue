@@ -1,6 +1,6 @@
 <template>
   <li>
-    <button class="btn btn-link" @click="$vuetify.goTo(items.id, options)">{{ items.name }}</button>
+    <a href="#" @click="$vuetify.goTo(items.id, options)">{{ items.name }}</a>
     <ol>
       <tree-view-node
         v-for="children in items.children"
@@ -18,7 +18,7 @@ export default {
     return {
       options: {
         duration: 300,
-        offset: 0,
+        offset: -100,
         easing: 'easeInOutCubic'
       }
     }
@@ -30,6 +30,8 @@ export default {
 </script>
 
 <style scoped>
+  @import '../../static/bibliography.css';
+
   ol {
     counter-reset: l
   }

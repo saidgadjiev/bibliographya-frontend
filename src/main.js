@@ -13,7 +13,6 @@ import AsyncComputed from 'vue-async-computed'
 import store from './store/store'
 
 import 'vuetify/dist/vuetify.min.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
 
 Vue.use(Vuex)
 Vue.use(Vuetify)

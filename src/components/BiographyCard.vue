@@ -51,7 +51,12 @@
     </v-card-actions>
     <div v-if="showComments">
       <v-divider class="m-0"></v-divider>
-      <comments id="comments" :biography-id="biography.id"></comments>
+      <comments
+        id="comments"
+        :biography-id="biography.id"
+        @comment-deleted="commentDeleted"
+        @comment-added="commentAdded"
+      ></comments>
     </div>
   </v-card>
 </template>
@@ -117,7 +122,7 @@ export default {
         biography = htmlTruncate(biography, this.truncate)
       }
 
-      return sanitize.sanitize(biography)
+      return sanitize.sanitizeWithAllowedTags(biography)
     },
     items () {
       let html = this.biographyText
@@ -182,6 +187,12 @@ export default {
     }
   },
   methods: {
+    commentAdded () {
+      this.biography.commentsCount++
+    },
+    commentDeleted () {
+      --this.biography.commentsCount
+    },
     onLikeToggled () {
       this.biography.likesCount += (this.biography.liked ? -1 : 1)
       this.biography.liked = !this.biography.liked
@@ -205,5 +216,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

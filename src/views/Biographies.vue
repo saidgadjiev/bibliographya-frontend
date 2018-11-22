@@ -44,7 +44,8 @@ export default {
   data () {
     return {
       treeSize: 1,
-      page: 0,
+      limit: 50,
+      offset: 0,
       items: []
     }
   },
@@ -56,17 +57,17 @@ export default {
       this.treeSize = undefined
     },
     sanitize (html) {
-      return sanitize.sanitize(html)
+      return sanitize.sanitizeWithAllowedTags(html)
     },
     infiniteLoad ($state) {
       let that = this
 
-      biographyService.getBiographies(this.page)
+      biographyService.getBiographies(this.limit, this.offset)
         .then(
           response => {
             if (response.status === 200) {
-              ++that.page
               that.items.push(...response.data.content)
+              that.offset += response.data.content.length
               $state.loaded()
             } else {
               $state.complete()

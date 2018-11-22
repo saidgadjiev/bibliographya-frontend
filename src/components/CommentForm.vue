@@ -1,20 +1,18 @@
 <template>
-  <v-form
-    class="pa-3 pt-2"
-  >
-    <div v-if="reply">
+  <v-form id="commentForm">
+    <div v-if="replyToComment">
     <span>
       ответ <a tabindex @click="gotoReply">{{ replyToComment.firstName }}</a>
     </span>
     <span>
-      <v-icon style="font-size: 18px" @click="resetReply">fas fa-times</v-icon>
+      <v-icon style="font-size: 18px" @click="$emit('reset-reply')">fas fa-times</v-icon>
     </span>
     </div>
     <v-textarea
       auto-grow
       rows="1"
+      @click:append-outer="submit"
       append-outer-icon="fas fa-paper-plane"
-      :append-outer-icon-cb="submit"
       placeholder="Написать комментарий..."
       v-model="content"
       class="pt-0"
@@ -29,7 +27,6 @@ export default {
   name: 'CommentForm',
   data () {
     return {
-
       content: '',
       options: {
         duration: 300,
@@ -43,21 +40,11 @@ export default {
       type: Number,
       required: true
     },
-    reply: {
-      type: Boolean,
-      default: false
-    },
     replyToComment: {
       type: Object
-    },
-    parentId: {
-      type: Number
     }
   },
   methods: {
-    resetReply () {
-      this.$emit('reset-reply')
-    },
     gotoReply () {
       this.$vuetify.goTo('#c' + this.replyToComment.id, this.options)
       let el = document.getElementById('c' + this.replyToComment.id)
@@ -68,20 +55,24 @@ export default {
         el.classList.remove('blue-grey', 'lighten-3')
       }, 2000)
     },
-    clear () {
-      this.content = ''
-    },
     submit () {
       let that = this
+      let username = this.$store.getters.getUsername
+      let biography = this.$store.getters.getBiographyByUsername(username)
 
       if (this.content !== '') {
         biographyCommentService.addComment(this.biographyId, {
           content: this.content,
-          parentId: this.parentId
+          parentId: this.replyToComment ? this.replyToComment.id : null,
+          firstName: biography.firstName,
+          lastName: biography.lastName,
+          replyToFirstName: this.replyToComment ? this.replyToComment.firstName : null,
+          replyToUserName: this.replyToComment ? this.replyToComment.userName : null
         })
           .then(
             response => {
-              that.clear()
+              that.content = ''
+              that.$emit('comment-added', response.data)
             },
             e => {
               console.log(e)

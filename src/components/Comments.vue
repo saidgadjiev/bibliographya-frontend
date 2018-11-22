@@ -1,9 +1,15 @@
 <template>
-  <v-list two-line class="pa-3 pt-2">
-    <div v-for="(item, index) in items" :key="index">
-      <v-divider v-if="index !== 0" class="m-0"></v-divider>
-      <comment :id="'c' + item.id" :comment="item" @click-reply="clickReply"></comment>
-    </div>
+  <div class="pa-3 pb-0">
+  <div class="list-group list-group-flush">
+    <comment
+      v-for="(item, index) in items"
+      :key="index"
+      :id="'c' + item.id"
+      :comment="item"
+      @click-reply="clickReply"
+      @comment-deleted="commentDeleted(index)"
+    ></comment>
+  </div>
     <infinite-loading @infinite="infiniteLoad">
       <div slot="spinner">
         <v-progress-circular
@@ -14,8 +20,13 @@
       <div slot="no-more"></div>
       <div slot="no-results"></div>
     </infinite-loading>
-    <comment-form @reset-reply="resetReply" :reply="reply" :reply-to-comment="replyToComment" :biography-id="biographyId"></comment-form>
-  </v-list>
+    <comment-form
+      class="pl-2"
+      @comment-added="commentAdded"
+      :reply-to-comment="replyToComment"
+      :biography-id="biographyId"
+    ></comment-form>
+  </div>
 </template>
 
 <script>
@@ -28,7 +39,9 @@ export default {
   name: 'Comments',
   data () {
     return {
-      replyToComment: {},
+      limit: 20,
+      offset: 0,
+      replyToComment: null,
       reply: false,
       items: [],
       page: 0
@@ -41,23 +54,33 @@ export default {
     }
   },
   methods: {
+    commentAdded (comment) {
+      this.items.push(comment)
+      this.replyToComment = null
+      this.$emit('comment-added')
+    },
+    commentDeleted (index) {
+      this.items.splice(index, 1)
+      this.$emit('comment-deleted')
+    },
     clickReply (comment) {
       this.replyToComment = comment
       this.reply = true
-    },
-    resetReply () {
-      this.replyToComment = null
-      this.reply = false
+      this.$vuetify.goTo('#commentForm', {
+        duration: 300,
+        offset: 0,
+        easing: 'easeInOutCubic'
+      })
     },
     infiniteLoad ($state) {
       let that = this
 
-      biographyCommentService.getComments(this.biographyId, this.page)
+      biographyCommentService.getComments(this.biographyId, this.limit, this.offset)
         .then(
           response => {
             if (response.status === 200) {
-              ++that.page
               that.items.push(...response.data.content)
+              that.offset += response.data.content.length
               $state.loaded()
             } else {
               $state.complete()
@@ -75,5 +98,5 @@ export default {
 </script>
 
 <style scoped>
-
+  @import '../../static/bibliography.css';
 </style>
