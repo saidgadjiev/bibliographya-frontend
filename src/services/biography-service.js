@@ -4,7 +4,8 @@ export default {
   getBiographyByUsername,
   getBiographyById,
   getBiographies,
-  update
+  update,
+  create
 }
 
 function getBiographyByUsername (username) {
@@ -21,4 +22,8 @@ function getBiographies (limit, offset) {
 
 function update (biography) {
   return axios.put(process.env.REST_SERVER + 'api/biography/update/' + biography.id, biography)
+}
+
+function create (biography) {
+  return axios.put(process.env.REST_SERVER + 'api/biography/create', biography)
 }

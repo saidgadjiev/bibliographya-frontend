@@ -1,15 +1,19 @@
 <template>
-  <v-card>
-    <v-alert
-      v-model="alert"
-      dismissible
-      type="success"
-      color="light-green darken-2"
-      id="alert"
-    >
-      Изменения сохранены.
-      Новые данные будут отражены на Вашей странице.
-    </v-alert>
+  <biography-card
+    :biography="biography"
+    v-if="preview"
+    show-actions
+  >
+    <template slot="actions">
+      <v-btn @click="preview = false" flat color="orange">Продолжить редактирование</v-btn>
+      <v-btn @click="doSave" flat color="orange">Сохранить</v-btn>
+    </template>
+    <template slot="alert">
+      <alert-slot></alert-slot>
+    </template>
+  </biography-card>
+  <v-card v-else>
+    <alert-slot></alert-slot>
     <v-card-text>
       <v-layout row wrap>
         <edit-fio
@@ -48,14 +52,17 @@
       </v-layout>
     </v-card-text>
     <v-card-actions>
+      <v-btn @click="preview = true" flat color="orange">Предпросмотр</v-btn>
       <v-btn @click="doSave" flat color="orange">Сохранить</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import EditFio from './EditFio'
-import EditBiography from './EditBiography'
+import EditFio from './EditFioForm'
+import EditBiography from './EditBiographyForm'
+import BiographyCard from './BiographyCard'
+import AlertSlot from './AlertSlot'
 
 const diff = require('diff')
 const he = require('he')
@@ -64,12 +71,12 @@ export default {
   name: 'EditBiographyCard',
   data () {
     return {
+      preview: false,
       options: {
         duration: 300,
         offset: -61,
         easing: 'easeInOutCubic'
       },
-      alert: false,
       fioConflict: '',
       biographyConflict: '',
       biography: {
@@ -158,17 +165,20 @@ export default {
     },
     doSave () {
       let that = this
+      this.preview = false
 
       this.$store.dispatch('updateBiography', this.biography)
         .then(
           response => {
             that.biography.lastModified = response.data.lastModified
             that.alert = true
-            that.$nextTick(function () {
-              that.$vuetify.goTo('#alert', that.options)
-            })
             that.conflict = false
             that.myBiographyVersion = {}
+
+            that.$store.dispatch('alert/success', 'Изменения сохранены. Новые данные будут отражены на Вашей странице.')
+            that.$nextTick(function () {
+              that.$vuetify.goTo('#alert-success', that.options)
+            })
           },
           e => {
             if (e.response.status === 409) {
@@ -178,6 +188,11 @@ export default {
               that.conflict = true
               that.fioConflict = that.fioDiff()
               that.biographyConflict = that.biographyDiff()
+
+              that.$store.dispatch('alert/error', 'Произошел конфликт. Пожалуйста перенесите свои изменения в соответствии с текущей версией')
+              that.$nextTick(function () {
+                that.$vuetify.goTo('#alert-error', that.options)
+              })
             } else {
               console.log(e)
             }
@@ -187,7 +202,9 @@ export default {
   },
   components: {
     EditFio,
-    EditBiography
+    EditBiography,
+    BiographyCard,
+    AlertSlot
   }
 }
 </script>

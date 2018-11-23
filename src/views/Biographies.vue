@@ -2,19 +2,14 @@
   <v-layout row wrap justify-center>
     <v-flex xs12 sm6 v-for="item in items" :key="item.id">
       <biography-card2
-        :truncate="150"
-        :tree-size="treeSize"
+        biography-clamp
+        :biography-clamp-size=150
+        tree-clamp
+        :tree-clamp-size=treeClampSize
+        show-actions
+        show-menu
         :biography="item"
       >
-        <div slot="treeClamp" v-if="treeSize">
-          <a href="#" @click="treeSize = undefined">Показать содержание</a>
-        </div>
-        <div slot="treeClamp" v-else>
-          <a href="#" @click="treeSize = 1">Скрыть содержание</a>
-        </div>
-        <div slot="biographyClamp"  class="mt-3">
-          <a :href="'#/biography/' + item.id">Читать дальше</a>
-        </div>
       </biography-card2>
     </v-flex>
     <v-flex xs12>
@@ -38,12 +33,12 @@ import { mapActions } from 'vuex'
 import sanitize from '../services/sanitize-service'
 import InfiniteLoading from 'vue-infinite-loading'
 import biographyService from '../services/biography-service'
-import BiographyCard2 from '../components/BiographyCard'
+import BiographyCard2 from '../components/biography/BiographyCard'
 
 export default {
   data () {
     return {
-      treeSize: 1,
+      treeClampSize: 1,
       limit: 50,
       offset: 0,
       items: []

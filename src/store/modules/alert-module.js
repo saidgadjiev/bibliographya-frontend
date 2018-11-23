@@ -30,9 +30,19 @@ const mutations = {
   }
 }
 
+const getters = {
+  type: state => {
+    return state.type
+  },
+  message: state => {
+    return state.message
+  }
+}
+
 export default {
   namespaced: true,
   state,
   actions,
+  getters,
   mutations
 }

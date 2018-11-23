@@ -14,7 +14,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import BiographyCard from '../components/BiographyCard'
+import BiographyCard from '../components/biography/BiographyCard'
 import InterestingBiographies from '../components/InterestingBiographies.vue'
 
 export default {

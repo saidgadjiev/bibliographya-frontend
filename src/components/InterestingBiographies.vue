@@ -3,7 +3,7 @@
     <v-flex xs12 v-for="(item, index) in items" :key="index">
       <biography-card2
         :tree-size="treeSize"
-        :truncate="50"
+        biographyClampSize="50"
         :biography="item"
         fio-class="body-2"
         biography-title-class="body-1"
@@ -24,13 +24,13 @@
 </template>
 
 <script>
-import BiographyCard2 from '../components/BiographyCard'
+import BiographyCard2 from './biography/BiographyCard'
 
 export default {
   name: 'InterestingBiographies',
   data () {
     return {
-      treeSize: 1,
+      treeClampSize: 1,
       items: [
         {
           firstName: 'Тест',

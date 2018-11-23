@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style scoped>
-  @import '../../static/bibliography.css';
+  @import '../../../static/bibliography.css';
 
   ol {
     counter-reset: l

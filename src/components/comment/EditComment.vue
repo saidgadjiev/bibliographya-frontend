@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import biographyCommentService from '../services/biography-comment-service'
+import biographyCommentService from '../../services/biography-comment-service'
 
 export default {
   name: 'EditComment',

@@ -32,7 +32,7 @@
 <script>
 import Comment from './Comment'
 import CommentForm from './CommentForm'
-import biographyCommentService from '../services/biography-comment-service'
+import biographyCommentService from '../../services/biography-comment-service'
 import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
@@ -98,5 +98,5 @@ export default {
 </script>
 
 <style scoped>
-  @import '../../static/bibliography.css';
+  @import '../../../static/bibliography.css';
 </style>
