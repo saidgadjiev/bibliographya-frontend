@@ -13,8 +13,7 @@ export default {
   name: 'EditBiography',
   props: {
     biography: {
-      type: String,
-      required: true
+      type: String
     },
     readonly: {
       type: Boolean,

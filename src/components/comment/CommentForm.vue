@@ -57,17 +57,11 @@ export default {
     },
     submit () {
       let that = this
-      let username = this.$store.getters.getUsername
-      let biography = this.$store.getters.getBiographyByUsername(username)
 
       if (this.content !== '') {
         biographyCommentService.addComment(this.biographyId, {
           content: this.content,
-          parentId: this.replyToComment ? this.replyToComment.id : null,
-          firstName: biography.firstName,
-          lastName: biography.lastName,
-          replyToFirstName: this.replyToComment ? this.replyToComment.firstName : null,
-          replyToUserName: this.replyToComment ? this.replyToComment.userName : null
+          parent: this.replyToComment
         })
           .then(
             response => {

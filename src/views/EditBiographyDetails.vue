@@ -3,7 +3,7 @@
     <v-flex xs12>
       <edit-biography-card
         v-if="biography"
-        :in-biography="biography"
+        :in-biography.sync="biography"
       ></edit-biography-card>
     </v-flex>
   </v-layout>

@@ -22,6 +22,10 @@ export default {
     biographyId: {
       type: Number,
       required: true
+    },
+    categoryId: {
+      type: Number,
+      required: true
     }
   },
   asyncComputed: {

@@ -8,16 +8,27 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import biographyService from '../services/biography-service'
 
 export default {
   name: 'EditProfile',
   computed: {
     ...mapGetters([
-      'getBiographyByUsername',
+      'getUser',
       'getUsername'
     ]),
-    biography () {
-      return this.getBiographyByUsername(this.getUsername)
+    asyncComputed: {
+      biography () {
+        return biographyService.getBiographyById(this.getUser.biographyId)
+          .then(
+            response => {
+              return response.data
+            },
+            e => {
+              console.log(e)
+            }
+          )
+      }
     }
   }
 }

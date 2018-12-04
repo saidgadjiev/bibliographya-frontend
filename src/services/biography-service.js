@@ -1,23 +1,23 @@
 const axios = require('axios')
 
 export default {
-  getBiographyByUsername,
+  getBiography,
   getBiographyById,
   getBiographies,
   update,
   create
 }
 
-function getBiographyByUsername (username) {
-  return axios.get(process.env.REST_SERVER + 'api/biography/username/' + username)
+function getBiography (username, filter) {
+  return axios.get(process.env.REST_SERVER + 'api/biography' + (filter ? '?' + filter : ''))
 }
 
 function getBiographyById (id) {
-  return axios.get(process.env.REST_SERVER + 'api/biography/id/' + id)
+  return axios.get(process.env.REST_SERVER + 'api/biography/' + id)
 }
 
-function getBiographies (limit, offset) {
-  return axios.get(process.env.REST_SERVER + 'api/biography?limit=' + limit + '&offset=' + offset)
+function getBiographies (limit, offset, filter, category) {
+  return axios.get(process.env.REST_SERVER + 'api/biography/biographies/' + category + '?limit=' + limit + '&offset=' + offset + (filter ? '&' + filter : ''))
 }
 
 function update (biography) {
@@ -25,5 +25,5 @@ function update (biography) {
 }
 
 function create (biography) {
-  return axios.put(process.env.REST_SERVER + 'api/biography/create', biography)
+  return axios.post(process.env.REST_SERVER + 'api/biography/create', biography)
 }

@@ -16,16 +16,26 @@
 import { mapGetters } from 'vuex'
 import BiographyCard from '../components/biography/BiographyCard'
 import InterestingBiographies from '../components/InterestingBiographies.vue'
+import biographyService from '../services/biography-service'
 
 export default {
   name: 'profile',
   computed: {
     ...mapGetters([
-      'getBiographyByUsername',
-      'getUsername'
-    ]),
+      'getUser'
+    ])
+  },
+  asyncComputed: {
     biography () {
-      return this.getBiographyByUsername(this.getUsername)
+      return biographyService.getBiographyById(this.getUser.biographyId)
+        .then(
+          response => {
+            return response.data
+          },
+          e => {
+            console.log(e)
+          }
+        )
     }
   },
   components: {

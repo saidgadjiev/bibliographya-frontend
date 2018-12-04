@@ -1,6 +1,12 @@
 <template>
   <v-card :flat="flat">
     <slot name="alert"></slot>
+    <div v-if="showStatus">
+      <v-card-title>
+        <strong>{{ moderationStatus }}</strong>
+      </v-card-title>
+      <v-divider class="m-0"></v-divider>
+    </div>
     <v-card-title>
         <span :class="fioClasses">
           {{biography.lastName + ' ' + biography.firstName + ' ' + biography.middleName}}
@@ -111,6 +117,10 @@ export default {
       type: Boolean,
       default: false
     },
+    showStatus: {
+      type: Boolean,
+      default: false
+    },
     treeClamp: {
       type: Boolean,
       default: false
@@ -131,6 +141,22 @@ export default {
       'isAuthorized',
       'getUsername'
     ]),
+    moderationStatus () {
+      let status = this.biography.moderationStatus
+
+      if (status !== undefined) {
+        switch (status) {
+          case 0:
+            return 'На модерации'
+          case 1:
+            return 'Одобрено'
+          case 2:
+            return 'Отклонено'
+        }
+      }
+
+      return ''
+    },
     fioClasses () {
       return this.type === 'small' ? 'body-2' : 'headline'
     },
@@ -216,7 +242,6 @@ export default {
     }
   },
   mounted () {
-    this.treeSize = this.treeClampSize
     if (this.$route.hash) {
       this.$vuetify.goTo(this.$route.hash, {
         duration: 300,

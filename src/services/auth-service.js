@@ -38,5 +38,5 @@ function getAccount () {
 }
 
 function isExistUsername (username) {
-  return axios.head(process.env.REST_SERVER + 'api/auth/username/exist/' + username)
+  return axios.head(process.env.REST_SERVER + 'api/auth/exist/' + username)
 }

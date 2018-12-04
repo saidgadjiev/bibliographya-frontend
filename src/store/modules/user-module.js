@@ -38,24 +38,13 @@ const actions = {
     return authService.signIn(signInForm)
       .then(
         signInResponse => {
-          return signInResponse.data
+          commit('signInSuccess', signInResponse.data)
         },
         e => {
           commit('signInFailure')
           dispatch('alert/error', e)
         }
-      ).then(
-        user => {
-          return dispatch('loadOrGetBiography', user.username)
-            .then(
-              () => {
-                commit('signInSuccess', user)
-              },
-              e => {
-                commit('signInFailure')
-                dispatch('alert/error', e)
-              })
-        })
+      )
   },
   signUp ({ dispatch, commit }, signUpForm) {
     commit('signUpRequest')
@@ -84,18 +73,10 @@ const actions = {
     authService.getAccount()
       .then(
         accountResponse => {
-          return accountResponse.data
-        }
-      ).then(
-        user => {
-          return dispatch('loadOrGetBiography', user.username)
-            .then(
-              () => {
-                commit('signInSuccess', user)
-              },
-              e => {
-                console.log(e)
-              })
+          commit('signInSuccess', accountResponse.data)
+        },
+        e => {
+          console.log(e)
         }
       )
   }
@@ -108,8 +89,8 @@ const getters = {
   isAuthenticated: state => {
     return state.status.signedIn
   },
-  getUsername: state => {
-    return state.user.username
+  getUser: state => {
+    return state.user
   },
   isAuthorized: (state, getters) => roles => {
     if (!getters.isAuthenticated) {

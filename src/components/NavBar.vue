@@ -24,6 +24,30 @@
             <v-list-tile-title>Биографии</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile to="/create/biography">
+          <v-list-tile-action>
+            <v-icon>fas fa-plus</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Создать биографию</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/created">
+          <v-list-tile-action>
+            <v-icon>fas fa-list</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Созданные мной</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/moderation">
+          <v-list-tile-action>
+            <v-icon>fas fa-shield-alt</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>На модерации</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar
@@ -50,7 +74,7 @@
             transition="scale-transition"
           >
             <v-btn flat class="white--text" slot="activator">
-              {{firstName}}
+              {{ getUser.biography.firstName }}
               <v-icon right dark>fas fa-user</v-icon>
             </v-btn>
             <v-list>
@@ -101,18 +125,9 @@ export default {
   }),
   computed: {
     ...mapGetters([
-      'getBiographyByUsername',
-      'isAuthenticated',
-      'getUsername'
-    ]),
-    showProfile () {
-      return this.isAuthenticated
-    },
-    firstName () {
-      let biography = this.getBiographyByUsername(this.getUsername)
-
-      return biography ? biography.firstName : null
-    }
+      'getUser',
+      'isAuthenticated'
+    ])
   },
   methods: {
     signOut () {

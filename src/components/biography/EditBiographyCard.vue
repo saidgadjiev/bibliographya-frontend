@@ -59,10 +59,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import EditFio from './EditFioForm'
 import EditBiography from './EditBiographyForm'
 import BiographyCard from './BiographyCard'
 import AlertSlot from './AlertSlot'
+import biographyService from '../../services/biography-service'
 
 const diff = require('diff')
 const he = require('he')
@@ -95,12 +97,20 @@ export default {
     }
   },
   props: {
-    inBiography: Object
+    mode: {
+      type: String,
+      default: 'edit'
+    },
+    inBiography: Object,
+    default: {}
   },
   mounted () {
     Object.assign(this.biography, this.inBiography)
   },
   methods: {
+    ...mapGetters([
+      'getUsername'
+    ]),
     isEquivalent (a, b) {
       // Create arrays of property names
       var aProps = Object.getOwnPropertyNames(a)
@@ -163,41 +173,74 @@ export default {
       }
       return diffText
     },
+    updateParent () {
+      this.$emit('update:firstName', this.biography.firstName)
+      this.$emit('update:lastName', this.biography.lastName)
+      this.$emit('update:middleName', this.biography.middleName)
+      this.$emit('update:biography', this.biography.biography)
+      this.$emit('update:lastModified', this.biography.lastModified)
+    },
     doSave () {
       let that = this
       this.preview = false
 
-      this.$store.dispatch('updateBiography', this.biography)
-        .then(
-          response => {
-            that.biography.lastModified = response.data.lastModified
-            that.alert = true
-            that.conflict = false
-            that.myBiographyVersion = {}
+      if (this.mode === 'edit') {
+        this.$store.dispatch('updateBiography', this.biography)
+          .then(
+            response => {
+              that.biography.lastModified = response.data.lastModified
+              that.updateParent()
+              that.alert = true
+              that.conflict = false
+              that.myBiographyVersion = {}
 
-            that.$store.dispatch('alert/success', 'Изменения сохранены. Новые данные будут отражены на Вашей странице.')
-            that.$nextTick(function () {
-              that.$vuetify.goTo('#alert-success', that.options)
-            })
-          },
-          e => {
-            if (e.response.status === 409) {
-              Object.assign(that.myBiographyVersion, that.biography)
-
-              that.biography = e.response.data
-              that.conflict = true
-              that.fioConflict = that.fioDiff()
-              that.biographyConflict = that.biographyDiff()
-
-              that.$store.dispatch('alert/error', 'Произошел конфликт. Пожалуйста перенесите свои изменения в соответствии с текущей версией')
+              that.$store.dispatch('alert/success', 'Изменения сохранены.')
               that.$nextTick(function () {
-                that.$vuetify.goTo('#alert-error', that.options)
+                that.$vuetify.goTo('#alert-success', that.options)
               })
-            } else {
+            },
+            e => {
+              if (e.response.status === 409) {
+                Object.assign(that.myBiographyVersion, that.biography)
+
+                that.biography = e.response.data
+                that.conflict = true
+                that.fioConflict = that.fioDiff()
+                that.biographyConflict = that.biographyDiff()
+
+                that.$store.dispatch('alert/error', 'Произошел конфликт. Пожалуйста перенесите свои изменения в соответствии с текущей версией')
+                that.$nextTick(function () {
+                  that.$vuetify.goTo('#alert-error', that.options)
+                })
+              } else {
+                console.log(e)
+              }
+            }
+          )
+      } else if (this.mode === 'create') {
+        biographyService.create({
+          firstName: this.biography.firstName,
+          lastName: this.biography.lastName,
+          middleName: this.biography.middleName,
+          biography: this.biography.biography,
+          userName: this.getUsername
+        })
+          .then(
+            response => {
+              that.biography = response.data
+              that.updateParent()
+
+              Object.assign(that.biography, that.inBiography)
+              that.$store.dispatch('alert/success', 'Биография создана. Вы можете увидеть ее в разделе Созданные мной.')
+              that.$nextTick(function () {
+                that.$vuetify.goTo('#alert-success', that.options)
+              })
+            },
+            e => {
               console.log(e)
             }
-          }
-        )
+          )
+      }
     }
   },
   components: {
