@@ -3,7 +3,13 @@
     <v-flex xs12>
       <edit-biography-card
         v-if="biography"
-        :in-biography.sync="biography"
+        :in-biography="biography"
+        v-on:update:firstName="biography.firstName = $event"
+        v-on:update:lastName="biography.lastName = $event"
+        v-on:update:middleName="biography.middleName = $event"
+        v-on:update:biography="biography.biography = $event"
+        v-on:update:lastModified="biography.lastModified = $event"
+        v-on:update:categories="biography.categories = $event"
       ></edit-biography-card>
     </v-flex>
   </v-layout>

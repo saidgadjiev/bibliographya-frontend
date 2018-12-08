@@ -1,5 +1,5 @@
 <template>
-  <v-card :flat="flat">
+  <v-card :flat="flat"  width="100%">
     <slot name="alert"></slot>
     <div v-if="showStatus">
       <v-card-title>
@@ -7,9 +7,14 @@
       </v-card-title>
       <v-divider class="m-0"></v-divider>
     </div>
+    <v-card-title class="pb-0">
+      <span v-for="(category, index) in inBiography.categories" :key="index">
+      <a :href="'#/category/' + category">{{ category }}</a>&nbsp;&nbsp;
+      </span>
+    </v-card-title>
     <v-card-title>
         <span :class="fioClasses">
-          {{biography.lastName + ' ' + biography.firstName + ' ' + biography.middleName}}
+          {{inBiography.lastName + ' ' + inBiography.firstName + ' ' + inBiography.middleName}}
         </span>
       <v-spacer></v-spacer>
       <v-menu bottom left v-if="showMenu">
@@ -21,12 +26,9 @@
         </v-btn>
         <v-list>
           <v-list-tile
-            @click="$router.push('/edit/biography/' + biography.id)"
+            @click="$router.push('/edit/biography/' + inBiography.id)"
           >
             <v-list-tile-title>Редактировать</v-list-tile-title>
-          </v-list-tile>
-          <v-list-tile>
-            <v-list-tile-title>Пожаловаться</v-list-tile-title>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-title>Предложить исправление</v-list-tile-title>
@@ -37,19 +39,14 @@
     <v-divider class="m-0"></v-divider>
     <v-card-text>
       <span :class="biographyTitleClasses">Биография:</span>
-      <tree-view :class="biographyTreeClasses" v-if="items" :items="items"></tree-view>
-      <template v-if="treeClamp">
-        <div v-if="treeClamped">
-          <span class="d-block">...</span>
-          <a href="#" @click="treeClamped = false">Показать содержание</a>
-        </div>
-        <div v-else>
-          <a href="#" @click="treeClamped = true">Скрыть содержание</a>
-        </div>
-      </template>
-      <p class="m-0" :class="biographyClasses" v-html="sanitizedBiography"></p>
+      <tree-view
+        v-if="tree"
+        :items="tree"
+        v-bind="$attrs"
+      ></tree-view>
+      <p class="m-0" :class="biographyClasses" v-html="biography"></p>
       <template v-if="biographyClamp">
-        <a :href="'#/biography/' + biography.id">Читать дальше</a>
+        <a :href="'#/category/' + categoryName + '/biography/' + inBiography.id" class="font-weight-black">Читать дальше</a>
       </template>
     </v-card-text>
     <slot v-if="showActions" name="actions">
@@ -57,10 +54,10 @@
       <v-card-actions>
       <like
         @like-toggled="onLikeToggled"
-        :biography="biography" class="ml-1"></like>
-      <a :href="'#/biography/' + biography.id + '#comments'" class="ml-2" style="text-decoration: none">
+        :biography="inBiography" class="ml-1"></like>
+      <a :href="'#/biography/' + inBiography.id + '#comments'" class="ml-2" style="text-decoration: none">
         <v-icon color="blue darken-1">mdi-comment-outline</v-icon>
-        <span style="font-size: 18px">{{ biography.commentsCount }}</span>
+        <span style="font-size: 18px">{{ inBiography.commentsCount }}</span>
       </a>
       <v-spacer></v-spacer>
       <v-icon color="blue darken-1" style="font-size:14px">fas fa-eye</v-icon>
@@ -71,9 +68,9 @@
       <v-divider class="m-0"></v-divider>
       <comments
         id="comments"
-        :biography-id="biography.id"
-        @comment-deleted="biography.commentsCount -= 1"
-        @comment-added="biography.commentsCount += 1"
+        :biography-id="inBiography.id"
+        @comment-deleted="$emit('update:commentsCount', inBiography.commentsCount - 1)"
+        @comment-added="$emit('update:commentsCount', inBiography.commentsCount + 1)"
       ></comments>
     </template>
   </v-card>
@@ -82,22 +79,25 @@
 <script>
 import { mapGetters } from 'vuex'
 import TreeView from '../tree/TreeView.vue'
-import sanitize from '../../services/sanitize-service'
 import Like from '../Like.vue'
 import Comments from '../comment/Comments'
 
-const htmlParser = require('htmlparser2')
+const marked = require('marked')
 const htmlTruncate = require('html-truncate')
 
 export default {
   name: 'biography-card',
   data () {
     return {
-      treeClamped: true
+      treeClamped: true,
+      tree: undefined
     }
   },
   props: {
-    biography: {
+    categoryName: {
+      type: String
+    },
+    inBiography: {
       required: true,
       type: Object
     },
@@ -121,16 +121,11 @@ export default {
       type: Boolean,
       default: false
     },
-    treeClamp: {
-      type: Boolean,
-      default: false
-    },
     biographyClamp: {
       type: Boolean,
       default: false
     },
     biographyClampSize: Number,
-    treeClampSize: Number,
     flat: {
       type: Boolean,
       default: false
@@ -142,7 +137,7 @@ export default {
       'getUsername'
     ]),
     moderationStatus () {
-      let status = this.biography.moderationStatus
+      let status = this.inBiography.moderationStatus
 
       if (status !== undefined) {
         switch (status) {
@@ -163,82 +158,69 @@ export default {
     biographyTitleClasses () {
       return this.type === 'small' ? 'body-1' : 'subheading'
     },
-    biographyTreeClasses () {
-      return ''
-    },
     biographyClasses () {
       return this.type === 'small' ? 'caption' : 'subheading'
     },
-    sanitizedBiography () {
-      let biography = this.biography.biography
+    biography () {
+      let biography = this.inBiography.biography
+
+      let renderer = new marked.Renderer()
+
+      let that = this
+      let stack = []
+
+      that.tree = []
+      let i = 0
+
+      renderer.heading = function (text, level, raw) {
+        let nextId = '_' + i++
+        let node = {
+          id: nextId,
+          level: level,
+          name: text,
+          children: []
+        }
+
+        if (level === 1) {
+          that.tree.push(node)
+          stack.push(node)
+        } else {
+          let peek = stack[stack.length - 1]
+
+          while (peek.level >= level) {
+            stack.pop()
+            peek = stack[stack.length - 1]
+          }
+
+          peek.children.push(node)
+          stack.push(node)
+        }
+
+        return '<h' + level + ' id="' + nextId + '">' + text + '</h' + level + '>\n'
+      }
+
+      let result = marked(biography, {
+        renderer: renderer,
+        gfm: true,
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        sanitize: true,
+        smartLists: true,
+        smartypants: false
+      })
 
       if (this.biographyClamp) {
-        biography = htmlTruncate(biography, this.biographyClampSize, {})
+        return htmlTruncate(result, this.biographyClampSize, undefined)
       }
 
-      return sanitize.sanitizeWithAllowedTags(biography)
-    },
-    items () {
-      let html = this.biography.biography
-
-      if (html) {
-        let tree = []
-        let that = this
-        let currentNode = {}
-        let rootIndex = -1
-        let size = 0
-
-        let parser = new htmlParser.Parser({
-          onopentag: function (tagName, attributes) {
-            if (tagName === 'l') {
-              ++size
-              currentNode.id = '#' + attributes.id
-              ++rootIndex
-            } else if (tagName === 'll') {
-              ++size
-              currentNode.id = '#' + attributes.id
-            }
-          },
-          ontext: function (text) {
-            currentNode.name = text
-          },
-          onclosetag: function (tagName) {
-            if (tagName === 'l') {
-              if (that.treeClamp && that.treeClamped) {
-                if (size - 1 < that.treeClampSize) {
-                  tree.push(currentNode)
-                }
-              } else {
-                tree.push(currentNode)
-              }
-            } else if (tagName === 'll') {
-              if (!tree[rootIndex].children) {
-                tree[rootIndex].children = []
-              }
-              if (that.treeClamp && that.treeClamped) {
-                if (size - 1 < that.treeClampSize) {
-                  tree[rootIndex].children.push(currentNode)
-                }
-              } else {
-                tree[rootIndex].children.push(currentNode)
-              }
-            }
-            currentNode = {}
-          }
-        }, { decodeEntities: true })
-
-        parser.write(html)
-
-        return tree
-      }
-
-      return undefined
+      return result
     }
   },
   methods: {
     onLikeToggled () {
-      this.biography.likesCount += (this.biography.liked ? -1 : 1)
-      this.biography.liked = !this.biography.liked
+      this.$emit('update:likesCount', this.inBiography.likesCount + (this.inBiography.liked ? -1 : 1))
+      this.$emit('update:liked', !this.inBiography.liked)
     }
   },
   mounted () {

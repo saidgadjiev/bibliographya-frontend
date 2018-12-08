@@ -1,6 +1,6 @@
 <template>
   <biography-card
-    :biography="biography"
+    :in-biography="biography"
     v-if="preview"
     show-actions
   >
@@ -49,6 +49,27 @@
             :biography="myBiographyVersion.biography"
           ></edit-biography>
         </v-flex>
+        <v-flex xs12>
+          <v-select
+            :loading="loading"
+            :items="categories"
+            v-model="biography.categories"
+            :menu-props="{ maxHeight: '400' }"
+            label="Категории"
+            chips
+            multiple
+          ></v-select>
+        </v-flex>
+        <v-flex xs12 v-if="conflict && categoriesConflict">
+          <strong class="subheading">Конфликт:</strong>
+          <p v-html="categoriesConflict" class="title font-weight-light" style="height: 250px; overflow-y: scroll"></p>
+          <strong class="subheading">Ваша версия:</strong>
+          <v-select
+            v-model="myBiographyVersion.categories"
+            label="Категории"
+            chips
+          ></v-select>
+        </v-flex>
       </v-layout>
     </v-card-text>
     <v-card-actions>
@@ -65,6 +86,7 @@ import EditBiography from './EditBiographyForm'
 import BiographyCard from './BiographyCard'
 import AlertSlot from './AlertSlot'
 import biographyService from '../../services/biography-service'
+import biographyCategoryService from '../../services/biography-category-service'
 
 const diff = require('diff')
 const he = require('he')
@@ -73,6 +95,8 @@ export default {
   name: 'EditBiographyCard',
   data () {
     return {
+      loading: false,
+      categories: [],
       preview: false,
       options: {
         duration: 300,
@@ -81,28 +105,52 @@ export default {
       },
       fioConflict: '',
       biographyConflict: '',
+      categoriesConflict: '',
       biography: {
         firstName: '',
         lastName: '',
         middleName: '',
-        biography: ''
+        biography: '',
+        categories: []
       },
       myBiographyVersion: {
         firstName: '',
         lastName: '',
         middleName: '',
-        biography: ''
+        biography: '',
+        categories: []
       },
       conflict: false
     }
   },
   props: {
+    appendUserName: {
+      type: Boolean,
+      default: false
+    },
     mode: {
       type: String,
       default: 'edit'
     },
     inBiography: Object,
     default: {}
+  },
+  created () {
+    let that = this
+
+    biographyCategoryService.getCategories(2147483647, 0)
+      .then(
+        response => {
+          for (let i = 0; i < response.data.content.length; i++) {
+            that.categories.push(response.data.content[i].name)
+          }
+          that.loading = false
+        },
+        e => {
+          that.loading = false
+          console.log(e)
+        }
+      )
   },
   mounted () {
     Object.assign(this.biography, this.inBiography)
@@ -111,31 +159,6 @@ export default {
     ...mapGetters([
       'getUsername'
     ]),
-    isEquivalent (a, b) {
-      // Create arrays of property names
-      var aProps = Object.getOwnPropertyNames(a)
-      var bProps = Object.getOwnPropertyNames(b)
-
-      // If number of properties is different,
-      // objects are not equivalent
-      if (aProps.length !== bProps.length) {
-        return false
-      }
-
-      for (var i = 0; i < aProps.length; i++) {
-        var propName = aProps[i]
-
-        // If values of same property are not equal,
-        // objects are not equivalent
-        if (a[propName] !== b[propName]) {
-          return false
-        }
-      }
-
-      // If we made it this far, objects
-      // are considered equivalent
-      return true
-    },
     fioDiff () {
       let d = diff.diffChars(this.myBiographyVersion.lastName, this.biography.lastName)
 
@@ -151,6 +174,9 @@ export default {
       let b2 = he.escape(this.biography.biography).replace(/\n/g, '<br>')
 
       return this.cleanUp(diff.diffWords(b1, b2))
+    },
+    categoriesDiff () {
+      return this.cleanUp(diff.diffArrays(this.myBiographyVersion.categories, this.biography.categories))
     },
     cleanUp (d) {
       let diffCounts = 0
@@ -179,13 +205,36 @@ export default {
       this.$emit('update:middleName', this.biography.middleName)
       this.$emit('update:biography', this.biography.biography)
       this.$emit('update:lastModified', this.biography.lastModified)
+      this.$emit('update:categories', this.biography.categories)
     },
     doSave () {
       let that = this
       this.preview = false
 
       if (this.mode === 'edit') {
-        this.$store.dispatch('updateBiography', this.biography)
+        let categoriesDiff = diff.diffArrays(this.biography.categories, this.inBiography.categories)
+        let added = []
+        let deleted = []
+
+        categoriesDiff.forEach(function (element) {
+          if (element.added) {
+            deleted.push(...element.value)
+          } else if (element.removed) {
+            added.push(...element.value)
+          }
+        })
+
+        biographyService.update({
+          id: this.biography.id,
+          firstName: this.biography.firstName,
+          lastName: this.biography.lastName,
+          middleName: this.biography.middleName,
+          biography: this.biography.biography,
+          addedCategories: added,
+          deleteCategories: deleted,
+          lastModified: this.biography.lastModified,
+          userName: this.appendUserName ? this.getUser.name : null
+        })
           .then(
             response => {
               that.biography.lastModified = response.data.lastModified
@@ -207,6 +256,7 @@ export default {
                 that.conflict = true
                 that.fioConflict = that.fioDiff()
                 that.biographyConflict = that.biographyDiff()
+                that.categoriesConflict = that.categoriesDiff()
 
                 that.$store.dispatch('alert/error', 'Произошел конфликт. Пожалуйста перенесите свои изменения в соответствии с текущей версией')
                 that.$nextTick(function () {
@@ -223,7 +273,8 @@ export default {
           lastName: this.biography.lastName,
           middleName: this.biography.middleName,
           biography: this.biography.biography,
-          userName: this.getUsername
+          addedCategories: this.biography.categories,
+          userName: this.appendUserName ? this.getUser.name : null
         })
           .then(
             response => {

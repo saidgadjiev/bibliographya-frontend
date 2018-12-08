@@ -12,10 +12,8 @@ import CreateBiographyDetails from './views/CreateBiographyDetails'
 import CreatedByMeBiographies from './views/CreatedByMeBiographies'
 import BiographiesModeration from './views/BiographiesModeration'
 import store from './store/store'
-import biographyService from './services/biography-service'
 import error403 from './components/error/403'
 import error404 from './components/error/404'
-import settings from './settings'
 
 Vue.use(Router)
 
@@ -33,7 +31,7 @@ let router = new Router({
       props: (route) => ({ categoryName: route.params.categoryName })
     },
     {
-      path: 'category/:categoryName/biography/:id',
+      path: '/category/:categoryName/biography/:id',
       name: 'biography',
       component: BiographyDetails,
       props: (route) => ({
@@ -71,8 +69,8 @@ let router = new Router({
       path: '/edit/biography/:id',
       name: 'editBiography',
       component: EditBiography,
-      props: (route) => ({ biographyId: parseInt(route.params.id) }),
-      async beforeEnter (to, from, next) {
+      props: (route) => ({ biographyId: parseInt(route.params.id) })
+      /* async beforeEnter (to, from, next) {
         if (!store.getters.isAuthenticated) {
           next('/signIn')
 
@@ -86,7 +84,7 @@ let router = new Router({
               }
             )
 
-          if (biography.creatorName !== store.getters.getUsername) {
+          if (biography.creatorName !== store.getters.getUser.name) {
             next('/403')
 
             return
@@ -94,7 +92,7 @@ let router = new Router({
         }
 
         next()
-      }
+      } */
     },
     {
       path: '/profile',
@@ -116,12 +114,12 @@ let router = new Router({
     },
     {
       path: '/403',
-      name: '403',
+      name: 'error403',
       component: error403
     },
     {
       path: '*',
-      name: '404',
+      name: 'error404',
       component: error404
     }
   ]

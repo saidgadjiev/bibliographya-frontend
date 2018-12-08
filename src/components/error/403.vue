@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: '403'
+  name: 'error403'
 }
 </script>
 

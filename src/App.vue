@@ -2,9 +2,8 @@
   <div id="app">
     <v-app>
       <nav-bar></nav-bar>
-      <v-content>
-        <img v-if="backgroundImagePath" :src="getBackgroundImageSrc" style="position: fixed">
-          <v-container grid-list-lg fill-height>
+      <v-content :style="getBackground">
+            <v-container grid-list-lg fill-height>
             <router-view></router-view>
           </v-container>
       </v-content>
@@ -26,11 +25,18 @@ export default {
     ...mapGetters([
       'backgroundImagePath'
     ]),
-    getBackgroundImageSrc () {
-      return fileService.getUrl(this.backgroundImagePath)
-    },
-    height () {
-      return window.innerHeight - 48
+    getBackground () {
+      if (this.backgroundImagePath) {
+        return {
+          'background': 'url(' + fileService.getUrl(this.backgroundImagePath) + ') no-repeat center center fixed',
+          '-webkit-background-size': 'cover',
+          '-moz-background-size': 'cover',
+          '-o-background-size': 'cover',
+          'background-size': 'cover'
+        }
+      }
+
+      return {}
     }
   }
 }

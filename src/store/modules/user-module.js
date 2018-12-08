@@ -62,7 +62,7 @@ const actions = {
       )
   },
   signOut ({ commit }) {
-    authService.signOut()
+    return authService.signOut()
       .then(
         () => {
           commit('signOutSuccess')

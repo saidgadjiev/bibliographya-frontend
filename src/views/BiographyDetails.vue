@@ -4,9 +4,12 @@
       <biography-card2
         v-if="biography"
         show-comments
-        :biography="biography"
+        :in-biography="biography"
         show-actions
         show-menu
+        v-on:update:likesCount="item.likesCount = $event"
+        v-on:update:commentsCount="item.commentsCount = $event"
+        v-on:update:liked="item.liked = $event"
       ></biography-card2>
     </v-flex>
   </v-layout>
@@ -23,8 +26,8 @@ export default {
       type: Number,
       required: true
     },
-    categoryId: {
-      type: Number,
+    categoryName: {
+      type: String,
       required: true
     }
   },

@@ -1,21 +1,56 @@
 <template>
-  <ol class="mb-0 pl-0">
-    <tree-view-node
-      v-for="data in items"
-      :key="data.id"
-      :items="data">
-    </tree-view-node>
-  </ol>
+  <div>
+    <ol class="mb-0 pl-0">
+      <tree-view-node
+        v-for="data in tree"
+        :key="data.id"
+        :items="data">
+      </tree-view-node>
+    </ol>
+    <template v-if="treeClamp">
+      <div v-if="treeClamped">
+        <a @click="treeClamped = false" class="font-weight-black">Показать содержание...</a>
+      </div>
+      <div v-else>
+        <a @click="treeClamped = true" class="font-weight-black">Скрыть содержание</a>
+      </div>
+    </template>
+  </div>
 </template>
 
 <script>
 import TreeViewNode from './TreeViewNode.vue'
+import utils from '../../utils'
 
 export default {
   name: 'TreeView',
-  props: [
-    'items'
-  ],
+  data () {
+    return {
+      treeClamped: true
+    }
+  },
+  props: {
+    'treeClamp': {
+      type: Boolean,
+      default: false
+    },
+    'treeClampSize': {
+      type: Number
+    },
+    'items': {
+      type: Array,
+      default: []
+    }
+  },
+  computed: {
+    tree () {
+      if (this.treeClamp && this.treeClamped) {
+        return utils.getNTreeLevels(this.items, this.treeClampSize)
+      }
+
+      return this.items
+    }
+  },
   components: {
     TreeViewNode
   }
@@ -23,6 +58,7 @@ export default {
 </script>
 
 <style scoped>
+  @import '../../../static/bibliography.css';
   ol {
     counter-reset: l
   }

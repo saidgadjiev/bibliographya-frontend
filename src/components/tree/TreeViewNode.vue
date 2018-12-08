@@ -1,6 +1,7 @@
 <template>
   <li>
-    <a href="#" @click="$vuetify.goTo(items.id, options)">{{ items.name }}</a>
+    <a v-if="items.id" @click="$vuetify.goTo('#' + items.id, options)">{{ items.name }}</a>
+    <span v-else>{{ items.name }}</span>
     <ol>
       <tree-view-node
         v-for="children in items.children"
