@@ -25,10 +25,6 @@ export default {
     biographyId: {
       type: Number,
       required: true
-    },
-    categoryName: {
-      type: String,
-      required: true
     }
   },
   asyncComputed: {

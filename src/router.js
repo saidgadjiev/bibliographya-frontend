@@ -31,7 +31,7 @@ let router = new Router({
       props: (route) => ({ categoryName: route.params.categoryName })
     },
     {
-      path: '/category/:categoryName/biography/:id',
+      path: '/biography/:id',
       name: 'biography',
       component: BiographyDetails,
       props: (route) => ({

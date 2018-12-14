@@ -84,7 +84,7 @@ import { mapGetters } from 'vuex'
 import EditFio from './EditFioForm'
 import EditBiography from './EditBiographyForm'
 import BiographyCard from './BiographyCard'
-import AlertSlot from './AlertSlot'
+import AlertSlot from '../alert/AlertMessage'
 import biographyService from '../../services/biography-service'
 import biographyCategoryService from '../../services/biography-category-service'
 

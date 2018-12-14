@@ -1,8 +1,15 @@
 <template>
-  <v-card :flat="flat"  width="100%">
+  <v-card :flat="flat"  width="100%" tile>
     <slot name="alert"></slot>
-    <div v-if="showStatus">
-      <v-card-title>
+    <div v-if="showModerationBlock">
+      <v-card-title v-if="showModerator && inBiography.moderatorName">
+        Исполнитель:&nbsp;
+        <a :href="'#/biography/' + inBiography.moderatorBiography.id">
+          {{ inBiography.moderatorBiography.firstName + ' ' + inBiography.moderatorBiography.lastName }}
+        </a>
+      </v-card-title>
+      <v-card-title v-if="showModerationStatus">
+        Статус:&nbsp;
         <strong>{{ moderationStatus }}</strong>
       </v-card-title>
       <v-divider class="m-0"></v-divider>
@@ -46,12 +53,13 @@
       ></tree-view>
       <p class="m-0" :class="biographyClasses" v-html="biography"></p>
       <template v-if="biographyClamp">
-        <a :href="'#/category/' + categoryName + '/biography/' + inBiography.id" class="font-weight-black">Читать дальше</a>
+        <a :href="'#/biography/' + inBiography.id" class="font-weight-black">Читать дальше</a>
       </template>
     </v-card-text>
-    <slot v-if="showActions" name="actions">
+    <div v-if="showActions">
       <v-divider class="m-0"></v-divider>
       <v-card-actions>
+        <slot  name="actions">
       <like
         @like-toggled="onLikeToggled"
         :biography="inBiography" class="ml-1"></like>
@@ -62,8 +70,9 @@
       <v-spacer></v-spacer>
       <v-icon color="blue darken-1" style="font-size:14px">fas fa-eye</v-icon>
       <span class="ml-1">0</span>
+        </slot>
     </v-card-actions>
-    </slot>
+    </div>
     <template v-if="showComments">
       <v-divider class="m-0"></v-divider>
       <comments
@@ -94,9 +103,8 @@ export default {
     }
   },
   props: {
-    categoryName: {
-      type: String
-    },
+    showModerator: Boolean,
+    showModerationBlock: Boolean,
     inBiography: {
       required: true,
       type: Object
@@ -117,7 +125,7 @@ export default {
       type: Boolean,
       default: false
     },
-    showStatus: {
+    showModerationStatus: {
       type: Boolean,
       default: false
     },

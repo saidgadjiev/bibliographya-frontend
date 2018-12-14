@@ -1,5 +1,9 @@
 <template>
   <v-layout row wrap justify-center infinite-wrapper>
+    <assign-me-conflict-dialog
+      :biography="conflictBiography"
+      :visible.sync="conflictDialogVisible"
+    ></assign-me-conflict-dialog>
     <v-flex xs12 md8 v-for="item in items" :key="item.id">
       <biography-card2
         biography-clamp
@@ -41,6 +45,8 @@ import BiographyCard2 from '../components/biography/BiographyCard'
 export default {
   data () {
     return {
+      conflictDialogVisible: false,
+      conflictBiography: {},
       loading: false,
       treeClampSize: 1,
       limit: 50,
@@ -51,10 +57,7 @@ export default {
     }
   },
   props: {
-    categoryName: String,
-    filter: {
-      type: String
-    }
+    categoryName: String
   },
   methods: {
     loadCategory () {
@@ -77,7 +80,7 @@ export default {
         this.loading = true
         let that = this
 
-        biographyService.getBiographies(this.limit, this.offset, this.filter, this.categoryName)
+        biographyService.getBiographies(this.limit, this.offset, this.categoryName)
           .then(
             response => {
               if (response.status === 200) {
