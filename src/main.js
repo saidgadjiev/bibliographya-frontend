@@ -9,6 +9,7 @@ import Vue2TouchEvents from 'vue2-touch-events'
 import VueCookie from 'vue-cookie'
 import axios from 'axios'
 import AsyncComputed from 'vue-async-computed'
+import InfiniteLoading from 'vue-infinite-loading'
 
 import store from './store/store'
 
@@ -19,6 +20,8 @@ Vue.use(Vuetify)
 Vue.use(Vue2TouchEvents)
 Vue.use(VueCookie)
 Vue.use(AsyncComputed)
+
+Vue.component('infinite-loading', InfiniteLoading)
 
 const config = {
   locale: 'ru',

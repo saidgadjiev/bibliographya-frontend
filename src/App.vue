@@ -3,16 +3,16 @@
     <v-app>
       <toolbar></toolbar>
       <v-content :style="getBackground">
-        <v-layout row fill-height style="width:960px" class="ma-auto">
-          <v-flex xs3 style="padding-top: 8px">
-            <nav-bar></nav-bar>
-          </v-flex>
-          <v-flex xs9>
-            <v-container grid-list-lg fill-height class="pl-1 pr-0 pt-0">
-            <router-view></router-view>
-            </v-container>
-          </v-flex>
-        </v-layout>
+        <v-container grid-list-lg fill-height style="width:960px" class="ma-auto pt-0 pl-0 pr-0">
+          <v-layout row fill-height>
+            <v-flex xs3>
+              <nav-bar></nav-bar>
+            </v-flex>
+            <v-flex xs9>
+              <router-view></router-view>
+            </v-flex>
+          </v-layout>
+        </v-container>
       </v-content>
     </v-app>
   </div>
@@ -65,7 +65,7 @@ export default {
 
   .v-toolbar__content {
     width: 960px;
-    margin:auto;
+    margin: auto;
     padding: 0;
   }
 

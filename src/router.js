@@ -11,6 +11,7 @@ import EditBiography from './views/EditBiographyDetails'
 import CreateBiographyDetails from './views/CreateBiographyDetails'
 import CreatedByMeBiographies from './views/CreatedByMeBiographies'
 import BiographiesModeration from './views/BiographiesModeration'
+import BiographyFix from './views/BiographyFix'
 import store from './store/store'
 import error403 from './components/error/403'
 import error404 from './components/error/404'
@@ -64,6 +65,11 @@ let router = new Router({
       path: '/moderation',
       name: 'moderation',
       component: BiographiesModeration
+    },
+    {
+      path: '/fix',
+      name: 'fix',
+      component: BiographyFix
     },
     {
       path: '/edit/biography/:id',
