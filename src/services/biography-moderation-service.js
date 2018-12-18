@@ -3,9 +3,7 @@ const axios = require('axios')
 export default {
   getBiographies,
   assignMe,
-  approve,
-  reject,
-  release
+  complete
 }
 
 function getBiographies (limit, offset, filter) {
@@ -14,18 +12,10 @@ function getBiographies (limit, offset, filter) {
   )
 }
 
-function assignMe (biographyId) {
-  return axios.patch(process.env.REST_SERVER + 'api/biography/moderation/assign-me/' + biographyId)
+function assignMe (biographyId, json) {
+  return axios.patch(process.env.REST_SERVER + 'api/biography/moderation/assign-me/' + biographyId, json)
 }
 
-function approve (biographyId) {
-  return axios.patch(process.env.REST_SERVER + 'api/biography/moderation/approve/' + biographyId)
-}
-
-function reject (biographyId) {
-  return axios.patch(process.env.REST_SERVER + 'api/biography/moderation/reject/' + biographyId)
-}
-
-function release (biographyId) {
-  return axios.patch(process.env.REST_SERVER + 'api/biography/moderation/release/' + biographyId)
+function complete (biographyId, json) {
+  return axios.patch(process.env.REST_SERVER + 'api/biography/moderation/complete/' + biographyId, json)
 }

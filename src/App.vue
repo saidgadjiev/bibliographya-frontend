@@ -35,13 +35,7 @@ export default {
       'backgroundImagePath'
     ]),
     getBackground () {
-      let url
-
-      if (this.backgroundImagePath) {
-        url = fileService.getUrl(this.backgroundImagePath)
-      } else {
-        url = fileService.getUrl('Bibliography.jpg')
-      }
+      let url = fileService.getUrl('Bibliography.jpg')
 
       return {
         'background': 'url(' + url + ') no-repeat center center fixed',

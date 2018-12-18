@@ -1,0 +1,64 @@
+<template>
+  <div>
+    <span>
+      Исполнитель:&nbsp;
+      <a :href="_biographyLink">{{ _moderatorFullName }}</a>
+    </span>
+    <br>
+    <span>
+      Статус:&nbsp;
+      <strong>{{ _moderationStatus }}</strong>
+    </span>
+  </div>
+</template>
+
+<script>
+import { MODERATION_STATUS } from '../../../config'
+
+export default {
+  name: 'BiographyCardTitleModeration',
+  props: {
+    moderatorBiography: {
+      type: Object
+    },
+    moderationStatus: {
+      type: Number
+    }
+  },
+  computed: {
+    _moderatorFullName () {
+      if (this.moderatorBiography) {
+        return this.moderatorBiography.lastName + ' ' + this.moderatorBiography.firstName
+      }
+
+      return ''
+    },
+    _biographyLink () {
+      if (this.moderatorBiography) {
+        return '#/biography/' + this.moderatorBiography.id
+      }
+
+      return '#'
+    },
+    _moderationStatus () {
+      let status = this.moderationStatus
+
+      if (status !== undefined) {
+        switch (status) {
+          case MODERATION_STATUS.PENDING:
+            return 'На модерации'
+          case MODERATION_STATUS.APPROVED:
+            return 'Одобрено'
+          case MODERATION_STATUS.REJECTED:
+            return 'Отклонено'
+        }
+      }
+    }
+  }
+}
+
+</script>
+
+<style scoped>
+
+</style>

@@ -10,41 +10,30 @@
       <biography-card-text v-bind="$attrs"/>
     </template>
     <template slot="actions">
-      <like v-bind="$attrs" v-on="$listeners" class="ml-1"/>
-      <comment-icon v-bind="$attrs"/>
-      <v-spacer></v-spacer>
-      <view-icon/>
+      <biography-moderation-card-actions v-bind="$attrs" v-on="$listeners"/>
     </template>
   </base-card>
 </template>
 
 <script>
 import BiographyCardTitleModeration from './card/BiographyCardTitleModeration'
-import BiographyCardActions from './card/BiographyCardActions'
+import BiographyModerationCardActions from './card/BiographyModerationCardActions.vue'
 import BiographyCardMenu from './card/BiographyCardMenu'
 import BiographyCardTitle from './card/BiographyCardTitle'
 import BaseCard from './card/BaseCard'
 import BiographyCardText from './card/BiographyCardText'
 import TreeView from '../tree/TreeView.vue'
-import Like from '../LikeIcon.vue'
-import CommentIcon from '../CommentIcon.vue'
-import ViewIcon from '../ViewIcon.vue'
-import Comments from '../comment/Comments'
 
 export default {
-  name: 'biography-card',
+  name: 'BiographyModerationCard',
   components: {
     BaseCard,
     BiographyCardTitleModeration,
-    BiographyCardActions,
+    BiographyModerationCardActions,
     BiographyCardTitle,
     BiographyCardMenu,
     BiographyCardText,
-    TreeView,
-    Like,
-    CommentIcon,
-    ViewIcon,
-    Comments
+    TreeView
   }
 }
 </script>
