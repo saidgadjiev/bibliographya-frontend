@@ -57,6 +57,7 @@ export default {
           })
             .then(
               response => {
+                that.$emit('update:moderationInfo', response.data.moderationInfo)
                 that.$emit('update:moderationStatus', response.data.moderationStatus)
                 that.$emit('update:actions', response.data.actions)
               }

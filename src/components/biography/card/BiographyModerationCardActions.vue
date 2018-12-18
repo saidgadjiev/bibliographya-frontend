@@ -1,4 +1,5 @@
 <template>
+  <v-card-actions>
   <v-layout row wrap>
     <v-flex xs12 v-for="(action, index) in actions" :key="index">
       <moderation-reject-button
@@ -24,6 +25,7 @@
       />
     </v-flex>
   </v-layout>
+  </v-card-actions>
 </template>
 
 <script>

@@ -30,8 +30,9 @@ export default {
   },
   methods: {
     updateModeratorInfo (info) {
-      this.$emit('update:moderatorBiography', info)
-      this.$emit('update:moderatorName', info.userName)
+      this.$emit('update:moderatorBiography', info.moderatorBiography)
+      this.$emit('update:moderatorName', info.moderatorBiography.userName)
+      this.$emit('update:actions', info.actions)
     },
     assignMe () {
       let that = this

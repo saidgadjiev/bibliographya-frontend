@@ -1,26 +1,23 @@
 <template>
-  <div>
-      <like
-        @like-toggled="onLikeToggled"
-        :biography="biographyObject" class="ml-1"></like>
-      <a :href="'#/biography/' + biographyObject.id + '#comments'" class="ml-2" style="text-decoration: none">
-        <v-icon color="blue darken-1">mdi-comment-outline</v-icon>
-        <span style="font-size: 18px">{{ biographyObject.commentsCount }}</span>
-      </a>
-      <v-spacer></v-spacer>
-      <v-icon color="blue darken-1" style="font-size:14px">fas fa-eye</v-icon>
-      <span class="ml-1">0</span>
-  </div>
+  <v-card-actions>
+    <like v-bind="$attrs" v-on="$listeners" class="ml-1"/>
+    <comment-icon v-bind="$attrs"/>
+    <v-spacer></v-spacer>
+    <view-icon/>
+  </v-card-actions>
 </template>
 
 <script>
+import Like from '../../LikeIcon.vue'
+import CommentIcon from '../../CommentIcon.vue'
+import ViewIcon from '../../ViewIcon.vue'
+
 export default {
   name: 'BiographyCardActions',
-  props: {
-    biographyObject: {
-      type: Object,
-      required: true
-    }
+  components: {
+    Like,
+    CommentIcon,
+    ViewIcon
   }
 }
 </script>

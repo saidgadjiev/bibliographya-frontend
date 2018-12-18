@@ -3,32 +3,30 @@
     <biography-card-title-moderation class="pb-0" v-bind="$attrs"/>
     <biography-card-title v-bind="$attrs"/>
     <v-divider></v-divider>
-    <biography-card-text v-bind="$attrs"/>
+      <biography-card-text v-bind="$attrs"/>
     <v-divider></v-divider>
     <biography-card-actions v-bind="$attrs" v-on="$listeners"/>
-    <biography-moderation-card-actions v-bind="$attrs" v-on="$listeners"/>
+    <biography-card-user-actions class="pt-0" v-bind="$attrs" v-on="$listeners"/>
   </v-card>
 </template>
 
 <script>
 import BiographyCardTitleModeration from './card/BiographyCardTitleModeration'
-import BiographyModerationCardActions from './card/BiographyModerationCardActions.vue'
-import BiographyCardActions from './card/BiographyCardActions.vue'
+import BiographyCardActions from './card/BiographyCardActions'
+import BiographyCardUserActions from './card/BiographyCardUserActions.vue'
 import BiographyCardMenu from './card/BiographyCardMenu'
 import BiographyCardTitle from './card/BiographyCardTitle'
 import BiographyCardText from './card/BiographyCardText'
-import TreeView from '../tree/TreeView.vue'
 
 export default {
-  name: 'BiographyModerationCard',
+  name: 'biography-card',
   components: {
+    BiographyCardUserActions,
     BiographyCardTitleModeration,
-    BiographyModerationCardActions,
+    BiographyCardActions,
     BiographyCardTitle,
     BiographyCardMenu,
-    BiographyCardActions,
-    BiographyCardText,
-    TreeView
+    BiographyCardText
   }
 }
 </script>

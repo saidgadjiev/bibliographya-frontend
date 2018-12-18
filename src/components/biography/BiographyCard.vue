@@ -7,13 +7,9 @@
       <biography-card-title v-bind="$attrs"/>
     </template>
     <template slot="text">
-      <biography-card-text v-bind="$attrs"/>
     </template>
     <template slot="actions">
-      <like v-bind="$attrs" v-on="$listeners" class="ml-1"/>
-      <comment-icon v-bind="$attrs"/>
-      <v-spacer></v-spacer>
-      <view-icon/>
+      <biography-card-actions v-bind="$attrs" v-on="$listeners"/>
     </template>
   </base-card>
 </template>
@@ -26,9 +22,6 @@ import BiographyCardTitle from './card/BiographyCardTitle'
 import BaseCard from './card/BaseCard'
 import BiographyCardText from './card/BiographyCardText'
 import TreeView from '../tree/TreeView.vue'
-import Like from '../LikeIcon.vue'
-import CommentIcon from '../CommentIcon.vue'
-import ViewIcon from '../ViewIcon.vue'
 import Comments from '../comment/Comments'
 
 export default {
@@ -41,9 +34,6 @@ export default {
     BiographyCardMenu,
     BiographyCardText,
     TreeView,
-    Like,
-    CommentIcon,
-    ViewIcon,
     Comments
   }
 }

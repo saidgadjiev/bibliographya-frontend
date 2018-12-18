@@ -27,7 +27,7 @@ export default {
     complete () {
       let that = this
 
-      biographyModerationService.complete(this.id, {
+      biographyModerationService.userComplete(this.id, {
         signal: this.action.signal,
         status: this.moderationStatus
       })

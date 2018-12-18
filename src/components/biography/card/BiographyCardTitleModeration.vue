@@ -1,15 +1,24 @@
 <template>
-  <div>
+  <v-card-text>
+    <div>
+      <div>
     <span>
       Исполнитель:&nbsp;
       <a :href="_biographyLink">{{ _moderatorFullName }}</a>
     </span>
-    <br>
+      </div>
+      <div>
     <span>
       Статус:&nbsp;
       <strong>{{ _moderationStatus }}</strong>
     </span>
-  </div>
+      </div>
+      <div v-if="moderationInfo">
+        <span style="color: red">Причина отклонения:</span>
+        {{ moderationInfo }}
+      </div>
+    </div>
+  </v-card-text>
 </template>
 
 <script>
@@ -23,6 +32,9 @@ export default {
     },
     moderationStatus: {
       type: Number
+    },
+    moderationInfo: {
+      type: String
     }
   },
   computed: {
