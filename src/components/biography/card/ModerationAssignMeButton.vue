@@ -25,9 +25,6 @@ export default {
       type: Object
     }
   },
-  mounted () {
-    console.log('test')
-  },
   methods: {
     updateModeratorInfo (info) {
       this.$emit('update:moderatorBiography', info.moderatorBiography)

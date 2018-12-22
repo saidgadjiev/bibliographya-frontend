@@ -14,7 +14,6 @@
 import BiographyCardTitleModeration from './card/BiographyCardTitleModeration'
 import BiographyModerationCardActions from './card/BiographyModerationCardActions.vue'
 import BiographyCardActions from './card/BiographyCardActions.vue'
-import BiographyCardMenu from './card/BiographyCardMenu'
 import BiographyCardTitle from './card/BiographyCardTitle'
 import BiographyCardText from './card/BiographyCardText'
 import TreeView from '../tree/TreeView.vue'
@@ -25,7 +24,6 @@ export default {
     BiographyCardTitleModeration,
     BiographyModerationCardActions,
     BiographyCardTitle,
-    BiographyCardMenu,
     BiographyCardActions,
     BiographyCardText,
     TreeView

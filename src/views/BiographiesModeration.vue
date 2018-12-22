@@ -67,57 +67,6 @@ export default {
       this.filter = 'moderatorName=eq:' + this.getUser.name
       this.resetList()
     },
-    copyModeratorInfo (response, item) {
-      item.moderatorBiography = response
-      item.moderatorName = response.userName
-    },
-    reject (item) {
-      biographyModerationService.reject(item.id)
-        .then(
-          () => {
-            item.moderationStatus = MODERATION_STATUS.REJECTED
-          }
-        )
-    },
-    release (item) {
-      biographyModerationService.release(item.id)
-        .then(
-          () => {
-            item.moderatorName = null
-            item.moderatorBiography = null
-            item.moderationStatus = MODERATION_STATUS.PENDING
-          }
-        )
-    },
-    approve (item) {
-      biographyModerationService.approve(item.id)
-        .then(
-          () => {
-            item.moderationStatus = MODERATION_STATUS.APPROVED
-          }
-        )
-    },
-    assignMe (item) {
-      let that = this
-
-      biographyModerationService.assignMe(item.id)
-        .then(
-          response => {
-            that.copyModeratorInfo(response.data, item)
-          },
-          e => {
-            if (e.response.status === 409) {
-              that.copyModeratorInfo(e.response.data, item)
-
-              let currentModerator = item.moderatorBiography
-              let message = '<a href="\'#/biography/' + currentModerator.id + '">' +
-                currentModerator.firstName + ' ' + currentModerator.lastName + '</a>,&nbsp;уже взял биографию на модерацию.'
-
-              that.$store.dispatch('alert/error', message)
-            }
-          }
-        )
-    },
     infiniteLoad (limit, offset, filter) {
       return biographyModerationService.getBiographies(limit, offset, filter)
     }

@@ -10,6 +10,11 @@ export const MODERATION_STATUS = {
   REJECTED: 2
 }
 
+export const FIX_STATUS = {
+  PENDING: 0,
+  CLOSED: 1
+}
+
 export default {
   roles
 }

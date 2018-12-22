@@ -1,7 +1,7 @@
 <template>
   <v-card-text>
     <div>
-      <div>
+      <div v-if="moderatorBiography">
     <span>
       Исполнитель:&nbsp;
       <a :href="_biographyLink">{{ _moderatorFullName }}</a>
@@ -39,11 +39,7 @@ export default {
   },
   computed: {
     _moderatorFullName () {
-      if (this.moderatorBiography) {
-        return this.moderatorBiography.lastName + ' ' + this.moderatorBiography.firstName
-      }
-
-      return ''
+      return this.moderatorBiography.lastName + ' ' + this.moderatorBiography.firstName
     },
     _biographyLink () {
       if (this.moderatorBiography) {

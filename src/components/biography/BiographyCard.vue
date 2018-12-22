@@ -19,7 +19,6 @@ import BiographyCardTitleModeration from './card/BiographyCardTitleModeration'
 import BiographyCardActions from './card/BiographyCardActions'
 import BiographyCardMenu from './card/BiographyCardMenu'
 import BiographyCardTitle from './card/BiographyCardTitle'
-import BaseCard from './card/BaseCard'
 import BiographyCardText from './card/BiographyCardText'
 import TreeView from '../tree/TreeView.vue'
 import Comments from '../comment/Comments'
@@ -27,7 +26,6 @@ import Comments from '../comment/Comments'
 export default {
   name: 'biography-card',
   components: {
-    BaseCard,
     BiographyCardTitleModeration,
     BiographyCardActions,
     BiographyCardTitle,
