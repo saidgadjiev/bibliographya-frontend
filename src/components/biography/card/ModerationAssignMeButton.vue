@@ -28,7 +28,7 @@ export default {
   methods: {
     updateModeratorInfo (info) {
       this.$emit('update:moderatorBiography', info.moderatorBiography)
-      this.$emit('update:moderatorName', info.moderatorBiography.userName)
+      this.$emit('update:moderatorId', info.moderatorBiography.userId)
       this.$emit('update:actions', info.actions)
     },
     assignMe () {

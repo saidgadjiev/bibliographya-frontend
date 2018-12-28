@@ -35,7 +35,7 @@ export default {
           response => {
             that.$emit('update:status', response.data.status)
             that.$emit('update:actions', response.data.actions)
-            that.$emit('update:fixerName', response.data.fixerName)
+            that.$emit('update:fixerId', response.data.fixerId)
             that.$emit('update:fixerBiography', response.data.fixerBiography)
           }
         )

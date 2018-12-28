@@ -29,7 +29,7 @@ export default {
     updateFixerInfo (info) {
       this.$emit('update:actions', info.actions)
       this.$emit('update:fixerBiography', info.fixerBiography)
-      this.$emit('update:fixerName', info.fixerBiography.userName)
+      this.$emit('update:fixerId', info.fixerBiography.userId)
     },
     assignMe () {
       let that = this

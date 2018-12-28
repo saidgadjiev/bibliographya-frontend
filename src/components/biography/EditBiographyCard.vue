@@ -80,7 +80,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import EditFio from './EditFioForm'
 import EditBiography from './EditBiographyForm'
 import BiographyCard from './BiographyCard'
@@ -124,7 +123,7 @@ export default {
     }
   },
   props: {
-    appendUserName: {
+    appendUserId: {
       type: Boolean,
       default: false
     },
@@ -156,9 +155,6 @@ export default {
     Object.assign(this.biography, this.inBiography)
   },
   methods: {
-    ...mapGetters([
-      'getUsername'
-    ]),
     fioDiff () {
       let d = diff.diffChars(this.myBiographyVersion.lastName, this.biography.lastName)
 
@@ -233,7 +229,7 @@ export default {
           addedCategories: added,
           deleteCategories: deleted,
           lastModified: this.biography.lastModified,
-          userName: this.appendUserName ? this.getUser.name : null
+          userId: this.appendUserId ? this.getUser.id : null
         })
           .then(
             response => {
@@ -274,7 +270,7 @@ export default {
           middleName: this.biography.middleName,
           biography: this.biography.biography,
           addedCategories: this.biography.categories,
-          userName: this.appendUserName ? this.getUser.name : null
+          userId: this.appendUserId ? this.getUser.id : null
         })
           .then(
             response => {

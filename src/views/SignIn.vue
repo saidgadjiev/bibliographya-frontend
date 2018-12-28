@@ -31,7 +31,7 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-layout>
+          <v-layout row wrap>
             <v-flex xs12 sm4>
               <v-btn
                 block
@@ -43,6 +43,13 @@
             <v-flex xs12 sm8>
               <v-btn block color="primary" to="/signUp">Регистрация</v-btn>
             </v-flex>
+            <v-flex xs12>
+              <v-btn
+                block
+                color="green darken-3"
+                @click="auth('facebook')"
+              >Войти с Facebook</v-btn>
+            </v-flex>
           </v-layout>
         </v-card-actions>
       </v-card>
@@ -52,6 +59,7 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
+import authService from '../services/auth-service'
 
 export default {
   name: 'SignIn',
@@ -86,6 +94,14 @@ export default {
     ...mapActions('alert', [
       'clear'
     ]),
+    auth (provider) {
+      authService.getOauthUrl(provider)
+        .then(
+          response => {
+            window.location.href = response.data
+          }
+        )
+    },
     signIn () {
       let that = this
 

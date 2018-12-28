@@ -12,6 +12,7 @@ import CreateBiographyDetails from './views/CreateBiographyDetails'
 import CreatedByMeBiographies from './views/CreatedByMeBiographies'
 import BiographiesModeration from './views/BiographiesModeration'
 import BiographyFixesList from './views/BiographyFixesList'
+import OAuthCallback from './views/OAuthCallback'
 import store from './store/store'
 import error403 from './components/error/403'
 import error404 from './components/error/404'
@@ -19,6 +20,7 @@ import error404 from './components/error/404'
 Vue.use(Router)
 
 let router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -112,6 +114,12 @@ let router = new Router({
       path: '/signIn',
       name: 'signIn',
       component: SignIn
+    },
+    {
+      path: '/:providerId/callback',
+      name: 'oauthcallback',
+      component: OAuthCallback,
+      props: (route) => ({ providerId: route.params.providerId })
     },
     {
       path: '/signUp',

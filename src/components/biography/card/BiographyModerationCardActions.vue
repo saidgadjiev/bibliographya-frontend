@@ -42,7 +42,7 @@ export default {
     ])
   },
   props: {
-    moderatorName: {
+    moderatorId: {
       type: String
     },
     actions: {

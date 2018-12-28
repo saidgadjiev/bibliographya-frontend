@@ -46,6 +46,20 @@ const actions = {
         }
       )
   },
+  socialSignIn ({ dispatch, commit }, payload) {
+    commit('signInRequest')
+
+    return authService.socialSignIn(payload.provider, payload.code)
+      .then(
+        signInResponse => {
+          commit('signInSuccess', signInResponse.data)
+        },
+        e => {
+          commit('signInFailure')
+          dispatch('alert/error', e)
+        }
+      )
+  },
   signUp ({ dispatch, commit }, signUpForm) {
     commit('signUpRequest')
 

@@ -35,7 +35,7 @@ export default {
           response => {
             that.$emit('update:moderationStatus', response.data.moderationStatus)
             that.$emit('update:actions', response.data.actions)
-            that.$emit('update:moderatorName', response.data.moderatorName)
+            that.$emit('update:moderatorId', response.data.moderatorId)
             that.$emit('update:moderatorBiography', response.data.moderatorBiography)
             that.$emit('update:moderationInfo', response.data.moderationInfo)
           }

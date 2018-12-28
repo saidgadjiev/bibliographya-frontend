@@ -5,7 +5,9 @@ export default {
   signUp,
   signOut,
   getAccount,
-  isExistUsername
+  isExistUsername,
+  getOauthUrl,
+  socialSignIn
 }
 
 function signIn (signInForm) {
@@ -39,4 +41,12 @@ function getAccount () {
 
 function isExistUsername (username) {
   return axios.head(process.env.REST_SERVER + 'api/auth/exist/' + username)
+}
+
+function getOauthUrl (provider) {
+  return axios.post(process.env.REST_SERVER + 'api/auth/social/oauth/' + provider)
+}
+
+function socialSignIn (provider, code) {
+  return axios.post(process.env.REST_SERVER + 'api/auth/social/signIn/' + provider + '?code=' + code)
 }
