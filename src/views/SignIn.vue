@@ -34,21 +34,48 @@
           <v-layout row wrap>
             <v-flex xs12 sm4>
               <v-btn
+                color="blue darken-3"
+                class="white--text"
                 block
-                color="primary"
                 @click="signIn"
                 :loading="status.signingIn"
               >Войти</v-btn>
             </v-flex>
             <v-flex xs12 sm8>
-              <v-btn block color="primary" to="/signUp">Регистрация</v-btn>
+              <v-btn
+                block
+                class="white--text"
+                color="blue darken-3"
+                to="/signUp"
+              >Регистрация</v-btn>
             </v-flex>
             <v-flex xs12>
               <v-btn
+                class="white--text"
                 block
-                color="green darken-3"
+                color="light-green darken-2"
                 @click="auth('facebook')"
-              >Войти с Facebook</v-btn>
+              ><v-icon
+                left
+                color="blue darken-3">
+                fab fa-facebook-f
+                </v-icon>
+                Войти с Facebook
+              </v-btn>
+            </v-flex>
+            <v-flex xs12>
+              <v-btn
+                class="white--text"
+                block
+                color="light-green darken-2"
+                @click="auth('vk')"
+              ><v-icon
+                left
+                color="blue darken-3">
+                fab fa-vk
+              </v-icon>
+                Войти с VK
+              </v-btn>
             </v-flex>
           </v-layout>
         </v-card-actions>

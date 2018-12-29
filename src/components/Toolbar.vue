@@ -20,8 +20,8 @@
         origin="center center"
         transition="scale-transition"
       >
-        <v-btn flat class="white--text" slot="activator">
-          {{ getUser.biography.firstName }}
+        <v-btn flat class="white--text" slot="activator" style="text-transform: none">
+          {{ _firstName }}
           <v-icon right dark>fas fa-user</v-icon>
         </v-btn>
         <v-list>
@@ -68,7 +68,10 @@ export default {
     ...mapGetters([
       'getUser',
       'isAuthenticated'
-    ])
+    ]),
+    _firstName () {
+      return this.getUser.biography.firstName
+    }
   },
   methods: {
     signOut () {

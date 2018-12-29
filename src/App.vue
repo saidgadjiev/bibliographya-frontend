@@ -6,7 +6,7 @@
         <v-container grid-list-lg fill-height style="width:960px" class="ma-auto pt-0 pl-0 pr-0">
           <v-layout row fill-height>
             <v-flex xs3>
-              <nav-bar></nav-bar>
+              <app-nav-bar></app-nav-bar>
             </v-flex>
             <v-flex xs9>
               <router-view></router-view>
@@ -21,13 +21,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import fileService from './services/file-service'
-import NavBar from './components/NavBar.vue'
+import AppNavBar from './components/AppNavBar.vue'
 import Toolbar from './components/Toolbar.vue'
 
 export default {
   name: 'App',
   components: {
-    NavBar,
+    AppNavBar,
     Toolbar
   },
   computed: {
