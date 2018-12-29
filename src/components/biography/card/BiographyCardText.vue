@@ -36,53 +36,57 @@ export default {
     _biography () {
       let biography = this.biography
 
-      let renderer = new marked.Renderer()
+      if (biography) {
+        let renderer = new marked.Renderer()
 
-      let that = this
-      let stack = []
+        let that = this
+        let stack = []
 
-      that.tree = []
-      let i = 0
+        that.tree = []
+        let i = 0
 
-      renderer.heading = function (text, level, raw) {
-        let nextId = '_' + i++
-        let node = {
-          id: nextId,
-          level: level,
-          name: text,
-          children: []
-        }
-
-        if (level === 1) {
-          that.tree.push(node)
-          stack.push(node)
-        } else {
-          let peek = stack[stack.length - 1]
-
-          while (peek.level >= level) {
-            stack.pop()
-            peek = stack[stack.length - 1]
+        renderer.heading = function (text, level, raw) {
+          let nextId = '_' + i++
+          let node = {
+            id: nextId,
+            level: level,
+            name: text,
+            children: []
           }
 
-          peek.children.push(node)
-          stack.push(node)
+          if (level === 1) {
+            that.tree.push(node)
+            stack.push(node)
+          } else {
+            let peek = stack[stack.length - 1]
+
+            while (peek.level >= level) {
+              stack.pop()
+              peek = stack[stack.length - 1]
+            }
+
+            peek.children.push(node)
+            stack.push(node)
+          }
+
+          return '<h' + level + ' id="' + nextId + '">' + text + '</h' + level + '>\n'
         }
 
-        return '<h' + level + ' id="' + nextId + '">' + text + '</h' + level + '>\n'
+        let result = marked(biography, {
+          renderer: renderer,
+          gfm: true,
+          tables: true,
+          breaks: true,
+          pedantic: false,
+          sanitize: true,
+          smartLists: true,
+          smartypants: false
+        })
+
+        return htmlTruncate(result, this.biographyClampSize, undefined)
       }
 
-      let result = marked(biography, {
-        renderer: renderer,
-        gfm: true,
-        tables: true,
-        breaks: true,
-        pedantic: false,
-        sanitize: true,
-        smartLists: true,
-        smartypants: false
-      })
-
-      return htmlTruncate(result, this.biographyClampSize, undefined)
+      return ''
     }
   },
   components: {

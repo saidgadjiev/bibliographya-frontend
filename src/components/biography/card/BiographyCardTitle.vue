@@ -1,13 +1,13 @@
 <template>
   <v-card-title>
-  <div>
     <div>
+      <div>
     <span v-for="(category, index) in categories" :key="index">
       <a :href="'#/category/' + category">{{ category }}</a>&nbsp;&nbsp;
     </span>
+      </div>
+      <div>{{ fullName }}</div>
     </div>
-    <div>{{ fullName }}</div>
-  </div>
     <v-spacer></v-spacer>
     <biography-card-menu v-bind="$attrs"/>
   </v-card-title>
@@ -40,7 +40,12 @@ export default {
   },
   computed: {
     fullName () {
-      return this.lastName + ' ' + this.firstName + ' ' + this.middleName
+      let full = this.lastName + ' ' + this.firstName
+      if (this.middleName) {
+        return full + ' ' + this.middleName
+      }
+
+      return full
     }
   },
   components: {
