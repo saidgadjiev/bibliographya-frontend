@@ -1,14 +1,15 @@
 <template>
   <div id="app">
     <v-app>
-      <toolbar></toolbar>
+      <app-nav-bar :drawer.sync="drawer" v-if="$vuetify.breakpoint.smAndDown"></app-nav-bar>
+      <toolbar :drawer.sync="drawer"></toolbar>
       <v-content :style="getBackground">
-        <v-container grid-list-lg fill-height style="width:960px" class="ma-auto pt-0 pl-0 pr-0">
+        <v-container grid-list-lg fill-height :class="{ 'md-content' : $vuetify.breakpoint.mdAndUp }">
           <v-layout row fill-height>
-            <v-flex xs3>
+            <v-flex md3 v-if="$vuetify.breakpoint.mdAndUp">
               <app-nav-bar></app-nav-bar>
             </v-flex>
-            <v-flex xs9>
+            <v-flex xs12 md9>
               <router-view></router-view>
             </v-flex>
           </v-layout>
@@ -26,6 +27,11 @@ import Toolbar from './components/Toolbar.vue'
 
 export default {
   name: 'App',
+  data () {
+    return {
+      drawer: false
+    }
+  },
   components: {
     AppNavBar,
     Toolbar
@@ -56,15 +62,11 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
   }
-
-  .v-toolbar__content {
-    width: 960px;
-    margin: auto;
-    padding: 0;
-  }
-
-  .v-navigation-drawer {
-    left: unset;
-    background-color: inherit;
+  .md-content {
+    margin: auto !important;
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 960px !important;
   }
 </style>

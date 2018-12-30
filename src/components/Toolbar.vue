@@ -1,14 +1,14 @@
 <template>
   <v-toolbar
     color="blue darken-3"
+    :class="{ 'md-toolbar': $vuetify.breakpoint.mdAndUp }"
     dark
     app
-    clipped-left
-    clipped-right
     fixed
     dense
   >
     <v-toolbar-title class="ml-0">
+      <v-toolbar-side-icon @click.stop="$emit('update:drawer', !drawer)" v-if="$vuetify.breakpoint.smAndDown"></v-toolbar-side-icon>
       <a class="white--text" @click="$router.push('/')">Библиография</a>
     </v-toolbar-title>
     <v-spacer></v-spacer>
@@ -64,6 +64,9 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'Toolbar',
+  props: {
+    drawer: Boolean
+  },
   computed: {
     ...mapGetters([
       'getUser',
@@ -89,6 +92,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+  .md-toolbar > div {
+    width: 960px !important;
+    margin: auto !important;
+    padding: 0 !important;
+  }
 </style>

@@ -2,7 +2,7 @@
   <v-layout fill-height>
     <v-flex xs12>
       <v-layout row wrap justify-center infinite-wrapper fill-height>
-        <v-flex v-bind="{ [`xs${item.flex ? item.flex : 12}`]: true }" v-for="item in items" :key="item.id">
+        <v-flex xs12 md6 v-for="item in items" :key="item.id">
           <slot name="item" v-bind:item="item">
           </slot>
         </v-flex>

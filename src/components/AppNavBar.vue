@@ -1,10 +1,16 @@
 <template>
-    <v-navigation-drawer
-      :width="240"
-      :height="null"
-      style="z-index: inherit"
-    >
-      <v-list dense>
+  <v-navigation-drawer
+    :class="[ $vuetify.breakpoint.mdAndUp ? 'md-drawer': 'grey lighten-4' ]"
+    :fixed="$vuetify.breakpoint.smAndDown"
+    :app="$vuetify.breakpoint.smAndDown"
+    v-model="_drawer"
+  >
+    <v-toolbar flat class="transparent pt-3 pb-3" v-if="$vuetify.breakpoint.smAndDown && isAuthenticated">
+      <div>
+        <span class="font-weight-light headline user-name">Гаджиев Саид</span>
+      </div>
+    </v-toolbar>
+      <v-list dense class="white">
         <v-list-tile v-if="isAuthenticated" to="/profile">
           <v-list-tile-action>
             <v-icon>fas fa-home</v-icon>
@@ -54,6 +60,24 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
+    <v-list v-if="$vuetify.breakpoint.smAndDown">
+      <v-list-tile v-if="isAuthenticated">
+        <v-list-tile-action>
+          <v-icon>fas fa-sign-out-alt</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>Выход</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+      <v-list-tile v-else>
+        <v-list-tile-action>
+          <v-icon>fas fa-sign-in-alt</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>Войти</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+    </v-list>
     </v-navigation-drawer>
 </template>
 
@@ -62,11 +86,25 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'NavBar',
+  props: {
+    drawer: {
+      type: Boolean,
+      default: true
+    }
+  },
   computed: {
     ...mapGetters([
       'getUser',
       'isAuthenticated'
-    ])
+    ]),
+    _drawer: {
+      get () {
+        return this.drawer
+      },
+      set (val) {
+        this.$emit('update:drawer', val)
+      }
+    }
   },
   methods: {
     goto (link) {
@@ -77,5 +115,15 @@ export default {
 </script>
 
 <style scoped>
+  .user-name {
+    word-break: break-word !important;
+  }
+  .md-drawer {
+    height: auto !important;
+    z-index: inherit;
+    width: 240px !important;
+    left: unset !important;
+    background-color: inherit !important;
+  }
 
 </style>
