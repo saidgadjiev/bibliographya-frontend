@@ -15,6 +15,17 @@ export const FIX_STATUS = {
   CLOSED: 1
 }
 
+export const REPORT_STATUS = {
+  NEW: 0,
+  CONSIDERED: 1
+}
+
+export const REPORT_REASON = {
+  SPAM: 0,
+  CLONE: 1,
+  ANOTHER: 2
+}
+
 export default {
   roles
 }

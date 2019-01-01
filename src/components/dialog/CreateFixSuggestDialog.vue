@@ -78,6 +78,7 @@ export default {
           biographyFixService.suggest(this.biographyId, this.fixText)
             .then(
               () => {
+                that.fixText = undefined
                 that.$emit('update:visible', false)
               }
             )

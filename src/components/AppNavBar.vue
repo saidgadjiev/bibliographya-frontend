@@ -51,6 +51,14 @@
             <v-list-tile-title>На модерации</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile to="/complaints">
+          <v-list-tile-action>
+            <v-icon>fas fa-info</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Жалобы</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
         <v-list-tile to="/fixes">
           <v-list-tile-action>
             <v-icon>fas fa-wrench</v-icon>
