@@ -5,7 +5,6 @@ export default {
   signUp,
   signOut,
   getAccount,
-  isExistUsername,
   getOauthUrl,
   socialSignIn
 }
@@ -16,7 +15,7 @@ function signIn (signInForm) {
     password: signInForm.password
   }
 
-  return axios.post(process.env.REST_SERVER + 'api/auth/signIn', json)
+  return axios.post(process.env.REST_SERVER + 'auth/signIn', json)
 }
 
 function signUp (signUpForm) {
@@ -28,25 +27,21 @@ function signUp (signUpForm) {
     middleName: signUpForm.middleName
   }
 
-  return axios.post(process.env.REST_SERVER + 'api/auth/signUp', json)
+  return axios.post(process.env.REST_SERVER + 'auth/signUp', json)
 }
 
 function signOut () {
-  return axios.post(process.env.REST_SERVER + 'api/auth/signOut')
+  return axios.post(process.env.REST_SERVER + 'auth/signOut')
 }
 
 function getAccount () {
-  return axios.get(process.env.REST_SERVER + 'api/auth/account')
-}
-
-function isExistUsername (username) {
-  return axios.head(process.env.REST_SERVER + 'api/auth/exist/' + username)
+  return axios.get(process.env.REST_SERVER + 'auth/account')
 }
 
 function getOauthUrl (provider) {
-  return axios.post(process.env.REST_SERVER + 'api/auth/social/oauth/' + provider)
+  return axios.post(process.env.REST_SERVER + 'auth/oauth/' + provider)
 }
 
 function socialSignIn (provider, code) {
-  return axios.post(process.env.REST_SERVER + 'api/auth/social/signIn/' + provider + '?code=' + code)
+  return axios.post(process.env.REST_SERVER + 'auth/signIn/' + provider + '?code=' + code)
 }

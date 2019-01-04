@@ -35,45 +35,57 @@ const actions = {
   signIn ({ dispatch, commit }, signInForm) {
     commit('signInRequest')
 
-    return authService.signIn(signInForm)
-      .then(
-        signInResponse => {
-          commit('signInSuccess', signInResponse.data)
-        },
-        e => {
-          commit('signInFailure')
-          dispatch('alert/error', e)
-        }
-      )
+    return new Promise((resolve, reject) => {
+      authService.signIn(signInForm)
+        .then(
+          signInResponse => {
+            commit('signInSuccess', signInResponse.data)
+            resolve()
+          },
+          e => {
+            commit('signInFailure')
+            dispatch('alert/error', e)
+            reject(e)
+          }
+        )
+    })
   },
   socialSignIn ({ dispatch, commit }, payload) {
     commit('signInRequest')
 
-    return authService.socialSignIn(payload.provider, payload.code)
-      .then(
-        signInResponse => {
-          commit('signInSuccess', signInResponse.data)
-        },
-        e => {
-          commit('signInFailure')
-          dispatch('alert/error', e)
-        }
-      )
+    return new Promise((resolve, reject) => {
+      authService.socialSignIn(payload.provider, payload.code)
+        .then(
+          signInResponse => {
+            commit('signInSuccess', signInResponse.data)
+            resolve()
+          },
+          e => {
+            commit('signInFailure')
+            dispatch('alert/error', e)
+            reject(e)
+          }
+        )
+    })
   },
   signUp ({ dispatch, commit }, signUpForm) {
     commit('signUpRequest')
 
-    authService.signUp(signUpForm)
-      .then(
-        response => {
-          console.log('Success sign up ' + response.data)
-          commit('signUpSuccess')
-        },
-        error => {
-          commit('signUpFailure')
-          dispatch('alert/error', error)
-        }
-      )
+    return new Promise((resolve, reject) => {
+      authService.signUp(signUpForm)
+        .then(
+          response => {
+            console.log('Success sign up ' + response.data)
+            commit('signUpSuccess')
+            resolve()
+          },
+          error => {
+            commit('signUpFailure')
+            dispatch('alert/error', error)
+            reject(error)
+          }
+        )
+    })
   },
   signOut ({ commit }) {
     return authService.signOut()

@@ -13,7 +13,7 @@
       <v-list dense class="white">
         <v-list-tile v-if="isAuthenticated" to="/profile">
           <v-list-tile-action>
-            <v-icon>fas fa-home</v-icon>
+            <v-icon size="24">fas fa-home</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Моя биография</v-list-tile-title>
@@ -21,7 +21,15 @@
         </v-list-tile>
         <v-list-tile to="/">
           <v-list-tile-action>
-            <v-icon>far fa-newspaper</v-icon>
+            <v-icon size="24">mdi-library-books</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Библиография</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/biographies">
+          <v-list-tile-action>
+            <v-icon size="24">mdi-book-open-page-variant</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Биографии</v-list-tile-title>
@@ -29,7 +37,7 @@
         </v-list-tile>
         <v-list-tile to="/create/biography">
           <v-list-tile-action>
-            <v-icon>fas fa-plus</v-icon>
+            <v-icon size="24">fas fa-plus</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Создать биографию</v-list-tile-title>
@@ -37,7 +45,7 @@
         </v-list-tile>
         <v-list-tile to="/created">
           <v-list-tile-action>
-            <v-icon>fas fa-list</v-icon>
+            <v-icon size="24">fas fa-list</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Созданные мной</v-list-tile-title>
@@ -45,23 +53,23 @@
         </v-list-tile>
         <v-list-tile to="/moderation">
           <v-list-tile-action>
-            <v-icon>fas fa-shield-alt</v-icon>
+            <v-icon size="24">fas fa-shield-alt</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>На модерации</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile to="/complaints">
+        <!--<v-list-tile to="/complaints">
           <v-list-tile-action>
             <v-icon>fas fa-info</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Жалобы</v-list-tile-title>
           </v-list-tile-content>
-        </v-list-tile>
+        </v-list-tile>-->
         <v-list-tile to="/fixes">
           <v-list-tile-action>
-            <v-icon>fas fa-wrench</v-icon>
+            <v-icon size="24">fas fa-wrench</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Исправления</v-list-tile-title>

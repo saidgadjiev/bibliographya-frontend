@@ -8,13 +8,13 @@ export default {
 }
 
 function updateContent (commentId, content) {
-  return axios.post(process.env.REST_SERVER + 'api/comment/update/' + commentId, {
+  return axios.put(process.env.REST_SERVER + 'comments/' + commentId, {
     content: content
   })
 }
 
 function deleteComment (commentId) {
-  return axios.delete(process.env.REST_SERVER + 'api/comment/delete/' + commentId)
+  return axios.delete(process.env.REST_SERVER + 'comments/' + commentId)
 }
 
 function addComment (biographyId, commentForm) {
@@ -27,9 +27,9 @@ function addComment (biographyId, commentForm) {
     replyToUserName: commentForm.replyToUserName
   }
 
-  return axios.post(process.env.REST_SERVER + 'api/comment/' + biographyId + '/add', comment)
+  return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/comments', comment)
 }
 
 function getComments (biographyId, limit, offset) {
-  return axios.get(process.env.REST_SERVER + 'api/comment/' + biographyId + '?limit=' + limit + '&offset=' + offset)
+  return axios.get(process.env.REST_SERVER + 'biographies/' + biographyId + '/comments?limit=' + limit + '&offset=' + offset)
 }

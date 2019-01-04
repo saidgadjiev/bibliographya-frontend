@@ -60,7 +60,7 @@
                 color="blue darken-3">
                 fab fa-facebook-f
                 </v-icon>
-                Войти с Facebook
+                Войти через Facebook
               </v-btn>
             </v-flex>
             <v-flex xs12>
@@ -74,7 +74,7 @@
                 color="blue darken-3">
                 fab fa-vk
               </v-icon>
-                Войти с VK
+                Войти через VK
               </v-btn>
             </v-flex>
           </v-layout>
@@ -136,8 +136,10 @@ export default {
         if (result) {
           this.$store.dispatch('signIn', that.signInForm)
             .then(
-              () => {
+              response => {
                 that.$router.push('/')
+              },
+              e => {
               }
             )
         }

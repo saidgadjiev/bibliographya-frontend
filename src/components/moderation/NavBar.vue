@@ -1,9 +1,7 @@
 <template>
   <v-navigation-drawer
-    :width="240"
-    :height="null"
+    class="md-drawer"
     fixed
-    style="top: auto"
   >
     <v-list dense>
       <v-list-tile
@@ -73,6 +71,13 @@ export default {
 </script>
 
 <style scoped>
+  .md-drawer {
+    height: auto !important;
+    z-index: inherit;
+    width: 240px !important;
+    left: unset !important;
+  }
+
   .active {
     border-left: 4px solid #1565C0 !important;
   }

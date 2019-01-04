@@ -2,13 +2,18 @@ const axios = require('axios')
 
 export default {
   getCategories,
-  getCategory
+  getCategory,
+  getBiographies
 }
 
 function getCategory (categoryName) {
-  return axios.get(process.env.REST_SERVER + 'api/biography/category/' + categoryName)
+  return axios.get(process.env.REST_SERVER + 'categories/' + categoryName)
 }
 
 function getCategories (limit, offset) {
-  return axios.get(process.env.REST_SERVER + 'api/biography/category?limit=' + limit + '&offset=' + offset)
+  return axios.get(process.env.REST_SERVER + 'categories?limit=' + limit + '&offset=' + offset)
+}
+
+function getBiographies (categoryName, limit, offset) {
+  return axios.get(process.env.REST_SERVER + 'categories/' + categoryName + '/biographies?limit=' + limit + '&offset=' + offset)
 }

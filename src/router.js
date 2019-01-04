@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import CategoriesList from './views/CategoriesList'
+import CategoryBiographiesList from './views/CategoryBiographiesList'
 import BiographiesList from './views/BiographiesList'
 import Profile from './views/Profile.vue'
 import SignIn from './views/SignIn.vue'
@@ -29,9 +30,14 @@ let router = new Router({
     },
     {
       path: '/category/:categoryName',
-      name: 'biographies',
-      component: BiographiesList,
+      name: 'categoryBiographies',
+      component: CategoryBiographiesList,
       props: (route) => ({ categoryName: route.params.categoryName })
+    },
+    {
+      path: '/biographies',
+      name: 'biographies',
+      component: BiographiesList
     },
     {
       path: '/biography/:id',

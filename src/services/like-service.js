@@ -6,8 +6,8 @@ export default {
 }
 
 function like (biographyId) {
-  return axios.post(process.env.REST_SERVER + 'api/like/' + biographyId + '/like')
+  return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/likes')
 }
 function unlike (biographyId) {
-  return axios.delete(process.env.REST_SERVER + 'api/like/' + biographyId + '/unlike')
+  return axios.delete(process.env.REST_SERVER + 'biographies/' + biographyId + '/likes')
 }

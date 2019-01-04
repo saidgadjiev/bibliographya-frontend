@@ -62,7 +62,7 @@
 
 <script>
 import { Validator } from 'vee-validate'
-import authService from '../services/auth-service'
+import userAccountService from '../services/user-account-service'
 
 export default {
   name: 'SignUp',
@@ -113,7 +113,7 @@ export default {
   mounted () {
     const isUnique = value =>
       new Promise(resolve => {
-        return authService.isExistUsername(value)
+        return userAccountService.isExistUsername(value)
           .then(
             () => {
               resolve({

@@ -7,22 +7,20 @@ export default {
   complete
 }
 
-function getFixes (limit, offset, filter) {
-  return axios.get(
-    process.env.REST_SERVER + 'api/biography/fix?limit=' + limit + '&offset=' + offset + (filter ? '&' + filter : '')
-  )
+function getFixes (limit, offset, query) {
+  return axios.get(process.env.REST_SERVER + 'fixes?limit=' + limit + '&offset=' + offset + (query ? '&q=' + query : ''))
 }
 
 function suggest (biographyId, fixText) {
-  return axios.post(process.env.REST_SERVER + 'api/biography/fix/suggest/' + biographyId, {
+  return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/fixes', {
     fixText: fixText
   })
 }
 
 function assignMe (fixId, json) {
-  return axios.patch(process.env.REST_SERVER + 'api/biography/fix/assign-me/' + fixId, json)
+  return axios.patch(process.env.REST_SERVER + 'fixes/' + fixId + '/assign-me/', json)
 }
 
 function complete (fixId, json) {
-  return axios.patch(process.env.REST_SERVER + 'api/biography/fix/complete/' + fixId, json)
+  return axios.patch(process.env.REST_SERVER + 'fixes/' + fixId + '/complete/', json)
 }

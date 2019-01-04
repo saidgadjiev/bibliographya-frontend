@@ -3,5 +3,5 @@ export default {
 }
 
 function getUrl (path) {
-  return process.env.REST_SERVER + 'api/file/' + path
+  return process.env.REST_SERVER + 'files/' + path
 }

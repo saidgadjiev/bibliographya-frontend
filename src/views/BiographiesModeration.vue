@@ -48,15 +48,15 @@ export default {
       ++this.infiniteId
     },
     applyRejectedFilter () {
-      this.filter = 'moderatorId=eq:' + this.getUser.id + '&moderationStatus=eq:' + MODERATION_STATUS.REJECTED
+      this.filter = 'moderatorId==' + this.getUser.id + ';moderationStatus==' + MODERATION_STATUS.REJECTED
       this.resetList()
     },
     applyApprovedFilter () {
-      this.filter = 'moderatorId=eq:' + this.getUser.id + '&moderationStatus=eq:' + MODERATION_STATUS.APPROVED
+      this.filter = 'moderatorId==' + this.getUser.id + ';moderationStatus==' + MODERATION_STATUS.APPROVED
       this.resetList()
     },
     applyNotAssignedFilter () {
-      this.filter = 'moderatorId=is_null'
+      this.filter = 'moderatorId==null'
       this.resetList()
     },
     applyAllFilter () {
@@ -64,7 +64,7 @@ export default {
       this.resetList()
     },
     applyAssignedMeFilter () {
-      this.filter = 'moderatorId=eq:' + this.getUser.id
+      this.filter = 'moderator_id==' + this.getUser.id
       this.resetList()
     },
     infiniteLoad (limit, offset, filter) {
