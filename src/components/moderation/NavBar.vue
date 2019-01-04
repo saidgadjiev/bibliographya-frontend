@@ -73,6 +73,7 @@ export default {
 <style scoped>
   .md-drawer {
     height: auto !important;
+    top: auto !important;
     z-index: inherit;
     width: 240px !important;
     left: unset !important;
