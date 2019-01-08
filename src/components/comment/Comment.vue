@@ -120,7 +120,7 @@ export default {
       this.editContent = this.comment.content
     },
     doDeleted () {
-      biographyCommentService.deleteComment(this.comment.id)
+      biographyCommentService.deleteComment(this.comment.biographyId, this.comment.id)
         .then(
           () => {
             this.$emit('comment-deleted')

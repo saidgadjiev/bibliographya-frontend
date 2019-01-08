@@ -44,6 +44,9 @@ export default {
       type: Boolean,
       default: false
     },
+    resetId: {
+      type: Number
+    },
     addId: {
       type: Number
     },
@@ -68,6 +71,7 @@ export default {
   },
   methods: {
     loadMore () {
+      this.$emit('update:availableMore', false)
       this.$emit('update:infiniteId', this.infiniteId + 1)
     },
     load ($state) {
@@ -108,15 +112,21 @@ export default {
     }
   },
   watch: {
+    availableMore () {
+      if (this.availableMore && this.items.length === 0) {
+        this.loadMore()
+      }
+    },
     addId () {
       this.items.push(this.newItem)
     },
     deleteId () {
       this.items.splice(this.deleteIndex, 1)
     },
-    infiniteId () {
+    resetId () {
       this.items = []
       this.offset = 0
+      this.$emit('update:infiniteId', this.infiniteId + 1)
     }
   }
 }

@@ -35,6 +35,7 @@ export default {
     return {
       filter: undefined,
       treeClampSize: 1,
+      resetId: +new Date(),
       infiniteId: +new Date()
     }
   },
@@ -45,7 +46,7 @@ export default {
   },
   methods: {
     resetList () {
-      ++this.infiniteId
+      ++this.resetId
     },
     applyRejectedFilter () {
       this.filter = 'moderator_id==' + this.getUser.id + ';moderation_status==' + MODERATION_STATUS.REJECTED

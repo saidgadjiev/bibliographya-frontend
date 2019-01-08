@@ -29,7 +29,7 @@
     "marked": "^0.5.2",
     "dotenv": "^6.2.0",
     "dotenv-webpack": "^1.6.0",
-    "vue-pusher": "^1.0.0",
+    "gsap": "^2.0.2",
     "firebase": "^5.7.2"
   },
   "devDependencies": {

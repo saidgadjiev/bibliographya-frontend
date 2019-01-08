@@ -1,29 +1,56 @@
 import { db } from '../firebase/firebase'
 
 export default {
+  data () {
+    return {
+      firstCommentsCount: true,
+      firstLikesCount: false,
+      commentsCountRef: undefined,
+      likesCountRef: undefined
+    }
+  },
   props: {
-    id: Number,
-    first: false
+    id: Number
   },
   methods: {
-    childAdded (snapshot) {
-      if (!this.first) {
-        this.first = true
+    commentsCountChanged (snapshot) {
+      let val = snapshot.val()
 
-        return
+      if (val !== null && val !== undefined) {
+        if (this.firstCommentsCount) {
+          this.firstCommentsCount = false
+        } else {
+          this.liveCommentCountChanged(val)
+        }
       }
-      if (parseInt(snapshot.key) === that.addedComment.id) {
-        return
+    },
+    likesCountChanged (snapshot) {
+      let val = snapshot.val()
+
+      if (val !== null && val !== undefined) {
+        if (this.firstLikesCount) {
+          this.firstLikesCount = false
+        } else {
+          this.liveLikesCountChanged(val)
+        }
       }
-      this.liveCommentAdded()
     },
     subscribe () {
-      db.ref('biographies/' + this.id + '/comments')
-        .limitToLast(1)
-        .on('child_added', this.childAdded)
+      this.commentsCountRef = db.ref('stats/biography/biography' + this.id + '/commentsCount')
+
+      this.commentsCountRef.on('value', this.commentsCountChanged)
+
+      this.likesCountRef = db.ref('stats/biography/biography' + this.id + '/likesCount')
+
+      this.likesCountRef.on('value', this.likesCountChanged)
     }
   },
   beforeDestroy () {
-    db.off('child_added', this.childAdded, this)
+    if (this.commentsCountRef) {
+      this.commentsCountRef.off('value', this.commentsCountChanged, this)
+    }
+    if (this.likesCountRef) {
+      this.likesCountRef.off('value', this.likesCountChanged, this)
+    }
   }
 }

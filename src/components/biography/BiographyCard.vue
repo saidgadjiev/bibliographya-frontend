@@ -35,7 +35,7 @@ export default {
   inheritAttrs: false,
   data () {
     return {
-      addedComment: {},
+      addedComment: undefined,
       availableMore: false
     }
   },
@@ -79,21 +79,26 @@ export default {
     commentAdded (comment) {
       this.addedComment = comment
     },
-    liveCommentAdded () {
-      this.$emit('update:commentsCount', this.commentsCount + 1)
-      this.availableMore = true
+    liveCommentCountChanged (commentsCount) {
+      if (commentsCount - this.commentsCount < 0 || commentsCount - this.commentsCount === 0) {
+        return
+      }
+
+      if (!this.addedComment) {
+        this.availableMore = true
+      }
+
+      this.addedComment = null
+      this.$emit('update:commentsCount', commentsCount)
     },
-    likeAdded () {
-      this.$emit('update:likesCount', this.likesCount + 1)
-    },
-    likeDeleted () {
-      this.$emit('update:likesCount', this.likesCount - 1)
+    liveLikesCountChanged (likesCount) {
+      this.$emit('update:likesCount', likesCount)
     },
     like (id) {
-      likeService.like(id, 'socketId=' + this.$pusher.connection.socket_id)
+      likeService.like(id)
     },
     unlike (id) {
-      likeService.unlike(id, 'socketId=' + this.$pusher.connection.socket_id)
+      likeService.unlike(id)
     }
   },
   components: {

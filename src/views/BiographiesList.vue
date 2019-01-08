@@ -40,11 +40,6 @@ export default {
         )
     }
   },
-  beforeDestroy () {
-    this.$pusher.getChannels().forEach(channel => {
-      this.$pusher.unsubscribe(channel)
-    })
-  },
   watch: {
     '$route' (to, from) {
       this.infiniteId += 1

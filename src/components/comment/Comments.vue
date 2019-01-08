@@ -15,7 +15,7 @@
         :comment="item"
         v-on:update:content="item.content = $event"
         @click-reply="clickReply(item)"
-        @comment-deleted="commentDeleted(index)"
+        @comment-deleted="commentDeleted(item, index)"
       ></comment>
     </template>
     <template slot="footer">
@@ -79,11 +79,11 @@ export default {
       this.replyToComment = null
       this.$emit('comment-added', comment)
     },
-    commentDeleted (index) {
+    commentDeleted (comment, index) {
       this.deleteIndex = index
       ++this.deleteId
       this.$emit('update:commentsCount', this.commentsCount - 1)
-      this.$emit('comment-deleted')
+      this.$emit('comment-deleted', comment)
     },
     clickReply (comment) {
       this.replyToComment = comment
@@ -93,8 +93,8 @@ export default {
         easing: 'easeInOutCubic'
       })
     },
-    infiniteLoad (limit, offset, endAt) {
-      return biographyCommentService.getComments(this.id, limit, offset, endAt)
+    infiniteLoad (limit, offset) {
+      return biographyCommentService.getComments(this.id, limit, offset, 'sort=created_at,asc')
     }
   },
   components: {

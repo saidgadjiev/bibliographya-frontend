@@ -3,7 +3,8 @@
     <span>Биография:</span>
     <tree-view :items="tree" v-bind="$attrs"></tree-view>
     <p class="m-0" v-html="_biography"></p>
-    <a :href="biographyLink" class="font-weight-black">Читать дальше</a>
+    <router-link :to="biographyLink">Читать дальше
+    </router-link>
   </v-card-text>
 </template>
 
