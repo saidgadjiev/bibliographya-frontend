@@ -1,28 +1,28 @@
 <template>
   <v-hover>
-  <v-card
-    slot-scope="{ hover }"
-    flat
-    :id="'c' + comment.id"
-    class="list-group-item pa-2">
+    <v-card
+      slot-scope="{ hover }"
+      flat
+      :id="'_' + comment.id"
+      class="comment-wrapper pa-2">
       <v-card-title primary-title class="pa-0">
         <div v-if="comment.parentId">
-          <a :href="'#/biography/' + comment.biographyId">{{ comment.lastName + ' ' + comment.firstName }}</a>
+          <a :href="'/biography/' + comment.biographyId">{{ comment.lastName + ' ' + comment.firstName }}</a>
           <small class="grey--text">&nbsp;ответил&nbsp;</small>
           <a tabindex @click="gotoReply()"><strong
-            class="grey--text">{{comment.replyToFirstName}}</strong></a>
+            class="grey--text">{{ comment.replyToFirstName }}</strong></a>
         </div>
         <div v-else>
-          <a :href="'#/biography/' + comment.biographyId">{{ comment.lastName + ' ' + comment.firstName }}</a>
+          <a :href="'/biography/' + comment.biographyId">{{ comment.lastName + ' ' + comment.firstName }}</a>
         </div>
         <v-spacer></v-spacer>
         <div v-if="hover">
           <v-icon small @click="clickEdit" v-if="!edit">
-          mdi-pencil
-        </v-icon>
-        <v-icon small @click="doDeleted" class="ml-1">
-          fa fa-times
-        </v-icon>
+            mdi-pencil
+          </v-icon>
+          <v-icon small @click="doDeleted" class="ml-1">
+            fa fa-times
+          </v-icon>
         </div>
       </v-card-title>
       <v-card-text class="pa-0">
@@ -31,20 +31,21 @@
           @cancel="edit = !edit"
           @ok="edit = !edit"
           :comment-id="comment.id"
-          v-bind:content.sync="comment.content"
+          :content="comment.content"
+          v-on="$listeners"
         >
         </edit-comment>
         <div v-else>
         <span v-if="comment.parentId">
-          <a :href="'#/biography/' + comment.replyToBiographyId">{{ comment.replyToFirstName }}</a>{{ ', ' + comment.content }}
+          <a :href="'/biography/' + comment.replyToBiographyId">{{ comment.replyToFirstName }}</a>{{ ', ' + comment.content }}
         </span>
           <span v-else>{{ comment.content }}</span>
         </div>
       </v-card-text>
       <v-card-actions class="pa-0">
-        {{ getTimeDiff + ',' }}&nbsp;<a tabindex @click="reply">Ответить</a>
+        {{ getTimeDiff + ',' }}&nbsp;<a @click="reply">Ответить</a>
       </v-card-actions>
-  </v-card>
+    </v-card>
   </v-hover>
 </template>
 
@@ -77,10 +78,10 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getUsername'
+      'getUser'
     ]),
     isMyComment () {
-      return this.getUsername === this.comment.userName
+      return this.getUser.id === this.comment.userId
     },
     getTimeDiff () {
       const date1 = new Date(this.comment.createdAt)
@@ -114,10 +115,6 @@ export default {
     }
   },
   methods: {
-    commentEdited (value) {
-      this.comment.content = value
-      this.edit = !this.edit
-    },
     clickEdit () {
       this.edit = !this.edit
       this.editContent = this.comment.content
@@ -141,7 +138,7 @@ export default {
       }, 2000)
     },
     reply () {
-      this.$emit('click-reply', this.comment)
+      this.$emit('click-reply')
     }
   },
   components: {
@@ -152,4 +149,12 @@ export default {
 
 <style scoped>
   @import '../../../static/bibliography.css';
+
+  .comment-wrapper {
+    position: relative;
+    display: block;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+  }
 </style>

@@ -20,6 +20,7 @@ import CategoryCard from '../components/category/CategoryCard'
 export default {
   data () {
     return {
+      biographyChannel: undefined,
       infiniteId: +new Date()
     }
   },
@@ -38,6 +39,11 @@ export default {
           }
         )
     }
+  },
+  beforeDestroy () {
+    this.$pusher.getChannels().forEach(channel => {
+      this.$pusher.unsubscribe(channel)
+    })
   },
   watch: {
     '$route' (to, from) {

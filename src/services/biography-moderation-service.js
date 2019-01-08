@@ -7,8 +7,13 @@ export default {
   userComplete
 }
 
-function getBiographies (limit, offset, query) {
-  return axios.get(process.env.REST_SERVER + 'biographies/moderation?limit=' + limit + '&offset=' + offset + (query ? '&q=' + query : ''))
+function getBiographies (limit, offset, query, sort) {
+  return axios.get(process.env.REST_SERVER + 'biographies/moderation?' +
+    'limit=' + limit +
+    '&offset=' + offset +
+    (query ? '&q=' + query : '') +
+    (sort ? '&' + sort : '')
+  )
 }
 
 function assignMe (biographyId, json) {

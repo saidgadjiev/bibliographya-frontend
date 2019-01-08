@@ -47,7 +47,7 @@ export default {
               that.updateModeratorInfo(e.response.data)
 
               let currentModerator = that.moderatorBiography
-              let message = '<a href="\'#/biography/' + currentModerator.id + '">' +
+              let message = '<a href="\'/biography/' + currentModerator.id + '">' +
                 currentModerator.firstName + ' ' + currentModerator.lastName + '</a>,&nbsp;уже взял биографию на модерацию.'
 
               that.$store.dispatch('alert/error', message)

@@ -10,6 +10,7 @@ import VueCookie from 'vue-cookie'
 import axios from 'axios'
 import AsyncComputed from 'vue-async-computed'
 import InfiniteLoading from 'vue-infinite-loading'
+import './firebase/firebase'
 
 import store from './store/store'
 
@@ -44,6 +45,7 @@ axios.interceptors.request.use(function (request) {
 }, function (err) {
   return Promise.reject(err)
 })
+
 axios.interceptors.response.use(function (response) {
   if (response.status === 401) {
     router.push('/401')

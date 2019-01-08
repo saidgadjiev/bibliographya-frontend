@@ -2,8 +2,8 @@
   <v-layout fill-height>
     <v-flex xs12>
       <v-layout row wrap justify-center infinite-wrapper fill-height>
-        <v-flex v-bind="{ [`xs${item.flex ? item.flex : 12}`]: true }" v-for="item in items" :key="item.id">
-          <slot name="item" v-bind:item="item">
+        <v-flex v-bind="{ [`xs${item.flex ? item.flex : 12}`]: true }" v-for="(item, index) in items" :key="item.id">
+          <slot name="item" v-bind:item="item" v-bind:index="index">
           </slot>
         </v-flex>
         <infinite-loading :identifier="infiniteId" @infinite="load" :force-use-infinite-wrapper="true">
@@ -14,10 +14,15 @@
               indeterminate
             ></v-progress-circular>
           </template>
-          <div slot="no-more" style="display: none"></div>
+          <div slot="no-more" :style="loadMoreStyles">
+            <a @click="loadMore">Показать еще</a>
+          </div>
           <div slot="no-results" style="display: none"></div>
           <div slot="error" style="display: none"></div>
         </infinite-loading>
+        <v-flex xs12>
+          <slot name="footer"></slot>
+        </v-flex>
       </v-layout>
     </v-flex>
   </v-layout>
@@ -35,7 +40,20 @@ export default {
     }
   },
   props: {
-    flex: {
+    availableMore: {
+      type: Boolean,
+      default: false
+    },
+    addId: {
+      type: Number
+    },
+    newItem: {
+      type: Object
+    },
+    deleteId: {
+      type: Number
+    },
+    deleteIndex: {
       type: Number
     },
     infiniteId: {
@@ -49,12 +67,15 @@ export default {
     }
   },
   methods: {
+    loadMore () {
+      this.$emit('update:infiniteId', this.infiniteId + 1)
+    },
     load ($state) {
       if (!this.loading) {
         this.loading = true
         let that = this
 
-        this.infiniteLoad(this.limit, this.offset, this.filter)
+        this.infiniteLoad(this.limit, this.offset, this.filter, this.items[this.ite])
           .then(
             response => {
               if (response.status === 200) {
@@ -63,6 +84,7 @@ export default {
                 $state.loaded()
               } else {
                 $state.complete()
+                that.$emit('update:availableMore', false)
               }
               that.loading = false
             },
@@ -74,7 +96,24 @@ export default {
       }
     }
   },
+  computed: {
+    loadMoreStyles () {
+      if (this.availableMore) {
+        return {}
+      }
+
+      return {
+        'display': 'none'
+      }
+    }
+  },
   watch: {
+    addId () {
+      this.items.push(this.newItem)
+    },
+    deleteId () {
+      this.items.splice(this.deleteIndex, 1)
+    },
     infiniteId () {
       this.items = []
       this.offset = 0

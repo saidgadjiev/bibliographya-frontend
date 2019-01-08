@@ -43,7 +43,7 @@ export default {
     },
     _biographyLink () {
       if (this.moderatorBiography) {
-        return '#/biography/' + this.moderatorBiography.id
+        return '/biography/' + this.moderatorBiography.id
       }
 
       return '#'

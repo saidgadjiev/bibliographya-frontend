@@ -1,32 +1,34 @@
 <template>
-  <div class="pa-3 pb-0">
-  <div class="list-group list-group-flush">
-    <comment
-      v-for="(item, index) in items"
-      :key="index"
-      :id="'c' + item.id"
-      :comment="item"
-      @click-reply="clickReply"
-      @comment-deleted="commentDeleted(index)"
-    ></comment>
-  </div>
-    <infinite-loading @infinite="infiniteLoad">
-      <div slot="spinner">
-        <v-progress-circular
-          color="primary"
-          indeterminate
-        ></v-progress-circular>
-      </div>
-      <div slot="no-more"></div>
-      <div slot="no-results"></div>
-    </infinite-loading>
-    <comment-form
-      class="pl-2"
-      @comment-added="commentAdded"
-      :reply-to-comment="replyToComment"
-      :biography-id="biographyId"
-    ></comment-form>
-  </div>
+  <list
+    class="ml-0 mr-0"
+    :infinite-load="infiniteLoad"
+    :infinite-id.sync="infiniteId"
+    :delete-id="deleteId"
+    :delete-index="deleteIndex"
+    :add-id="addId"
+    :new-item="newComment"
+    v-bind="$attrs"
+    v-on="$listeners"
+  >
+    <template slot="item" slot-scope="{ item, index }">
+      <comment
+        :comment="item"
+        v-on:update:content="item.content = $event"
+        @click-reply="clickReply(item)"
+        @comment-deleted="commentDeleted(index)"
+      ></comment>
+    </template>
+    <template slot="footer">
+      <comment-form
+        v-bind="attrs"
+        v-on="$listeners"
+        class="pl-2"
+        @comment-added="commentAdded"
+        :reply-to-comment="replyToComment"
+        :biography-id="id"
+      ></comment-form>
+    </template>
+  </list>
 </template>
 
 <script>
@@ -34,62 +36,69 @@ import Comment from './Comment'
 import CommentForm from './CommentForm'
 import biographyCommentService from '../../services/biography-comment-service'
 import InfiniteLoading from 'vue-infinite-loading'
+import List from '../list/List'
 
 export default {
   name: 'Comments',
   data () {
     return {
-      limit: 20,
-      offset: 0,
+      newComment: {},
+      addId: +new Date(),
+      deleteId: +new Date(),
+      deleteIndex: 0,
+      infiniteId: +new Date(),
       replyToComment: null,
       reply: false,
-      items: [],
       page: 0
     }
   },
   props: {
-    biographyId: {
+    id: {
       type: Number,
       required: true
+    },
+    commentsCount: {
+      type: Number
+    }
+  },
+  computed: {
+    attrs () {
+      return Object.assign({},
+        this.$attrs,
+        {
+          commentsCount: this.commentsCount
+        }
+      )
     }
   },
   methods: {
     commentAdded (comment) {
-      this.items.push(comment)
+      this.newComment = comment
+      ++this.addId
+
       this.replyToComment = null
-      this.$emit('comment-added')
+      this.$emit('comment-added', comment)
     },
     commentDeleted (index) {
-      this.items.splice(index, 1)
+      this.deleteIndex = index
+      ++this.deleteId
+      this.$emit('update:commentsCount', this.commentsCount - 1)
       this.$emit('comment-deleted')
     },
     clickReply (comment) {
       this.replyToComment = comment
-      this.reply = true
       this.$vuetify.goTo('#commentForm', {
         duration: 300,
         offset: 0,
         easing: 'easeInOutCubic'
       })
     },
-    infiniteLoad ($state) {
-      let that = this
-
-      biographyCommentService.getComments(this.biographyId, this.limit, this.offset)
-        .then(
-          response => {
-            if (response.status === 200) {
-              that.items.push(...response.data.content)
-              that.offset += response.data.content.length
-              $state.loaded()
-            } else {
-              $state.complete()
-            }
-          }
-        )
+    infiniteLoad (limit, offset, endAt) {
+      return biographyCommentService.getComments(this.id, limit, offset, endAt)
     }
   },
   components: {
+    List,
     Comment,
     InfiniteLoading,
     CommentForm
@@ -98,5 +107,4 @@ export default {
 </script>
 
 <style scoped>
-  @import '../../../static/bibliography.css';
 </style>

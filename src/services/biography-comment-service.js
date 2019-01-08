@@ -17,7 +17,7 @@ function deleteComment (commentId) {
   return axios.delete(process.env.REST_SERVER + 'comments/' + commentId)
 }
 
-function addComment (biographyId, commentForm) {
+function addComment (biographyId, commentForm, params) {
   let comment = {
     content: commentForm.content,
     parentId: commentForm.parentId,
@@ -27,9 +27,9 @@ function addComment (biographyId, commentForm) {
     replyToUserName: commentForm.replyToUserName
   }
 
-  return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/comments', comment)
+  return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/comments' + (params ? '?' + params : ''), comment)
 }
 
-function getComments (biographyId, limit, offset) {
-  return axios.get(process.env.REST_SERVER + 'biographies/' + biographyId + '/comments?limit=' + limit + '&offset=' + offset)
+function getComments (biographyId, limit, offset, endAt) {
+  return axios.get(process.env.REST_SERVER + 'biographies/' + biographyId + '/comments?limit=' + limit + '&offset=' + offset + (endAt ? '&endAt=' + endAt : ''))
 }

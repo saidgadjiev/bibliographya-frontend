@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     biographyLink () {
-      return '#/biography/' + this.id
+      return '/biography/' + this.id
     },
     _biography () {
       let biography = this.biography

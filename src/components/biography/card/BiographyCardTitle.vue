@@ -3,7 +3,7 @@
     <div>
       <div>
     <span v-for="(category, index) in categories" :key="index">
-      <a :href="'#/category/' + category">{{ category }}</a>&nbsp;&nbsp;
+      <a :href="'/category/' + category">{{ category }}</a>&nbsp;&nbsp;
     </span>
       </div>
       <div>{{ fullName }}</div>

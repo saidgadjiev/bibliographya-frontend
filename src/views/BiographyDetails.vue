@@ -3,13 +3,9 @@
     <v-flex xs12 md8>
       <biography-card2
         v-if="biography"
+        live
         show-comments
-        :in-biography="biography"
-        show-actions
-        show-menu
-        v-on:update:likesCount="item.likesCount = $event"
-        v-on:update:commentsCount="item.commentsCount = $event"
-        v-on:update:liked="item.liked = $event"
+        v-bind.sync="biography"
       ></biography-card2>
     </v-flex>
   </v-layout>
@@ -21,18 +17,26 @@ import BiographyCard2 from '../components/biography/BiographyCard'
 
 export default {
   name: 'BiographyDetails',
+  data () {
+    return {
+      biography: undefined
+    }
+  },
   props: {
     biographyId: {
       type: Number,
       required: true
     }
   },
-  asyncComputed: {
-    biography () {
-      return biographyService.getBiographyById(this.biographyId)
+  mounted () {
+    this.loadBiography()
+  },
+  methods: {
+    loadBiography () {
+      biographyService.getBiographyById(this.biographyId)
         .then(
           response => {
-            return response.data
+            this.biography = response.data
           },
           e => {
             console.log(e)

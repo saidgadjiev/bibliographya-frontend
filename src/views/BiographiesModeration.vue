@@ -48,15 +48,15 @@ export default {
       ++this.infiniteId
     },
     applyRejectedFilter () {
-      this.filter = 'moderatorId==' + this.getUser.id + ';moderationStatus==' + MODERATION_STATUS.REJECTED
+      this.filter = 'moderator_id==' + this.getUser.id + ';moderation_status==' + MODERATION_STATUS.REJECTED
       this.resetList()
     },
     applyApprovedFilter () {
-      this.filter = 'moderatorId==' + this.getUser.id + ';moderationStatus==' + MODERATION_STATUS.APPROVED
+      this.filter = 'moderator_id==' + this.getUser.id + ';moderation_status==' + MODERATION_STATUS.APPROVED
       this.resetList()
     },
     applyNotAssignedFilter () {
-      this.filter = 'moderatorId==null'
+      this.filter = 'moderator_id==null'
       this.resetList()
     },
     applyAllFilter () {
@@ -68,7 +68,7 @@ export default {
       this.resetList()
     },
     infiniteLoad (limit, offset, filter) {
-      return biographyModerationService.getBiographies(limit, offset, filter)
+      return biographyModerationService.getBiographies(limit, offset, filter, 'sort=created_at,desc')
     }
   },
   components: {

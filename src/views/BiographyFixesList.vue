@@ -64,11 +64,11 @@ export default {
       ++this.infiniteId
     },
     applyClosedFilter () {
-      this.filter = 'fixerId=eq:' + this.getUser.id + '&status=eq:' + FIX_STATUS.CLOSED
+      this.filter = 'fixer_id==' + this.getUser.id + ';status==' + FIX_STATUS.CLOSED
       this.resetList()
     },
     applyNotAssignedFilter () {
-      this.filter = 'fixerId=is_null'
+      this.filter = 'fixer_id==null'
       this.resetList()
     },
     applyAllFilter () {
@@ -76,7 +76,7 @@ export default {
       this.resetList()
     },
     applyAssignedMeFilter () {
-      this.filter = 'fixerId=eq:' + this.getUser.id
+      this.filter = 'fixer_id==' + this.getUser.id
       this.resetList()
     },
     infiniteLoad (limit, offset, filter) {

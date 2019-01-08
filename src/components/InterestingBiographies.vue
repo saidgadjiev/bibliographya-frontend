@@ -16,7 +16,7 @@
           <a class="caption" href="#" @click="treeSize = 1">Скрыть содержание</a>
         </div>
         <div slot="biographyClamp"  class="mt-3">
-          <a class="caption" :href="'#/biography/' + item.id">Читать дальше</a>
+          <a class="caption" :href="'/biography/' + item.id">Читать дальше</a>
         </div>
       </biography-card2>
     </v-flex>

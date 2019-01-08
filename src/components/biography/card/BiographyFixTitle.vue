@@ -55,10 +55,10 @@ export default {
       return this.creatorBiography.lastName + ' ' + this.creatorBiography.firstName
     },
     _fixerBiographyLink () {
-      return '#/biography/' + this.fixerBiography.id
+      return '/biography/' + this.fixerBiography.id
     },
     _creatorBiographyLink () {
-      return '#/biography/' + this.creatorBiography.id
+      return '/biography/' + this.creatorBiography.id
     }
   }
 }

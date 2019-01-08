@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import biographyCommentService from '../../services/biography-comment-service'
-
 export default {
   name: 'CommentForm',
   data () {
@@ -36,9 +34,13 @@ export default {
     }
   },
   props: {
+    addComment: Function,
     biographyId: {
       type: Number,
       required: true
+    },
+    commentsCount: {
+      type: Number
     },
     replyToComment: {
       type: Object
@@ -59,7 +61,7 @@ export default {
       let that = this
 
       if (this.content !== '') {
-        biographyCommentService.addComment(this.biographyId, {
+        this.addComment(this.biographyId, {
           content: this.content,
           parent: this.replyToComment
         })
@@ -67,6 +69,7 @@ export default {
             response => {
               that.content = ''
               that.$emit('comment-added', response.data)
+              that.$emit('update:commentsCount', that.commentsCount + 1)
             },
             e => {
               console.log(e)

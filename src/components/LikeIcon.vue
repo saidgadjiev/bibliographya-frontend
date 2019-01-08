@@ -6,8 +6,6 @@
 </template>
 
 <script>
-import likeService from '../services/like-service'
-
 export default {
   name: 'Like',
   props: {
@@ -20,7 +18,9 @@ export default {
     },
     liked: {
       type: Boolean
-    }
+    },
+    like: Function,
+    unlike: Function
   },
   computed: {
     icon () {
@@ -30,9 +30,9 @@ export default {
   methods: {
     clickLike () {
       if (this.liked) {
-        likeService.unlike(this.id)
+        this.unlike(this.id)
       } else {
-        likeService.like(this.id)
+        this.like(this.id)
       }
       this.$emit('update:likesCount', this.likesCount + (this.liked ? -1 : 1))
       this.$emit('update:liked', !this.liked)
