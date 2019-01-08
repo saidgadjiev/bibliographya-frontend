@@ -1,6 +1,6 @@
 <template>
   <v-layout fill-height>
-    <v-flex xs12>
+    <v-flex v-bind="{ [`xs${hasSidebarSlot ? 8 : 12}`]: true }">
       <v-layout row wrap justify-center infinite-wrapper fill-height>
         <v-flex v-bind="{ [`xs${item.flex ? item.flex : 12}`]: true }" v-for="(item, index) in items" :key="item.id">
           <slot name="item" v-bind:item="item" v-bind:index="index">
@@ -20,10 +20,13 @@
           <div slot="no-results" style="display: none"></div>
           <div slot="error" style="display: none"></div>
         </infinite-loading>
-        <v-flex xs12>
+        <v-flex xs12 v-if="hasFooterSlot">
           <slot name="footer"></slot>
         </v-flex>
       </v-layout>
+    </v-flex>
+    <v-flex xs4 v-if="hasSidebarSlot">
+      <slot name="sidebar"></slot>
     </v-flex>
   </v-layout>
 </template>
@@ -79,7 +82,7 @@ export default {
         this.loading = true
         let that = this
 
-        this.infiniteLoad(this.limit, this.offset, this.filter, this.items[this.ite])
+        this.infiniteLoad(this.limit, this.offset, this.filter)
           .then(
             response => {
               if (response.status === 200) {
@@ -109,6 +112,12 @@ export default {
       return {
         'display': 'none'
       }
+    },
+    hasFooterSlot () {
+      return !!this.$slots.footer
+    },
+    hasSidebarSlot () {
+      return !!this.$slots.sidebar
     }
   },
   watch: {

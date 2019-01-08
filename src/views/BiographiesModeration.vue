@@ -1,6 +1,8 @@
 <template>
-  <list-with-sidebar
-    :infinite-id="infiniteId"
+  <v-layout fill-height class="ma-0">
+  <list
+    :infinite-id.sync="infiniteId"
+    :reset-id="resetId"
     :infinite-load="infiniteLoad"
     :filter="filter"
   >
@@ -9,7 +11,7 @@
         v-bind.sync="item"
       ></biography-moderation-card>
     </template>
-    <template slot="sidebar">
+    <template slot="sidebar" v-if="$vuetify.breakpoint.mdAndUp">
       <nav-bar
         @all="applyAllFilter"
         @not-assigned="applyNotAssignedFilter"
@@ -18,21 +20,44 @@
         @rejected="applyRejectedFilter"
       ></nav-bar>
     </template>
-  </list-with-sidebar>
+  </list>
+    <v-menu content-class="fab-menu" v-if="$vuetify.breakpoint.smAndDown">
+      <v-btn
+        slot="activator"
+        color="red darken-2"
+        dark
+        bottom
+        right
+        fixed
+        fab
+      >
+        <v-icon large>fas fa-angle-up</v-icon>
+      </v-btn>
+      <nav-list
+        @all="applyAllFilter"
+        @not-assigned="applyNotAssignedFilter"
+        @assigned-me="applyAssignedMeFilter"
+        @approved="applyApprovedFilter"
+        @rejected="applyRejectedFilter"
+      ></nav-list>
+    </v-menu>
+  </v-layout>
 </template>
 
 <script>
 import { MODERATION_STATUS } from '../config'
-import NavBar from '../components/moderation/NavBar.vue'
+import NavBar from '../components/moderation/nav/NavBar.vue'
+import NavList from '../components/moderation/nav/NavList.vue'
 import AlertDialog from '../components/alert/AlertDialog'
 import { mapGetters } from 'vuex'
 import biographyModerationService from '../services/biography-moderation-service'
 import BiographyModerationCard from '../components/biography/BiographyModerationCard.vue'
-import ListWithSidebar from '../components/list/ListWithSidebar'
+import List from '../components/list/List'
 
 export default {
   data () {
     return {
+      fab: false,
       filter: undefined,
       treeClampSize: 1,
       resetId: +new Date(),
@@ -74,13 +99,21 @@ export default {
   },
   components: {
     NavBar,
+    NavList,
     AlertDialog,
     BiographyModerationCard,
-    ListWithSidebar
+    List
   }
 }
 </script>
 
 <style scoped>
-
+  .fab-menu {
+    min-width: 200px !important;
+    position: fixed !important;
+    bottom: 80px !important;
+    right: 50px !important;
+    top: unset !important;
+    left: unset !important;
+  }
 </style>

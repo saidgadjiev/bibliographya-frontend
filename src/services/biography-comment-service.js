@@ -30,6 +30,6 @@ function addComment (biographyId, commentForm, params) {
   return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/comments' + (params ? '?' + params : ''), comment)
 }
 
-function getComments (biographyId, limit, offset, params) {
-  return axios.get(process.env.REST_SERVER + 'biographies/' + biographyId + '/comments?limit=' + limit + '&offset=' + offset + (params ? '&' + params : ''))
+function getComments (biographyId, limit, offset, sort) {
+  return axios.get(process.env.REST_SERVER + 'biographies/' + biographyId + '/comments?limit=' + limit + '&offset=' + offset + (sort ? '&' + sort : ''))
 }

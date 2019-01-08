@@ -19,12 +19,18 @@ export default {
   name: 'CategoriesList',
   methods: {
     infiniteLoad (limit, offset) {
+      let that = this
+
       return biographyCategoryService.getCategories(limit, offset)
         .then(
           response => {
             if (response.status === 200) {
               response.data.content.forEach(function (val) {
-                val.flex = 6
+                if (that.$vuetify.breakpoint.mdAndUp) {
+                  val.flex = 6
+                } else {
+                  val.flex = 12
+                }
               })
             }
 
