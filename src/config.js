@@ -15,6 +15,11 @@ export const FIX_STATUS = {
   CLOSED: 1
 }
 
+export const PUBLISH_STATUS = {
+  PUBLISHED: 0,
+  NOT_PUBLISHED: 1
+}
+
 export const REPORT_STATUS = {
   NEW: 0,
   CONSIDERED: 1

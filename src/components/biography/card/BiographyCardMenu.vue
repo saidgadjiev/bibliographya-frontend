@@ -17,20 +17,11 @@
       >
         <v-list-tile-title>Предложить исправление</v-list-tile-title>
       </v-list-tile>
-      <v-list-tile
-        @click="reportDialogVisible = true"
-      >
-        <v-list-tile-title>Пожаловаться</v-list-tile-title>
-      </v-list-tile>
     </v-list>
     <create-fix-suggest-dialog
       :biography-id="id"
       :visible.sync="fixDialogVisible"
     ></create-fix-suggest-dialog>
-    <create-report-dialog
-      :biography-id="id"
-      :visible.sync="reportDialogVisible"
-    ></create-report-dialog>
   </v-menu>
 </template>
 

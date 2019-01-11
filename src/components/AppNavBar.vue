@@ -75,6 +75,14 @@
             <v-list-tile-title>Исправления</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile to="/users">
+          <v-list-tile-action>
+            <v-icon size="24">fas fa-users-cog</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Пользователи</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     <v-list v-if="$vuetify.breakpoint.smAndDown">
       <v-list-tile v-if="isAuthenticated">

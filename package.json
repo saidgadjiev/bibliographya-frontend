@@ -30,7 +30,8 @@
     "dotenv": "^6.2.0",
     "dotenv-webpack": "^1.6.0",
     "gsap": "^2.0.2",
-    "firebase": "^5.7.2"
+    "sockjs-client": "^1.3.0",
+    "stompjs": "^2.3.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

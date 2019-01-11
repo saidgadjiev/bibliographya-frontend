@@ -10,7 +10,6 @@ import VueCookie from 'vue-cookie'
 import axios from 'axios'
 import AsyncComputed from 'vue-async-computed'
 import InfiniteLoading from 'vue-infinite-loading'
-import './firebase/firebase'
 
 import store from './store/store'
 

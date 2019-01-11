@@ -6,7 +6,9 @@ export default {
   getBiographies,
   getMyBiographies,
   update,
-  create
+  create,
+  publish,
+  unpublish
 }
 
 function getBiography (username, filter) {
@@ -31,4 +33,12 @@ function update (biography) {
 
 function create (biography) {
   return axios.post(process.env.REST_SERVER + 'biographies/', biography)
+}
+
+function publish (biographyId) {
+  return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/publish')
+}
+
+function unpublish (biographyId) {
+  return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/unpublish')
 }

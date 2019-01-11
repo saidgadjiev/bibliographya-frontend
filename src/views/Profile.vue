@@ -1,7 +1,7 @@
 <template>
   <v-layout row fill-height>
     <v-flex xs12>
-      <biography-card v-if="biography" v-bind.sync="biography"></biography-card>
+      <biography-card v-if="biography" v-bind.sync="biography" show-publish-block></biography-card>
     </v-flex>
   </v-layout>
 </template>
@@ -13,23 +13,28 @@ import biographyService from '../services/biography-service'
 
 export default {
   name: 'profile',
+  data () {
+    return {
+      biography: undefined
+    }
+  },
   computed: {
     ...mapGetters([
       'getUser'
     ])
   },
-  asyncComputed: {
-    biography () {
-      return biographyService.getBiographyById(this.getUser.biography.id)
-        .then(
-          response => {
-            return response.data
-          },
-          e => {
-            console.log(e)
-          }
-        )
-    }
+  created () {
+    let that = this
+
+    biographyService.getBiographyById(this.getUser.biography.id)
+      .then(
+        response => {
+          that.biography = response.data
+        },
+        e => {
+          console.log(e)
+        }
+      )
   },
   components: {
     BiographyCard

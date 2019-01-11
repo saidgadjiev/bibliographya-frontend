@@ -1,6 +1,11 @@
 <template>
   <v-card>
-    <biography-card-title v-bind="attrs"/>
+    <biography-card-publish-title
+      v-if="showPublishBlock"
+      v-bind="attrs"
+      class="pb-0"
+      v-on="$listeners"/>
+    <biography-card-title v-bind="attrs" class="pt-0"/>
     <v-divider></v-divider>
     <biography-card-text v-bind="attrs"/>
     <v-divider></v-divider>
@@ -27,15 +32,13 @@ import BiographyCardText from './card/BiographyCardText'
 import Comments from '../comment/Comments'
 import likeService from '../../services/like-service'
 import bigraphyCommentService from '../../services/biography-comment-service'
-import liveCommentsMixin from '../../mixins/live-likes-comments'
+import BiographyCardPublishTitle from './card/BiographyCardPublishTitle'
 
 export default {
   name: 'biography-card',
-  mixins: [liveCommentsMixin],
   inheritAttrs: false,
   data () {
     return {
-      addedComment: undefined,
       availableMore: false
     }
   },
@@ -53,11 +56,10 @@ export default {
     showComments: {
       type: Boolean,
       default: false
-    }
-  },
-  mounted () {
-    if (this.live) {
-      this.subscribe()
+    },
+    showPublishBlock: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -65,7 +67,6 @@ export default {
       return Object.assign({},
         this.$attrs,
         {
-          id: this.id,
           commentsCount: this.commentsCount,
           likesCount: this.likesCount
         }
@@ -76,24 +77,6 @@ export default {
     addComment (biographyId, comment) {
       return bigraphyCommentService.addComment(biographyId, comment)
     },
-    commentAdded (comment) {
-      this.addedComment = comment
-    },
-    liveCommentCountChanged (commentsCount) {
-      if (commentsCount - this.commentsCount < 0 || commentsCount - this.commentsCount === 0) {
-        return
-      }
-
-      if (!this.addedComment) {
-        this.availableMore = true
-      }
-
-      this.addedComment = null
-      this.$emit('update:commentsCount', commentsCount)
-    },
-    liveLikesCountChanged (likesCount) {
-      this.$emit('update:likesCount', likesCount)
-    },
     like (id) {
       likeService.like(id)
     },
@@ -102,6 +85,7 @@ export default {
     }
   },
   components: {
+    BiographyCardPublishTitle,
     Comments,
     BiographyCardActions,
     BiographyCardTitle,

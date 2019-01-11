@@ -14,6 +14,7 @@ import CreatedByMeBiographies from './views/CreatedByMeBiographies'
 import BiographiesModeration from './views/BiographiesModeration'
 import BiographyFixesList from './views/BiographyFixesList'
 import OAuthCallback from './views/OAuthCallback'
+import UsersList from './views/UsersList'
 import store from './store/store'
 import error403 from './components/error/403'
 import error404 from './components/error/404'
@@ -73,6 +74,11 @@ let router = new Router({
       path: '/moderation',
       name: 'moderation',
       component: BiographiesModeration
+    },
+    {
+      path: '/users',
+      name: 'users',
+      component: UsersList
     },
     {
       path: '/fixes',

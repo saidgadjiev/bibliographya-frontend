@@ -73,16 +73,4 @@ export default {
   .v-menu__content {
     z-index: 1 !important;
   }
-
-  a {
-    color: #007bff;
-    text-decoration: none;
-    background-color: transparent;
-    -webkit-text-decoration-skip: objects;
-  }
-
-  a:hover {
-    color: #0056b3;
-    text-decoration: underline;
-  }
 </style>
