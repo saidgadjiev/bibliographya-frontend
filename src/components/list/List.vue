@@ -67,9 +67,6 @@ export default {
     },
     infiniteLoad: {
       type: Function
-    },
-    filter: {
-      type: String
     }
   },
   methods: {
@@ -82,7 +79,7 @@ export default {
         this.loading = true
         let that = this
 
-        this.infiniteLoad(this.limit, this.offset, this.filter)
+        this.infiniteLoad(this.limit, this.offset)
           .then(
             response => {
               if (response.status === 200) {

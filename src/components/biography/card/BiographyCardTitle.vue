@@ -6,7 +6,10 @@
       <a :href="'/category/' + category">{{ category }}</a>&nbsp;&nbsp;
     </span>
       </div>
-      <div>{{ fullName }}</div>
+      {{ fullName }}
+      <v-icon small color="blue darken-3" class="pl-1">
+        fas fa-check-circle
+      </v-icon>
     </div>
     <v-spacer></v-spacer>
     <biography-card-menu v-bind="$attrs"/>

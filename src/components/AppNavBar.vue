@@ -11,6 +11,7 @@
       </div>
     </v-toolbar>
       <v-list dense class="white">
+        <v-list dense>
         <v-list-tile v-if="isAuthenticated" to="/profile">
           <v-list-tile-action>
             <v-icon size="24">fas fa-home</v-icon>
@@ -51,14 +52,7 @@
             <v-list-tile-title>Созданные мной</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile to="/moderation">
-          <v-list-tile-action>
-            <v-icon size="24">fas fa-shield-alt</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>На модерации</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+        </v-list>
         <!--<v-list-tile to="/complaints">
           <v-list-tile-action>
             <v-icon>fas fa-info</v-icon>
@@ -67,22 +61,36 @@
             <v-list-tile-title>Жалобы</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>-->
-        <v-list-tile to="/fixes">
-          <v-list-tile-action>
-            <v-icon size="24">fas fa-wrench</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Исправления</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile to="/users">
-          <v-list-tile-action>
-            <v-icon size="24">fas fa-users-cog</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Пользователи</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+        <v-list dense subheader>
+          <v-subheader>Модерация</v-subheader>
+          <v-list-tile to="/moderation">
+            <v-list-tile-action>
+              <v-icon size="24">fas fa-shield-alt</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Модерация</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile to="/fixes">
+            <v-list-tile-action>
+              <v-icon size="24">fas fa-wrench</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Исправления</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+        <v-list dense subheader>
+          <v-subheader>Администрирование</v-subheader>
+          <v-list-tile to="/users">
+            <v-list-tile-action>
+              <v-icon size="24">fas fa-users-cog</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Пользователи</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
       </v-list>
     <v-list v-if="$vuetify.breakpoint.smAndDown">
       <v-list-tile v-if="isAuthenticated">

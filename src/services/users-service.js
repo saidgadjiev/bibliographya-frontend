@@ -6,8 +6,8 @@ export default {
   addRole
 }
 
-function getUsers (limit, offset) {
-  return axios.get(process.env.REST_SERVER + 'users?limit=' + limit + '&offset=' + offset)
+function getUsers (limit, offset, query) {
+  return axios.get(process.env.REST_SERVER + 'users?limit=' + limit + '&offset=' + offset + (query ? '&' + query : ''))
 }
 
 function deleteRole (userId, role) {

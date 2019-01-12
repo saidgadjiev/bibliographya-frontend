@@ -2,9 +2,11 @@
   <v-menu>
     <v-btn
       slot="activator"
+      color="blue darken-3"
+      flat
       icon
     >
-      <v-icon>fas fa-caret-down</v-icon>
+      <v-icon>fas fa-angle-down</v-icon>
     </v-btn>
     <v-list>
       <v-list-tile

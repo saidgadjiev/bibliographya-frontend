@@ -1,32 +1,30 @@
 <template>
-    <v-card>
-      <v-card-title>
-          <div>{{ _fullName }}</div>
-      </v-card-title>
-      <v-card-text>
-        <v-chip
-          v-for="(role, index) in roles"
-          :key="index"
-          close
-          color="indigo"
-          text-color="white"
-          @input="deleteRole(role)"
-        >
-          {{ role }}
-        </v-chip>
-          <v-btn icon @click="addRole">
-          <v-icon small>fas fa-plus</v-icon>
-            </v-btn>
-        <v-select
-          :items="allRoles"
-          v-model="selectedRole"
-          chips
-          solo
-          clearable
-          label="Роли"
-        ></v-select>
-      </v-card-text>
-    </v-card>
+  <v-card>
+    <v-card-title>
+      <div>{{ _fullName }}</div>
+    </v-card-title>
+    <v-card-text>
+      Роли:
+      <v-chip
+        v-for="(role, index) in roles"
+        :key="index"
+        close
+        color="indigo"
+        text-color="white"
+        @input="deleteRole(role)"
+      >
+        {{ role }}
+      </v-chip>
+      <v-btn icon @click="addRole">
+        <v-icon small>fas fa-plus</v-icon>
+      </v-btn>
+      <v-combobox
+        v-model="selectedRole"
+        :items="availableRoles"
+        label="Роли"
+      ></v-combobox>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -36,7 +34,8 @@ export default {
   name: 'UserCard',
   data () {
     return {
-      selectedRole: ''
+      selectedRole: '',
+      availableRoles: []
     }
   },
   props: {
@@ -61,9 +60,16 @@ export default {
       required: true
     }
   },
+  created () {
+    this.filterRoles()
+  },
   methods: {
-    filter (item, query, itemText) {
-      return true
+    filterRoles () {
+      let that = this
+
+      this.availableRoles = this.allRoles.filter(function (element) {
+        return that.roles.indexOf(element) === -1
+      })
     },
     addRole () {
       let that = this
@@ -75,6 +81,7 @@ export default {
               let roles = [...that.roles]
 
               roles.push(that.selectedRole)
+              that.availableRoles.splice(that.availableRoles.indexOf(that.selectedRole), 1)
               that.selectedRole = ''
 
               that.$emit('update:roles', roles)
@@ -91,6 +98,7 @@ export default {
             let roles = [...that.roles]
 
             roles.splice(roles.indexOf(role), 1)
+            that.availableRoles.push(role)
 
             that.$emit('update:roles', roles)
           }

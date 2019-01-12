@@ -2,8 +2,6 @@
   <v-card-actions>
     <like v-bind="$attrs" v-on="$listeners" class="ml-1"/>
     <comment-icon v-bind="$attrs"/>
-    <v-spacer></v-spacer>
-    <view-icon/>
   </v-card-actions>
 </template>
 

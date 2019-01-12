@@ -35,10 +35,10 @@
           </edit-fio>
         </v-flex>
         <v-flex xs12>
-          <edit-biography
-            v-bind:biography.sync="biography.biography"
-          >
-          </edit-biography>
+          <markdown-editor
+            label="Биография"
+            v-bind:text.sync="biography.biography"
+          ></markdown-editor>
         </v-flex>
         <v-flex xs12 v-if="conflict && biographyConflict">
           <strong class="subheading">Конфликт:</strong>
@@ -86,6 +86,7 @@ import BiographyCard from './BiographyCard'
 import AlertSlot from '../alert/AlertMessage'
 import biographyService from '../../services/biography-service'
 import biographyCategoryService from '../../services/biography-category-service'
+import MarkdownEditor from '../markdown/MarkdownEditor'
 
 const diff = require('diff')
 const he = require('he')
@@ -291,6 +292,7 @@ export default {
     }
   },
   components: {
+    MarkdownEditor,
     EditFio,
     EditBiography,
     BiographyCard,

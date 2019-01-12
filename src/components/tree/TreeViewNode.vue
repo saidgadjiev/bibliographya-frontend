@@ -1,6 +1,6 @@
 <template>
   <li>
-    <a v-if="items.id" @click="$vuetify.goTo('#' + items.id, options)">{{ items.name }}</a>
+    <a v-if="items.id" :href="'#' + items.id">{{ items.name }}</a>
     <span v-else>{{ items.name }}</span>
     <ol>
       <tree-view-node
