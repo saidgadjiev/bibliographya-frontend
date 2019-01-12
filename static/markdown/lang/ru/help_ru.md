@@ -83,14 +83,9 @@ code block
 
 \```
 
-\` code \`
-
-```c++
-int main()
-{
- printf("hello world!");}
+``` javascript
+function() {}
 ```
-`code`
 
 ## Таблица
 ```

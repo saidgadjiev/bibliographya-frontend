@@ -7,10 +7,12 @@ import abbreviation from 'markdown-it-abbr'
 import insert from 'markdown-it-ins'
 import toc from 'markdown-it-toc-and-anchor'
 import mark from 'markdown-it-mark'
+import sanitizer from 'markdown-it-sanitizer'
 
 let tocTree = []
 
 const instance = new MarkdownIt()
+  .use(sanitizer)
   .use(subscript)
   .use(superscript)
   .use(footnote)
