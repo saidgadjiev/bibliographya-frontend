@@ -18,7 +18,6 @@
       v-if="showComments"
       v-bind="attrs"
       :add-comment="addComment"
-      @comment-added="commentAdded"
       v-on="$listeners"
       :available-more.sync="availableMore"
     />
@@ -95,5 +94,5 @@ export default {
 </script>
 
 <style scoped>
-  @import "../../../static/bibliography.css";
+  @import "../../../static/css/bibliography.css";
 </style>

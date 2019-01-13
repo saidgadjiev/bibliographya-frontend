@@ -7,6 +7,8 @@
     <template slot="item" slot-scope="{ item }">
       <biography-card2
         v-bind.sync="item"
+        biographyClamp
+        :biographyClampSize="300"
       ></biography-card2>
     </template>
     <template slot="sidebar">

@@ -3,18 +3,19 @@
     <v-card>
       <v-card-text>
         <tree-view :items="tree"></tree-view>
-        <p v-html="helpHtml"></p>
+        <p class="markdown-body" v-html="helpHtml"></p>
       </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import markdown from '../../markdown/markdown'
+import markdown from '../../mixins/markdown'
 import TreeView from '../tree/TreeView'
 
 export default {
   name: 'HelpDialog',
+  mixins: [markdown],
   components: { TreeView },
   data () {
     return {
@@ -32,7 +33,12 @@ export default {
     }
   },
   created () {
-    this.helpHtml = markdown.markdownItWithToc(this.help, this.tree)
+    let $vm = this
+
+    $vm.$render(this.help, function (res, toc) {
+      $vm.helpHtml = res
+      $vm.tree = toc
+    })
   },
   computed: {
     _visible: {

@@ -1,6 +1,6 @@
 <template>
   <li>
-    <a v-if="items.id" :href="'#' + items.id">{{ items.name }}</a>
+    <a v-if="items.id" :href="'#' + items.id" class="bibliographya-a">{{ items.name }}</a>
     <span v-else>{{ items.name }}</span>
     <ol>
       <tree-view-node
@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style scoped>
-  @import '../../../static/bibliography.css';
+  @import '../../../static/css/bibliography.css';
 
   ol {
     counter-reset: l

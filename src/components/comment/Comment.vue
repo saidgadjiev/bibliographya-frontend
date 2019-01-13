@@ -148,7 +148,7 @@ export default {
 </script>
 
 <style scoped>
-  @import '../../../static/bibliography.css';
+  @import '../../../static/css/bibliography.css';
 
   .comment-wrapper {
     position: relative;

@@ -92,8 +92,43 @@ function isEquivalent (a, b) {
   return true
 }
 
+function createToc (tocArray) {
+  let tocTree = []
+  let stack = []
+
+  tocArray.forEach(function (element) {
+    let level = element.level
+    let text = element.content
+
+    let node = {
+      id: element.anchor,
+      level: level,
+      name: text,
+      children: []
+    }
+
+    if (level === 1) {
+      tocTree.push(node)
+      stack.push(node)
+    } else {
+      let peek = stack[stack.length - 1]
+
+      while (peek.level >= level) {
+        stack.pop()
+        peek = stack[stack.length - 1]
+      }
+
+      peek.children.push(node)
+      stack.push(node)
+    }
+  })
+
+  return tocTree
+}
+
 export default {
   getNTreeLevels,
   arrDiff,
-  isEquivalent
+  isEquivalent,
+  createToc
 }

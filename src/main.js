@@ -14,6 +14,9 @@ import InfiniteLoading from 'vue-infinite-loading'
 import store from './store/store'
 
 import 'vuetify/dist/vuetify.min.css'
+import '../static/css/bibliography.css'
+import '../static/css/markdown.css'
+import '../static/css/md.css'
 
 Vue.use(Vuex)
 Vue.use(Vuetify)

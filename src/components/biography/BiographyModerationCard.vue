@@ -32,5 +32,5 @@ export default {
 </script>
 
 <style scoped>
-  @import "../../../static/bibliography.css";
+  @import "../../../static/css/bibliography.css";
 </style>
