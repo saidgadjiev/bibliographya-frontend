@@ -1,18 +1,5 @@
 <template>
-  <biography-card
-    :in-biography="biography"
-    v-if="preview"
-    show-actions
-  >
-    <template slot="actions">
-      <v-btn @click="preview = false" flat color="orange">Продолжить редактирование</v-btn>
-      <v-btn @click="doSave" flat color="orange">Сохранить</v-btn>
-    </template>
-    <template slot="alert">
-      <alert-slot></alert-slot>
-    </template>
-  </biography-card>
-  <v-card v-else>
+  <v-card>
     <alert-slot></alert-slot>
     <v-card-text>
       <v-layout row wrap>
@@ -73,7 +60,6 @@
       </v-layout>
     </v-card-text>
     <v-card-actions>
-      <v-btn @click="preview = true" flat color="orange">Предпросмотр</v-btn>
       <v-btn @click="doSave" flat color="orange">Сохранить</v-btn>
     </v-card-actions>
   </v-card>

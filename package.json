@@ -47,6 +47,9 @@
     "markdown-it-toc-and-anchor": "^4.1.2",
     "markdown-it-sanitizer": "^0.4.3",
     "markdown-it-container": "^2.0.0",
+    "vue2-filters": "^0.4.1",
+    "tinymce-vue": "^1.0.0",
+    "vue-tinymce-editor": "^1.6.2",
     "html-loader": "^0.5.5"
   },
   "devDependencies": {
