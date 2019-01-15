@@ -23,6 +23,7 @@
         </v-flex>
         <v-flex xs12>
           <markdown-editor
+            id="id1"
             label="Биография"
             v-bind:text.sync="biography.biography"
           ></markdown-editor>

@@ -1,101 +1,178 @@
 <template>
   <div>
-    <tiny-editor id="d1" v-model="_text" :other_options="options1"></tiny-editor>
-    <strong class="headline preview-header font-weight-medium">Предпросмотр</strong>
-    <div class="preview" v-html="text"></div>
-    <help-dialog
-      :visible.sync="helpDialogVisible"
-      :help="d_help"
-    ></help-dialog>
+    <textarea :id="id" v-model="content"></textarea>
   </div>
 </template>
 
 <script>
-import { CONFIG } from '../../markdown/config'
-import HelpDialog from './HelpDialog'
-import Toolbar from './Toolbar'
-import markdown from '../../mixins/markdown'
-import TinyEditor from 'vue-tinymce-editor'
+// Import TinyMCE
+import tinymce from 'tinymce/tinymce'
+
+// A theme is also required
+import 'tinymce/themes/modern/theme'
+import 'tinymce/themes/mobile/theme'
+
+// Any plugins you want to use has to be imported
+import 'tinymce/plugins/advlist'
+import 'tinymce/plugins/wordcount'
+import 'tinymce/plugins/autolink'
+import 'tinymce/plugins/autosave'
+import 'tinymce/plugins/charmap'
+import 'tinymce/plugins/codesample'
+import 'tinymce/plugins/contextmenu'
+import 'tinymce/plugins/emoticons'
+import 'tinymce/plugins/fullscreen'
+import 'tinymce/plugins/hr'
+import 'tinymce/plugins/imagetools'
+import 'tinymce/plugins/insertdatetime'
+import 'tinymce/plugins/link'
+import 'tinymce/plugins/media'
+import 'tinymce/plugins/noneditable'
+import 'tinymce/plugins/paste'
+import 'tinymce/plugins/print'
+import 'tinymce/plugins/searchreplace'
+import 'tinymce/plugins/tabfocus'
+import 'tinymce/plugins/template'
+import 'tinymce/plugins/textpattern'
+import 'tinymce/plugins/visualblocks'
+import 'tinymce/plugins/anchor'
+import 'tinymce/plugins/autoresize'
+import 'tinymce/plugins/bbcode'
+import 'tinymce/plugins/code'
+import 'tinymce/plugins/colorpicker'
+import 'tinymce/plugins/directionality'
+import 'tinymce/plugins/fullpage'
+import 'tinymce/plugins/help'
+import 'tinymce/plugins/image'
+import 'tinymce/plugins/importcss'
+import 'tinymce/plugins/legacyoutput'
+import 'tinymce/plugins/lists'
+import 'tinymce/plugins/nonbreaking'
+import 'tinymce/plugins/pagebreak'
+import 'tinymce/plugins/preview'
+import 'tinymce/plugins/save'
+import 'tinymce/plugins/spellchecker'
+import 'tinymce/plugins/table'
+import 'tinymce/plugins/textcolor'
+import 'tinymce/plugins/toc'
+import 'tinymce/plugins/visualchars'
+
+import 'tinymce/skins/lightgray/skin.min.css'
+import 'tinymce/skins/lightgray/content.mobile.min.css'
+import 'tinymce/skins/lightgray/skin.mobile.min.css'
 
 export default {
-  name: 'MarkdownEditor',
-  mixins: [markdown],
-  components: { Toolbar, HelpDialog, TinyEditor },
+  name: 'tinymce',
+  props: {
+    id: {
+      type: String,
+      required: true
+    },
+    htmlClass: {default: '', type: String},
+    value: { default: '' },
+    plugins: { default: function () {
+      return [
+        'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+        'searchreplace wordcount visualblocks visualchars code fullscreen',
+        'insertdatetime media nonbreaking save table contextmenu directionality',
+        'template paste textcolor colorpicker textpattern imagetools toc help emoticons hr codesample'
+      ]
+    },
+    type: Array
+    },
+    toolbar1: {default: 'formatselect | bold italic  strikethrough  forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat', type: String},
+    toolbar2: { default: '', type: String },
+    other_options: {default: function () { return {} }, type: Object},
+    readonly: { default: false, type: Boolean }
+  },
   data () {
     return {
-      d_help: null,
-      helpDialogVisible: false,
-      options1: {
-        height: 300,
-        language_url: 'http://localhost:8080/static/tinymce/lang/ru.js',
-        menubar: 'edit view insert format tables',
-        /* menu: {
-          edit: {title: 'Изменить', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
-          view: {title: 'Вид', items: 'fullscreen preview'},
-          insert: {title: 'Вставить', items: 'link inserttable | hr | insertdatetime'},
-          format: {title: 'Формат', items: 'bold italic underline strikethrough subscript superscript | blockformats align | removeformat'},
-          tables: {title: 'Таблица', items: 'inserttable tableprops deletetable column row | cell'}
-        } */
-        removed_menuitems: 'code visualblocks visualchars visualaid image media template codesample charmap pagebreak nonbreaking ' +
-          'anchor toc codeformat'
+      content: '',
+      editor: null,
+      cTinyMce: null,
+      checkerTimeout: null,
+      isTyping: false
+    }
+  },
+  mounted () {
+    this.content = this.value
+    this.init()
+  },
+  watch: {
+    value: function (newValue) {
+      if (!this.isTyping) {
+        if (this.editor !== null) { this.editor.setContent(newValue) } else { this.content = newValue }
+      }
+    },
+    readonly (value) {
+      if (value) {
+        this.editor.setMode('readonly')
+      } else {
+        this.editor.setMode('design')
       }
     }
-  },
-  props: {
-    label: {
-      type: String
-    },
-    text: {
-      type: String
-    }
-  },
-  computed: {
-    _compiledText () {
-      let compiled = ''
-
-      this.$render(this.text, function (res) {
-        compiled = res
-      })
-
-      return compiled
-    },
-    _text: {
-      get () {
-        return this.text
-      },
-      set (val) {
-        this.$emit('update:text', val)
-      }
-    }
-  },
-  created () {
-    this.initLanguage()
   },
   methods: {
-    initLanguage () {
-      let lang = CONFIG.langList.indexOf(this.language) >= 0 ? this.language : 'ru'
+    init () {
+      let options = {
+        theme: 'modern',
+        mobile: {
+          theme: 'mobile'
+        },
+        selector: '#' + this.id,
+        skin: false,
+        toolbar1: this.toolbar1,
+        toolbar2: this.toolbar2,
+        plugins: this.plugins,
+        init_instance_callback: this.initEditor
+      }
+      tinymce.init(this.concatAssciativeArrays(options, this.other_options))
+    },
+    initEditor (editor) {
+      this.editor = editor
+      editor.on('KeyUp', (e) => {
+        this.submitNewContent()
+      })
+      editor.on('Change', (e) => {
+        if (this.editor.getContent() !== this.value) {
+          this.submitNewContent()
+        }
+        this.$emit('editorChange', e)
+      })
+      editor.on('init', (e) => {
+        editor.setContent(this.content)
+        this.$emit('input', this.content)
+      })
+      if (this.readonly) {
+        this.editor.setMode('readonly')
+      } else {
+        this.editor.setMode('design')
+      }
 
-      this.d_help = CONFIG[`help_${lang}`]
-    }
-  },
-  filters: {
-    capitalize: function (value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.charAt(0).toUpperCase() + value.slice(1)
+      this.$emit('editorInit', editor)
+    },
+    concatAssciativeArrays (array1, array2) {
+      if (array2.length === 0) return array1
+      if (array1.length === 0) return array2
+      let dest = []
+      for (let key in array1) dest[key] = array1[key]
+      for (let key in array2) dest[key] = array2[key]
+      return dest
+    },
+    submitNewContent () {
+      this.isTyping = true
+      if (this.checkerTimeout !== null) { clearTimeout(this.checkerTimeout) }
+      this.checkerTimeout = setTimeout(() => {
+        this.isTyping = false
+      }, 300)
+
+      this.$emit('input', this.editor.getContent())
     }
   }
 }
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .preview {
-    height: 300px;
-    overflow: scroll;
-    font-size: 20px;
-  }
 
-  .preview-header {
-    color: #1B5E20;
-  }
 </style>

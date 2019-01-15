@@ -47,14 +47,6 @@ export default {
       type: Number
     }
   },
-  created () {
-    let $vm = this
-
-    $vm.$render(this.biography, function (res, toc) {
-      $vm.biographyHtml = res
-      $vm.tree = toc
-    })
-  },
   computed: {
     _biographyLink () {
       return '/biography/' + this.id
