@@ -7,8 +7,10 @@
     <template slot="item" slot-scope="{ item }">
       <biography-card2
         v-bind.sync="item"
-        biographyClamp
-        :biographyClampSize="300"
+        biography-clamp
+        :biography-clamp-size="biographyClampSize"
+        tree-clamp
+        :tree-clamp-size="treeClampSize"
       ></biography-card2>
     </template>
     <template slot="sidebar">
@@ -31,6 +33,8 @@ import Sidebar from '../components/biography/sidebar/Sidebar'
 export default {
   data () {
     return {
+      treeClampSize: 1,
+      biographyClampSize: 150,
       biographyChannel: undefined,
       infiniteId: +new Date(),
       resetId: +new Date(),

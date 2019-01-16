@@ -1,6 +1,6 @@
 <template>
   <div>
-    <textarea :id="id" v-model="content"></textarea>
+    <textarea :id="id"></textarea>
   </div>
 </template>
 
@@ -68,22 +68,7 @@ export default {
       type: String,
       required: true
     },
-    htmlClass: {default: '', type: String},
-    value: { default: '' },
-    plugins: { default: function () {
-      return [
-        'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-        'searchreplace wordcount visualblocks visualchars code fullscreen',
-        'insertdatetime media nonbreaking save table contextmenu directionality',
-        'template paste textcolor colorpicker textpattern imagetools toc help emoticons hr codesample'
-      ]
-    },
-    type: Array
-    },
-    toolbar1: {default: 'formatselect | bold italic  strikethrough  forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat', type: String},
-    toolbar2: { default: '', type: String },
-    other_options: {default: function () { return {} }, type: Object},
-    readonly: { default: false, type: Boolean }
+    value: { default: '' }
   },
   data () {
     return {
@@ -96,12 +81,20 @@ export default {
   },
   mounted () {
     this.content = this.value
+
     this.init()
+  },
+  beforeDestroy () {
+    this.editor.destroy()
   },
   watch: {
     value: function (newValue) {
       if (!this.isTyping) {
-        if (this.editor !== null) { this.editor.setContent(newValue) } else { this.content = newValue }
+        if (this.editor !== null) {
+          this.editor.setContent(newValue)
+        } else {
+          this.content = newValue
+        }
       }
     },
     readonly (value) {
@@ -117,16 +110,30 @@ export default {
       let options = {
         theme: 'modern',
         mobile: {
-          theme: 'mobile'
+          theme: 'mobile',
+          plugins: [ 'autosave', 'lists', 'autolink' ],
+          toolbar: [ 'undo', 'bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist', 'fontsizeselect',
+            'forecolor', 'styleselect', 'styleselect' ]
         },
         selector: '#' + this.id,
         skin: false,
-        toolbar1: this.toolbar1,
-        toolbar2: this.toolbar2,
-        plugins: this.plugins,
+        height: 300,
+        language_url: '/static/tinymce/lang/ru.js',
+        branding: false,
+        toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor ' +
+          '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
+          '| removeformat fontname fontsize', // this.$el.childNodes[0].setAttribute('test', 't')
+        plugins: ['advlist autolink lists link image charmap print preview hr anchor pagebreak',
+          'searchreplace wordcount visualblocks visualchars code fullscreen',
+          'insertdatetime media nonbreaking save table contextmenu directionality',
+          'template paste textcolor colorpicker textpattern imagetools toc help emoticons hr codesample'
+        ],
+        menubar: 'edit view insert format tables',
+        removed_menuitems: 'code visualblocks visualchars visualaid image media template codesample charmap pagebreak nonbreaking ' +
+          'anchor toc codeformat',
         init_instance_callback: this.initEditor
       }
-      tinymce.init(this.concatAssciativeArrays(options, this.other_options))
+      tinymce.init(options)
     },
     initEditor (editor) {
       this.editor = editor
@@ -150,14 +157,7 @@ export default {
       }
 
       this.$emit('editorInit', editor)
-    },
-    concatAssciativeArrays (array1, array2) {
-      if (array2.length === 0) return array1
-      if (array1.length === 0) return array2
-      let dest = []
-      for (let key in array1) dest[key] = array1[key]
-      for (let key in array2) dest[key] = array2[key]
-      return dest
+      this.editor.setContent(this.content)
     },
     submitNewContent () {
       this.isTyping = true
@@ -166,7 +166,7 @@ export default {
         this.isTyping = false
       }, 300)
 
-      this.$emit('input', this.editor.getContent())
+      this.$emit('update:value', this.editor.getContent())
     }
   }
 }

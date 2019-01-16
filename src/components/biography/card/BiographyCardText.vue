@@ -1,10 +1,10 @@
 <template>
   <v-card-text>
-    <span>Биография:</span>
     <tree-view :items="tree" v-bind="$attrs"></tree-view>
+    <span>Биография:</span>
     <clamp
-      class="markdown-body"
-      :source="biographyHtml"
+      ref="biography"
+      :source="biography"
       :clamp="biographyClamp"
       :clamp-size="biographyClampSize"
       :clamp-link="_biographyLink"
@@ -23,7 +23,6 @@ export default {
   mixins: [markdown],
   data () {
     return {
-      biographyHtml: '',
       tree: []
     }
   },
@@ -45,6 +44,43 @@ export default {
     },
     id: {
       type: Number
+    }
+  },
+  mounted () {
+    let children = this.$refs.biography.$el.children[0].children
+    let stack = []
+
+    for (let i = 0; i < children.length; ++i) {
+      let child = children[i]
+
+      if (/^h[1-9]$/i.test(child.localName)) {
+        let level = parseInt(child.nodeName.replace(/^H/i, ''), 10)
+        let text = child.textContent
+        let id = 'head_' + i
+
+        let node = {
+          id: id,
+          level: level,
+          name: text,
+          children: []
+        }
+
+        if (level === 1) {
+          this.tree.push(node)
+          stack.push(node)
+        } else {
+          let peek = stack[stack.length - 1]
+
+          while (peek.level >= level) {
+            stack.pop()
+            peek = stack[stack.length - 1]
+          }
+
+          peek.children.push(node)
+          stack.push(node)
+        }
+        child.setAttribute('id', '_' + i)
+      }
     }
   },
   computed: {

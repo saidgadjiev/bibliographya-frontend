@@ -22,11 +22,11 @@
           </edit-fio>
         </v-flex>
         <v-flex xs12>
-          <markdown-editor
+          <span>Биография:</span>
+          <tiny-editor
             id="id1"
-            label="Биография"
-            v-bind:text.sync="biography.biography"
-          ></markdown-editor>
+            :value.sync="biography.biography"
+          ></tiny-editor>
         </v-flex>
         <v-flex xs12 v-if="conflict && biographyConflict">
           <strong class="subheading">Конфликт:</strong>
@@ -73,7 +73,7 @@ import BiographyCard from './BiographyCard'
 import AlertSlot from '../alert/AlertMessage'
 import biographyService from '../../services/biography-service'
 import biographyCategoryService from '../../services/biography-category-service'
-import MarkdownEditor from '../markdown/MarkdownEditor'
+import TinyEditor from '../tinymce/TinyEditor'
 
 const diff = require('diff')
 const he = require('he')
@@ -279,7 +279,7 @@ export default {
     }
   },
   components: {
-    MarkdownEditor,
+    TinyEditor,
     EditFio,
     EditBiography,
     BiographyCard,
@@ -289,5 +289,13 @@ export default {
 </script>
 
 <style scoped>
+  .preview {
+    height: 300px;
+    overflow: scroll;
+    font-size: 20px;
+  }
 
+  .preview-header {
+    color: #1B5E20;
+  }
 </style>
