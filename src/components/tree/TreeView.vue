@@ -8,11 +8,11 @@
       </tree-view-node>
     </ol>
     <template v-if="treeClamp">
-      <div v-if="treeClamped">
-        <a @click="treeClamped = false" class="font-weight-black">Показать содержание...</a>
+      <div v-if="_clamped">
+        <a @click="treeClamped = false" class="subheading font-weight-bold">Показать содержание...</a>
       </div>
       <div v-else>
-        <a @click="treeClamped = true" class="font-weight-black">Скрыть содержание</a>
+        <a @click="treeClamped = true" class="subheading font-weight-bold">Скрыть содержание</a>
       </div>
     </template>
   </div>
@@ -43,6 +43,13 @@ export default {
     }
   },
   computed: {
+    _clamped () {
+      if (this.treeClamped) {
+        return true
+      }
+
+      return false
+    },
     tree () {
       if (this.treeClamp && this.treeClamped) {
         return utils.getNTreeLevels(this.items, this.treeClampSize)

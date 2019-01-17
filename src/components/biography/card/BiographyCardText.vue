@@ -3,12 +3,13 @@
     <tree-view :items="tree" v-bind="$attrs"></tree-view>
     <span>Биография:</span>
     <clamp
+      v-if="biography"
       ref="biography"
       :source="biography"
       :clamp="biographyClamp"
       :clamp-size="biographyClampSize"
       :clamp-link="_biographyLink"
-      clamp-link-label="Читать дальше"
+      clamp-link-label="Читать дальше..."
     ></clamp>
   </v-card-text>
 </template>
@@ -47,39 +48,41 @@ export default {
     }
   },
   mounted () {
-    let children = this.$refs.biography.$el.children[0].children
-    let stack = []
+    if (this.biography) {
+      let children = this.$refs.biography.$el.children[0].children
+      let stack = []
 
-    for (let i = 0; i < children.length; ++i) {
-      let child = children[i]
+      for (let i = 0; i < children.length; ++i) {
+        let child = children[i]
 
-      if (/^h[1-9]$/i.test(child.localName)) {
-        let level = parseInt(child.nodeName.replace(/^H/i, ''), 10)
-        let text = child.textContent
-        let id = 'head_' + i
+        if (/^h[1-9]$/i.test(child.localName)) {
+          let level = parseInt(child.nodeName.replace(/^H/i, ''), 10)
+          let text = child.textContent
+          let id = 'head_' + i
 
-        let node = {
-          id: id,
-          level: level,
-          name: text,
-          children: []
-        }
-
-        if (level === 1) {
-          this.tree.push(node)
-          stack.push(node)
-        } else {
-          let peek = stack[stack.length - 1]
-
-          while (peek.level >= level) {
-            stack.pop()
-            peek = stack[stack.length - 1]
+          let node = {
+            id: id,
+            level: level,
+            name: text,
+            children: []
           }
 
-          peek.children.push(node)
-          stack.push(node)
+          if (level === 1) {
+            this.tree.push(node)
+            stack.push(node)
+          } else {
+            let peek = stack[stack.length - 1]
+
+            while (peek.level >= level) {
+              stack.pop()
+              peek = stack[stack.length - 1]
+            }
+
+            peek.children.push(node)
+            stack.push(node)
+          }
+          child.setAttribute('id', '_' + i)
         }
-        child.setAttribute('id', '_' + i)
       }
     }
   },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <p v-html="_source"></p>
-    <router-link v-if="clamp" :to="clampLink" class="bibliographya-a font-weight-black">{{ clampLinkLabel }}</router-link>
+    <router-link v-if="clamp" :to="clampLink" class="bibliographya-a font-weight-bold subheading">{{ clampLinkLabel }}</router-link>
   </div>
 </template>
 

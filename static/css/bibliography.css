@@ -9,6 +9,14 @@
   text-decoration: underline;
 }
 
+.word-break {
+  word-break: break-all;
+}
+
+.biography-card-title {
+  padding-right: 60px;
+}
+
 .list-group {
   display: -ms-flexbox;
   display: flex;

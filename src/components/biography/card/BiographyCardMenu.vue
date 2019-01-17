@@ -2,11 +2,12 @@
   <v-menu>
     <v-btn
       slot="activator"
-      color="blue darken-3"
-      flat
+      class="absolute-activator"
+      absolute
+      right
       icon
     >
-      <v-icon>fas fa-angle-down</v-icon>
+      <v-icon color="blue darken-3">{{ _icon }}</v-icon>
     </v-btn>
     <v-list>
       <v-list-tile
@@ -45,6 +46,15 @@ export default {
       required: true
     }
   },
+  computed: {
+    _icon () {
+      if (this.$vuetify.breakpoint.mdAndUp) {
+        return 'fas fa-angle-down'
+      }
+
+      return 'fas fa-ellipsis-h'
+    }
+  },
   methods: {
     toBiography () {
       this.$router.push('/edit/biography/' + this.id)
@@ -58,5 +68,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .absolute-activator {
+    top: 10px;
+  }
 </style>

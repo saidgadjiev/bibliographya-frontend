@@ -5,7 +5,7 @@
       v-bind="attrs"
       class="pb-0"
       v-on="$listeners"/>
-    <biography-card-title v-bind="attrs" class="pt-0"/>
+    <biography-card-title v-bind="attrs"/>
     <v-divider></v-divider>
     <biography-card-text v-bind="attrs"/>
     <v-divider></v-divider>

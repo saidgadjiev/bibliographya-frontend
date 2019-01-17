@@ -1,17 +1,11 @@
 <template>
-  <v-card-title>
-    <div>
-      <div>
+  <v-card-title class="biography-card-title">
     <span v-for="(category, index) in categories" :key="index">
       <a :href="'/category/' + category">{{ category }}</a>&nbsp;&nbsp;
     </span>
-      </div>
-      {{ fullName }}
-      <v-icon small color="blue darken-3" class="pl-1">
-        fas fa-check-circle
-      </v-icon>
-    </div>
-    <v-spacer></v-spacer>
+    <h2 class="word-break">{{ fullName }}
+    </h2>
+    <v-icon small color="blue darken-3" class="pl-1">mdi-check-decagram</v-icon>
     <biography-card-menu v-bind="$attrs"/>
   </v-card-title>
 </template>
@@ -58,5 +52,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

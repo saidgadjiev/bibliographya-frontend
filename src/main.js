@@ -15,6 +15,7 @@ import store from './store/store'
 
 import 'vuetify/dist/vuetify.min.css'
 import '../static/css/bibliography.css'
+import '@mdi/font/css/materialdesignicons.css'
 
 Vue.use(Vuex)
 Vue.use(Vuetify)
