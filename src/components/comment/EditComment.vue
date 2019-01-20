@@ -21,6 +21,7 @@ import biographyCommentService from '../../services/biography-comment-service'
 
 export default {
   name: 'EditComment',
+  inheritAttrs: false,
   data () {
     return {
       editContent: ''

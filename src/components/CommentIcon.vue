@@ -8,6 +8,7 @@
 <script>
 export default {
   name: 'CommentIcon',
+  inheritAttrs: false,
   props: {
     id: {
       type: Number

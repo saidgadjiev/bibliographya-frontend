@@ -57,10 +57,6 @@ import 'tinymce/plugins/textcolor'
 import 'tinymce/plugins/toc'
 import 'tinymce/plugins/visualchars'
 
-import 'tinymce/skins/lightgray/skin.min.css'
-import 'tinymce/skins/lightgray/content.mobile.min.css'
-import 'tinymce/skins/lightgray/skin.mobile.min.css'
-
 export default {
   name: 'tinymce',
   props: {
@@ -174,5 +170,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  @import '../../../node_modules/tinymce/skins/lightgray/skin.min.css';
+  @import '../../../node_modules/tinymce/skins/lightgray/content.mobile.min.css';
+  @import '../../../node_modules/tinymce/skins/lightgray/skin.mobile.min.css';
 </style>

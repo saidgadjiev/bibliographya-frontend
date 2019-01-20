@@ -9,17 +9,11 @@
     <v-divider></v-divider>
     <biography-card-text v-bind="attrs"/>
     <v-divider></v-divider>
-    <biography-card-actions
-      v-bind="attrs"
-      v-on="$listeners"
-      :like="like"
-      :unlike="unlike"/>
+    <biography-card-actions v-bind="attrs" v-on="$listeners"/>
     <comments
       v-if="showComments"
       v-bind="attrs"
-      :add-comment="addComment"
-      v-on="$listeners"
-      :available-more.sync="availableMore"
+      v-on="listeners"
     />
   </v-card>
 </template>
@@ -67,7 +61,23 @@ export default {
         this.$attrs,
         {
           commentsCount: this.commentsCount,
-          likesCount: this.likesCount
+          likesCount: this.likesCount,
+          like: this.like,
+          unlike: this.unlike,
+          addComment: this.addComment,
+          availableMore: this.availableMore
+        }
+      )
+    },
+    listeners () {
+      let vm = this
+
+      return Object.assign({},
+        this.$listeners,
+        {
+          'update:availableMore': function (event) {
+            vm.availableMore = event
+          }
         }
       )
     }

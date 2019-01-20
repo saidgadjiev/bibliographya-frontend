@@ -20,6 +20,13 @@
         @autobiographies="applyAutobiographiesFilter"
       ></sidebar>
     </template>
+    <template slot="smSidebar">
+      <side-list
+        @new="applyNewFilter"
+        @last-update="applyLastUpdateFilter"
+        @autobiographies="applyAutobiographiesFilter"
+      ></side-list>
+    </template>
   </list>
 </template>
 
@@ -29,6 +36,7 @@ import biographyService from '../services/biography-service'
 import BiographyCard2 from '../components/biography/BiographyCard'
 import CategoryCard from '../components/category/CategoryCard'
 import Sidebar from '../components/biography/sidebar/Sidebar'
+import SideList from '../components/biography/sidebar/SideList'
 
 export default {
   data () {
@@ -80,12 +88,18 @@ export default {
         )
     }
   },
+  computed: {
+    _smSidebar () {
+      return this.$vuetify.breakpoint.smAndDown
+    }
+  },
   watch: {
     '$route' (to, from) {
       this.infiniteId += 1
     }
   },
   components: {
+    SideList,
     Sidebar,
     List,
     BiographyCard2,

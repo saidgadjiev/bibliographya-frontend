@@ -13,7 +13,6 @@
     <template slot="item" slot-scope="{ item, index }">
       <comment
         :comment="item"
-        v-on:update:content="item.content = $event"
         @click-reply="clickReply(item)"
         @comment-deleted="commentDeleted(item, index)"
       ></comment>
@@ -40,6 +39,7 @@ import List from '../list/List'
 
 export default {
   name: 'Comments',
+  inheritAttrs: false,
   data () {
     return {
       newComment: {},
@@ -59,16 +59,6 @@ export default {
     },
     commentsCount: {
       type: Number
-    }
-  },
-  computed: {
-    attrs () {
-      return Object.assign({},
-        this.$attrs,
-        {
-          commentsCount: this.commentsCount
-        }
-      )
     }
   },
   methods: {

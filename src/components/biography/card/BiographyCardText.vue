@@ -1,7 +1,10 @@
 <template>
   <v-card-text>
-    <tree-view :items="tree" v-bind="$attrs"></tree-view>
-    <span>Биография:</span>
+    <toc
+      v-if="_showToc"
+      :headers="tocHeaders"
+      v-bind="$attrs"
+    ></toc>
     <clamp
       v-if="biography"
       ref="biography"
@@ -18,13 +21,15 @@
 import TreeView from '../../tree/TreeView'
 import Clamp from '../../markdown/HtmlClamp'
 import markdown from '../../../mixins/markdown'
+import Toc from '../Toc'
 
 export default {
   name: 'BiographyCardText',
+  inheritAttrs: false,
   mixins: [markdown],
   data () {
     return {
-      tree: []
+      tocHeaders: []
     }
   },
   props: {
@@ -39,10 +44,6 @@ export default {
     biographyClampSize: {
       type: Number
     },
-    resetIds: {
-      type: Boolean,
-      default: true
-    },
     id: {
       type: Number
     }
@@ -50,48 +51,57 @@ export default {
   mounted () {
     if (this.biography) {
       let children = this.$refs.biography.$el.children[0].children
-      let stack = []
+      let headers = []
 
-      for (let i = 0; i < children.length; ++i) {
-        let child = children[i]
+      this.getHeaders(children, headers, this.guid('head_'))
+
+      this.tocHeaders = headers
+    }
+  },
+  methods: {
+    guid (prefix) {
+      let counter = 0
+      return function () {
+        return prefix + counter++
+      }
+    },
+    getHeaders (root, headers, guid) {
+      for (let i = 0; i < root.length; ++i) {
+        let child = root[i]
 
         if (/^h[1-9]$/i.test(child.localName)) {
           let level = parseInt(child.nodeName.replace(/^H/i, ''), 10)
           let text = child.textContent
-          let id = 'head_' + i
+          let id = guid()
 
           let node = {
             id: id,
             level: level,
-            name: text,
-            children: []
+            element: child,
+            title: text
           }
 
-          if (level === 1) {
-            this.tree.push(node)
-            stack.push(node)
-          } else {
-            let peek = stack[stack.length - 1]
+          headers.push(node)
+        }
 
-            while (peek.level >= level) {
-              stack.pop()
-              peek = stack[stack.length - 1]
-            }
-
-            peek.children.push(node)
-            stack.push(node)
-          }
-          child.setAttribute('id', '_' + i)
+        if (child.children.length > 0) {
+          this.getHeaders(child.children, headers)
         }
       }
+
+      return headers
     }
   },
   computed: {
+    _showToc () {
+      return this.tocHeaders.length > 0
+    },
     _biographyLink () {
       return '/biography/' + this.id
     }
   },
   components: {
+    Toc,
     Clamp,
     TreeView
   }
@@ -99,5 +109,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

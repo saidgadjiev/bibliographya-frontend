@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import biographyFixService from '../../../services/biography-fix-service'
+import biographyFixService from '../../services/biography-fix-service'
 
 export default {
   name: 'FixAssignMeButton',

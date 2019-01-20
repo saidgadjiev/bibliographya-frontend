@@ -56,6 +56,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'Comment',
+  inheritAttrs: false,
   data () {
     return {
       edit: false,

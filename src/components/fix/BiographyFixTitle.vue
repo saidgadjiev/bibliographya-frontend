@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { FIX_STATUS } from '../../../config'
+import { FIX_STATUS } from '../../config'
 
 export default {
   name: 'BiographyFixTitle',

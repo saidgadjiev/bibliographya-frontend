@@ -3,16 +3,16 @@
     class="md-drawer"
     fixed
   >
-    <side-list v-on="$listeners"/>
+    <side-card v-on="$listeners" v-bind="$attrs"></side-card>
   </v-navigation-drawer>
 </template>
 
 <script>
-import SideList from './SideList'
-
+import SideCard from './SideCard'
 export default {
   name: 'Sidebar',
-  components: { SideList }
+  inheritAttrs: false,
+  components: { SideCard }
 }
 </script>
 
@@ -23,6 +23,5 @@ export default {
     z-index: inherit;
     width: 240px !important;
     left: unset !important;
-    background-color: inherit !important;
   }
 </style>

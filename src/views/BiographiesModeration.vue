@@ -1,5 +1,4 @@
 <template>
-  <v-layout fill-height class="ma-0">
   <list
     :infinite-id.sync="infiniteId"
     :reset-id="resetId"
@@ -11,7 +10,7 @@
         v-bind.sync="item"
       ></biography-moderation-card>
     </template>
-    <template slot="sidebar" v-if="$vuetify.breakpoint.mdAndUp">
+    <template slot="sidebar">
       <nav-bar
         @all="applyAllFilter"
         @not-assigned="applyNotAssignedFilter"
@@ -20,19 +19,7 @@
         @rejected="applyRejectedFilter"
       ></nav-bar>
     </template>
-  </list>
-    <v-menu content-class="fab-menu" v-if="$vuetify.breakpoint.smAndDown">
-      <v-btn
-        slot="activator"
-        color="red darken-2"
-        dark
-        bottom
-        right
-        fixed
-        fab
-      >
-        <v-icon large>fas fa-angle-up</v-icon>
-      </v-btn>
+    <template slot="smSidebar">
       <nav-list
         @all="applyAllFilter"
         @not-assigned="applyNotAssignedFilter"
@@ -40,8 +27,8 @@
         @approved="applyApprovedFilter"
         @rejected="applyRejectedFilter"
       ></nav-list>
-    </v-menu>
-  </v-layout>
+    </template>
+  </list>
 </template>
 
 <script>
@@ -65,6 +52,9 @@ export default {
     }
   },
   computed: {
+    _smSidebar () {
+      return this.$vuetify.breakpoint.smAndDown
+    },
     ...mapGetters([
       'getUser'
     ])
@@ -108,12 +98,4 @@ export default {
 </script>
 
 <style scoped>
-  .fab-menu {
-    min-width: 200px !important;
-    position: fixed !important;
-    bottom: 80px !important;
-    right: 50px !important;
-    top: unset !important;
-    left: unset !important;
-  }
 </style>

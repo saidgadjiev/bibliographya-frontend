@@ -10,6 +10,7 @@ import { TweenLite } from 'gsap'
 
 export default {
   name: 'Like',
+  inheritAttrs: false,
   data () {
     return {
       animatedLikesCount: 0

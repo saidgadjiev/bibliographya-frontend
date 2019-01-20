@@ -10,6 +10,7 @@ import h2t from 'html-truncate'
 
 export default {
   name: 'Clamp',
+  inheritAttrs: false,
   props: {
     type: {
       type: String,

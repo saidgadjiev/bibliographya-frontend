@@ -11,13 +11,10 @@
       ></user-card>
     </template>
     <template slot="sidebar">
-      <v-combobox
-        :loading="loading"
-        :items="allRoles"
-        label="Выберите роль"
-        @input="applyRoleFilter"
-        solo
-      ></v-combobox>
+      <sidebar @input="applyRoleFilter" :roles="allRoles"></sidebar>
+    </template>
+    <template slot="smSidebar">
+      <side-card @input="applyRoleFilter" :roles="allRoles"></side-card>
     </template>
   </list>
 </template>
@@ -27,6 +24,8 @@ import List from '../components/list/List'
 import UserCard from '../components/user/UserCard'
 import usersService from '../services/users-service'
 import rolesService from '../services/roles-service'
+import Sidebar from '../components/user/sidebar/Sidebar'
+import SideCard from '../components/user/sidebar/SideCard'
 
 export default {
   name: 'UsersList',
@@ -39,7 +38,7 @@ export default {
       roleFilter: undefined
     }
   },
-  components: { UserCard, List },
+  components: { SideCard, Sidebar, UserCard, List },
   methods: {
     applyRoleFilter (role) {
       if (role) {

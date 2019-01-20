@@ -1,8 +1,8 @@
 <template>
   <v-layout fill-height>
-    <v-flex v-bind="{ [`xs${hasSidebarSlot ? 8 : 12}`]: true }">
+    <v-flex v-bind="{ [`xs${rootFlex}`]: true }">
       <v-layout row wrap justify-center infinite-wrapper fill-height>
-        <v-flex v-bind="{ [`xs${item.flex ? item.flex : 12}`]: true }" v-for="(item, index) in items" :key="item.id">
+        <v-flex v-bind="{ [`xs${itemFlex(item)}`]: true }" v-for="(item, index) in items" :key="item.id">
           <slot name="item" v-bind:item="item" v-bind:index="index">
           </slot>
         </v-flex>
@@ -25,15 +25,30 @@
         </v-flex>
       </v-layout>
     </v-flex>
-    <v-flex xs4 v-if="hasSidebarSlot">
+    <v-flex xs4 v-if="mdSidebar">
       <slot name="sidebar"></slot>
     </v-flex>
+    <v-menu content-class="fab-menu" v-if="smSidebar" :close-on-content-click="false">
+      <v-btn
+        slot="activator"
+        color="red darken-2"
+        dark
+        bottom
+        right
+        fixed
+        fab
+      >
+        <v-icon large>fas fa-angle-up</v-icon>
+      </v-btn>
+      <slot name="smSidebar"></slot>
+    </v-menu>
   </v-layout>
 </template>
 
 <script>
 export default {
   name: 'List',
+  inheritAttrs: false,
   data () {
     return {
       loading: false,
@@ -70,6 +85,9 @@ export default {
     }
   },
   methods: {
+    itemFlex (item) {
+      return item.flex ? item.flex : 12
+    },
     loadMore () {
       this.$emit('update:availableMore', false)
       this.$emit('update:infiniteId', this.infiniteId + 1)
@@ -101,6 +119,19 @@ export default {
     }
   },
   computed: {
+    rootFlex () {
+      if (this.hasSidebarSlot) {
+        return this.$vuetify.breakpoint.mdAndUp ? 8 : 12
+      }
+
+      return 12
+    },
+    mdSidebar () {
+      return this.hasSidebarSlot && this.$vuetify.breakpoint.mdAndUp
+    },
+    smSidebar () {
+      return this.hasSmSidebarSlot && this.$vuetify.breakpoint.smAndDown
+    },
     loadMoreStyles () {
       if (this.availableMore) {
         return {}
@@ -115,6 +146,9 @@ export default {
     },
     hasSidebarSlot () {
       return !!this.$slots.sidebar
+    },
+    hasSmSidebarSlot () {
+      return !!this.$slots.smSidebar
     }
   },
   watch: {
@@ -139,5 +173,12 @@ export default {
 </script>
 
 <style scoped>
-
+  .fab-menu {
+    min-width: 200px !important;
+    position: fixed !important;
+    bottom: 80px !important;
+    right: 50px !important;
+    top: unset !important;
+    left: unset !important;
+  }
 </style>

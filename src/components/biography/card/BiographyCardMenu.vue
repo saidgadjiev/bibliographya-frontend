@@ -34,6 +34,7 @@ import CreateReportDialog from '../../dialog/CreateReportDialog.vue'
 
 export default {
   name: 'BiographyCardMenu',
+  inheritAttrs: false,
   data () {
     return {
       fixDialogVisible: false,

@@ -15,6 +15,7 @@ import BiographyCardMenu from '../card/BiographyCardMenu'
 
 export default {
   name: 'BiographyCardTitle',
+  inheritAttrs: false,
   props: {
     firstName: {
       type: String,

@@ -23,6 +23,7 @@
 <script>
 export default {
   name: 'CommentForm',
+  inheritAttrs: false,
   data () {
     return {
       content: '',
@@ -34,8 +35,7 @@ export default {
     }
   },
   props: {
-    addComment: Function,
-    biographyId: {
+    id: {
       type: Number,
       required: true
     },
@@ -44,7 +44,8 @@ export default {
     },
     replyToComment: {
       type: Object
-    }
+    },
+    addComment: Function
   },
   methods: {
     gotoReply () {
@@ -61,7 +62,7 @@ export default {
       let that = this
 
       if (this.content !== '') {
-        this.addComment(this.biographyId, {
+        this.addComment(this.id, {
           content: this.content,
           parent: this.replyToComment
         })
