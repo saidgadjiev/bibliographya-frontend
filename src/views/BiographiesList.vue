@@ -3,14 +3,17 @@
     :infinite-load="infiniteLoad"
     :infinite-id.sync="infiniteId"
     :reset-id="resetId"
+    :delete-id="deleteId"
+    :delete-index="deleteIndex"
   >
-    <template slot="item" slot-scope="{ item }">
+    <template slot="item" slot-scope="{ item, index }">
       <biography-card2
         v-bind.sync="item"
         biography-clamp
         :biography-clamp-size="biographyClampSize"
         tree-clamp
         :tree-clamp-size="treeClampSize"
+        @biography-removed="deleteIndex = index"
       ></biography-card2>
     </template>
     <template slot="sidebar">
@@ -46,6 +49,8 @@ export default {
       biographyChannel: undefined,
       infiniteId: +new Date(),
       resetId: +new Date(),
+      deleteId: +new Date(),
+      deleteIndex: -1,
       query: 'sort=created_at,desc',
       autobiographies: undefined
     }

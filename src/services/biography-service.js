@@ -8,7 +8,8 @@ export default {
   update,
   create,
   publish,
-  unpublish
+  unpublish,
+  deleteBiography
 }
 
 function getBiography (username, filter) {
@@ -41,4 +42,8 @@ function publish (biographyId) {
 
 function unpublish (biographyId) {
   return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/unpublish')
+}
+
+function deleteBiography (biographyId) {
+  return axios.delete(process.env.REST_SERVER + 'biographies/' + biographyId)
 }

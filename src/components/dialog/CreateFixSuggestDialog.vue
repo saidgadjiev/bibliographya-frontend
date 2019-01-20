@@ -1,5 +1,6 @@
 <template>
     <v-dialog
+      :fullscreen="$vuetify.breakpoint.smAndDown"
       v-model="_visible"
       width="500"
     >

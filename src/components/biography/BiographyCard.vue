@@ -26,6 +26,7 @@ import Comments from '../comment/Comments'
 import likeService from '../../services/like-service'
 import bigraphyCommentService from '../../services/biography-comment-service'
 import BiographyCardPublishTitle from './card/BiographyCardPublishTitle'
+import AlertMessage from '../alert/AlertMessage'
 
 export default {
   name: 'biography-card',
@@ -56,6 +57,9 @@ export default {
     }
   },
   computed: {
+    _hasSlotAlert () {
+      return !!this.$slots.alert
+    },
     attrs () {
       return Object.assign({},
         this.$attrs,
@@ -94,6 +98,7 @@ export default {
     }
   },
   components: {
+    AlertMessage,
     BiographyCardPublishTitle,
     Comments,
     BiographyCardActions,

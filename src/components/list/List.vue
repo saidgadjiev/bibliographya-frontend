@@ -1,12 +1,12 @@
 <template>
-  <v-layout fill-height>
+  <v-layout>
     <v-flex v-bind="{ [`xs${rootFlex}`]: true }">
-      <v-layout row wrap justify-center infinite-wrapper fill-height>
+      <v-layout row wrap justify-center fill-height>
         <v-flex v-bind="{ [`xs${itemFlex(item)}`]: true }" v-for="(item, index) in items" :key="item.id">
           <slot name="item" v-bind:item="item" v-bind:index="index">
           </slot>
         </v-flex>
-        <infinite-loading :identifier="infiniteId" @infinite="load" :force-use-infinite-wrapper="true">
+        <infinite-loading style="width: 100%;" :identifier="infiniteId" @infinite="load">
           <template slot="spinner">
             <v-progress-circular
               :size="50"

@@ -11,7 +11,12 @@
     </v-btn>
     <v-list>
       <v-list-tile
-        @click="toBiography"
+        @click="remove"
+      >
+        <v-list-tile-title>Удалить</v-list-tile-title>
+      </v-list-tile>
+      <v-list-tile
+        @click="edit"
       >
         <v-list-tile-title>Редактировать</v-list-tile-title>
       </v-list-tile>
@@ -29,6 +34,7 @@
 </template>
 
 <script>
+import biographyService from '../../../services/biography-service'
 import CreateFixSuggestDialog from '../../dialog/CreateFixSuggestDialog.vue'
 import CreateReportDialog from '../../dialog/CreateReportDialog.vue'
 
@@ -57,7 +63,17 @@ export default {
     }
   },
   methods: {
-    toBiography () {
+    remove () {
+      let that = this
+
+      biographyService.deleteBiography(this.id)
+        .then(
+          () => {
+            that.$emit('biography-removed', that.id)
+          }
+        )
+    },
+    edit () {
       this.$router.push('/edit/biography/' + this.id)
     }
   },

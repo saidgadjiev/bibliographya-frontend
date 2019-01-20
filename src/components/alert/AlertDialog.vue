@@ -29,13 +29,21 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'AlertDialog',
+  props: {
+    types: {
+      type: Array,
+      default: function () {
+        return ['alert-success', 'alert-danger']
+      }
+    }
+  },
   computed: {
     ...mapGetters('alert', [
       'type', 'message'
     ]),
     visible: {
       get () {
-        return this.type !== null
+        return this.type !== null && this.types.indexOf(this.type) !== -1
       },
       set (val) {
         this.clear()

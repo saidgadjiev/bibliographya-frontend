@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="_show">
     <v-alert
       v-if="type === 'alert-success'"
       :value="true"
@@ -20,8 +20,6 @@
       id="alert-error"
     >
       {{ message }}
-      Изменения сохранены.
-      Новые данные будут отражены на Вашей странице.
     </v-alert>
   </div>
 </template>
@@ -30,8 +28,19 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: 'AlertSlot',
+  name: 'AlertMessage',
+  props: {
+    types: {
+      type: Array,
+      default: function () {
+        return ['alert-success', 'alert-danger']
+      }
+    }
+  },
   computed: {
+    _show () {
+      return this.type !== null && this.types.indexOf(this.type) > 0
+    },
     ...mapGetters('alert', [
       'type', 'message'
     ])
