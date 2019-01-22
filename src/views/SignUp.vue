@@ -23,9 +23,6 @@
             ></v-text-field>
             <v-text-field
               class="mt-2"
-              v-validate="'required'"
-              :error-messages="errors.collect('middleName')"
-              name="middleName"
               label="Отчество"
               type="text"
               v-model="signUpForm.middleName"
@@ -86,9 +83,6 @@ export default {
         },
         lastName: {
           required: () => 'Введите фамилию'
-        },
-        middleName: {
-          required: () => 'Введите отчество'
         },
         username: {
           required: () => 'Введите логин'

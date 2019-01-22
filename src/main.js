@@ -10,6 +10,7 @@ import VueCookie from 'vue-cookie'
 import axios from 'axios'
 import AsyncComputed from 'vue-async-computed'
 import InfiniteLoading from 'vue-infinite-loading'
+import VueSweetalert2 from 'vue-sweetalert2'
 
 import store from './store/store'
 
@@ -22,6 +23,7 @@ Vue.use(Vuetify)
 Vue.use(Vue2TouchEvents)
 Vue.use(VueCookie)
 Vue.use(AsyncComputed)
+Vue.use(VueSweetalert2)
 
 Vue.component('infinite-loading', InfiniteLoading)
 

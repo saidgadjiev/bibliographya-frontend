@@ -31,6 +31,10 @@ export const REPORT_REASON = {
   ANOTHER: 2
 }
 
+export const PLUGIN_EVENTS = {
+  ALERT: 'alert'
+}
+
 export default {
   roles
 }

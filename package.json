@@ -50,7 +50,8 @@
     "vue2-filters": "^0.4.1",
     "tinymce": "^4.9.2",
     "html-loader": "^0.5.5",
-    "@mdi/font": "3.3.92"
+    "@mdi/font": "3.3.92",
+    "vue-sweetalert2": "^1.6.4"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="_show">
+  <div id="alert">
     <v-alert
       v-if="type === 'alert-success'"
       :value="true"
@@ -26,9 +26,20 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import EventBus from '../../eventbus/eventbus'
+import {PLUGIN_EVENTS} from '../../config'
 
 export default {
   name: 'AlertMessage',
+  data () {
+    return {
+      options: {
+        duration: 300,
+        offset: -61,
+        easing: 'easeInOutCubic'
+      }
+    }
+  },
   props: {
     types: {
       type: Array,
@@ -37,10 +48,13 @@ export default {
       }
     }
   },
+  mounted () {
+    EventBus.$on(PLUGIN_EVENTS.ALERT, this.alert)
+  },
+  beforeDestroy () {
+    EventBus.$off(PLUGIN_EVENTS.ALERT)
+  },
   computed: {
-    _show () {
-      return this.type !== null && this.types.indexOf(this.type) > 0
-    },
     ...mapGetters('alert', [
       'type', 'message'
     ])
@@ -48,7 +62,16 @@ export default {
   methods: {
     ...mapActions('alert', [
       'clear'
-    ])
+    ]),
+    alert () {
+      let that = this
+
+      if (that.types.indexOf(that.type) !== -1) {
+        that.$nextTick(function () {
+          that.$vuetify.goTo('#alert', that.options)
+        })
+      }
+    }
   }
 }
 </script>

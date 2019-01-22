@@ -57,12 +57,20 @@ import 'tinymce/plugins/textcolor'
 import 'tinymce/plugins/toc'
 import 'tinymce/plugins/visualchars'
 
+import 'tinymce/skins/lightgray/skin.min.css'
+import 'tinymce/skins/lightgray/content.mobile.min.css'
+import 'tinymce/skins/lightgray/skin.mobile.min.css'
+
 export default {
   name: 'tinymce',
   props: {
     id: {
       type: String,
       required: true
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     },
     value: { default: '' }
   },
@@ -76,7 +84,7 @@ export default {
     }
   },
   mounted () {
-    this.content = this.value
+    this.content = this.value ? this.value : ''
 
     this.init()
   },
@@ -89,7 +97,7 @@ export default {
         if (this.editor !== null) {
           this.editor.setContent(newValue)
         } else {
-          this.content = newValue
+          this.content = newValue || ''
         }
       }
     },
@@ -116,6 +124,7 @@ export default {
         height: 300,
         language_url: '/static/tinymce/lang/ru.js',
         branding: false,
+        readonly: this.readonly ? 1 : 0,
         toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor ' +
           '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
           '| removeformat fontname fontsize', // this.$el.childNodes[0].setAttribute('test', 't')
@@ -170,7 +179,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  @import '../../../node_modules/tinymce/skins/lightgray/skin.min.css';
-  @import '../../../node_modules/tinymce/skins/lightgray/content.mobile.min.css';
-  @import '../../../node_modules/tinymce/skins/lightgray/skin.mobile.min.css';
 </style>

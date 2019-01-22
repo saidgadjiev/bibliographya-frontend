@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card tile>
     <biography-card-publish-title
       v-if="showPublishBlock"
       v-bind="attrs"

@@ -5,7 +5,7 @@
       @click="publish"
       class="ma-0 white--text"
       color="green darken-2"
-      :loading="loading[0]"
+      :loading="publishLoading"
     >
       Опубликовать
     </v-btn>
@@ -14,7 +14,7 @@
       @click="unpublish"
       class="ma-0 white--text"
       color="deep-purple darken-4"
-      :loading="loading[1]"
+      :loading="unpublishLoading"
     >
       Снять с публикации
     </v-btn>
@@ -30,7 +30,8 @@ export default {
   name: 'BiographyCardPublishTitle',
   data () {
     return {
-      loading: [false, false]
+      publishLoading: false,
+      unpublishLoading: false
     }
   },
   props: {
@@ -43,7 +44,7 @@ export default {
   },
   methods: {
     publish () {
-      this.loading[0] = true
+      this.publishLoading = true
       let that = this
 
       biographyService.publish(this.id)
@@ -51,18 +52,22 @@ export default {
           () => {
             that.$emit('update:publishStatus', PUBLISH_STATUS.PUBLISHED)
             that.$store.dispatch('alert/success', PUBLISHED)
-            that.loading[0] = false
+            that.publishLoading = false
           },
           e => {
             if (e.response.status === 400) {
-              that.$store.dispatch('alert/error', CANT_PUBLISH)
-              that.loading[0] = false
+              that.$swal.fire({
+                text: CANT_PUBLISH,
+                type: 'error',
+                showCloseButton: true
+              })
+              that.publishLoading = false
             }
           }
         )
     },
     unpublish () {
-      this.loading[1] = true
+      this.unpublishLoading = true
       let that = this
 
       biographyService.unpublish(this.id)
@@ -70,7 +75,7 @@ export default {
           () => {
             that.$emit('update:publishStatus', PUBLISH_STATUS.NOT_PUBLISHED)
             that.$store.dispatch('alert/success', UNPUBLISHED)
-            that.loading[1] = false
+            that.unpublishLoading = false
           }
         )
     }

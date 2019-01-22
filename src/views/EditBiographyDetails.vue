@@ -1,15 +1,11 @@
 <template>
   <v-layout row>
     <v-flex xs12>
+      <alert-message></alert-message>
       <edit-biography-card
         v-if="biography"
         :in-biography="biography"
-        v-on:update:firstName="biography.firstName = $event"
-        v-on:update:lastName="biography.lastName = $event"
-        v-on:update:middleName="biography.middleName = $event"
-        v-on:update:biography="biography.biography = $event"
-        v-on:update:lastModified="biography.lastModified = $event"
-        v-on:update:categories="biography.categories = $event"
+        v-bind.sync="biography"
       ></edit-biography-card>
     </v-flex>
   </v-layout>
@@ -18,6 +14,7 @@
 <script>
 import biographyService from '../services/biography-service'
 import EditBiographyCard from '../components/biography/EditBiographyCard.vue'
+import AlertMessage from '../components/alert/AlertMessage'
 
 export default {
   name: 'EditBiography',
@@ -41,6 +38,7 @@ export default {
       )
   },
   components: {
+    AlertMessage,
     EditBiographyCard
   }
 }
