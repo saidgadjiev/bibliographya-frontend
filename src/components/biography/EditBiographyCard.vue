@@ -185,7 +185,9 @@ export default {
     })
   },
   mounted () {
-    Object.assign(this.biographyForm, this.inBiography)
+    if (this.mode === 'edit') {
+      Object.assign(this.biographyForm, this.inBiography)
+    }
   },
   methods: {
     fioDiff () {
@@ -228,13 +230,23 @@ export default {
       }
       return diffText
     },
-    updateParent () {
-      this.$emit('update:firstName', this.biographyForm.firstName)
-      this.$emit('update:lastName', this.biographyForm.lastName)
-      this.$emit('update:middleName', this.biographyForm.middleName)
-      this.$emit('update:biography', this.biographyForm.biography)
-      this.$emit('update:lastModified', this.biographyForm.lastModified)
-      this.$emit('update:categories', this.biographyForm.categories)
+    clearBiographyForm () {
+      Object.assign(this.biographyForm, {
+        firstName: '',
+        lastName: '',
+        middleName: '',
+        biography: '',
+        lastModified: undefined,
+        categories: []
+      })
+    },
+    updateParent (data) {
+      this.$emit('update:firstName', data.firstName)
+      this.$emit('update:lastName', data.lastName)
+      this.$emit('update:middleName', data.middleName)
+      this.$emit('update:biography', data.biography)
+      this.$emit('update:lastModified', data.lastModified)
+      this.$emit('update:categories', data.categories)
     },
     doSave () {
       let that = this
@@ -268,19 +280,19 @@ export default {
             })
               .then(
                 response => {
-                  that.updateParent()
+                  that.updateParent(response.data)
+                  Object.assign(that.biographyForm, that.inBiography)
                   that.$store.dispatch('alert/success', 'Изменения сохранены.')
 
-                  that.biographyForm.lastModified = response.data.lastModified
                   that.conflict = false
                   that.myBiographyVersion = {}
                   that.saveLoading = false
                 },
                 e => {
                   if (e.response.status === 409) {
-                    Object.assign(that.myBiographyVersion, that.biography)
+                    Object.assign(that.myBiographyVersion, that.biographyForm)
 
-                    that.biography = e.response.data
+                    Object.assign(that.biographyForm, e.response.data)
                     that.conflict = true
                     that.fioConflict = that.fioDiff()
                     that.biographyConflict = that.biographyDiff()
@@ -302,13 +314,11 @@ export default {
               addedCategories: that.biographyForm.categories
             })
               .then(
-                response => {
-                  that.biographyForm = response.data
-                  that.updateParent()
-
-                  Object.assign(that.biographyForm, that.inBiography)
+                () => {
+                  that.clearBiographyForm()
                   that.$store.dispatch('alert/success', 'Биография создана. Вы можете увидеть ее в разделе Созданные мной.')
                   that.saveLoading = false
+                  that.$validator.reset()
                 },
                 e => {
                   console.log(e)

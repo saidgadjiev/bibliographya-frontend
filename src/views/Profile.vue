@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import BiographyCard from '../components/biography/BiographyCard'
 import biographyService from '../services/biography-service'
 import AlertMessage from '../components/alert/AlertMessage'
@@ -21,6 +21,11 @@ export default {
     return {
       biography: undefined
     }
+  },
+  methods: {
+    ...mapActions('alert', [
+      'clear'
+    ])
   },
   computed: {
     ...mapGetters([
@@ -39,6 +44,9 @@ export default {
           console.log(e)
         }
       )
+  },
+  beforeDestroy () {
+    this.clear()
   },
   components: {
     AlertDialog,

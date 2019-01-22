@@ -37,6 +37,9 @@ export default {
         }
       )
   },
+  beforeDestroy () {
+    this.clear()
+  },
   components: {
     AlertMessage,
     EditBiographyCard

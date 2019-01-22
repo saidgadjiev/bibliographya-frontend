@@ -18,7 +18,7 @@ import { mapGetters } from 'vuex'
 import ModerationUserButton from './ModerationUserButton'
 
 export default {
-  name: 'BiographyModerationCardActions',
+  name: 'BiographyCardUserActions',
   computed: {
     ...mapGetters([
       'getUser'

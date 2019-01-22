@@ -5,7 +5,7 @@ import CategoryBiographiesList from './views/CategoryBiographiesList'
 import BiographiesList from './views/BiographiesList'
 import Profile from './views/Profile.vue'
 import SignIn from './views/SignIn.vue'
-import SignUp from './views/SignUp.vue'
+import AdminSignIn from './views/AdminSignIn'
 import BiographyDetails from './views/BiographyDetails.vue'
 import EditProfile from './views/EditProfile'
 import EditBiography from './views/EditBiographyDetails'
@@ -128,15 +128,15 @@ let router = new Router({
       component: SignIn
     },
     {
+      path: '/admin',
+      name: 'admin',
+      component: AdminSignIn
+    },
+    {
       path: '/:providerId/callback',
       name: 'oauthcallback',
       component: OAuthCallback,
       props: (route) => ({ providerId: route.params.providerId })
-    },
-    {
-      path: '/signUp',
-      name: 'signUp',
-      component: SignUp
     },
     {
       path: '/403',

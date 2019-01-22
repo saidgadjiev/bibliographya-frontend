@@ -20,8 +20,10 @@ function getBiographyById (id) {
   return axios.get(process.env.REST_SERVER + 'biographies/' + id)
 }
 
-function getBiographies (limit, offset, query) {
-  return axios.get(process.env.REST_SERVER + 'biographies?limit=' + limit + '&offset=' + offset + (query ? '&' + query : ''))
+function getBiographies (cancelToken, limit, offset, query) {
+  return axios.get(process.env.REST_SERVER + 'biographies?limit=' + limit + '&offset=' + offset + (query ? '&' + query : ''), {
+    cancelToken: cancelToken
+  })
 }
 
 function getMyBiographies (limit, offset) {

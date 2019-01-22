@@ -1,14 +1,8 @@
 <template>
   <v-layout row>
     <v-flex xs12>
+      <alert-message :types="['alert-success']"></alert-message>
       <edit-biography-card
-        :in-biography="{
-          firstName: '',
-          lastName: '',
-          middleName: '',
-          biography: '',
-          lastModified: ''
-        }"
         mode="create"
       ></edit-biography-card>
     </v-flex>
@@ -17,9 +11,14 @@
 
 <script>
 import EditBiographyCard from '../components/biography/EditBiographyCard.vue'
+import AlertMessage from '../components/alert/AlertMessage'
 export default {
   name: 'CreateBiographyDetails',
+  beforeDestroy () {
+    this.clear()
+  },
   components: {
+    AlertMessage,
     EditBiographyCard
   }
 }

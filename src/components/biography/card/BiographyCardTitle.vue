@@ -5,8 +5,8 @@
     </span>
     <h2 class="word-break">{{ fullName }}
     </h2>
-    <v-icon small color="blue darken-3" class="pl-1">mdi-check-decagram</v-icon>
-    <biography-card-menu v-bind="$attrs"/>
+    <v-icon v-if="isAutobiography" small color="blue darken-3" class="pl-1">mdi-check-decagram</v-icon>
+    <biography-card-menu v-bind="$attrs" v-on="$listeners"/>
   </v-card-title>
 </template>
 
@@ -17,6 +17,7 @@ export default {
   name: 'BiographyCardTitle',
   inheritAttrs: false,
   props: {
+    isAutobiography: Boolean,
     firstName: {
       type: String,
       default: ''

@@ -1,10 +1,10 @@
 <template>
   <v-card-text>
     <div>
-      <div v-if="moderatorBiography">
+      <div v-if="_showModerator">
     <span>
       Исполнитель:&nbsp;
-      <a :href="_biographyLink">{{ _moderatorFullName }}</a>
+      <router-link class="bibliographya-a" :to="_biographyLink">{{ _moderatorFullName }}</router-link>
     </span>
       </div>
       <div>
@@ -27,6 +27,10 @@ import { MODERATION_STATUS } from '../../../config'
 export default {
   name: 'BiographyCardTitleModeration',
   props: {
+    showModerator: {
+      type: Boolean,
+      default: false
+    },
     moderatorBiography: {
       type: Object
     },
@@ -38,6 +42,9 @@ export default {
     }
   },
   computed: {
+    _showModerator () {
+      return this.moderatorBiography && this.showModerator
+    },
     _moderatorFullName () {
       return this.moderatorBiography.lastName + ' ' + this.moderatorBiography.firstName
     },

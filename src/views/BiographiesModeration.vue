@@ -3,12 +3,14 @@
     :infinite-id.sync="infiniteId"
     :reset-id="resetId"
     :infinite-load="infiniteLoad"
-    :filter="filter"
   >
     <template slot="item" slot-scope="{ item }">
-      <biography-moderation-card
+      <biography-card
+        show-moderation-block
+        show-moderation-actions
+        show-moderator
         v-bind.sync="item"
-      ></biography-moderation-card>
+      ></biography-card>
     </template>
     <template slot="sidebar">
       <nav-bar
@@ -28,6 +30,13 @@
         @rejected="applyRejectedFilter"
       ></nav-list>
     </template>
+    <template slot="no-results">
+      <v-card>
+        <v-card-text>
+          Нет данных
+        </v-card-text>
+      </v-card>
+    </template>
   </list>
 </template>
 
@@ -38,8 +47,8 @@ import NavList from '../components/moderation/nav/NavList.vue'
 import AlertDialog from '../components/alert/AlertDialog'
 import { mapGetters } from 'vuex'
 import biographyModerationService from '../services/biography-moderation-service'
-import BiographyModerationCard from '../components/biography/BiographyModerationCard.vue'
 import List from '../components/list/List'
+import BiographyCard from '../components/biography/BiographyCard'
 
 export default {
   data () {
@@ -83,15 +92,15 @@ export default {
       this.filter = 'moderator_id==' + this.getUser.id
       this.resetList()
     },
-    infiniteLoad (limit, offset, filter) {
-      return biographyModerationService.getBiographies(limit, offset, filter, 'sort=created_at,desc')
+    infiniteLoad (limit, offset) {
+      return biographyModerationService.getBiographies(limit, offset, this.filter, 'sort=created_at,desc')
     }
   },
   components: {
+    BiographyCard,
     NavBar,
     NavList,
     AlertDialog,
-    BiographyModerationCard,
     List
   }
 }

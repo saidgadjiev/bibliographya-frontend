@@ -30,6 +30,14 @@
         @autobiographies="applyAutobiographiesFilter"
       ></side-list>
     </template>
+    <template slot="no-results">
+      <v-card>
+        <v-card-text>
+          <h4>Еще нет опубликованных биографий. Опубликуйте свою биографию и оно будет первым в списке.</h4>
+        </v-card-text>
+        <biography-card-publish-title></biography-card-publish-title>
+      </v-card>
+    </template>
   </list>
 </template>
 
@@ -40,6 +48,7 @@ import BiographyCard2 from '../components/biography/BiographyCard'
 import CategoryCard from '../components/category/CategoryCard'
 import Sidebar from '../components/biography/sidebar/Sidebar'
 import SideList from '../components/biography/sidebar/SideList'
+import BiographyCardPublishTitle from '../components/biography/card/BiographyCardPublishTitle'
 
 export default {
   data () {
@@ -72,14 +81,14 @@ export default {
       }
       ++this.resetId
     },
-    infiniteLoad (limit, offset) {
+    infiniteLoad (limit, offset, cancelToken) {
       let query = this.query
 
       if (this.autobiographies) {
         query += '&autobiographies=true'
       }
 
-      return biographyService.getBiographies(limit, offset, query)
+      return biographyService.getBiographies(cancelToken, limit, offset, query)
         .then(
           response => {
             if (response.status === 200) {
@@ -104,6 +113,7 @@ export default {
     }
   },
   components: {
+    BiographyCardPublishTitle,
     SideList,
     Sidebar,
     List,

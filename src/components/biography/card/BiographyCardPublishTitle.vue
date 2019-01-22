@@ -1,5 +1,5 @@
 <template>
-  <v-card-title>
+  <v-card-actions>
     <v-btn
       v-if="publishStatus === 1"
       @click="publish"
@@ -18,7 +18,7 @@
     >
       Снять с публикации
     </v-btn>
-  </v-card-title>
+  </v-card-actions>
 </template>
 
 <script>
@@ -28,6 +28,7 @@ import biographyService from '../../../services/biography-service'
 
 export default {
   name: 'BiographyCardPublishTitle',
+  inheritAttrs: false,
   data () {
     return {
       publishLoading: false,

@@ -1,15 +1,18 @@
 <template>
   <v-card tile>
+    <biography-card-title-moderation v-if="showModerationBlock" class="pb-0" v-bind="$attrs"/>
     <biography-card-publish-title
       v-if="showPublishBlock"
       v-bind="attrs"
       class="pb-0"
       v-on="$listeners"/>
-    <biography-card-title v-bind="attrs"/>
+    <biography-card-title v-bind="attrs" v-on="$listeners"/>
     <v-divider></v-divider>
     <biography-card-text v-bind="attrs"/>
     <v-divider></v-divider>
     <biography-card-actions v-bind="attrs" v-on="$listeners"/>
+    <biography-card-user-actions v-if="showUserActions" class="pt-0" v-bind="$attrs" v-on="$listeners"/>
+    <biography-moderation-card-actions v-if="showModerationActions" v-bind="$attrs" v-on="$listeners"/>
     <comments
       v-if="showComments"
       v-bind="attrs"
@@ -27,6 +30,9 @@ import likeService from '../../services/like-service'
 import bigraphyCommentService from '../../services/biography-comment-service'
 import BiographyCardPublishTitle from './card/BiographyCardPublishTitle'
 import AlertMessage from '../alert/AlertMessage'
+import BiographyCardUserActions from './card/BiographyCardUserActions'
+import BiographyCardTitleModeration from './card/BiographyCardTitleModeration'
+import BiographyModerationCardActions from './card/BiographyModerationCardActions'
 
 export default {
   name: 'biography-card',
@@ -47,7 +53,19 @@ export default {
     commentsCount: {
       type: Number
     },
+    showModerationActions: {
+      type: Boolean,
+      default: false
+    },
+    showUserActions: {
+      type: Boolean,
+      default: false
+    },
     showComments: {
+      type: Boolean,
+      default: false
+    },
+    showModerationBlock: {
       type: Boolean,
       default: false
     },
@@ -98,6 +116,9 @@ export default {
     }
   },
   components: {
+    BiographyModerationCardActions,
+    BiographyCardTitleModeration,
+    BiographyCardUserActions,
     AlertMessage,
     BiographyCardPublishTitle,
     Comments,
