@@ -6,6 +6,9 @@
     :delete-id="deleteId"
     :delete-index="deleteIndex"
   >
+    <template v-show="category" slot="header">
+      <category-card :category="category" :height="200" :disable-link="true"/>
+    </template>
     <template slot="item" slot-scope="{ item, index }">
       <biography-card2
         v-bind.sync="item"
@@ -33,9 +36,8 @@
     <template slot="no-results">
       <v-card>
         <v-card-text>
-          <h4>Еще нет опубликованных биографий. Опубликуйте свою биографию и оно будет первым в списке.</h4>
+          <h4>Биографий не найдено</h4>
         </v-card-text>
-        <biography-card-publish-title></biography-card-publish-title>
       </v-card>
     </template>
   </list>
@@ -44,6 +46,7 @@
 <script>
 import List from '../components/list/List'
 import biographyService from '../services/biography-service'
+import biographyCategoryService from '../services/biography-category-service'
 import BiographyCard2 from '../components/biography/BiographyCard'
 import CategoryCard from '../components/category/CategoryCard'
 import Sidebar from '../components/biography/sidebar/Sidebar'
@@ -61,10 +64,28 @@ export default {
       deleteId: +new Date(),
       deleteIndex: -1,
       query: 'sort=created_at,desc',
-      autobiographies: undefined
+      autobiographies: undefined,
+      category: undefined
+    }
+  },
+  props: {
+    categoryName: {
+      type: String
     }
   },
   methods: {
+    loadCategory () {
+      let that = this
+
+      if (this.categoryName) {
+        biographyCategoryService.getCategory(this.categoryName)
+          .then(
+            response => {
+              that.category = response.data
+            }
+          )
+      }
+    },
     applyNewFilter () {
       ++this.resetId
       this.query = 'sort=created_at,desc'
@@ -88,18 +109,33 @@ export default {
         query += '&autobiographies=true'
       }
 
-      return biographyService.getBiographies(cancelToken, limit, offset, query)
-        .then(
-          response => {
-            if (response.status === 200) {
-              response.data.content.forEach(function (val) {
-                val.flex = 12
-              })
-            }
+      if (this.categoryName) {
+        return biographyCategoryService.getBiographies(cancelToken, this.categoryName, limit, offset, query)
+          .then(
+            response => {
+              if (response.status === 200) {
+                response.data.content.forEach(function (val) {
+                  val.flex = 12
+                })
+              }
 
-            return response
-          }
-        )
+              return response
+            }
+          )
+      } else {
+        return biographyService.getBiographies(cancelToken, limit, offset, query)
+          .then(
+            response => {
+              if (response.status === 200) {
+                response.data.content.forEach(function (val) {
+                  val.flex = 12
+                })
+              }
+
+              return response
+            }
+          )
+      }
     }
   },
   computed: {
@@ -107,8 +143,12 @@ export default {
       return this.$vuetify.breakpoint.smAndDown
     }
   },
+  created () {
+    this.loadCategory()
+  },
   watch: {
     '$route' (to, from) {
+      this.loadCategory()
       this.infiniteId += 1
     }
   },

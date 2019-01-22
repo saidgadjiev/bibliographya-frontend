@@ -1,7 +1,10 @@
 <template>
-  <v-layout>
+  <v-layout row wrap>
+    <v-flex xs12 v-if="_hasHeaderSlot">
+      <slot name="header"></slot>
+    </v-flex>
     <v-flex v-bind="{ [`xs${rootFlex}`]: true }">
-      <v-layout row wrap justify-center fill-height>
+      <v-layout row wrap justify-center>
         <v-flex v-bind="{ [`xs${itemFlex(item)}`]: true }" v-for="(item, index) in items" :key="item.id">
           <slot name="item" v-bind:item="item" v-bind:index="index">
           </slot>
@@ -142,6 +145,9 @@ export default {
       return {
         'display': 'none'
       }
+    },
+    _hasHeaderSlot () {
+      return !!this.$slots.header
     },
     hasFooterSlot () {
       return !!this.$slots.footer

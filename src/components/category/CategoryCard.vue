@@ -1,5 +1,5 @@
 <template>
-  <v-card :to="disableLink ? undefined : '/category/' + category.name" :height="height">
+  <v-card v-if="category" :to="disableLink ? undefined : '/category/' + category.name" :height="height">
     <v-img
       :height="height"
       :src="imageSrc"
@@ -49,8 +49,7 @@ export default {
       default: false
     },
     category: {
-      type: Object,
-      required: true
+      type: Object
     }
   },
   computed: {
