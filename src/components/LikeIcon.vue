@@ -52,6 +52,8 @@ export default {
     clickLike () {
       if (!this.isAuthenticated) {
         this.$router.push('/signIn')
+
+        return
       }
       this.likeLoading = true
       let that = this
