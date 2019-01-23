@@ -51,7 +51,7 @@ axios.interceptors.request.use(function (request) {
 
 axios.interceptors.response.use(function (response) {
   if (response.status === 401) {
-    router.push('/401')
+    router.push('/signIn')
   } else if (response.status === 403) {
     router.push('/403')
   } else {
@@ -64,8 +64,5 @@ axios.interceptors.response.use(function (response) {
 new Vue({
   router,
   store,
-  render: h => h(App),
-  mounted () {
-    this.$store.dispatch('getAccount')
-  }
+  render: h => h(App)
 }).$mount('#app')

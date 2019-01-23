@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'CommentForm',
   inheritAttrs: false,
@@ -47,6 +49,11 @@ export default {
     },
     addComment: Function
   },
+  computed: {
+    ...mapGetters([
+      'isAuthenticated'
+    ])
+  },
   methods: {
     gotoReply () {
       this.$vuetify.goTo('#c' + this.replyToComment.id, this.options)
@@ -59,6 +66,11 @@ export default {
       }, 2000)
     },
     submit () {
+      if (!this.isAuthenticated) {
+        this.$router.push('/signIn')
+
+        return
+      }
       let that = this
 
       if (this.content !== '') {

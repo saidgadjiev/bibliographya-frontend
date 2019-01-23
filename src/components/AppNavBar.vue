@@ -36,7 +36,7 @@
             <v-list-tile-title>Биографии</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile to="/create/biography">
+        <v-list-tile to="/create/biography" v-if="isAuthenticated">
           <v-list-tile-action>
             <v-icon size="24">fas fa-plus</v-icon>
           </v-list-tile-action>
@@ -44,7 +44,7 @@
             <v-list-tile-title>Создать биографию</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile to="/created">
+        <v-list-tile to="/created" v-if="isAuthenticated">
           <v-list-tile-action>
             <v-icon size="24">fas fa-list</v-icon>
           </v-list-tile-action>
@@ -61,7 +61,7 @@
             <v-list-tile-title>Жалобы</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>-->
-        <v-list dense subheader>
+        <v-list dense subheader v-if="_showModeratorBlock">
           <v-subheader>Модерация</v-subheader>
           <v-list-tile to="/moderation">
             <v-list-tile-action>
@@ -80,7 +80,7 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
-        <v-list dense subheader>
+        <v-list dense subheader v-if="_showAdminBlock">
           <v-subheader>Администрирование</v-subheader>
           <v-list-tile to="/users">
             <v-list-tile-action>
@@ -93,7 +93,7 @@
         </v-list>
       </v-list>
     <v-list v-if="$vuetify.breakpoint.smAndDown">
-      <v-list-tile v-if="isAuthenticated">
+      <v-list-tile v-if="isAuthenticated" @click="signOut">
         <v-list-tile-action>
           <v-icon>fas fa-sign-out-alt</v-icon>
         </v-list-tile-action>
@@ -101,7 +101,7 @@
           <v-list-tile-title>Выход</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile v-else>
+      <v-list-tile v-else to="/signIn">
         <v-list-tile-action>
           <v-icon>fas fa-sign-in-alt</v-icon>
         </v-list-tile-action>
@@ -115,6 +115,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import {ROLES} from '../config'
 
 export default {
   name: 'NavBar',
@@ -127,8 +128,15 @@ export default {
   computed: {
     ...mapGetters([
       'getUser',
-      'isAuthenticated'
+      'isAuthenticated',
+      'isAuthorized'
     ]),
+    _showModeratorBlock () {
+      return this.isAuthorized([ROLES.ROLE_MODERATOR])
+    },
+    _showAdminBlock () {
+      return this.isAuthorized([ROLES.ROLE_ADMIN])
+    },
     _drawer: {
       get () {
         return this.drawer
@@ -139,8 +147,16 @@ export default {
     }
   },
   methods: {
-    goto (link) {
-      this.$router.push(link)
+    signOut () {
+      this.$store.dispatch('signOut')
+        .then(
+          () => {
+            this.$router.push('/signIn')
+          },
+          e => {
+            console.log(e)
+          }
+        )
     }
   }
 }

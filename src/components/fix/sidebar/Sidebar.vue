@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-    class="md-drawer"
+    class="sidebar"
     fixed
   >
     <side-list v-on="$listeners"></side-list>

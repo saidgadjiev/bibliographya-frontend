@@ -23,7 +23,7 @@ export default {
     height: auto !important;
     top: auto !important;
     z-index: inherit;
-    width: 240px !important;
+    width: 230px !important;
     left: unset !important;
   }
 </style>

@@ -7,6 +7,15 @@
   left: unset !important;
 }
 
+.sidebar {
+  height: auto !important;
+  top: auto !important;
+  z-index: inherit;
+  width: 230px !important;
+  left: unset !important;
+  background-color: inherit !important;
+}
+
 .bibliographya-a {
   color: #007bff;
   text-decoration: none;

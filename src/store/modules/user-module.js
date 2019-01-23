@@ -1,6 +1,19 @@
 import authService from '../../services/auth-service'
 
-const state = { status: { signedIn: false }, user: {}, roles: [] }
+export const SIGN_IN_STATUS = {
+  NOT_SIGNED_IN: 0,
+  SIGNING_IN: 1,
+  SIGNED_IN: 2,
+  SIGN_IN_FAILURE: 3,
+  SIGNED_OUT: 4
+}
+
+export const SIGN_UP_STATUS = {
+  SIGNING_UP: 0,
+  SIGNED_UP: 1
+}
+
+const state = { status: { notSignedIn: true }, user: {}, roles: [] }
 
 const mutations = {
   signInSuccess (state, payload) {
@@ -8,7 +21,7 @@ const mutations = {
     state.user = payload
   },
   signOutSuccess (state) {
-    state.status = { signedIn: false }
+    state.status = { signedOut: true }
     state.user = {}
     state.roles = {}
   },
@@ -16,7 +29,7 @@ const mutations = {
     state.status = { signingIn: true }
   },
   signInFailure (state) {
-    state.status = {}
+    state.status = { signInFailure: true }
     state.user = {}
     state.roles = {}
   },
@@ -96,19 +109,26 @@ const actions = {
       )
   },
   getAccount ({ dispatch, commit }) {
+    commit('signInRequest')
+
     authService.getAccount()
       .then(
         accountResponse => {
           commit('signInSuccess', accountResponse.data)
         },
         e => {
-          console.log(e)
+          commit('signUpFailure')
         }
       )
   }
 }
 
 const getters = {
+  watchStatus: state => {
+    return function () {
+      return state.status
+    }
+  },
   status: state => {
     return state.status
   },
@@ -127,7 +147,7 @@ const getters = {
     }
     let isAuthorized = false
 
-    state.roles.forEach(function (authorizedRole) {
+    roles.forEach(function (authorizedRole) {
       if (isAuthorized) {
         return
       }

@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-    class="md-drawer"
+    class="sidebar"
     fixed
   >
     <side-list v-on="$listeners"/>
@@ -21,7 +21,7 @@ export default {
     height: auto !important;
     top: auto !important;
     z-index: inherit;
-    width: 240px !important;
+    width: 230px !important;
     left: unset !important;
     background-color: inherit !important;
   }

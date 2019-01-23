@@ -1,7 +1,8 @@
-const roles = {
+export const ROLES = {
   ALL: '*',
   ROLE_ADMIN: 'ROLE_ADMIN',
-  ROLE_USER: 'ROLE_USER'
+  ROLE_USER: 'ROLE_USER',
+  ROLE_MODERATOR: 'ROLE_MODERATOR'
 }
 
 export const MODERATION_STATUS = {
@@ -36,5 +37,5 @@ export const PLUGIN_EVENTS = {
 }
 
 export default {
-  roles
+  ROLES
 }

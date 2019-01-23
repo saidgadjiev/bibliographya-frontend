@@ -6,7 +6,7 @@
     :delete-id="deleteId"
     :delete-index="deleteIndex"
   >
-    <template v-show="category" slot="header">
+    <template v-if="categoryName" slot="header">
       <category-card :category="category" :height="200" :disable-link="true"/>
     </template>
     <template slot="item" slot-scope="{ item, index }">

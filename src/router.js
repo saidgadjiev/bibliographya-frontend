@@ -17,8 +17,52 @@ import UsersList from './views/UsersList'
 import store from './store/store'
 import error403 from './components/error/403'
 import error404 from './components/error/404'
+import { ROLES } from './config'
+import biographyService from './services/biography-service'
 
 Vue.use(Router)
+
+const requireAuth = function (to, from, next) {
+  function proceed () {
+    let meta = to.meta
+
+    if (meta.loginRequired && !store.getters.isAuthenticated) {
+      next('/signIn')
+
+      return
+    }
+    if (meta.roles && !store.getters.isAuthorized(meta.roles)) {
+      next('/403')
+      return
+    }
+    if (meta.expression) {
+      meta.expression(to, from, next)
+    } else {
+      next()
+    }
+  }
+
+  if (store.getters.status.notSignedIn) {
+    store.dispatch('getAccount')
+    store.watch(store.getters.watchStatus, function () {
+      if (!store.getters.status.notSignedIn) {
+        proceed()
+      }
+    })
+  } else {
+    proceed()
+  }
+}
+
+const ifNotAuthenticated = function (to, from, next) {
+  if (store.getters.isAuthenticated) {
+    next(false)
+
+    return
+  }
+
+  next()
+}
 
 let router = new Router({
   mode: 'history',
@@ -52,71 +96,83 @@ let router = new Router({
       path: '/edit/profile',
       name: 'editProfile',
       component: EditProfile,
+      beforeEnter: requireAuth,
       meta: {
-        loginRequired: true,
-        expression: function (to) {
-          console.log(to)
-        }
+        loginRequired: true
       }
     },
     {
       path: '/create/biography',
       name: 'createBiography',
-      component: CreateBiographyDetails
+      component: CreateBiographyDetails,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true
+      }
     },
     {
       path: '/created',
       name: 'createdByMe',
-      component: CreatedByMeBiographies
+      component: CreatedByMeBiographies,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true
+      }
     },
     {
       path: '/moderation',
       name: 'moderation',
-      component: BiographiesModeration
+      component: BiographiesModeration,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_MODERATOR]
+      }
     },
     {
       path: '/users',
       name: 'users',
-      component: UsersList
+      component: UsersList,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_ADMIN]
+      }
     },
     {
       path: '/fixes',
       name: 'fixes',
-      component: BiographyFixesList
+      component: BiographyFixesList,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_MODERATOR]
+      }
     },
     {
       path: '/edit/biography/:id',
       name: 'editBiography',
       component: EditBiography,
-      props: (route) => ({ biographyId: parseInt(route.params.id) })
-      /* async beforeEnter (to, from, next) {
-        if (!store.getters.isAuthenticated) {
-          next('/signIn')
-
-          return
-        }
-        if (!store.getters.isAuthorized(settings.roles.ROLE_ADMIN)) {
-          let biography = await biographyService.getBiographyById(to.params.id)
+      props: (route) => ({ biographyId: parseInt(route.params.id) }),
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_MODERATOR],
+        expression: function (to, from, next) {
+          biographyService.canEdit(to.params.id)
             .then(
-              response => {
-                return response.data
+              () => {
+                next()
               }
             )
-
-          if (biography.creatorName !== store.getters.getUser.name) {
-            next('/403')
-
-            return
-          }
         }
-
-        next()
-      } */
+      }
     },
     {
       path: '/profile',
       name: 'profile',
       component: Profile,
+      beforeEnter: requireAuth,
       meta: {
         loginRequired: true
       }
@@ -124,12 +180,14 @@ let router = new Router({
     {
       path: '/signIn',
       name: 'signIn',
-      component: SignIn
+      component: SignIn,
+      beforeEnter: ifNotAuthenticated
     },
     {
       path: '/admin',
       name: 'admin',
-      component: AdminSignIn
+      component: AdminSignIn,
+      beforeEnter: ifNotAuthenticated
     },
     {
       path: '/:providerId/callback',
@@ -148,33 +206,6 @@ let router = new Router({
       component: error404
     }
   ]
-})
-
-router.beforeEach((to, from, next) => {
-  let meta = to.meta
-
-  if (meta.loginRequired && !store.getters.isAuthenticated) {
-    next('/signIn')
-
-    return
-  }
-  if ((to.path === '/signIn' || to.path === 'signUp') && store.getters.isAuthenticated) {
-    if (from.name === undefined) {
-      next('/')
-    } else {
-      next(false)
-    }
-
-    return
-  }
-  if (meta.expression) {
-    if (!meta.expression(to)) {
-      next(false)
-      return
-    }
-  }
-
-  next()
 })
 
 export default router

@@ -17,10 +17,10 @@
         </div>
         <v-spacer></v-spacer>
         <div v-if="hover">
-          <v-icon small @click="clickEdit" v-if="!edit">
+          <v-icon v-if="_showEdit" small @click="clickEdit">
             mdi-pencil
           </v-icon>
-          <v-icon small @click="doDeleted" class="ml-1">
+          <v-icon v-if="_showRemove" small @click="doDeleted" class="ml-1">
             fa fa-times
           </v-icon>
         </div>
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import {ROLES} from '../../config'
 import biographyCommentService from '../../services/biography-comment-service'
 import EditComment from './EditComment'
 import { mapGetters } from 'vuex'
@@ -69,6 +70,7 @@ export default {
     }
   },
   props: {
+    creatorId: Number,
     comment: {
       required: true,
       type: Object
@@ -79,9 +81,31 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getUser'
+      'getUser',
+      'isAuthenticated',
+      'isAuthorized'
     ]),
-    isMyComment () {
+    _showEdit () {
+      if (this.edit) {
+        return false
+      }
+      if (!this.isAuthenticated) {
+        return false
+      }
+
+      return this.getUser.id === this.comment.userId
+    },
+    _showRemove () {
+      if (!this.isAuthenticated) {
+        return false
+      }
+      if (this.getUser.id === this.creatorId) {
+        return true
+      }
+      if (this.isAuthorized([ROLES.ROLE_MODERATOR])) {
+        return true
+      }
+
       return this.getUser.id === this.comment.userId
     },
     getTimeDiff () {

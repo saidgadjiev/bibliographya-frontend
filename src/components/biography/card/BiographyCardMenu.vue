@@ -9,19 +9,21 @@
     >
       <v-icon color="blue darken-3">{{ _icon }}</v-icon>
     </v-btn>
-    <v-list>
+    <v-list >
       <v-list-tile
+        v-if="_showEditDelete"
         @click="remove"
       >
         <v-list-tile-title>Удалить</v-list-tile-title>
       </v-list-tile>
       <v-list-tile
+        v-if="_showEditDelete"
         @click="edit"
       >
         <v-list-tile-title>Редактировать</v-list-tile-title>
       </v-list-tile>
       <v-list-tile
-        @click="fixDialogVisible = true"
+        @click="suggestFix"
       >
         <v-list-tile-title>Предложить исправление</v-list-tile-title>
       </v-list-tile>
@@ -34,6 +36,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import {ROLES} from '../../../config'
 import biographyService from '../../../services/biography-service'
 import CreateFixSuggestDialog from '../../dialog/CreateFixSuggestDialog.vue'
 import CreateReportDialog from '../../dialog/CreateReportDialog.vue'
@@ -51,9 +55,30 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    creatorId: {
+      type: Number
     }
   },
   computed: {
+    ...mapGetters([
+      'getUser',
+      'isAuthenticated',
+      'isAuthorized'
+    ]),
+    _showEditDelete () {
+      if (!this.isAuthenticated) {
+        return false
+      }
+      if (this.isAuthorized([ROLES.ROLE_MODERATOR])) {
+        return true
+      }
+      if (this.getUser.id === this.creatorId) {
+        return true
+      }
+
+      return false
+    },
     _icon () {
       if (this.$vuetify.breakpoint.mdAndUp) {
         return 'fas fa-angle-down'
@@ -63,6 +88,13 @@ export default {
     }
   },
   methods: {
+    suggestFix () {
+      if (!this.isAuthenticated) {
+        this.$router.push('/signIn')
+      }
+
+      this.fixDialogVisible = true
+    },
     remove () {
       let that = this
 
