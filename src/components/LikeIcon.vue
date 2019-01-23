@@ -1,11 +1,14 @@
 <template>
-    <a tabindex @click="clickLike" style="text-decoration: none">
-      <v-icon color="blue darken-1">{{ icon }}</v-icon>
-      <span style="font-size: 18px">{{ _animatedLikesCount }}</span>
-    </a>
+  <div class="d-flex align-center">
+    <v-btn @click="clickLike" icon flat color="blue darken-1" :loading="likeLoading" :disabled="likeLoading">
+      <v-icon >{{ icon }}</v-icon>
+    </v-btn>
+    <span style="font-size: 18px; color: #007bff">{{ _animatedLikesCount }}</span>
+  </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { TweenLite } from 'gsap'
 
 export default {
@@ -13,7 +16,8 @@ export default {
   inheritAttrs: false,
   data () {
     return {
-      animatedLikesCount: 0
+      animatedLikesCount: 0,
+      likeLoading: false
     }
   },
   props: {
@@ -31,6 +35,9 @@ export default {
     unlike: Function
   },
   computed: {
+    ...mapGetters([
+      'isAuthenticated'
+    ]),
     _animatedLikesCount () {
       return this.animatedLikesCount
     },
@@ -43,13 +50,39 @@ export default {
   },
   methods: {
     clickLike () {
+      if (!this.isAuthenticated) {
+        this.$router.push('/signIn')
+      }
+      this.likeLoading = true
+      let that = this
+
       if (this.liked) {
         this.unlike(this.id)
+          .then(
+            () => {
+              this.$emit('update:likesCount', this.likesCount + (this.liked ? -1 : 1))
+              this.$emit('update:liked', !this.liked)
+              that.likeLoading = false
+            },
+            e => {
+              console.log(e)
+              that.likeLoading = false
+            }
+          )
       } else {
         this.like(this.id)
+          .then(
+            () => {
+              this.$emit('update:likesCount', this.likesCount + (this.liked ? -1 : 1))
+              this.$emit('update:liked', !this.liked)
+              that.likeLoading = false
+            },
+            e => {
+              console.log(e)
+              that.likeLoading = false
+            }
+          )
       }
-      this.$emit('update:likesCount', this.likesCount + (this.liked ? -1 : 1))
-      this.$emit('update:liked', !this.liked)
     }
   },
   watch: {

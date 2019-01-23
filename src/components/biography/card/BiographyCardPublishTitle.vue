@@ -6,6 +6,7 @@
       class="ma-0 white--text"
       color="green darken-2"
       :loading="publishLoading"
+      :disabled="publishLoading"
     >
       Опубликовать
     </v-btn>
@@ -15,6 +16,7 @@
       class="ma-0 white--text"
       color="deep-purple darken-4"
       :loading="unpublishLoading"
+      :disabled="unpublishLoading"
     >
       Снять с публикации
     </v-btn>

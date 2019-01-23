@@ -75,9 +75,6 @@ export default {
     }
   },
   computed: {
-    _hasSlotAlert () {
-      return !!this.$slots.alert
-    },
     attrs () {
       return Object.assign({},
         this.$attrs,
@@ -109,10 +106,10 @@ export default {
       return bigraphyCommentService.addComment(biographyId, comment)
     },
     like (id) {
-      likeService.like(id)
+      return likeService.like(id)
     },
     unlike (id) {
-      likeService.unlike(id)
+      return likeService.unlike(id)
     }
   },
   components: {

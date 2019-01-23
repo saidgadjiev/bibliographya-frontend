@@ -103,7 +103,7 @@
       </v-form>
     </v-card-text>
     <v-card-actions style="justify-content: center">
-      <v-btn @click="doSave" :loading="saveLoading" color="primary">Сохранить</v-btn>
+      <v-btn @click="doSave" :loading="saveLoading" :disabled="saveLoading" color="primary">Сохранить</v-btn>
     </v-card-actions>
   </v-card>
 </template>
