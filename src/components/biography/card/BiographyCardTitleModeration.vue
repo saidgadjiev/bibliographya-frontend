@@ -26,6 +26,7 @@ import { MODERATION_STATUS } from '../../../config'
 
 export default {
   name: 'BiographyCardTitleModeration',
+  inheritAttrs: false,
   props: {
     showModerator: {
       type: Boolean,

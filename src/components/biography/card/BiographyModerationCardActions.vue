@@ -36,6 +36,7 @@ import ModerationAssignMeButton from './ModerationAssignMeButton'
 
 export default {
   name: 'BiographyModerationCardActions',
+  inheritAttrs: false,
   computed: {
     ...mapGetters([
       'getUser'

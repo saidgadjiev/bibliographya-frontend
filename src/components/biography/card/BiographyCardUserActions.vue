@@ -1,5 +1,5 @@
 <template>
-  <v-card-actions>
+  <v-card-actions v-if="actions.length > 0">
   <v-layout row wrap>
     <v-flex xs12 v-for="(action, index) in actions" :key="index">
       <moderation-user-button
@@ -19,6 +19,7 @@ import ModerationUserButton from './ModerationUserButton'
 
 export default {
   name: 'BiographyCardUserActions',
+  inheritAttrs: false,
   computed: {
     ...mapGetters([
       'getUser'

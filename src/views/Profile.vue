@@ -2,7 +2,12 @@
   <v-layout row fill-height>
     <v-flex xs12>
       <alert-message :types="['alert-success']"/>
-      <biography-card v-if="biography" v-bind.sync="biography" show-publish-block></biography-card>
+      <biography-card
+        v-if="biography"
+        v-bind.sync="biography"
+        show-publish-block
+        show-comments
+      ></biography-card>
     </v-flex>
     <alert-dialog :types="['alert-danger']"/>
   </v-layout>
