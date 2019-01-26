@@ -27,7 +27,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import EventBus from '../../eventbus/eventbus'
-import {PLUGIN_EVENTS} from '../../config'
+import { PLUGIN_EVENTS } from '../../config'
 
 export default {
   name: 'AlertMessage',

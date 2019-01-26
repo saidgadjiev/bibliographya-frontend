@@ -1,3 +1,5 @@
+import { getRestUrl } from '../config'
+
 const axios = require('axios')
 
 export default {
@@ -5,5 +7,5 @@ export default {
 }
 
 function isExistUsername (username) {
-  return axios.head(process.env.REST_SERVER + 'users/exist/' + username)
+  return axios.head(getRestUrl('users/exist/' + username))
 }

@@ -24,7 +24,6 @@ import { mapGetters } from 'vuex'
 import fileService from './services/file-service'
 import AppNavBar from './components/AppNavBar.vue'
 import Toolbar from './components/Toolbar.vue'
-import AlertDialog from './components/alert/AlertDialog'
 
 export default {
   name: 'App',
@@ -34,7 +33,6 @@ export default {
     }
   },
   components: {
-    AlertDialog,
     AppNavBar,
     Toolbar
   },

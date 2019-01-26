@@ -29,7 +29,6 @@ import Comments from '../comment/Comments'
 import likeService from '../../services/like-service'
 import bigraphyCommentService from '../../services/biography-comment-service'
 import BiographyCardPublishTitle from './card/BiographyCardPublishTitle'
-import AlertMessage from '../alert/AlertMessage'
 import BiographyCardUserActions from './card/BiographyCardUserActions'
 import BiographyCardTitleModeration from './card/BiographyCardTitleModeration'
 import BiographyModerationCardActions from './card/BiographyModerationCardActions'
@@ -116,7 +115,6 @@ export default {
     BiographyModerationCardActions,
     BiographyCardTitleModeration,
     BiographyCardUserActions,
-    AlertMessage,
     BiographyCardPublishTitle,
     Comments,
     BiographyCardActions,
@@ -127,5 +125,4 @@ export default {
 </script>
 
 <style scoped>
-  @import "../../../static/css/bibliography.css";
 </style>

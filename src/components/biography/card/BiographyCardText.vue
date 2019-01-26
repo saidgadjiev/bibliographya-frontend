@@ -18,15 +18,12 @@
 </template>
 
 <script>
-import TreeView from '../../tree/TreeView'
-import Clamp from '../../markdown/HtmlClamp'
-import markdown from '../../../mixins/markdown'
+import Clamp from '../HtmlClamp'
 import Toc from '../Toc'
 
 export default {
   name: 'BiographyCardText',
   inheritAttrs: false,
-  mixins: [markdown],
   data () {
     return {
       tocHeaders: []
@@ -102,8 +99,7 @@ export default {
   },
   components: {
     Toc,
-    Clamp,
-    TreeView
+    Clamp
   }
 }
 </script>

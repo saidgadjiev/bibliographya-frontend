@@ -12,15 +12,13 @@
 <script>
 import Like from '../../LikeIcon.vue'
 import CommentIcon from '../../CommentIcon.vue'
-import ViewIcon from '../../ViewIcon.vue'
 
 export default {
   name: 'BiographyCardActions',
   inheritAttrs: false,
   components: {
     Like,
-    CommentIcon,
-    ViewIcon
+    CommentIcon
   }
 }
 </script>

@@ -1,3 +1,5 @@
+import { getRestUrl } from '../config'
+
 const axios = require('axios')
 
 export default {
@@ -8,19 +10,19 @@ export default {
 }
 
 function getFixes (limit, offset, query) {
-  return axios.get(process.env.REST_SERVER + 'fixes?limit=' + limit + '&offset=' + offset + (query ? '&q=' + query : ''))
+  return axios.get(getRestUrl('fixes') + '?limit=' + limit + '&offset=' + offset + (query ? '&q=' + query : ''))
 }
 
 function suggest (biographyId, fixText) {
-  return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/fixes', {
+  return axios.post(getRestUrl('biographies/' + biographyId + '/fixes'), {
     fixText: fixText
   })
 }
 
 function assignMe (fixId, json) {
-  return axios.patch(process.env.REST_SERVER + 'fixes/' + fixId + '/assign-me/', json)
+  return axios.patch(getRestUrl('fixes/' + fixId + '/assign-me/'), json)
 }
 
 function complete (fixId, json) {
-  return axios.patch(process.env.REST_SERVER + 'fixes/' + fixId + '/complete/', json)
+  return axios.patch(getRestUrl('fixes/' + fixId + '/complete/'), json)
 }

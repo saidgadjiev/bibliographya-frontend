@@ -5,24 +5,19 @@ import Vuex from 'vuex'
 import Vuetify from 'vuetify'
 import VeeValidate from 'vee-validate'
 import russia from 'vee-validate/dist/locale/ru'
-import Vue2TouchEvents from 'vue2-touch-events'
-import VueCookie from 'vue-cookie'
 import axios from 'axios'
-import AsyncComputed from 'vue-async-computed'
 import InfiniteLoading from 'vue-infinite-loading'
 import VueSweetalert2 from 'vue-sweetalert2'
 
 import store from './store/store'
 
 import 'vuetify/dist/vuetify.min.css'
-import '../static/css/bibliography.css'
+import './assets/css/bibliographya.css'
 import '@mdi/font/css/materialdesignicons.css'
+import { SERVER_ERROR } from './messages'
 
 Vue.use(Vuex)
 Vue.use(Vuetify)
-Vue.use(Vue2TouchEvents)
-Vue.use(VueCookie)
-Vue.use(AsyncComputed)
 Vue.use(VueSweetalert2)
 
 Vue.component('infinite-loading', InfiniteLoading)
@@ -54,6 +49,12 @@ axios.interceptors.response.use(function (response) {
     router.push('/signIn')
   } else if (response.status === 403) {
     router.push('/403')
+  } else if (response.status === 500) {
+    Vue.$swal.fire({
+      text: SERVER_ERROR,
+      type: 'error',
+      showCloseButton: true
+    })
   } else {
     return response
   }

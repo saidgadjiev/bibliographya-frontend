@@ -44,7 +44,6 @@
 import { MODERATION_STATUS } from '../config'
 import NavBar from '../components/moderation/nav/NavBar.vue'
 import NavList from '../components/moderation/nav/NavList.vue'
-import AlertDialog from '../components/alert/AlertDialog'
 import { mapGetters } from 'vuex'
 import biographyModerationService from '../services/biography-moderation-service'
 import List from '../components/list/List'
@@ -100,7 +99,6 @@ export default {
     BiographyCard,
     NavBar,
     NavList,
-    AlertDialog,
     List
   }
 }

@@ -41,7 +41,7 @@ export default {
   },
   props: {
     height: {
-      type: Number | String,
+      type: Number,
       default: undefined
     },
     disableLink: {

@@ -65,7 +65,6 @@ export default {
 </script>
 
 <style scoped>
-  @import '../../../static/css/bibliography.css';
   ol {
     counter-reset: l
   }

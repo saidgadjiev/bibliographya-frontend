@@ -37,10 +37,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import {ROLES} from '../../../config'
+import { ROLES } from '../../../config'
 import biographyService from '../../../services/biography-service'
 import CreateFixSuggestDialog from '../../dialog/CreateFixSuggestDialog.vue'
-import CreateReportDialog from '../../dialog/CreateReportDialog.vue'
 
 export default {
   name: 'BiographyCardMenu',
@@ -110,8 +109,7 @@ export default {
     }
   },
   components: {
-    CreateFixSuggestDialog,
-    CreateReportDialog
+    CreateFixSuggestDialog
   }
 }
 </script>

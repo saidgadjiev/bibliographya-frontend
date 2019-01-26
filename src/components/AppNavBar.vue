@@ -115,7 +115,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import {ROLES} from '../config'
+import { ROLES } from '../config'
 
 export default {
   name: 'NavBar',

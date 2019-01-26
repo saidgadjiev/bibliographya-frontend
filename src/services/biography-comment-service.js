@@ -1,3 +1,5 @@
+import { getRestUrl } from '../config'
+
 const axios = require('axios')
 
 export default {
@@ -8,13 +10,13 @@ export default {
 }
 
 function updateContent (commentId, content) {
-  return axios.put(process.env.REST_SERVER + 'comments/' + commentId, {
+  return axios.put(getRestUrl('comments/' + commentId), {
     content: content
   })
 }
 
 function deleteComment (biographyId, commentId) {
-  return axios.delete(process.env.REST_SERVER + 'biographies/' + biographyId + '/comments/' + commentId)
+  return axios.delete(getRestUrl('biographies/' + biographyId + '/comments/' + commentId))
 }
 
 function addComment (biographyId, commentForm, params) {
@@ -27,9 +29,9 @@ function addComment (biographyId, commentForm, params) {
     replyToUserName: commentForm.replyToUserName
   }
 
-  return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/comments' + (params ? '?' + params : ''), comment)
+  return axios.post(getRestUrl('biographies/' + biographyId + '/comments') + (params ? '?' + params : ''), comment)
 }
 
 function getComments (biographyId, limit, offset, sort) {
-  return axios.get(process.env.REST_SERVER + 'biographies/' + biographyId + '/comments?limit=' + limit + '&offset=' + offset + (sort ? '&' + sort : ''))
+  return axios.get(getRestUrl('biographies/' + biographyId + '/comments') + '?limit=' + limit + '&offset=' + offset + (sort ? '&' + sort : ''))
 }

@@ -51,7 +51,6 @@ import BiographyCard2 from '../components/biography/BiographyCard'
 import CategoryCard from '../components/category/CategoryCard'
 import Sidebar from '../components/biography/sidebar/Sidebar'
 import SideList from '../components/biography/sidebar/SideList'
-import BiographyCardPublishTitle from '../components/biography/card/BiographyCardPublishTitle'
 
 export default {
   data () {
@@ -153,7 +152,6 @@ export default {
     }
   },
   components: {
-    BiographyCardPublishTitle,
     SideList,
     Sidebar,
     List,

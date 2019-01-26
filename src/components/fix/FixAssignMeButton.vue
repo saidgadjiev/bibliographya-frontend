@@ -50,7 +50,11 @@ export default {
               let message = '<a href="\'/biography/' + currentFixer.id + '">' +
                 currentFixer.firstName + ' ' + currentFixer.lastName + '</a>,&nbsp;уже взял исправление на себя.'
 
-              that.$store.dispatch('alert/error', message)
+              that.$swal.fire({
+                html: message,
+                type: 'error',
+                showCloseButton: true
+              })
             }
           }
         )

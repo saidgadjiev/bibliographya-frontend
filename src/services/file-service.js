@@ -1,7 +1,9 @@
+import { getRestUrl } from '../config'
+
 export default {
   getUrl
 }
 
 function getUrl (path) {
-  return process.env.REST_SERVER + 'files/' + path
+  return getRestUrl('files/' + path)
 }

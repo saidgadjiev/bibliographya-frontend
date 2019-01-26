@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import {ROLES} from '../../config'
+import { ROLES } from '../../config'
 import biographyCommentService from '../../services/biography-comment-service'
 import EditComment from './EditComment'
 import { mapGetters } from 'vuex'
@@ -173,8 +173,6 @@ export default {
 </script>
 
 <style scoped>
-  @import '../../../static/css/bibliography.css';
-
   .comment-wrapper {
     position: relative;
     display: block;

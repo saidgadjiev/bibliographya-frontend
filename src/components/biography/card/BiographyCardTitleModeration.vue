@@ -54,7 +54,7 @@ export default {
         return '/biography/' + this.moderatorBiography.id
       }
 
-      return '#'
+      return ''
     },
     _moderationStatus () {
       let status = this.moderationStatus
@@ -69,6 +69,8 @@ export default {
             return 'Отклонено'
         }
       }
+
+      return ''
     }
   }
 }

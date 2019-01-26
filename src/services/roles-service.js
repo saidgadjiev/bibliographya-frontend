@@ -1,3 +1,5 @@
+import { getRestUrl } from '../config'
+
 const axios = require('axios')
 
 export default {
@@ -7,13 +9,13 @@ export default {
 }
 
 function getRoles () {
-  return axios.get(process.env.REST_SERVER + 'roles')
+  return axios.get(getRestUrl('roles'))
 }
 
 function createRole (role) {
-  return axios.post(process.env.REST_SERVER + 'roles/' + role)
+  return axios.post(getRestUrl('roles/' + role))
 }
 
 function deleteRole (role) {
-  return axios.delete(process.env.REST_SERVER + 'roles/' + role)
+  return axios.delete(getRestUrl('roles/' + role))
 }

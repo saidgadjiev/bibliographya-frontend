@@ -1,3 +1,5 @@
+import { getRestUrl } from '../config'
+
 const axios = require('axios')
 
 export default {
@@ -8,7 +10,7 @@ export default {
 }
 
 function getBiographies (limit, offset, query, sort) {
-  return axios.get(process.env.REST_SERVER + 'biographies/moderation?' +
+  return axios.get(getRestUrl('biographies/moderation') + '?' +
     'limit=' + limit +
     '&offset=' + offset +
     (query ? '&q=' + query : '') +
@@ -17,13 +19,13 @@ function getBiographies (limit, offset, query, sort) {
 }
 
 function assignMe (biographyId, json) {
-  return axios.patch(process.env.REST_SERVER + 'biographies/' + biographyId + '/moderation/assign-me/', json)
+  return axios.patch(getRestUrl('biographies/' + biographyId + '/moderation/assign-me/'), json)
 }
 
 function complete (biographyId, json) {
-  return axios.patch(process.env.REST_SERVER + 'biographies/' + biographyId + '/moderation/complete/', json)
+  return axios.patch(getRestUrl('biographies/' + biographyId + '/moderation/complete/'), json)
 }
 
 function userComplete (biographyId, json) {
-  return axios.patch(process.env.REST_SERVER + 'biographies/' + biographyId + '/moderation/user/complete/' + biographyId, json)
+  return axios.patch(getRestUrl('biographies/' + biographyId + '/moderation/user/complete/' + biographyId), json)
 }

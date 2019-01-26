@@ -36,6 +36,8 @@ export const PLUGIN_EVENTS = {
   ALERT: 'alert'
 }
 
+export const getRestUrl = (url) => `${process.env.VUE_APP_REST_SERVER}${url}`
+
 export default {
   ROLES
 }

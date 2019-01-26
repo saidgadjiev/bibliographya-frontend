@@ -1,5 +1,5 @@
 import EventBus from '../../eventbus/eventbus'
-import {PLUGIN_EVENTS} from '../../config'
+import { PLUGIN_EVENTS } from '../../config'
 
 export const AlertPlugin = store => {
   store.subscribe((mutation, state) => {

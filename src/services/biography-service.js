@@ -1,3 +1,5 @@
+import { getRestUrl } from '../config'
+
 const axios = require('axios')
 
 export default {
@@ -14,43 +16,43 @@ export default {
 }
 
 function getBiography (username, filter) {
-  return axios.get(process.env.REST_SERVER + 'biographies/' + (filter ? '?' + filter : ''))
+  return axios.get(getRestUrl('biographies/') + (filter ? '?' + filter : ''))
 }
 
 function getBiographyById (id) {
-  return axios.get(process.env.REST_SERVER + 'biographies/' + id)
+  return axios.get(getRestUrl('biographies/' + id))
 }
 
 function getBiographies (cancelToken, limit, offset, query) {
-  return axios.get(process.env.REST_SERVER + 'biographies?limit=' + limit + '&offset=' + offset + (query ? '&' + query : ''), {
+  return axios.get(getRestUrl('biographies') + '?limit=' + limit + '&offset=' + offset + (query ? '&' + query : ''), {
     cancelToken: cancelToken
   })
 }
 
 function getMyBiographies (limit, offset) {
-  return axios.get(process.env.REST_SERVER + 'biographies/my?limit=' + limit + '&offset=' + offset)
+  return axios.get(getRestUrl('biographies/my') + '?limit=' + limit + '&offset=' + offset)
 }
 
 function update (biography) {
-  return axios.put(process.env.REST_SERVER + 'biographies/' + biography.id, biography)
+  return axios.put(getRestUrl('biographies/' + biography.id), biography)
 }
 
 function create (biography) {
-  return axios.post(process.env.REST_SERVER + 'biographies/', biography)
+  return axios.post(getRestUrl('biographies/'), biography)
 }
 
 function publish (biographyId) {
-  return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/publish')
+  return axios.post(getRestUrl('biographies/' + biographyId + '/publish'))
 }
 
 function unpublish (biographyId) {
-  return axios.post(process.env.REST_SERVER + 'biographies/' + biographyId + '/unpublish')
+  return axios.post(getRestUrl('biographies/' + biographyId + '/unpublish'))
 }
 
 function deleteBiography (biographyId) {
-  return axios.delete(process.env.REST_SERVER + 'biographies/' + biographyId)
+  return axios.delete(getRestUrl('biographies/' + biographyId))
 }
 
 function canEdit (biographyId) {
-  return axios.head(process.env.REST_SERVER + 'biographies/' + biographyId)
+  return axios.head(getRestUrl('biographies/' + biographyId))
 }

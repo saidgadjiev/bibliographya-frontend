@@ -34,7 +34,6 @@
 import Comment from './Comment'
 import CommentForm from './CommentForm'
 import biographyCommentService from '../../services/biography-comment-service'
-import InfiniteLoading from 'vue-infinite-loading'
 import List from '../list/List'
 
 export default {
@@ -90,7 +89,6 @@ export default {
   components: {
     List,
     Comment,
-    InfiniteLoading,
     CommentForm
   }
 }

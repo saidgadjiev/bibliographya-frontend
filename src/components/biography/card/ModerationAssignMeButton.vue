@@ -50,7 +50,11 @@ export default {
               let message = '<a href="\'/biography/' + currentModerator.id + '">' +
                 currentModerator.firstName + ' ' + currentModerator.lastName + '</a>,&nbsp;уже взял биографию на модерацию.'
 
-              that.$store.dispatch('alert/error', message)
+              that.$swal.fire({
+                html: message,
+                type: 'error',
+                showCloseButton: true
+              })
             }
           }
         )

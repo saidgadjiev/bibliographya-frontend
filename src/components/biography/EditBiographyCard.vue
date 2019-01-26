@@ -109,7 +109,6 @@
 </template>
 
 <script>
-import BiographyCard from './BiographyCard'
 import biographyService from '../../services/biography-service'
 import biographyCategoryService from '../../services/biography-category-service'
 import TinyEditor from '../tinymce/TinyEditor'
@@ -298,7 +297,11 @@ export default {
                     that.biographyConflict = that.biographyDiff()
                     that.categoriesConflict = that.categoriesDiff()
 
-                    that.$store.dispatch('alert/error', 'Произошел конфликт. Пожалуйста перенесите свои изменения в соответствии с текущей версией')
+                    that.$swal.fire({
+                      text: 'Произошел конфликт. Пожалуйста перенесите свои изменения в соответствии с текущей версией',
+                      type: 'error',
+                      showCloseButton: true
+                    })
                   } else {
                     console.log(e)
                   }
@@ -331,8 +334,7 @@ export default {
     }
   },
   components: {
-    TinyEditor,
-    BiographyCard
+    TinyEditor
   }
 }
 </script>

@@ -1,3 +1,5 @@
+import { getRestUrl } from '../config'
+
 const axios = require('axios')
 
 export default {
@@ -6,9 +8,9 @@ export default {
 }
 
 function getReports (limit, offset) {
-  return axios.get(process.env.REST_SERVER + 'api/biography/report?limit=' + limit + '&offset=' + offset)
+  return axios.get(getRestUrl('biography/report') + '?limit=' + limit + '&offset=' + offset)
 }
 
 function createReport (biographyId, report) {
-  return axios.post(process.env.REST_SERVER + 'api/biography/report/create/' + biographyId, report)
+  return axios.post(getRestUrl('biography/report/create/' + biographyId), report)
 }
