@@ -122,7 +122,7 @@ export default {
         selector: '#' + this.id,
         skin: false,
         height: 300,
-        language_url: '/assets/tinymce/lang/ru.js',
+        language_url: '/static/tinymce/lang/ru.js',
         branding: false,
         readonly: this.readonly ? 1 : 0,
         toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor ' +
