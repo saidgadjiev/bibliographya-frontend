@@ -13,7 +13,7 @@
 <script>
 import biographyReportService from '../services/biography-report-service'
 import List from '../components/list/List'
-import BiographyReportTitle from '../components/biography/card/BiographyReportTitle'
+import BiographyReportTitle from '../components/complaint/card/BiographyComplaintTitle'
 
 export default {
   name: 'BiographyComplaintsList',

@@ -19,6 +19,9 @@ const mutations = {
   signInSuccess (state, payload) {
     state.status = { signedIn: true }
     state.user = payload
+    state.roles = payload.authorities.map(function (authority) {
+      return authority.authority
+    })
   },
   signOutSuccess (state) {
     state.status = { signedOut: true }
@@ -71,7 +74,7 @@ const actions = {
         .then(
           signInResponse => {
             commit('signInSuccess', signInResponse.data)
-            resolve()
+            resolve(signInResponse.data)
           },
           e => {
             commit('signInFailure')
@@ -80,6 +83,9 @@ const actions = {
           }
         )
     })
+  },
+  errorSocialSignIn ({ dispatch, commit }, payload) {
+    authService.errorSocialSignIn(payload.provider, payload.code, payload.errorDescription)
   },
   signUp ({ dispatch, commit }, signUpForm) {
     commit('signUpRequest')

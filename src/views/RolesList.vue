@@ -14,7 +14,7 @@
 <script>
 import List from '../components/list/List'
 import rolesService from '../services/roles-service'
-import RoleCard from '../components/role/RoleCard'
+import RoleCard from '../components/role/card/RoleCard'
 
 export default {
   name: 'RolesList',

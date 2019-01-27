@@ -62,7 +62,7 @@ import 'tinymce/skins/lightgray/content.mobile.min.css'
 import 'tinymce/skins/lightgray/skin.mobile.min.css'
 
 export default {
-  name: 'tinymce',
+  name: 'TinyEditor',
   props: {
     id: {
       type: String,

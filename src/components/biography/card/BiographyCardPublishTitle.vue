@@ -1,7 +1,7 @@
 <template>
   <v-card-actions>
     <v-btn
-      v-if="publishStatus === 1"
+      v-show="_showPublish"
       @click="publish"
       class="ma-0 white--text"
       color="green darken-2"
@@ -11,7 +11,7 @@
       Опубликовать
     </v-btn>
     <v-btn
-      v-else
+      v-show="_showUnPublish"
       @click="unpublish"
       class="ma-0 white--text"
       color="deep-purple darken-4"
@@ -43,6 +43,14 @@ export default {
     },
     publishStatus: {
       type: Number
+    }
+  },
+  computed: {
+    _showPublish () {
+      return this.publishStatus === PUBLISH_STATUS.NOT_PUBLISHED
+    },
+    _showUnPublish () {
+      return this.publishStatus === PUBLISH_STATUS.PUBLISHED
     }
   },
   methods: {

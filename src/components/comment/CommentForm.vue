@@ -2,7 +2,7 @@
   <v-form id="commentForm">
     <div v-if="replyToComment">
     <span>
-      ответ <a tabindex @click="gotoReply">{{ replyToComment.firstName }}</a>
+      ответ <a @click="gotoReply">{{ replyToComment.firstName }}</a>
     </span>
     <span>
       <v-icon style="font-size: 18px" @click="$emit('reset-reply')">fas fa-times</v-icon>

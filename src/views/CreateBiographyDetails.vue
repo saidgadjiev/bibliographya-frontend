@@ -10,10 +10,17 @@
 </template>
 
 <script>
-import EditBiographyCard from '../components/biography/EditBiographyCard.vue'
+import EditBiographyCard from '../components/biography/card/EditBiographyCard.vue'
 import AlertMessage from '../components/alert/AlertMessage'
+import { mapActions } from 'vuex'
+
 export default {
   name: 'CreateBiographyDetails',
+  methods: {
+    ...mapActions('alert', [
+      'clear'
+    ])
+  },
   beforeDestroy () {
     this.clear()
   },

@@ -9,19 +9,17 @@
         show-comments
       ></biography-card>
     </v-flex>
-    <alert-dialog :types="['alert-danger']"/>
   </v-layout>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import BiographyCard from '../components/biography/BiographyCard'
+import BiographyCard from '../components/biography/card/BiographyCard'
 import biographyService from '../services/biography-service'
 import AlertMessage from '../components/alert/AlertMessage'
-import AlertDialog from '../components/alert/AlertDialog'
 
 export default {
-  name: 'profile',
+  name: 'Profile',
   data () {
     return {
       biography: undefined
@@ -54,7 +52,6 @@ export default {
     this.clear()
   },
   components: {
-    AlertDialog,
     AlertMessage,
     BiographyCard
   }

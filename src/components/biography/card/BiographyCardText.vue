@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import Clamp from '../HtmlClamp'
-import Toc from '../Toc'
+import Clamp from './HtmlClamp'
+import Toc from './Toc'
 
 export default {
   name: 'BiographyCardText',

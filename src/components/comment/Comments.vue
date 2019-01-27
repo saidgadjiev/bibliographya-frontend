@@ -19,7 +19,7 @@
     </template>
     <template slot="footer">
       <comment-form
-        v-bind="attrs"
+        v-bind="_attrs"
         v-on="$listeners"
         class="pl-2"
         @comment-added="commentAdded"
@@ -58,6 +58,16 @@ export default {
     },
     commentsCount: {
       type: Number
+    }
+  },
+  computed: {
+    _attrs () {
+      return Object.assign({},
+        this.$attrs,
+        {
+          id: this.id
+        }
+      )
     }
   },
   methods: {

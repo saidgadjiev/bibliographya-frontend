@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <v-app>
-      <app-nav-bar :drawer.sync="drawer" v-if="$vuetify.breakpoint.smAndDown"></app-nav-bar>
-      <toolbar :drawer.sync="drawer"></toolbar>
+      <nav-bar :drawer.sync="drawer" v-if="$vuetify.breakpoint.smAndDown"></nav-bar>
+      <tool-bar :drawer.sync="drawer"></tool-bar>
       <v-content :style="getBackground">
         <v-container grid-list-lg fill-height :class="{ 'md-content' : $vuetify.breakpoint.mdAndUp }">
           <v-layout row fill-height>
             <v-flex md3 v-if="$vuetify.breakpoint.mdAndUp">
-              <app-nav-bar></app-nav-bar>
+              <nav-bar></nav-bar>
             </v-flex>
             <v-flex xs12 md9>
               <router-view></router-view>
@@ -22,8 +22,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import fileService from './services/file-service'
-import AppNavBar from './components/AppNavBar.vue'
-import Toolbar from './components/Toolbar.vue'
+import NavBar from './components/NavBar.vue'
+import ToolBar from './components/ToolBar.vue'
 
 export default {
   name: 'App',
@@ -32,9 +32,12 @@ export default {
       drawer: false
     }
   },
+  created () {
+    this.$store.dispatch('getAccount')
+  },
   components: {
-    AppNavBar,
-    Toolbar
+    NavBar,
+    ToolBar
   },
   computed: {
     ...mapGetters([

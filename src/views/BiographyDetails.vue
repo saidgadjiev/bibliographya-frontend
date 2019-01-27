@@ -13,7 +13,7 @@
 
 <script>
 import biographyService from '../services/biography-service'
-import BiographyCard2 from '../components/biography/BiographyCard'
+import BiographyCard2 from '../components/biography/card/BiographyCard'
 
 export default {
   name: 'BiographyDetails',

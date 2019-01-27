@@ -7,13 +7,13 @@
       class="comment-wrapper pa-2">
       <v-card-title primary-title class="pa-0">
         <div v-if="comment.parentId">
-          <a :href="'/biography/' + comment.biographyId">{{ comment.lastName + ' ' + comment.firstName }}</a>
+          <router-link class="bibliographya-a" :to="'/biography/' + comment.biographyId">{{ comment.lastName + ' ' + comment.firstName }}</router-link>
           <small class="grey--text">&nbsp;ответил&nbsp;</small>
-          <a tabindex @click="gotoReply()"><strong
+          <a @click="gotoReply()"><strong
             class="grey--text">{{ comment.replyToFirstName }}</strong></a>
         </div>
         <div v-else>
-          <a :href="'/biography/' + comment.biographyId">{{ comment.lastName + ' ' + comment.firstName }}</a>
+          <router-link  class="bibliographya-a" :to="'/biography/' + comment.biographyId">{{ comment.lastName + ' ' + comment.firstName }}</router-link>
         </div>
         <v-spacer></v-spacer>
         <div v-if="hover">
@@ -37,7 +37,7 @@
         </edit-comment>
         <div v-else>
         <span v-if="comment.parentId">
-          <a :href="'/biography/' + comment.replyToBiographyId">{{ comment.replyToFirstName }}</a>{{ ', ' + comment.content }}
+          <router-link class="bibliographya-a" :to="'/biography/' + comment.replyToBiographyId">{{ comment.replyToFirstName }}</router-link>{{ ', ' + comment.content }}
         </span>
           <span v-else>{{ comment.content }}</span>
         </div>

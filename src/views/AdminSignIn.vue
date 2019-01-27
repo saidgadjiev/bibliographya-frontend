@@ -33,6 +33,15 @@
             ></v-text-field>
           </v-form>
         </v-card-text>
+        <v-card-actions>
+          <v-btn
+            block
+            color="primary"
+            @click="signIn"
+            :loading="status.signingIn"
+          >Войти
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-flex>
   </v-layout>
@@ -40,10 +49,9 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
-import authService from '../services/auth-service'
 
 export default {
-  name: 'SignIn',
+  name: 'AdminSignIn',
   data () {
     return {
       signInForm: {
@@ -75,14 +83,6 @@ export default {
     ...mapActions('alert', [
       'clear'
     ]),
-    auth (provider) {
-      authService.getOauthUrl(provider)
-        .then(
-          response => {
-            window.location.href = response.data
-          }
-        )
-    },
     signIn () {
       let that = this
 

@@ -9,14 +9,14 @@ import BiographyDetails from './views/BiographyDetails.vue'
 import EditProfile from './views/EditProfile'
 import EditBiography from './views/EditBiographyDetails'
 import CreateBiographyDetails from './views/CreateBiographyDetails'
-import CreatedByMeBiographies from './views/CreatedByMeBiographies'
-import BiographiesModeration from './views/BiographiesModeration'
-import BiographyFixesList from './views/BiographyFixesList'
+import CreatedByMeBiographies from './views/CreatedByMeBiographiesList'
+import BiographiesModeration from './views/BiographiesModerationsList'
+import BiographyFixesList from './views/BiographiesFixesList'
 import OAuthCallback from './views/OAuthCallback'
 import UsersList from './views/UsersList'
 import store from './store/store'
-import error403 from './components/error/403'
-import error404 from './components/error/404'
+import error403 from './views/403'
+import error404 from './views/404'
 import { ROLES } from './config'
 import biographyService from './services/biography-service'
 
@@ -42,10 +42,9 @@ const requireAuth = function (to, from, next) {
     }
   }
 
-  if (store.getters.status.notSignedIn) {
-    store.dispatch('getAccount')
+  if (store.getters.status.notSignedIn || store.getters.status.signingIn) {
     store.watch(store.getters.watchStatus, function () {
-      if (!store.getters.status.notSignedIn) {
+      if (!store.getters.status.notSignedIn && !store.getters.status.signingIn) {
         proceed()
       }
     })
@@ -55,13 +54,28 @@ const requireAuth = function (to, from, next) {
 }
 
 const ifNotAuthenticated = function (to, from, next) {
-  if (store.getters.isAuthenticated) {
-    next(false)
+  function proceed () {
+    if (store.getters.isAuthenticated) {
+      if (from.name) {
+        next(false)
+      } else {
+        next('/')
+      }
 
-    return
+      return
+    }
+
+    next()
   }
-
-  next()
+  if (store.getters.status.notSignedIn || store.getters.status.signingIn) {
+    store.watch(store.getters.watchStatus, function () {
+      if (!store.getters.status.notSignedIn && !store.getters.status.signingIn) {
+        proceed()
+      }
+    })
+  } else {
+    proceed()
+  }
 }
 
 let router = new Router({
@@ -157,7 +171,6 @@ let router = new Router({
       beforeEnter: requireAuth,
       meta: {
         loginRequired: true,
-        roles: [ROLES.ROLE_MODERATOR],
         expression: function (to, from, next) {
           biographyService.canEdit(to.params.id)
             .then(

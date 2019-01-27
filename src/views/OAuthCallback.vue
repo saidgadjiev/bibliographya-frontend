@@ -1,8 +1,16 @@
 <template>
-  <div></div>
+  <v-layout justify-center align-center row fill-height>
+  <v-progress-circular
+    :size="50"
+    color="primary"
+    indeterminate
+  ></v-progress-circular>
+  </v-layout>
 </template>
 
 <script>
+import { WELCOME, WELCOME_TITLE } from '../messages'
+
 export default {
   name: 'OAuthCallback',
   props: {
@@ -14,15 +22,31 @@ export default {
   mounted () {
     let that = this
 
-    this.$store.dispatch('socialSignIn', {
-      provider: this.providerId,
-      code: this.$route.query.code
-    })
-      .then(
-        response => {
-          that.$router.push('/')
-        }
-      )
+    if (this.$route.query.code) {
+      this.$store.dispatch('socialSignIn', {
+        provider: this.providerId,
+        code: this.$route.query.code
+      })
+        .then(
+          user => {
+            that.$router.push('/')
+            if (user.isNew) {
+              that.$swal.fire({
+                title: WELCOME_TITLE,
+                text: WELCOME,
+                type: 'info',
+                showCloseButton: true
+              })
+            }
+          }
+        )
+    } else {
+      this.$store.dispatch('errorSocialSignIn', {
+        provider: this.providerId,
+        error: this.$route.query.error,
+        errorDescription: this.$route.query.error_description
+      })
+    }
   }
 }
 </script>

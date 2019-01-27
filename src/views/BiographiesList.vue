@@ -20,11 +20,11 @@
       ></biography-card2>
     </template>
     <template slot="sidebar">
-      <sidebar
+      <side-bar
         @new="applyNewFilter"
         @last-update="applyLastUpdateFilter"
         @autobiographies="applyAutobiographiesFilter"
-      ></sidebar>
+      ></side-bar>
     </template>
     <template slot="smSidebar">
       <side-list
@@ -36,7 +36,8 @@
     <template slot="no-results">
       <v-card>
         <v-card-text>
-          <h4>Биографий не найдено</h4>
+          <h4 v-if="categoryName">В этой категории еще нет ни одной биографии.</h4>
+          <h4 v-else>Еще нет биографий.</h4>
         </v-card-text>
       </v-card>
     </template>
@@ -47,12 +48,13 @@
 import List from '../components/list/List'
 import biographyService from '../services/biography-service'
 import biographyCategoryService from '../services/biography-category-service'
-import BiographyCard2 from '../components/biography/BiographyCard'
+import BiographyCard2 from '../components/biography/card/BiographyCard'
 import CategoryCard from '../components/category/CategoryCard'
-import Sidebar from '../components/biography/sidebar/Sidebar'
+import SideBar from '../components/biography/sidebar/SideBar'
 import SideList from '../components/biography/sidebar/SideList'
 
 export default {
+  name: 'BiographiesList',
   data () {
     return {
       treeClampSize: 1,
@@ -153,7 +155,7 @@ export default {
   },
   components: {
     SideList,
-    Sidebar,
+    SideBar,
     List,
     BiographyCard2,
     CategoryCard

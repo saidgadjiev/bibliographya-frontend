@@ -8,7 +8,8 @@ export default {
   signOut,
   getAccount,
   getOauthUrl,
-  socialSignIn
+  socialSignIn,
+  errorSocialSignIn
 }
 
 function signIn (signInForm) {
@@ -46,4 +47,8 @@ function getOauthUrl (provider) {
 
 function socialSignIn (provider, code) {
   return axios.post(getRestUrl('auth/signIn/' + provider) + '?code=' + code)
+}
+
+function errorSocialSignIn (provider, error, errorDescription) {
+  return axios.post(getRestUrl('auth/signIn/' + provider) + '?error=' + error + (errorDescription ? '&' + errorDescription : ''))
 }

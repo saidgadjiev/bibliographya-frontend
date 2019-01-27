@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import Like from '../../LikeIcon.vue'
-import CommentIcon from '../../CommentIcon.vue'
+import Like from './LikeIcon.vue'
+import CommentIcon from './CommentIcon.vue'
 
 export default {
   name: 'BiographyCardActions',

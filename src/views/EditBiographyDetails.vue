@@ -13,11 +13,12 @@
 
 <script>
 import biographyService from '../services/biography-service'
-import EditBiographyCard from '../components/biography/EditBiographyCard.vue'
+import EditBiographyCard from '../components/biography/card/EditBiographyCard.vue'
 import AlertMessage from '../components/alert/AlertMessage'
+import { mapActions } from 'vuex'
 
 export default {
-  name: 'EditBiography',
+  name: 'EditBiographyDetails',
   data () {
     return {
       biography: undefined
@@ -36,6 +37,11 @@ export default {
           console.log(e)
         }
       )
+  },
+  methods: {
+    ...mapActions('alert', [
+      'clear'
+    ])
   },
   beforeDestroy () {
     this.clear()

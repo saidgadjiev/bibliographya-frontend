@@ -11,7 +11,7 @@
       ></user-card>
     </template>
     <template slot="sidebar">
-      <sidebar @input="applyRoleFilter" :roles="allRoles"></sidebar>
+      <side-bar @input="applyRoleFilter" :roles="allRoles"></side-bar>
     </template>
     <template slot="smSidebar">
       <side-card @input="applyRoleFilter" :roles="allRoles"></side-card>
@@ -21,10 +21,10 @@
 
 <script>
 import List from '../components/list/List'
-import UserCard from '../components/user/UserCard'
+import UserCard from '../components/user/card/UserCard'
 import usersService from '../services/users-service'
 import rolesService from '../services/roles-service'
-import Sidebar from '../components/user/sidebar/Sidebar'
+import SideBar from '../components/user/sidebar/SideBar'
 import SideCard from '../components/user/sidebar/SideCard'
 
 export default {
@@ -38,7 +38,7 @@ export default {
       roleFilter: undefined
     }
   },
-  components: { SideCard, Sidebar, UserCard, List },
+  components: { SideCard, SideBar, UserCard, List },
   methods: {
     applyRoleFilter (role) {
       if (role) {
@@ -53,22 +53,16 @@ export default {
       return usersService.getUsers(limit, offset, this.roleQuery)
     }
   },
-  asyncComputed: {
-    _roles () {
-      let that = this
+  created () {
+    let that = this
 
-      return new Promise((resolve) => {
-        rolesService.getRoles()
-          .then(
-            response => {
-              that.loading = false
-              that.allRoles.push(...response.data)
-
-              resolve(response.data)
-            }
-          )
-      })
-    }
+    rolesService.getRoles()
+      .then(
+        response => {
+          that.loading = false
+          that.allRoles.push(...response.data)
+        }
+      )
   }
 }
 </script>

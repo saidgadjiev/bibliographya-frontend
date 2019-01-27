@@ -17,8 +17,8 @@ export const FIX_STATUS = {
 }
 
 export const PUBLISH_STATUS = {
-  PUBLISHED: 0,
-  NOT_PUBLISHED: 1
+  PUBLISHED: 1,
+  NOT_PUBLISHED: 0
 }
 
 export const REPORT_STATUS = {

@@ -39,7 +39,7 @@
 import { mapGetters } from 'vuex'
 import { ROLES } from '../../../config'
 import biographyService from '../../../services/biography-service'
-import CreateFixSuggestDialog from '../../dialog/CreateFixSuggestDialog.vue'
+import CreateFixSuggestDialog from '../../fix/dialog/CreateFixSuggestDialog.vue'
 
 export default {
   name: 'BiographyCardMenu',
