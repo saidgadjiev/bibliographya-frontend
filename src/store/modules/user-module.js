@@ -70,7 +70,7 @@ const actions = {
     commit('signInRequest')
 
     return new Promise((resolve, reject) => {
-      authService.socialSignIn(payload.provider, payload.code)
+      authService.socialSignIn(payload.provider, payload.redirectUri, payload.code)
         .then(
           signInResponse => {
             commit('signInSuccess', signInResponse.data)

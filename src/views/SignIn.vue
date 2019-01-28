@@ -3,7 +3,7 @@
     <v-flex xs12 sm8 md6>
       <v-card class="elevation-12">
         <v-card-title primary-title style="justify-content: center">
-          <h3 class="headline mb-0">Вход в Библиографию</h3>
+          <h3 class="headline font-weight-bold mb-0">Вход в Библиографию</h3>
         </v-card-title>
         <v-card-actions>
           <v-layout row wrap>
@@ -44,6 +44,7 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
+import { getRedirectUri } from '../config'
 import authService from '../services/auth-service'
 
 export default {
@@ -59,7 +60,7 @@ export default {
       'clear'
     ]),
     auth (provider) {
-      authService.getOauthUrl(provider)
+      authService.getOauthUrl(provider, getRedirectUri(provider))
         .then(
           response => {
             window.location.href = response.data

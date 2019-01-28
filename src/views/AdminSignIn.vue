@@ -3,7 +3,7 @@
     <v-flex xs12 sm8 md6>
       <v-card class="elevation-12">
         <v-card-title primary-title style="justify-content: center">
-          <h3 class="headline mb-0">Вход в Библиографию</h3>
+          <h3 class="headline font-weight-bold mb-0">Вход в Библиографию</h3>
         </v-card-title>
         <v-card-text v-if="type === 'alert-danger'">
           <strong class="error--text">

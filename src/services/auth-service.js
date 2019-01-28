@@ -41,12 +41,12 @@ function getAccount () {
   return axios.get(getRestUrl('auth/account'))
 }
 
-function getOauthUrl (provider) {
-  return axios.post(getRestUrl('auth/oauth/' + provider))
+function getOauthUrl (provider, redirectUri) {
+  return axios.post(getRestUrl('auth/oauth/' + provider) + '?redirectUri=' + redirectUri)
 }
 
-function socialSignIn (provider, code) {
-  return axios.post(getRestUrl('auth/signIn/' + provider) + '?code=' + code)
+function socialSignIn (provider, redirectUri, code) {
+  return axios.post(getRestUrl('auth/signIn/' + provider) + '?code=' + code + '&redirectUri=' + redirectUri)
 }
 
 function errorSocialSignIn (provider, error, errorDescription) {

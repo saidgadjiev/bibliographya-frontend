@@ -38,6 +38,10 @@ export const PLUGIN_EVENTS = {
 
 export const getRestUrl = (url) => `${process.env.VUE_APP_REST_SERVER}${url}`
 
+export const getRedirectUri = (providerId) => {
+  return window.location.origin + '/' + providerId + '/callback'
+}
+
 export default {
   ROLES
 }

@@ -10,6 +10,7 @@
 
 <script>
 import { WELCOME, WELCOME_TITLE } from '../messages'
+import { getRedirectUri } from '../config'
 
 export default {
   name: 'OAuthCallback',
@@ -25,7 +26,8 @@ export default {
     if (this.$route.query.code) {
       this.$store.dispatch('socialSignIn', {
         provider: this.providerId,
-        code: this.$route.query.code
+        code: this.$route.query.code,
+        redirectUri: getRedirectUri(this.providerId)
       })
         .then(
           user => {
