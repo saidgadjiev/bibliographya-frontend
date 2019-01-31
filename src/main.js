@@ -79,11 +79,11 @@ axios.interceptors.response.use(function (response) {
       router.push('/403')
       break
     case 404:
-      Vue.swal.fire({
+      /* Vue.swal.fire({
         text: RESOURCE_NOT_FOUND,
         type: 'error',
         showCloseButton: true
-      })
+      }) */
       break
     case 500:
       Vue.swal.fire({

@@ -50,7 +50,7 @@ export default {
       'isAuthenticated'
     ]),
     _replyToFirstName () {
-      return this.replyToComment.biography.firstName
+      return this.replyToComment.user.firstName
     }
   },
   methods: {
