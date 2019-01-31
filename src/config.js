@@ -46,6 +46,11 @@ export const BIOGRAPHY_CLAMP_SIZE = 150
 
 export const TREE_CLAMP_SIZE = 5
 
+export const BIOGRAPHY_CARD_MODE = {
+  READ: 'read',
+  LIST: 'list'
+}
+
 export default {
   ROLES
 }

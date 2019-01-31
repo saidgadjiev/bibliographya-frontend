@@ -272,7 +272,7 @@ export default {
               lastName: that.biographyForm.lastName,
               middleName: that.biographyForm.middleName,
               biography: that.biographyForm.biography,
-              addedCategories: added,
+              addCategories: added,
               deleteCategories: deleted,
               lastModified: that.biographyForm.lastModified,
               userId: that.editProfile ? that.getUser.id : null

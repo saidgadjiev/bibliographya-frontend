@@ -1,5 +1,5 @@
 <template>
-  <v-card-text>
+  <v-card-text v-if="_hasVisibleItems">
     <span v-for="(category, index) in categories" :key="index">
       <router-link class="bibliographya-a" :to="'/category/' + category">{{ category }}</router-link>&nbsp;&nbsp;
     </span>
@@ -38,6 +38,9 @@ export default {
     },
     _isNotAutobiography () {
       return !!this.userId
+    },
+    _hasVisibleItems () {
+      return (this.categories && this.categories.length > 0) || this._isNotAutobiography
     }
   }
 }

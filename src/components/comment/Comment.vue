@@ -84,7 +84,7 @@ export default {
     parentId: {
       type: Number
     },
-    biography: {
+    user: {
       type: Object
     },
     parent: {
@@ -101,10 +101,10 @@ export default {
       'isAuthorized'
     ]),
     _repliedFirstName () {
-      return this.parent.biography.firstName
+      return this.parent.user.firstName
     },
     _authorName () {
-      return this.biography.lastName + ' ' + this.biography.firstName
+      return this.user.lastName + ' ' + this.user.firstName
     },
     _authorBiographyLink () {
       return '/biography/' + this.biographyId

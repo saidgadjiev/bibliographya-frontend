@@ -6,6 +6,7 @@
         live
         show-comments
         v-bind.sync="biography"
+        mode="read"
       ></biography-card2>
     </v-flex>
   </v-layout>

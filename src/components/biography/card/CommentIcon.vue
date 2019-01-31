@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import { BIOGRAPHY_CARD_MODE } from '../../../config'
+
 export default {
   name: 'CommentIcon',
   inheritAttrs: false,
@@ -16,6 +18,10 @@ export default {
     commentsCount: {
       type: Number,
       default: 0
+    },
+    mode: {
+      type: String,
+      default: BIOGRAPHY_CARD_MODE.LIST
     }
   },
   computed: {
@@ -25,7 +31,15 @@ export default {
   },
   methods: {
     gotoComments () {
-      this.$router.push(this._biographyLink)
+      if (this.mode === BIOGRAPHY_CARD_MODE.READ) {
+        this.$vuetify.goTo('#comments', {
+          duration: 300,
+          offset: 0,
+          easing: 'easeInOutCubic'
+        })
+      } else {
+        this.$router.push(this._biographyLink)
+      }
     }
   }
 }
