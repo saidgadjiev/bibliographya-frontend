@@ -17,7 +17,7 @@ import store from './store/store'
 import 'vuetify/dist/vuetify.min.css'
 import './assets/css/bibliographya.css'
 import '@mdi/font/css/materialdesignicons.css'
-import { SERVER_ERROR } from './messages'
+import { SERVER_ERROR, RESOURCE_NOT_FOUND } from './messages'
 
 require('moment/locale/ru')
 
@@ -71,18 +71,29 @@ axios.interceptors.request.use(function (request) {
 axios.interceptors.response.use(function (response) {
   return response
 }, function (err) {
-  if (err.response.status === 401) {
-    router.push('/signIn')
-  } else if (err.response.status === 403) {
-    router.push('/403')
-  } else if (err.response.status === 500) {
-    Vue.swal.fire({
-      text: SERVER_ERROR,
-      type: 'error',
-      showCloseButton: true
-    })
-    Vue.$log.error(err)
+  switch (err.response.status) {
+    case 401:
+      router.push('/signIn')
+      break
+    case 403:
+      router.push('/403')
+      break
+    case 404:
+      Vue.swal.fire({
+        text: RESOURCE_NOT_FOUND,
+        type: 'error',
+        showCloseButton: true
+      })
+      break
+    case 500:
+      Vue.swal.fire({
+        text: SERVER_ERROR,
+        type: 'error',
+        showCloseButton: true
+      })
+      break
   }
+  Vue.$log.error(err)
 
   return Promise.reject(err)
 })

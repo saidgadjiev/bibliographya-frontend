@@ -62,7 +62,7 @@ export default {
       if (status !== undefined) {
         switch (status) {
           case MODERATION_STATUS.PENDING:
-            return 'На модерации'
+            return 'В обработке'
           case MODERATION_STATUS.APPROVED:
             return 'Одобрено'
           case MODERATION_STATUS.REJECTED:
