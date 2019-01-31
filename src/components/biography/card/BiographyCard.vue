@@ -6,6 +6,7 @@
       v-bind="attrs"
       class="pb-0"
       v-on="$listeners"/>
+    <biography-card-secondary-title v-bind="attrs" v-on="$listeners" class="pb-0"/>
     <biography-card-title v-bind="attrs" v-on="$listeners"/>
     <v-divider></v-divider>
     <biography-card-text v-if="_showBiography" v-bind="attrs"/>
@@ -32,6 +33,7 @@ import BiographyCardPublishTitle from './BiographyCardPublishTitle'
 import BiographyCardUserActions from '../../moderation/card/BiographyCardUserActions'
 import BiographyCardTitleModeration from '../../moderation/card/BiographyCardTitleModeration'
 import BiographyModerationCardActions from '../../moderation/card/BiographyModerationCardActions'
+import BiographyCardSecondaryTitle from './BiographyCardSecondaryTitle'
 
 export default {
   name: 'BiographyCard',
@@ -117,6 +119,7 @@ export default {
     }
   },
   components: {
+    BiographyCardSecondaryTitle,
     BiographyModerationCardActions,
     BiographyCardTitleModeration,
     BiographyCardUserActions,

@@ -1,6 +1,6 @@
 <template>
   <v-layout row fill-height="true">
-    <v-flex xs12 md8>
+    <v-flex xs12>
       <biography-card2
         v-if="biography"
         live
@@ -42,6 +42,12 @@ export default {
             console.log(e)
           }
         )
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      this.biography = undefined
+      this.loadBiography()
     }
   },
   components: {

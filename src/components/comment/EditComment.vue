@@ -5,13 +5,16 @@
         class="mt-0 pt-0"
         auto-grow
         type="text"
-        v-model="newContent"
+        v-validate="'required'"
+        :error-messages="errors.collect('content')"
+        name="content"
+        v-model="editContent"
       ></v-textarea>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn small flat @click="$emit('cancel')">Отмена</v-btn>
-      <v-btn small class="primary" @click="doEdit">Сохранить</v-btn>
+      <v-btn small flat @click="$emit('cancel')" :disabled="loading">Отмена</v-btn>
+      <v-btn small class="primary" @click="doEdit" :loading="loading" :disabled="loading">Сохранить</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -24,6 +27,7 @@ export default {
   inheritAttrs: false,
   data () {
     return {
+      loading: false,
       editContent: ''
     }
   },
@@ -37,30 +41,37 @@ export default {
       required: true
     }
   },
-  computed: {
-    newContent: {
-      get () {
-        return this.content
-      },
-      set (val) {
-        this.editContent = val
+  created () {
+    this.editContent = this.content
+    this.$validator.localize('ru', {
+      custom: {
+        content: {
+          required: () => 'Введите комментарий'
+        }
       }
-    }
+    })
   },
   methods: {
     doEdit () {
-      let that = this
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          let that = this
+          this.loading = true
 
-      biographyCommentService.updateContent(this.commentId, this.editContent)
-        .then(
-          () => {
-            that.$emit('update:content', that.editContent)
-            that.$emit('ok')
-          },
-          e => {
-            console.log(e)
-          }
-        )
+          biographyCommentService.updateContent(this.commentId, this.editContent)
+            .then(
+              () => {
+                that.$emit('update:content', that.editContent)
+                that.$emit('ok')
+                that.loading = false
+              },
+              e => {
+                that.$log.error(e)
+                that.loading = false
+              }
+            )
+        }
+      })
     }
   }
 }

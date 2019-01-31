@@ -10,6 +10,10 @@
         show-moderation-actions
         show-moderator
         v-bind.sync="item"
+        biography-clamp
+        :biography-clamp-size="_biographyClampSize"
+        tree-clamp
+        :tree-clamp-size="_treeClampSize"
       ></biography-card>
     </template>
     <template slot="sidebar">
@@ -41,7 +45,7 @@
 </template>
 
 <script>
-import { MODERATION_STATUS } from '../config'
+import { MODERATION_STATUS, TREE_CLAMP_SIZE, BIOGRAPHY_CLAMP_SIZE } from '../config'
 import SideBar from '../components/moderation/sidebar/SideBar.vue'
 import SideList from '../components/moderation/sidebar/SideList.vue'
 import { mapGetters } from 'vuex'
@@ -54,12 +58,17 @@ export default {
     return {
       fab: false,
       filter: undefined,
-      treeClampSize: 1,
       resetId: +new Date(),
       infiniteId: +new Date()
     }
   },
   computed: {
+    _treeClampSize () {
+      return TREE_CLAMP_SIZE
+    },
+    _biographyClampSize () {
+      return BIOGRAPHY_CLAMP_SIZE
+    },
     _smSidebar () {
       return this.$vuetify.breakpoint.smAndDown
     },

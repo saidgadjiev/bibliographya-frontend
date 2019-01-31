@@ -8,6 +8,9 @@ import russia from 'vee-validate/dist/locale/ru'
 import axios from 'axios'
 import InfiniteLoading from 'vue-infinite-loading'
 import VueSweetalert2 from 'vue-sweetalert2'
+import VueLogger from 'vuejs-logger'
+import VueMoment from 'vue-moment'
+import moment from 'moment-timezone'
 
 import store from './store/store'
 
@@ -16,11 +19,31 @@ import './assets/css/bibliographya.css'
 import '@mdi/font/css/materialdesignicons.css'
 import { SERVER_ERROR } from './messages'
 
+require('moment/locale/ru')
+
+Vue.use(VueMoment, {
+  moment
+})
+
 Vue.use(Vuex)
 Vue.use(Vuetify)
 Vue.use(VueSweetalert2)
 
 Vue.component('infinite-loading', InfiniteLoading)
+
+const isProduction = process.env.NODE_ENV === 'production'
+
+const options = {
+  isEnabled: true,
+  logLevel: isProduction ? 'error' : 'debug',
+  stringifyArguments: false,
+  showLogLevel: true,
+  showMethodName: true,
+  separator: '|',
+  showConsoleColors: true
+}
+
+Vue.use(VueLogger, options)
 
 const config = {
   locale: 'ru',
@@ -41,24 +64,26 @@ axios.defaults.withCredentials = true
 axios.interceptors.request.use(function (request) {
   return request
 }, function (err) {
+  Vue.$log.error(err)
   return Promise.reject(err)
 })
 
 axios.interceptors.response.use(function (response) {
-  if (response.status === 401) {
+  return response
+}, function (err) {
+  if (err.response.status === 401) {
     router.push('/signIn')
-  } else if (response.status === 403) {
+  } else if (err.response.status === 403) {
     router.push('/403')
-  } else if (response.status === 500) {
-    Vue.$swal.fire({
+  } else if (err.response.status === 500) {
+    Vue.swal.fire({
       text: SERVER_ERROR,
       type: 'error',
       showCloseButton: true
     })
-  } else {
-    return response
+    Vue.$log.error(err)
   }
-}, function (err) {
+
   return Promise.reject(err)
 })
 

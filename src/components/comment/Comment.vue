@@ -3,17 +3,16 @@
     <v-card
       slot-scope="{ hover }"
       flat
-      :id="'_' + comment.id"
+      :id="'_c' + id"
       class="comment-wrapper pa-2">
       <v-card-title primary-title class="pa-0">
-        <div v-if="comment.parentId">
-          <router-link class="bibliographya-a" :to="'/biography/' + comment.biographyId">{{ comment.lastName + ' ' + comment.firstName }}</router-link>
+        <div v-if="parentId">
+          <router-link class="bibliographya-a" :to="_authorBiographyLink">{{ _authorName }}</router-link>
           <small class="grey--text">&nbsp;ответил&nbsp;</small>
-          <a @click="gotoReply()"><strong
-            class="grey--text">{{ comment.replyToFirstName }}</strong></a>
+          <a @click="gotoReply()"><strong class="grey--text">{{ _repliedFirstName }}</strong></a>
         </div>
         <div v-else>
-          <router-link  class="bibliographya-a" :to="'/biography/' + comment.biographyId">{{ comment.lastName + ' ' + comment.firstName }}</router-link>
+          <router-link  class="bibliographya-a" :to="_authorBiographyLink">{{ _authorName }}</router-link>
         </div>
         <v-spacer></v-spacer>
         <div v-if="hover">
@@ -30,21 +29,18 @@
           v-if="edit"
           @cancel="edit = !edit"
           @ok="edit = !edit"
-          :comment-id="comment.id"
-          :content="comment.content"
-          v-on="$listeners"
+          :comment-id="id"
+          :content.sync="content"
         >
         </edit-comment>
         <div v-else>
-        <span v-if="comment.parentId">
-          <router-link class="bibliographya-a" :to="'/biography/' + comment.replyToBiographyId">{{ comment.replyToFirstName }}</router-link>{{ ', ' + comment.content }}
-        </span>
-          <span v-else>{{ comment.content }}</span>
+          <span v-if="parentId">
+            <router-link class="bibliographya-a" :to="_repliedBiographyLink">{{ _repliedFirstName }}</router-link>{{ ', ' + content }}
+          </span>
+          <span v-else>{{ content }}</span>
         </div>
+        <h4>{{ getTimeDiff + ',' }}&nbsp;<a class="font-weight-regular" @click="reply">Ответить</a></h4>
       </v-card-text>
-      <v-card-actions class="pa-0">
-        {{ getTimeDiff + ',' }}&nbsp;<a @click="reply">Ответить</a>
-      </v-card-actions>
     </v-card>
   </v-hover>
 </template>
@@ -70,9 +66,28 @@ export default {
     }
   },
   props: {
-    creatorId: Number,
-    comment: {
-      required: true,
+    id: {
+      type: Number
+    },
+    content: {
+      type: String
+    },
+    createdAt: {
+      type: String
+    },
+    biographyId: {
+      type: Number
+    },
+    userId: {
+      type: Number
+    },
+    parentId: {
+      type: Number
+    },
+    biography: {
+      type: Object
+    },
+    parent: {
       type: Object
     },
     classes: {
@@ -85,6 +100,18 @@ export default {
       'isAuthenticated',
       'isAuthorized'
     ]),
+    _repliedFirstName () {
+      return this.parent.biography.firstName
+    },
+    _authorName () {
+      return this.biography.lastName + ' ' + this.biography.firstName
+    },
+    _authorBiographyLink () {
+      return '/biography/' + this.biographyId
+    },
+    _repliedBiographyLink () {
+      return '/biography/' + this.parent.biographyId
+    },
     _showEdit () {
       if (this.edit) {
         return false
@@ -93,59 +120,32 @@ export default {
         return false
       }
 
-      return this.getUser.id === this.comment.userId
+      return this.getUser.id === this.userId
     },
     _showRemove () {
       if (!this.isAuthenticated) {
         return false
       }
-      if (this.getUser.id === this.creatorId) {
+      if (this.getUser.id === this.userId) {
         return true
       }
       if (this.isAuthorized([ROLES.ROLE_MODERATOR])) {
         return true
       }
 
-      return this.getUser.id === this.comment.userId
+      return this.getUser.id === this.userId
     },
     getTimeDiff () {
-      const date1 = new Date(this.comment.createdAt)
-      const date2 = new Date(Date.now())
-      const yearDiff = Math.abs(date2.getFullYear() - date1.getFullYear())
-      const monthDiff = Math.abs(date2.getMonth() - date1.getMonth())
-      const dayDiff = Math.abs(date2.getDate() - date1.getDate())
-      const hourDiff = Math.abs(date2.getHours() - date1.getHours())
-      const minuteDiff = Math.abs(date2.getMinutes() - date1.getMinutes())
-      return yearDiff !== 0 && yearDiff === 1
-        ? 'a year ago'
-        : yearDiff > 1
-          ? yearDiff + ' years ago'
-          : monthDiff !== 0 && monthDiff === 1
-            ? 'a month ago'
-            : monthDiff > 1
-              ? monthDiff + ' months ago'
-              : dayDiff !== 0 && dayDiff === 1
-                ? 'a day ago'
-                : dayDiff > 1
-                  ? dayDiff + ' days ago'
-                  : hourDiff !== 0 && hourDiff === 1
-                    ? 'a hour ago'
-                    : hourDiff > 1
-                      ? hourDiff + ' hours ago'
-                      : minuteDiff !== 0 && minuteDiff === 1
-                        ? 'a minute ago'
-                        : minuteDiff > 1
-                          ? minuteDiff + ' minutes ago'
-                          : 'seconds ago'
+      return this.$moment(new Date(this.createdAt)).fromNow()
     }
   },
   methods: {
     clickEdit () {
       this.edit = !this.edit
-      this.editContent = this.comment.content
+      this.editContent = this.content
     },
     doDeleted () {
-      biographyCommentService.deleteComment(this.comment.biographyId, this.comment.id)
+      biographyCommentService.deleteComment(this.biographyId, this.id)
         .then(
           () => {
             this.$emit('comment-deleted')
@@ -153,8 +153,8 @@ export default {
         )
     },
     gotoReply () {
-      this.$vuetify.goTo('#c' + this.comment.parentId, this.options)
-      let el = document.getElementById('c' + this.comment.parentId)
+      this.$vuetify.goTo('#_c' + this.id, this.options)
+      let el = document.getElementById('_c' + this.parentId)
 
       el.classList.add('blue-grey', 'lighten-3')
 
@@ -174,10 +174,10 @@ export default {
 
 <style scoped>
   .comment-wrapper {
-    position: relative;
-    display: block;
-    margin-bottom: -1px;
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.125);
+    position: relative !important;
+    display: block !important;
+    margin-bottom: -1px !important;
+    background-color: #fff !important;
+    border: 1px solid rgba(0, 0, 0, 0.125) !important;
   }
 </style>

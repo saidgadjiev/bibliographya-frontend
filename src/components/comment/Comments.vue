@@ -1,10 +1,11 @@
 <template>
   <list
-    class="ml-0 mr-0 pr-3"
+    class="ml-0 mr-0"
     :infinite-load="infiniteLoad"
     :infinite-id.sync="infiniteId"
     :delete-id="deleteId"
     :delete-index="deleteIndex"
+    :reset-id="resetId"
     :add-id="addId"
     :new-item="newComment"
     v-bind="$attrs"
@@ -12,20 +13,34 @@
   >
     <template slot="item" slot-scope="{ item, index }">
       <comment
-        :comment="item"
+        v-bind.sync="item"
         @click-reply="clickReply(item)"
         @comment-deleted="commentDeleted(item, index)"
       ></comment>
     </template>
     <template slot="footer">
       <comment-form
+        class="pl-2"
+        :reply-to-comment="replyToComment"
         v-bind="_attrs"
         v-on="$listeners"
-        class="pl-2"
         @comment-added="commentAdded"
-        :reply-to-comment="replyToComment"
-        :biography-id="id"
+        @reset-reply="resetReply"
       ></comment-form>
+    </template>
+    <template slot="error" slot-scope="{ trigger }">
+      <v-card flat>
+        <v-card-text>
+      <span class="font-weight-bold">
+        Произошла ошибка
+      </span>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn block color="error" @click="trigger">
+            Попробовать еще раз
+          </v-btn>
+        </v-card-actions>
+      </v-card>
     </template>
   </list>
 </template>
@@ -44,6 +59,7 @@ export default {
       newComment: {},
       addId: +new Date(),
       deleteId: +new Date(),
+      resetId: +new Date(),
       deleteIndex: 0,
       infiniteId: +new Date(),
       replyToComment: null,
@@ -65,7 +81,8 @@ export default {
       return Object.assign({},
         this.$attrs,
         {
-          id: this.id
+          id: this.id,
+          commentsCount: this.commentsCount
         }
       )
     }
@@ -86,14 +103,22 @@ export default {
     },
     clickReply (comment) {
       this.replyToComment = comment
-      this.$vuetify.goTo('#commentForm', {
+      this.$vuetify.goTo('#comments', {
         duration: 300,
         offset: 0,
         easing: 'easeInOutCubic'
       })
     },
+    resetReply () {
+      this.replyToComment = null
+    },
     infiniteLoad (limit, offset) {
       return biographyCommentService.getComments(this.id, limit, offset, 'sort=created_at,asc')
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      this.resetId += 1
     }
   },
   components: {

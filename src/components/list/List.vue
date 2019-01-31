@@ -9,7 +9,7 @@
           <slot name="item" v-bind:item="item" v-bind:index="index">
           </slot>
         </v-flex>
-        <v-flex xs6>
+        <v-flex md6 xs12 align>
           <infinite-loading style="width: 100%;" :identifier="infiniteId" @infinite="load">
             <template slot="spinner">
               <v-progress-circular
@@ -24,7 +24,11 @@
             <div slot="no-results">
               <slot name="no-results"></slot>
             </div>
-            <div slot="error" style="display: none"></div>
+            <div slot="error" slot-scope="{ trigger }">
+              <slot name="error" :trigger="trigger">
+                <error-card :trigger="trigger"></error-card>
+              </slot>
+            </div>
           </infinite-loading>
         </v-flex>
         <v-flex xs12 v-if="hasFooterSlot">
@@ -54,12 +58,15 @@
 
 <script>
 import { CancelToken } from '../../axios/axios'
+import ErrorCard from '../error/ErrorCard'
 
 export default {
   name: 'List',
+  components: { ErrorCard },
   inheritAttrs: false,
   data () {
     return {
+      loading: false,
       activeRequest: undefined,
       limit: 50,
       offset: 0,
@@ -102,25 +109,31 @@ export default {
       this.$emit('update:infiniteId', this.infiniteId + 1)
     },
     load ($state) {
-      this.activeRequest = CancelToken.source()
-      let that = this
+      if (!this.loading) {
+        this.loading = true
+        this.activeRequest = CancelToken.source()
+        let that = this
 
-      this.infiniteLoad(this.limit, this.offset, this.activeRequest.token)
-        .then(
-          response => {
-            if (response.status === 200) {
-              that.items.push(...response.data.content)
-              that.offset += response.data.content.length
-              $state.loaded()
-            } else {
-              $state.complete()
-              that.$emit('update:availableMore', false)
+        this.infiniteLoad(this.limit, this.offset, this.activeRequest.token)
+          .then(
+            response => {
+              if (response.status === 200) {
+                that.items.push(...response.data.content)
+                that.offset += response.data.content.length
+                $state.loaded()
+              } else {
+                $state.complete()
+                that.activeRequest = undefined
+                that.$emit('update:availableMore', false)
+              }
+              that.loading = false
+            },
+            e => {
+              $state.error()
+              that.loading = false
             }
-          },
-          e => {
-            console.log(e)
-          }
-        )
+          )
+      }
     }
   },
   computed: {
@@ -176,7 +189,7 @@ export default {
         this.activeRequest.cancel()
         this.activeRequest = undefined
       }
-
+      this.loading = false
       this.items = []
       this.offset = 0
       this.$emit('update:infiniteId', this.infiniteId + 1)

@@ -11,6 +11,10 @@
         show-moderation-block
         show-user-actions
         :show-publish-block="showPublishBlock(item)"
+        biography-clamp
+        :biography-clamp-size="_biographyClampSize"
+        tree-clamp
+        :tree-clamp-size="_treeClampSize"
       ></biography-card>
     </template>
     <template slot="sidebar">
@@ -34,7 +38,7 @@
 <script>
 import List from '../components/list/List'
 import biographyService from '../services/biography-service'
-import { MODERATION_STATUS } from '../config'
+import { MODERATION_STATUS, TREE_CLAMP_SIZE, BIOGRAPHY_CLAMP_SIZE } from '../config'
 import BiographyCard from '../components/biography/card/BiographyCard'
 
 export default {
@@ -58,6 +62,14 @@ export default {
     },
     infiniteLoad (limit, offset) {
       return biographyService.getMyBiographies(limit, offset)
+    }
+  },
+  computed: {
+    _treeClampSize () {
+      return TREE_CLAMP_SIZE
+    },
+    _biographyClampSize () {
+      return BIOGRAPHY_CLAMP_SIZE
     }
   },
   components: {

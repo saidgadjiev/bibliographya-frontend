@@ -13,9 +13,9 @@
       <biography-card2
         v-bind.sync="item"
         biography-clamp
-        :biography-clamp-size="biographyClampSize"
+        :biography-clamp-size="_biographyClampSize"
         tree-clamp
-        :tree-clamp-size="treeClampSize"
+        :tree-clamp-size="_treeClampSize"
         @biography-removed="deleteIndex = index"
       ></biography-card2>
     </template>
@@ -52,13 +52,12 @@ import BiographyCard2 from '../components/biography/card/BiographyCard'
 import CategoryCard from '../components/category/CategoryCard'
 import SideBar from '../components/biography/sidebar/SideBar'
 import SideList from '../components/biography/sidebar/SideList'
+import { TREE_CLAMP_SIZE, BIOGRAPHY_CLAMP_SIZE } from '../config'
 
 export default {
   name: 'BiographiesList',
   data () {
     return {
-      treeClampSize: 1,
-      biographyClampSize: 150,
       biographyChannel: undefined,
       infiniteId: +new Date(),
       resetId: +new Date(),
@@ -140,6 +139,12 @@ export default {
     }
   },
   computed: {
+    _treeClampSize () {
+      return TREE_CLAMP_SIZE
+    },
+    _biographyClampSize () {
+      return BIOGRAPHY_CLAMP_SIZE
+    },
     _smSidebar () {
       return this.$vuetify.breakpoint.smAndDown
     }
@@ -150,7 +155,7 @@ export default {
   watch: {
     '$route' (to, from) {
       this.loadCategory()
-      this.infiniteId += 1
+      this.resetId += 1
     }
   },
   components: {

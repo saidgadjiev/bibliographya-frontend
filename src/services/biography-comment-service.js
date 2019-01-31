@@ -20,16 +20,7 @@ function deleteComment (biographyId, commentId) {
 }
 
 function addComment (biographyId, commentForm, params) {
-  let comment = {
-    content: commentForm.content,
-    parentId: commentForm.parentId,
-    firstName: commentForm.firstName,
-    lastName: commentForm.lastName,
-    replyToFirstName: commentForm.replyToFirstName,
-    replyToUserName: commentForm.replyToUserName
-  }
-
-  return axios.post(getRestUrl('biographies/' + biographyId + '/comments') + (params ? '?' + params : ''), comment)
+  return axios.post(getRestUrl('biographies/' + biographyId + '/comments') + (params ? '?' + params : ''), commentForm)
 }
 
 function getComments (biographyId, limit, offset, sort) {

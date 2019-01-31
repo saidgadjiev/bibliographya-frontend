@@ -1,12 +1,8 @@
 <template>
-  <v-form id="commentForm">
+  <v-form id="comments">
     <div v-if="replyToComment">
-    <span>
-      ответ <a @click="gotoReply">{{ replyToComment.firstName }}</a>
-    </span>
-    <span>
-      <v-icon style="font-size: 18px" @click="$emit('reset-reply')">fas fa-times</v-icon>
-    </span>
+      ответ <a @click="gotoReply">{{ _replyToFirstName }}</a>&nbsp;
+      <v-icon style="font-size: 18px" @click="resetReply">fas fa-times</v-icon>
     </div>
     <v-textarea
       auto-grow
@@ -52,12 +48,18 @@ export default {
   computed: {
     ...mapGetters([
       'isAuthenticated'
-    ])
+    ]),
+    _replyToFirstName () {
+      return this.replyToComment.biography.firstName
+    }
   },
   methods: {
+    resetReply () {
+      this.$emit('reset-reply')
+    },
     gotoReply () {
-      this.$vuetify.goTo('#c' + this.replyToComment.id, this.options)
-      let el = document.getElementById('c' + this.replyToComment.id)
+      this.$vuetify.goTo('#_c' + this.replyToComment.id, this.options)
+      let el = document.getElementById('_c' + this.replyToComment.id)
 
       el.classList.add('blue-grey', 'lighten-3')
 
@@ -73,11 +75,19 @@ export default {
       }
       let that = this
 
-      if (this.content !== '') {
-        this.addComment(this.id, {
-          content: this.content,
-          parent: this.replyToComment
-        })
+      if (this.content && this.content !== '') {
+        let json = {
+          content: this.content
+        }
+
+        if (this.replyToComment) {
+          json.parent = {
+            id: this.replyToComment.id,
+            firstName: this._replyToFirstName
+          }
+        }
+
+        this.addComment(this.id, json)
           .then(
             response => {
               that.content = ''
@@ -85,7 +95,7 @@ export default {
               that.$emit('update:commentsCount', that.commentsCount + 1)
             },
             e => {
-              console.log(e)
+              this.$log.error(e)
             }
           )
       }

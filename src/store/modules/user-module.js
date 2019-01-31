@@ -85,7 +85,17 @@ const actions = {
     })
   },
   errorSocialSignIn ({ dispatch, commit }, payload) {
-    authService.errorSocialSignIn(payload.provider, payload.code, payload.errorDescription)
+    return new Promise((resolve, reject) => {
+      authService.errorSocialSignIn(payload.provider, payload.code, payload.errorDescription)
+        .then(
+          response => {
+            resolve(response)
+          },
+          e => {
+            reject(e)
+          }
+        )
+    })
   },
   signUp ({ dispatch, commit }, signUpForm) {
     commit('signUpRequest')

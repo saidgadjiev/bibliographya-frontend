@@ -42,6 +42,10 @@ export const getRedirectUri = (providerId) => {
   return window.location.origin + '/' + providerId + '/callback'
 }
 
+export const BIOGRAPHY_CLAMP_SIZE = 150
+
+export const TREE_CLAMP_SIZE = 5
+
 export default {
   ROLES
 }

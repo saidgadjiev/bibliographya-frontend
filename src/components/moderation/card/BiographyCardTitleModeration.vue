@@ -4,7 +4,7 @@
       <div v-if="_showModerator">
     <span>
       Исполнитель:&nbsp;
-      <router-link class="bibliographya-a" :to="_biographyLink">{{ _moderatorFullName }}</router-link>
+      <router-link class="bibliographya-a word-break" :to="_biographyLink">{{ _moderatorName }}</router-link>
     </span>
       </div>
       <div>
@@ -46,7 +46,7 @@ export default {
     _showModerator () {
       return this.moderatorBiography && this.showModerator
     },
-    _moderatorFullName () {
+    _moderatorName () {
       return this.moderatorBiography.lastName + ' ' + this.moderatorBiography.firstName
     },
     _biographyLink () {

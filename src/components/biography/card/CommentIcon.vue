@@ -1,8 +1,8 @@
 <template>
-  <a class="ml-2" style="text-decoration: none">
-    <v-icon color="blue darken-1">mdi-comment-outline</v-icon>
-    <span style="font-size: 18px">{{ commentsCount }}</span>
-  </a>
+  <div class="ml-2 d-flex align-center">
+    <v-icon color="blue darken-1" @click="gotoComments">mdi-comment-outline</v-icon>
+    <span style="font-size: 18px;color: #007bff" class="pl-1">{{ commentsCount }}</span>
+  </div>
 </template>
 
 <script>
@@ -19,8 +19,13 @@ export default {
     }
   },
   computed: {
-    biographyLink () {
+    _biographyLink () {
       return '/biography/' + this.id + '#comments'
+    }
+  },
+  methods: {
+    gotoComments () {
+      this.$router.push(this._biographyLink)
     }
   }
 }

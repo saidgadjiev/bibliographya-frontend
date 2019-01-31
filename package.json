@@ -20,7 +20,10 @@
     "vee-validate": "^2.1.5",
     "vue-infinite-loading": "^2.4.3",
     "vue-sweetalert2": "^1.6.4",
-    "vuetify": "^1.4.3"
+    "vuetify": "^1.4.3",
+    "vuejs-logger": "^1.5.3",
+    "vue-moment": "^4.0.0",
+    "moment-timezone": "^0.5.23"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
