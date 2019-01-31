@@ -72,8 +72,8 @@ export default {
                 type: 'error',
                 showCloseButton: true
               })
-              that.publishLoading = false
             }
+            that.publishLoading = false
           }
         )
     },
@@ -86,6 +86,9 @@ export default {
           () => {
             that.$emit('update:publishStatus', PUBLISH_STATUS.NOT_PUBLISHED)
             that.$store.dispatch('alert/success', UNPUBLISHED)
+            that.unpublishLoading = false
+          },
+          e => {
             that.unpublishLoading = false
           }
         )
