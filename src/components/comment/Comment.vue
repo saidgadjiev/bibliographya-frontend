@@ -15,7 +15,7 @@
           <router-link  class="bibliographya-a" :to="_authorBiographyLink">{{ _authorName }}</router-link>
         </div>
         <v-spacer></v-spacer>
-        <div v-if="hover">
+        <div v-if="hover || _showCommentButtons">
           <v-icon v-if="_showEdit" small @click="clickEdit">
             mdi-pencil
           </v-icon>
@@ -112,6 +112,9 @@ export default {
     _repliedBiographyLink () {
       return '/biography/' + this.parent.biographyId
     },
+    _showCommentButtons () {
+      return this.$vuetify.breakpoint.mdAndUp
+    },
     _showEdit () {
       if (this.edit) {
         return false
@@ -153,13 +156,13 @@ export default {
         )
     },
     gotoReply () {
-      this.$vuetify.goTo('#_c' + this.id, this.options)
+      this.$vuetify.goTo('#_c' + this.parentId, this.options)
       let el = document.getElementById('_c' + this.parentId)
 
-      el.classList.add('blue-grey', 'lighten-3')
+      el.classList.add('light-blue', 'lighten-4')
 
       setTimeout(function () {
-        el.classList.remove('blue-grey', 'lighten-3')
+        el.classList.remove('light-blue', 'lighten-4')
       }, 2000)
     },
     reply () {
