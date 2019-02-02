@@ -27,7 +27,7 @@ export default {
   },
   props: {
     moderatorId: {
-      type: String
+      type: Number
     },
     actions: {
       type: Array,

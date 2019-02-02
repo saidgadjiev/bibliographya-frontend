@@ -14,7 +14,7 @@
     </span>
       </div>
       <div v-if="moderationInfo">
-        <span style="color: red">Причина отклонения:</span>
+        <span style="color: red" class="font-weight-bold">Причина отклонения:</span>
         {{ moderationInfo }}
       </div>
     </div>
@@ -32,7 +32,7 @@ export default {
       type: Boolean,
       default: false
     },
-    moderatorBiography: {
+    moderator: {
       type: Object
     },
     moderationStatus: {
@@ -44,14 +44,14 @@ export default {
   },
   computed: {
     _showModerator () {
-      return this.moderatorBiography && this.showModerator
+      return this.moderator && this.showModerator
     },
     _moderatorName () {
-      return this.moderatorBiography.lastName + ' ' + this.moderatorBiography.firstName
+      return this.moderator.lastName + ' ' + this.moderator.firstName
     },
     _biographyLink () {
-      if (this.moderatorBiography) {
-        return '/biography/' + this.moderatorBiography.id
+      if (this.moderator) {
+        return '/biography/' + this.moderator.id
       }
 
       return ''

@@ -1,7 +1,7 @@
 <template>
   <v-card-text>
     <div>
-      <div v-if="fixerBiography">
+      <div v-if="fixer">
         <span>
           Исполнитель:
           <router-link class="bibliographya-a" :to="_fixerBiographyLink">{{ _fixerFio }}</router-link>
@@ -11,11 +11,21 @@
         Статус:
         <strong>{{ _fixStatus }}</strong>
       </div>
+      <div v-if="info">
+        Комментарий:
+        <strong>{{ info }}</strong>
+      </div>
       <div>
         <span>
           Предложил:
           <router-link class="bibliographya-a" :to="_creatorBiographyLink">{{ _creatorFio }}</router-link>
         </span>
+      </div>
+      <div v-if="fixText">
+        <span style="color: red;" class="subheading font-weight-bold">
+          Исправление:
+        </span>
+        {{ fixText }}
       </div>
     </div>
   </v-card-text>
@@ -30,11 +40,17 @@ export default {
     status: {
       type: Number
     },
-    fixerBiography: {
+    fixer: {
       type: Object
     },
-    creatorBiography: {
+    creator: {
       type: Object
+    },
+    fixText: {
+      type: String
+    },
+    info: {
+      type: String
     }
   },
   computed: {
@@ -49,16 +65,16 @@ export default {
       return null
     },
     _fixerFio () {
-      return this.fixerBiography.lastName + ' ' + this.fixerBiography.firstName
+      return this.fixer.lastName + ' ' + this.fixer.firstName
     },
     _creatorFio () {
-      return this.creatorBiography.lastName + ' ' + this.creatorBiography.firstName
+      return this.creator.lastName + ' ' + this.creator.firstName
     },
     _fixerBiographyLink () {
-      return '/biography/' + this.fixerBiography.id
+      return '/biography/' + this.fixer.id
     },
     _creatorBiographyLink () {
-      return '/biography/' + this.creatorBiography.id
+      return '/biography/' + this.creator.id
     }
   }
 }

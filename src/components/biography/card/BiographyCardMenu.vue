@@ -11,13 +11,13 @@
     </v-btn>
     <v-list >
       <v-list-tile
-        v-if="_showEditDelete"
+        v-if="_showDelete"
         @click="remove"
       >
         <v-list-tile-title>Удалить</v-list-tile-title>
       </v-list-tile>
       <v-list-tile
-        v-if="_showEditDelete"
+        v-if="_showEdit"
         @click="edit"
       >
         <v-list-tile-title>Редактировать</v-list-tile-title>
@@ -57,6 +57,9 @@ export default {
     },
     creatorId: {
       type: Number
+    },
+    userId: {
+      type: Number
     }
   },
   computed: {
@@ -65,7 +68,10 @@ export default {
       'isAuthenticated',
       'isAuthorized'
     ]),
-    _showEditDelete () {
+    _showDelete () {
+      if (this.userId) {
+        return false
+      }
       if (!this.isAuthenticated) {
         return false
       }
@@ -77,6 +83,26 @@ export default {
       }
 
       return false
+    },
+    _showEdit () {
+      if (!this.isAuthenticated) {
+        return false
+      }
+      if (this.isAuthorized([ROLES.ROLE_MODERATOR])) {
+        return true
+      }
+      if (this.getUser.id === this.creatorId) {
+        return true
+      }
+
+      return false
+    },
+    _showSuggest () {
+      if (!this.isAuthenticated) {
+        return true
+      }
+
+      return this.creatorId !== this.getUser.id
     },
     _icon () {
       if (this.$vuetify.breakpoint.mdAndUp) {

@@ -1,24 +1,14 @@
-<template>
-  <div>
-    <div class="toc" v-html="_toc"></div>
-    <template v-if="_hasClamp">
-      <div v-if="_clamped">
-        <a @click="treeClamped = false" class="subheading font-weight-bold">Показать содержание...</a>
-      </div>
-      <div v-else>
-        <a @click="treeClamped = true" class="subheading font-weight-bold">Скрыть содержание</a>
-      </div>
-    </template>
-  </div>
-</template>
-
 <script>
+import { BIOGRAPHY_CARD_MODE } from '../../../config'
+
 export default {
   name: 'Toc',
   inheritAttrs: false,
   data () {
     return {
-      treeClamped: true
+      treeClamped: true,
+      toc: '',
+      clampedToc: ''
     }
   },
   props: {
@@ -27,6 +17,13 @@ export default {
       default: function () {
         return []
       }
+    },
+    id: {
+      type: Number
+    },
+    mode: {
+      type: String,
+      default: BIOGRAPHY_CARD_MODE.LIST
     },
     treeClamp: {
       type: Boolean,
@@ -63,56 +60,111 @@ export default {
       }
 
       return false
-    },
-    _toc () {
-      let headers = this.headers
+    }
+  },
+  render (createElement) {
+    let that = this
 
-      if (!headers.length) {
-        return
+    function renderTemplate () {
+      let elements = []
+
+      if (that._hasClamp) {
+        let div = createElement('div', {}, [])
+
+        elements.push(div)
+
+        if (that._clamped) {
+          div.children.push(createElement('div', {}, [
+            createElement('a', {
+              class: {
+                'subheading': true,
+                'font-weight-bold': true
+              },
+              on: {
+                click (e) {
+                  that.treeClamped = false
+                }
+              }
+            }, 'Показать содержание...')
+          ]))
+        } else {
+          div.children.push(createElement('div', {}, [
+            createElement('a', {
+              class: {
+                'subheading': true,
+                'font-weight-bold': true
+              },
+              on: {
+                click (e) {
+                  that.treeClamped = true
+                }
+              }
+            }, 'Скрыть содержание')
+          ]))
+        }
       }
 
-      if (this.treeClamped && headers.length > this.treeClampSize) {
-        headers = headers.slice(0, this.treeClampSize)
-      }
+      return elements
+    }
 
-      let i, h, nextLevel
-      let prevLevel = this.getMinLevel(headers) - 1
-      let html = ''
-      let stack = []
+    function renderToc () {
+      let headers = that.headers
+
+      let i, h
+      let prevLevel = that.getMinLevel(headers) - 1
+      let html = []
+      let elementStack = []
 
       for (i = 0; i < headers.length; i++) {
         h = headers[i]
         h.element.setAttribute('id', h.id)
-        nextLevel = headers[i + 1] && headers[i + 1].level
         if (prevLevel === h.level) {
-          html += '<li>'
+          let element = createElement('li')
+
+          html.push(element)
         } else if (prevLevel < h.level) {
-          html += '<ol><li>'
-          stack.push(h.level)
+          let olElement = createElement('ol', {}, [])
+          let liElement = createElement('li', {}, [])
+
+          olElement.children.push(liElement)
+
+          html.push(olElement)
+          elementStack.push(liElement)
         }
-        html += '<a class="bibliographya-a" href="#' + h.id + '">' + h.title + '</a>'
+        let peek = elementStack[elementStack.length - 1]
 
-        prevLevel = h.level
-        if (nextLevel === h.level || !nextLevel) {
-          html += '</li>'
-          if (!nextLevel) {
-            html += '</ol>'
-          }
-        } else if (h.level > nextLevel) {
-          let peek = stack[stack.length - 1]
-
-          while (peek > nextLevel) {
-            html += '</li></ol>'
-            stack.pop()
-            peek = stack[stack.length - 1]
-          }
-          html += '</li>'
-          prevLevel = peek
+        if (that.mode === BIOGRAPHY_CARD_MODE.READ) {
+          peek.children.push(createElement('router-link', {
+            class: {
+              'bibliographya-a': true
+            },
+            attrs: {
+              to: '#' + h.id
+            }
+          }, h.title))
+        } else {
+          peek.children.push(createElement('router-link', {
+            class: {
+              'bibliographya-a': true
+            },
+            attrs: {
+              to: '/biography/' + that.id + '#' + h.id
+            }
+          }, h.title))
         }
       }
 
       return html
     }
+
+    return createElement('div', {}, [
+      createElement('div', {
+        class: {
+          'toc': true
+        }
+      }, renderToc()),
+      renderTemplate()
+    ])
   }
 }
 </script>

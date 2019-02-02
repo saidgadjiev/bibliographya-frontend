@@ -23,7 +23,8 @@
     "vuetify": "^1.4.3",
     "vuejs-logger": "^1.5.3",
     "vue-moment": "^4.0.0",
-    "moment-timezone": "^0.5.23"
+    "moment-timezone": "^0.5.23",
+    "cyrillic-to-translit-js": "^2.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",

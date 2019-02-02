@@ -15,8 +15,8 @@
         <v-card-actions>
           <v-layout row wrap>
             <v-flex xs12 v-for="(action, index) in item.actions" :key="index">
-              <fix-assign-me-button v-if="action.name === 'AssignMe'" v-bind.sync="item" :action="action"/>
-              <fix-ignore-button v-else-if="action.name === 'Ignore'" v-bind.sync="item" :action="action"/>
+              <fix-ignore-button v-if="action.name === 'Ignore'" v-bind.sync="item" :action="action"/>
+              <fix-assign-me-button v-else-if="action.name === 'AssignMe'" v-bind.sync="item" :action="action"/>
               <fix-button v-else v-bind.sync="item" :action="action"/>
             </v-flex>
           </v-layout>

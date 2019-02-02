@@ -3,7 +3,7 @@
     <toc
       v-if="_showToc"
       :headers="tocHeaders"
-      v-bind="$attrs"
+      v-bind="_attrs"
     ></toc>
     <clamp
       v-if="biography"
@@ -20,6 +20,7 @@
 <script>
 import Clamp from './HtmlClamp'
 import Toc from './Toc'
+import cyrillicToTranslit from 'cyrillic-to-translit-js'
 
 export default {
   name: 'BiographyCardText',
@@ -50,7 +51,7 @@ export default {
       let children = this.$refs.biography.$el.children[0].children
       let headers = []
 
-      this.getHeaders(children, headers, this.guid('head_'))
+      this.getHeaders(children, headers, this.guid(''))
 
       this.tocHeaders = headers
     }
@@ -69,7 +70,7 @@ export default {
         if (/^h[1-9]$/i.test(child.localName)) {
           let level = parseInt(child.nodeName.replace(/^H/i, ''), 10)
           let text = child.textContent
-          let id = guid()
+          let id = guid() + '_' + cyrillicToTranslit().transform(text, '_')
 
           let node = {
             id: id,
@@ -90,6 +91,14 @@ export default {
     }
   },
   computed: {
+    _attrs () {
+      return Object.assign({},
+        this.$attrs,
+        {
+          id: this.id
+        }
+      )
+    },
     _showToc () {
       return this.tocHeaders.length > 0
     },

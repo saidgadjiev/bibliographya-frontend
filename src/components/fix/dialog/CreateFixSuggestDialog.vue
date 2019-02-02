@@ -23,6 +23,8 @@
             block
             class="primary mt-1"
             @click="save"
+            :loading="loading"
+            :disabled="loading"
             >
             Предложить
           </v-btn>
@@ -38,7 +40,8 @@ export default {
   name: 'CreateFixSuggestDialog',
   data () {
     return {
-      fixText: ''
+      fixText: '',
+      loading: false
     }
   },
   props: {
@@ -73,6 +76,7 @@ export default {
   methods: {
     save () {
       let that = this
+      that.loading = true
 
       this.$validator.validateAll().then(result => {
         if (result) {
@@ -81,8 +85,14 @@ export default {
               () => {
                 that.fixText = undefined
                 that.$emit('update:visible', false)
+                that.loading = false
+              },
+              e => {
+                that.loading = false
               }
             )
+        } else {
+          that.loading = false
         }
       })
     }

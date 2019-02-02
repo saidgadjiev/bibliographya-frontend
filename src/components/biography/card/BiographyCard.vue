@@ -3,20 +3,20 @@
     <biography-card-title-moderation v-if="showModerationBlock" class="pb-0" v-bind="$attrs"/>
     <biography-card-publish-title
       v-if="showPublishBlock"
-      v-bind="attrs"
+      v-bind="_attrs"
       class="pb-0"
       v-on="$listeners"/>
-    <biography-card-secondary-title v-bind="attrs" v-on="$listeners" class="pb-0"/>
-    <biography-card-title v-bind="attrs" v-on="$listeners"/>
+    <biography-card-secondary-title v-bind="_attrs" v-on="$listeners" class="pb-0"/>
+    <biography-card-title v-bind="_attrs" v-on="$listeners"/>
     <v-divider></v-divider>
-    <biography-card-text v-if="_showBiography" v-bind="attrs"/>
+    <biography-card-text v-if="_showBiography" v-bind="_attrs"/>
     <v-divider v-if="_showBiography"></v-divider>
-    <biography-card-actions v-bind="attrs" v-on="$listeners"/>
+    <biography-card-actions v-bind="_attrs" v-on="$listeners"/>
     <biography-card-user-actions v-if="showUserActions" class="pt-0" v-bind="$attrs" v-on="$listeners"/>
     <biography-moderation-card-actions v-if="showModerationActions" v-bind="$attrs" v-on="$listeners"/>
     <comments
       v-if="showComments"
-      v-bind="attrs"
+      v-bind="_attrs"
       v-on="listeners"
     />
   </v-card>
@@ -80,7 +80,7 @@ export default {
     _showBiography () {
       return !!this.biography
     },
-    attrs () {
+    _attrs () {
       return Object.assign({},
         this.$attrs,
         {

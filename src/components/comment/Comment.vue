@@ -113,7 +113,7 @@ export default {
       return '/biography/' + this.parent.biographyId
     },
     _showCommentButtons () {
-      return this.$vuetify.breakpoint.mdAndUp
+      return this.$vuetify.breakpoint.smAndDown
     },
     _showEdit () {
       if (this.edit) {

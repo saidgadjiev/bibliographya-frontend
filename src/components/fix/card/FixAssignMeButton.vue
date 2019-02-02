@@ -3,6 +3,8 @@
     block
     @click="assignMe"
     color="primary"
+    :loading="loading"
+    :disabled="loading"
   >{{ action.caption }}</v-btn>
 </template>
 
@@ -11,11 +13,16 @@ import biographyFixService from '../../../services/biography-fix-service'
 
 export default {
   name: 'FixAssignMeButton',
+  data () {
+    return {
+      loading: false
+    }
+  },
   props: {
     id: {
       type: Number
     },
-    fixerBiography: {
+    fixer: {
       type: Object
     },
     action: {
@@ -28,11 +35,12 @@ export default {
   methods: {
     updateFixerInfo (info) {
       this.$emit('update:actions', info.actions)
-      this.$emit('update:fixerBiography', info.fixerBiography)
-      this.$emit('update:fixerId', info.fixerBiography.userId)
+      this.$emit('update:fixer', info.fixer)
+      this.$emit('update:fixerId', info.fixer.userId)
     },
     assignMe () {
       let that = this
+      that.loading = true
 
       biographyFixService.assignMe(this.id, {
         signal: this.action.signal,
@@ -41,12 +49,13 @@ export default {
         .then(
           response => {
             that.updateFixerInfo(response.data)
+            that.loading = false
           },
           e => {
             if (e.response.status === 409) {
               that.updateFixerInfo(e.response.data)
 
-              let currentFixer = that.fixerBiography
+              let currentFixer = that.fixer
               let message = '<a href="\'/biography/' + currentFixer.id + '">' +
                 currentFixer.firstName + ' ' + currentFixer.lastName + '</a>,&nbsp;уже взял исправление на себя.'
 
@@ -56,6 +65,7 @@ export default {
                 showCloseButton: true
               })
             }
+            that.loading = false
           }
         )
     }

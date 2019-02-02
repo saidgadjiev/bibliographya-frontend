@@ -37,6 +37,11 @@ import ModerationAssignMeButton from './ModerationAssignMeButton'
 export default {
   name: 'BiographyModerationCardActions',
   inheritAttrs: false,
+  data () {
+    return {
+      loading: false
+    }
+  },
   computed: {
     ...mapGetters([
       'getUser'
@@ -44,7 +49,7 @@ export default {
   },
   props: {
     moderatorId: {
-      type: String
+      type: Number
     },
     actions: {
       type: Array,

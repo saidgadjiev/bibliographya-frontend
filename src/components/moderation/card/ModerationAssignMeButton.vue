@@ -3,6 +3,8 @@
     block
     @click="assignMe"
     color="primary"
+    :loading="loading"
+    :disabled="loading"
   >{{ action.caption }}</v-btn>
 </template>
 
@@ -11,11 +13,16 @@ import biographyModerationService from '../../../services/biography-moderation-s
 
 export default {
   name: 'ModerationAssignMeButton',
+  data () {
+    return {
+      loading: false
+    }
+  },
   props: {
     id: {
       type: Number
     },
-    moderatorBiography: {
+    moderator: {
       type: Object
     },
     moderationStatus: {
@@ -27,12 +34,13 @@ export default {
   },
   methods: {
     updateModeratorInfo (info) {
-      this.$emit('update:moderatorBiography', info.moderatorBiography)
-      this.$emit('update:moderatorId', info.moderatorBiography.userId)
+      this.$emit('update:moderator', info.moderator)
+      this.$emit('update:moderatorId', info.moderator.userId)
       this.$emit('update:actions', info.actions)
     },
     assignMe () {
       let that = this
+      that.loading = true
 
       biographyModerationService.assignMe(this.id, {
         signal: this.action.signal,
@@ -41,12 +49,13 @@ export default {
         .then(
           response => {
             that.updateModeratorInfo(response.data)
+            that.loading = false
           },
           e => {
             if (e.response.status === 409) {
               that.updateModeratorInfo(e.response.data)
 
-              let currentModerator = that.moderatorBiography
+              let currentModerator = that.moderator
               let message = '<a href="\'/biography/' + currentModerator.id + '">' +
                 currentModerator.firstName + ' ' + currentModerator.lastName + '</a>,&nbsp;уже взял биографию на модерацию.'
 
@@ -56,6 +65,7 @@ export default {
                 showCloseButton: true
               })
             }
+            that.loading = false
           }
         )
     }

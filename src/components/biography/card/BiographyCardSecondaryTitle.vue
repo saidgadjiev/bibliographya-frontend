@@ -21,20 +21,20 @@ export default {
         return []
       }
     },
-    creatorBiography: {
+    creator: {
       type: Object
     }
   },
   computed: {
     _creatorBiographyLink () {
-      if (this.creatorBiography) {
-        return '/biography/' + this.creatorBiography.id
+      if (this.creator) {
+        return '/biography/' + this.creator.id
       }
 
       return ''
     },
     _creatorName () {
-      return this.creatorBiography.firstName + ' ' + this.creatorBiography.lastName
+      return this.creator.firstName + ' ' + this.creator.lastName
     },
     _isNotAutobiography () {
       return !!this.userId

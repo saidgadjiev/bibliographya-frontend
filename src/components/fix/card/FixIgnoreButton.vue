@@ -9,7 +9,13 @@
       placeholder="Причина игнора"
       v-model="infoText"
     ></v-textarea>
-    <v-btn block class="primary mt-1" @click="ignore">{{ action.caption }}</v-btn>
+    <v-btn
+      block
+      class="primary mt-1"
+      @click="ignore"
+      :loading="loading"
+      :disabled="loading"
+    >{{ action.caption }}</v-btn>
   </v-form>
 </template>
 
@@ -20,14 +26,15 @@ export default {
   name: 'FixIgnoreButton',
   data () {
     return {
-      infoText: ''
+      infoText: '',
+      loading: false
     }
   },
   props: {
     id: {
       type: Number
     },
-    fixerBiography: {
+    fixer: {
       type: Object
     },
     action: {
@@ -40,7 +47,7 @@ export default {
   created () {
     this.$validator.localize('ru', {
       custom: {
-        rejectText: {
+        infoText: {
           required: () => 'Введите причину игнора'
         }
       }
@@ -49,10 +56,11 @@ export default {
   methods: {
     ignore () {
       let that = this
+      that.loading = true
 
       this.$validator.validateAll().then(result => {
         if (result) {
-          biographyFixService.assignMe(this.id, {
+          biographyFixService.complete(this.id, {
             signal: this.action.signal,
             status: this.status,
             info: this.infoText
@@ -61,8 +69,14 @@ export default {
               response => {
                 that.$emit('update:actions', response.data.actions)
                 that.$emit('update:info', response.data.info)
+                that.loading = false
+              },
+              e => {
+                that.loading = false
               }
             )
+        } else {
+          that.loading = false
         }
       })
     }
