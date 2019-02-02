@@ -1,12 +1,35 @@
 <template>
     <v-card v-if="statistics">
-      <v-card-title>
-        Статистика
+      <v-card-title primary-title>
+        <h3 class="headline font-weight-bold">Статистика</h3>
       </v-card-title>
-      <v-card-text>
-        Пользователей: {{ statistics.count }}
-        <div v-for="(providerId, count) in statistics.usersByProvider" :key="providerId">
-          {{ providerName(providerId) }} : {{ count }}
+      <v-divider></v-divider>
+      <v-card-text class="subheading font-weight-bold">
+        <div style="color: #3D5AFE">
+          Количество пользователей:
+          <span>{{ _usersStats.count }}</span>
+        </div>
+        <v-divider></v-divider>
+        <div style="color: #F9A825">
+          Количество пользователей по типу провайдера:
+          <div v-for="(count, providerId) in _usersStats.usersByProvider" :key="providerId">
+            <span>{{ providerName(providerId) }}</span> : <span>{{ count }}</span>
+          </div>
+        </div>
+        <v-divider></v-divider>
+        <div style="color: #00E676">
+          Количество биографий:
+          <span>{{ _biographiesStats.count }}</span>
+        </div>
+        <v-divider></v-divider>
+        <div style="color: #AA00FF">
+          Количество лайков:
+          <span>{{ _likesStats.count }}</span>
+        </div>
+        <v-divider></v-divider>
+        <div style="color: #F50057">
+          Количество комментариев:
+          <span>{{ _commentsStats.count }}</span>
         </div>
       </v-card-text>
     </v-card>
@@ -14,18 +37,49 @@
 
 <script>
 import { PROVIDERS } from '../config'
+import statsService from '../services/stats-service'
 
 export default {
   name: 'Statistics',
-  props: {
-    statistics: {
-      type: Object
+  data () {
+    return {
+      statistics: undefined
+    }
+  },
+  computed: {
+    _usersStats () {
+      return this.statistics.usersStats
+    },
+    _likesStats () {
+      return this.statistics.likesStats
+    },
+    _biographiesStats () {
+      return this.statistics.biographiesStats
+    },
+    _commentsStats () {
+      return this.statistics.commentsStats
     }
   },
   methods: {
+    loadStats () {
+      let that = this
+
+      statsService.getStats()
+        .then(
+          response => {
+            that.statistics = response.data
+          },
+          e => {
+
+          }
+        )
+    },
     providerName (providerId) {
-      return PROVIDERS[providerId]
+      return PROVIDERS[providerId] || providerId
     }
+  },
+  created () {
+    this.loadStats()
   }
 }
 </script>

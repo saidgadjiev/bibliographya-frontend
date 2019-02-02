@@ -12,6 +12,7 @@ import CreateBiographyDetails from './views/CreateBiographyDetails'
 import CreatedByMeBiographies from './views/CreatedByMeBiographiesList'
 import BiographiesModeration from './views/BiographiesModerationsList'
 import BiographyFixesList from './views/BiographiesFixesList'
+import Statistics from './views/Statistics'
 import OAuthCallback from './views/OAuthCallback'
 import UsersList from './views/UsersList'
 import store from './store/store'
@@ -201,6 +202,16 @@ let router = new Router({
       name: 'admin',
       component: AdminSignIn,
       beforeEnter: ifNotAuthenticated
+    },
+    {
+      path: '/statistics',
+      name: 'statistics',
+      component: Statistics,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_ADMIN]
+      }
     },
     {
       path: '/:providerId/callback',
