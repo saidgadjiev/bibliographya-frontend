@@ -12,7 +12,7 @@
     </v-toolbar>
       <v-list dense class="white">
         <v-list dense>
-        <v-list-tile v-if="isAuthenticated" to="/profile">
+        <v-list-tile v-if="isAuthenticated" :to="'/profile/' + getUser.id">
           <v-list-tile-action>
             <v-icon size="24">fas fa-home</v-icon>
           </v-list-tile-action>

@@ -108,7 +108,7 @@ let router = new Router({
       })
     },
     {
-      path: '/edit/profile',
+      path: '/edit/profile/:id',
       name: 'editProfile',
       component: EditProfile,
       beforeEnter: requireAuth,
@@ -183,7 +183,7 @@ let router = new Router({
       }
     },
     {
-      path: '/profile',
+      path: '/profile/:id',
       name: 'profile',
       component: Profile,
       beforeEnter: requireAuth,

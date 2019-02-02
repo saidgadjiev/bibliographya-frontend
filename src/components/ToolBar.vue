@@ -45,7 +45,7 @@
           <v-icon right dark>fas fa-user</v-icon>
         </v-btn>
         <v-list>
-          <v-list-tile @click="$router.push('/profile')">
+          <v-list-tile @click="$router.push('/profile/' + getUser.id)">
             <v-list-tile-action>
               <v-icon>fas fa-home</v-icon>
             </v-list-tile-action>
@@ -53,7 +53,7 @@
               <v-list-tile-title>Моя биография</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile @click="$router.push('/edit/profile')">
+          <v-list-tile @click="$router.push('/edit/profile' + getUser.id)">
             <v-list-tile-action>
               <v-icon>edit</v-icon>
             </v-list-tile-action>

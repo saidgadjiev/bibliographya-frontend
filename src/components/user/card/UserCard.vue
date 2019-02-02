@@ -1,10 +1,14 @@
 <template>
   <v-card>
-    <v-card-title>
-      <div>{{ _fullName }}</div>
+    <v-card-title primary-title>
+      <h2 class="font-weight-bold word-break">{{ _fullName }}</h2>
     </v-card-title>
-    <v-card-text>
-      Роли:
+    <v-card-text class="pt-0">
+      <div class="subheading font-weight-bold">
+        Идентификатор:
+        <span>{{ id }}</span>
+      </div>
+      <strong>Роли:</strong>
       <v-chip
         v-for="(role, index) in roles"
         :key="index"
