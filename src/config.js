@@ -53,6 +53,12 @@ export const BIOGRAPHY_CARD_MODE = {
   LIST: 'list'
 }
 
+export const PROVIDERS = {
+  vk: 'Вконтакте',
+  facebook: 'Фейсбук',
+  username_password: 'Логин и пароль'
+}
+
 export default {
   ROLES
 }

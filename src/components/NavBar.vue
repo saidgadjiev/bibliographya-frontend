@@ -90,6 +90,14 @@
               <v-list-tile-title>Пользователи</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
+          <v-list-tile to="/statistics">
+            <v-list-tile-action>
+              <v-icon size="24">fas fa-clipboard-list</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Статистика</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
         </v-list>
       </v-list>
     <v-list v-if="$vuetify.breakpoint.smAndDown">
