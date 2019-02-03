@@ -1,7 +1,7 @@
 <template>
   <v-layout align-center justify-center row fill-height column>
-    <h1>404</h1>
-    <v-btn color="blue" href="/">Домой</v-btn>
+    <h1 class="white--text">Страница не найдена</h1>
+    <v-btn color="blue darken-3" href="/">Домой</v-btn>
   </v-layout>
 </template>
 

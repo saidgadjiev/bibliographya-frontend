@@ -12,6 +12,7 @@ import CreateBiographyDetails from './views/CreateBiographyDetails'
 import CreatedByMeBiographies from './views/CreatedByMeBiographiesList'
 import BiographiesModeration from './views/BiographiesModerationsList'
 import BiographyFixesList from './views/BiographiesFixesList'
+import Privacy from './views/Privacy'
 import Statistics from './views/Statistics'
 import OAuthCallback from './views/OAuthCallback'
 import UsersList from './views/UsersList'
@@ -212,6 +213,11 @@ let router = new Router({
         loginRequired: true,
         roles: [ROLES.ROLE_ADMIN]
       }
+    },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: Privacy
     },
     {
       path: '/:providerId/callback',

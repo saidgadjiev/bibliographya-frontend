@@ -12,20 +12,6 @@
                 class="white--text"
                 block
                 color="light-green darken-2"
-                @click="auth('facebook')"
-              ><v-icon
-                left
-                color="blue darken-3">
-                fab fa-facebook-f
-                </v-icon>
-                Войти через Facebook
-              </v-btn>
-            </v-flex>
-            <v-flex xs12>
-              <v-btn
-                class="white--text"
-                block
-                color="light-green darken-2"
                 @click="auth('vk')"
               ><v-icon
                 left

@@ -1,6 +1,6 @@
 <template>
   <v-layout align-center justify-center row fill-height column>
-    <h1>403</h1>
+    <h1 class="white--text">Доступ запрещен</h1>
     <v-btn color="red" href="/">Домой</v-btn>
   </v-layout>
 </template>
