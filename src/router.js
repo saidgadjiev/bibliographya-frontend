@@ -6,7 +6,6 @@ import Profile from './views/Profile.vue'
 import SignIn from './views/SignIn.vue'
 import AdminSignIn from './views/AdminSignIn'
 import BiographyDetails from './views/BiographyDetails.vue'
-import EditProfile from './views/EditProfile'
 import EditBiography from './views/EditBiographyDetails'
 import CreateBiographyDetails from './views/CreateBiographyDetails'
 import CreatedByMeBiographies from './views/CreatedByMeBiographiesList'
@@ -107,15 +106,6 @@ let router = new Router({
         biographyId: parseInt(route.params.id),
         categoryName: route.params.categoryName
       })
-    },
-    {
-      path: '/edit/profile/:id',
-      name: 'editProfile',
-      component: EditProfile,
-      beforeEnter: requireAuth,
-      meta: {
-        loginRequired: true
-      }
     },
     {
       path: '/create/biography',
