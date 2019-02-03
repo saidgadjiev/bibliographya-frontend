@@ -2,7 +2,7 @@
   <v-card-title class="biography-card-title">
     <h2 class="word-break">{{ _fullName }}</h2>
     <v-icon v-if="_isMarked" small color="blue darken-3" class="pl-1">mdi-check-decagram</v-icon>
-    <biography-card-menu v-bind="$attrs" v-on="$listeners"/>
+    <biography-card-menu :user-id="userId" v-bind="$attrs" v-on="$listeners"/>
   </v-card-title>
 </template>
 

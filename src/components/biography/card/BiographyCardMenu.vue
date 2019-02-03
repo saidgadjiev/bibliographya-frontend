@@ -23,6 +23,7 @@
         <v-list-tile-title>Редактировать</v-list-tile-title>
       </v-list-tile>
       <v-list-tile
+        v-if="_showSuggest"
         @click="suggestFix"
       >
         <v-list-tile-title>Предложить исправление</v-list-tile-title>
