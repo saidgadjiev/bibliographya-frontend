@@ -22,7 +22,7 @@
         pa-2
       >
         <v-layout align-center justify-center>
-          <span class="font-weight-bold display-2 white--text" v-text="category.name"></span>
+          <span class="font-weight-bold display-1 white--text" v-text="category.name"></span>
         </v-layout>
       </v-container>
     </v-img>

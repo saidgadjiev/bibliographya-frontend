@@ -72,8 +72,4 @@ export default {
     padding-right: 0 !important;
     width: 960px !important;
   }
-  .v-toolbar {
-    z-index: 10 !important;
-  }
-
 </style>

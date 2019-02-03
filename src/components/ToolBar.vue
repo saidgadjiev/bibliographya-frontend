@@ -8,10 +8,11 @@
     dense
   >
     <v-toolbar-title class="ml-0">
-      <v-toolbar-side-icon @click.stop="$emit('update:drawer', !drawer)"
-                           v-if="$vuetify.breakpoint.smAndDown"></v-toolbar-side-icon>
-      <div class="d-flex align-center">
-        <div v-if="$vuetify.breakpoint.mdAndUp" class="d-flex align-center">
+      <div v-if="$vuetify.breakpoint.smAndDown">
+        <v-toolbar-side-icon @click.stop="$emit('update:drawer', !drawer)"></v-toolbar-side-icon>
+        <router-link to="/" class="title pl-2 white--text">Библиография</router-link>
+      </div>
+      <div class="d-flex align-center" v-else>
           <svg
             xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
             width="36" height="36"
@@ -27,7 +28,6 @@
               </g>
             </g>
           </svg>
-        </div>
         <router-link to="/" class="title pl-2 white--text">Библиография</router-link>
       </div>
     </v-toolbar-title>
