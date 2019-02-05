@@ -16,7 +16,7 @@
         :biography-clamp-size="_biographyClampSize"
         tree-clamp
         :tree-clamp-size="_treeClampSize"
-        @biography-removed="deleteIndex = index"
+        @biography-removed="biographyRemoved(index)"
       ></biography-card2>
     </template>
     <template slot="sidebar">
@@ -74,6 +74,10 @@ export default {
     }
   },
   methods: {
+    biographyRemoved (index) {
+      this.deleteIndex = index
+      ++this.deleteId
+    },
     loadCategory () {
       let that = this
 

@@ -7,7 +7,7 @@
     <template slot="item" slot-scope="{ item }">
       <v-card>
         <biography-fix-title class="pb-0" v-bind="item"/>
-        <biography-card-title v-bind="item.biography"/>
+        <biography-card-title :show-menu="false" v-bind="item.biography"/>
         <v-divider></v-divider>
         <biography-card-text v-bind="item.biography"/>
         <v-divider></v-divider>

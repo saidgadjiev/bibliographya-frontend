@@ -3,6 +3,8 @@
     :infinite-id.sync="infiniteId"
     :reset-id="resetId"
     :infinite-load="infiniteLoad"
+    :delete-id="deleteId"
+    :delete-index="deleteIndex"
   >
     <template slot="item" slot-scope="{ item }">
       <biography-card
@@ -14,6 +16,7 @@
         :biography-clamp-size="_biographyClampSize"
         tree-clamp
         :tree-clamp-size="_treeClampSize"
+        @biography-removed="biographyRemoved(index)"
       ></biography-card>
     </template>
     <template slot="sidebar">
@@ -59,6 +62,8 @@ export default {
       fab: false,
       filter: undefined,
       resetId: +new Date(),
+      deleteId: +new Date(),
+      deleteIndex: -1,
       infiniteId: +new Date()
     }
   },
@@ -77,6 +82,10 @@ export default {
     ])
   },
   methods: {
+    biographyRemoved (index) {
+      this.deleteIndex = index
+      ++this.deleteId
+    },
     resetList () {
       ++this.resetId
     },

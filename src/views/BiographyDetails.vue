@@ -1,20 +1,21 @@
 <template>
   <v-layout row fill-height="true">
     <v-flex xs12>
-      <biography-card2
+      <biography-card
         v-if="biography"
         live
         show-comments
         v-bind.sync="biography"
+        @biography-removed="biographyRemoved"
         mode="read"
-      ></biography-card2>
+      ></biography-card>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import biographyService from '../services/biography-service'
-import BiographyCard2 from '../components/biography/card/BiographyCard'
+import BiographyCard from '../components/biography/card/BiographyCard'
 
 export default {
   name: 'BiographyDetails',
@@ -33,6 +34,9 @@ export default {
     this.loadBiography()
   },
   methods: {
+    biographyRemoved () {
+      this.$router.push('/')
+    },
     loadBiography () {
       biographyService.getBiographyById(this.biographyId)
         .then(
@@ -52,7 +56,7 @@ export default {
     }
   },
   components: {
-    BiographyCard2
+    BiographyCard
   }
 }
 </script>

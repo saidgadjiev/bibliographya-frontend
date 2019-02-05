@@ -1,5 +1,5 @@
 <template>
-  <v-menu>
+  <v-menu left>
     <v-btn
       slot="activator"
       class="absolute-activator"
@@ -7,7 +7,7 @@
       right
       icon
     >
-      <v-icon color="blue darken-3">{{ _icon }}</v-icon>
+      <v-icon :small="$vuetify.breakpoint.smAndDown" color="blue darken-3">{{ _icon }}</v-icon>
     </v-btn>
     <v-list >
       <v-list-tile
