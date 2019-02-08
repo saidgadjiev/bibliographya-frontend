@@ -103,7 +103,7 @@ export default {
       return this.tocHeaders.length > 0
     },
     _biographyLink () {
-      return '/biography/' + this.id
+      return '/biographies/' + this.id
     }
   },
   components: {

@@ -1,7 +1,7 @@
 <template>
   <v-card-text v-if="_hasVisibleItems">
     <span v-for="(category, index) in categories" :key="index">
-      <router-link class="bibliographya-a" :to="'/category/' + category">{{ category }}</router-link>&nbsp;&nbsp;
+      <router-link class="bibliographya-a" :to="'/categories/' + category">{{ category }}</router-link>&nbsp;&nbsp;
     </span>
     <h4 v-if="_isNotAutobiography">
       Автор:
@@ -28,7 +28,7 @@ export default {
   computed: {
     _creatorBiographyLink () {
       if (this.creator) {
-        return '/biography/' + this.creator.id
+        return '/biographies/' + this.creator.id
       }
 
       return ''

@@ -56,7 +56,7 @@ export default {
               that.updateFixerInfo(e.response.data)
 
               let currentFixer = that.fixer
-              let message = '<a href="\'/biography/' + currentFixer.id + '">' +
+              let message = '<a href="\'/biographies/' + currentFixer.id + '">' +
                 currentFixer.firstName + ' ' + currentFixer.lastName + '</a>,&nbsp;уже взял исправление на себя.'
 
               that.$swal.fire({

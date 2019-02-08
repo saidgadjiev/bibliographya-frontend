@@ -6,6 +6,9 @@ import Profile from './views/Profile.vue'
 import SignIn from './views/SignIn.vue'
 import AdminSignIn from './views/AdminSignIn'
 import BiographyDetails from './views/BiographyDetails.vue'
+import CategoriesAdmin from './views/CategoriesAdmin'
+import BugTracking from './views/BugTracking'
+import CreateBug from './views/CreateBug'
 import EditBiography from './views/EditBiographyDetails'
 import CreateBiographyDetails from './views/CreateBiographyDetails'
 import CreatedByMeBiographies from './views/CreatedByMeBiographiesList'
@@ -83,12 +86,41 @@ let router = new Router({
   mode: 'history',
   routes: [
     {
+      path: '/create/bug',
+      name: 'createBug',
+      component: CreateBug,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true
+      }
+    },
+    {
+      path: '/bug/tracking',
+      name: 'bugTracking',
+      component: BugTracking,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_ADMIN]
+      }
+    },
+    {
+      path: '/categories',
+      name: 'categoriesAdmin',
+      component: CategoriesAdmin,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_ADMIN]
+      }
+    },
+    {
       path: '/',
       name: 'categories',
       component: CategoriesList
     },
     {
-      path: '/category/:categoryName',
+      path: '/categories/:categoryName',
       name: 'categoryBiographies',
       component: BiographiesList,
       props: (route) => ({ categoryName: route.params.categoryName })
@@ -99,7 +131,7 @@ let router = new Router({
       component: BiographiesList
     },
     {
-      path: '/biography/:id',
+      path: '/biographies/:id',
       name: 'biography',
       component: BiographyDetails,
       props: (route) => ({
@@ -156,7 +188,7 @@ let router = new Router({
       }
     },
     {
-      path: '/edit/biography/:id',
+      path: 'biographies/:id/edit/',
       name: 'editBiography',
       component: EditBiography,
       props: (route) => ({ biographyId: parseInt(route.params.id) }),

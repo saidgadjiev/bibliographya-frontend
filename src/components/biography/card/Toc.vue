@@ -148,7 +148,7 @@ export default {
               'bibliographya-a': true
             },
             attrs: {
-              to: '/biography/' + that.id + '#' + h.id
+              to: '/biographies/' + that.id + '#' + h.id
             }
           }, h.title))
         }

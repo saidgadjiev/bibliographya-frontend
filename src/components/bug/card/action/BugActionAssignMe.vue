@@ -5,14 +5,16 @@
     color="primary"
     :loading="loading"
     :disabled="loading"
-  >{{ action.caption }}</v-btn>
+  >{{ action.caption }}
+  </v-btn>
 </template>
 
 <script>
-import biographyModerationService from '../../../services/biography-moderation-service'
+import bugTrackingService from '../../../../services/bug-tracking-service'
 
 export default {
-  name: 'ModerationAssignMeButton',
+  name: 'BugActionAssignMe',
+  inheritAttrs: false,
   data () {
     return {
       loading: false
@@ -22,42 +24,42 @@ export default {
     id: {
       type: Number
     },
-    moderator: {
+    fixer: {
       type: Object
-    },
-    moderationStatus: {
-      type: Number
     },
     action: {
       type: Object
+    },
+    status: {
+      type: Number
     }
   },
   methods: {
-    updateModeratorInfo (info) {
-      this.$emit('update:moderator', info.moderator)
-      this.$emit('update:moderatorId', info.moderator.userId)
+    updateFixerInfo (info) {
       this.$emit('update:actions', info.actions)
+      this.$emit('update:fixer', info.fixer)
+      this.$emit('update:fixerId', info.fixer.userId)
     },
     assignMe () {
       let that = this
       that.loading = true
 
-      biographyModerationService.assignMe(this.id, {
+      bugTrackingService.assignMe(this.id, {
         signal: this.action.signal,
-        status: this.moderationStatus
+        status: this.status
       })
         .then(
           response => {
-            that.updateModeratorInfo(response.data)
+            that.updateFixerInfo(response.data)
             that.loading = false
           },
           e => {
             if (e.response.status === 409) {
-              that.updateModeratorInfo(e.response.data)
+              that.updateFixerInfo(e.response.data)
 
-              let currentModerator = that.moderator
-              let message = '<a href="\'/biographies/' + currentModerator.id + '">' +
-                currentModerator.firstName + ' ' + currentModerator.lastName + '</a>,&nbsp;уже взял биографию на модерацию.'
+              let currentFixer = that.fixer
+              let message = '<a href="\'/biographies/' + currentFixer.id + '">' +
+                  currentFixer.firstName + ' ' + currentFixer.lastName + '</a>,&nbsp;уже взял багу на себя.'
 
               that.$swal.fire({
                 html: message,

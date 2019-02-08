@@ -1,6 +1,6 @@
 <template>
   <v-layout justify-center row class="ma-0 pa-0">
-    <error-card v-if="error" :trigger="signIn"></error-card>
+    <error-card v-if="error" :trigger="gotoSignIn"></error-card>
     <v-progress-circular
       v-else
       :size="50"
@@ -33,6 +33,9 @@ export default {
     this.signIn()
   },
   methods: {
+    gotoSignIn () {
+      this.$router.push('/signIn')
+    },
     signIn () {
       this.error = false
       let that = this

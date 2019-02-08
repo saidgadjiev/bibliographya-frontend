@@ -7,7 +7,7 @@
     <template slot="item" slot-scope="{ item }">
       <user-card
         v-bind.sync="item"
-        :all-roles="_roles"
+        :all-roles="allRoles"
       ></user-card>
     </template>
     <template slot="sidebar">

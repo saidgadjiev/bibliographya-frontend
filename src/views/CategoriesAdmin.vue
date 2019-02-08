@@ -1,0 +1,52 @@
+<template>
+  <list
+    :infinite-load="infiniteLoad"
+  >
+    <template slot="item" slot-scope="{ item }">
+      <category-card
+        disable-link
+        :category="item"
+      ></category-card>
+    </template>
+  </list>
+</template>
+
+<script>
+import biographyCategoryService from '../services/biography-category-service'
+import List from '../components/list/List'
+import CategoryCard from '../components/category/CategoryCard'
+
+export default {
+  name: 'CategoriesAdmin',
+  methods: {
+    infiniteLoad (limit, offset) {
+      let that = this
+
+      return biographyCategoryService.getCategories(limit, offset)
+        .then(
+          response => {
+            if (response.status === 200) {
+              response.data.content.forEach(function (val) {
+                if (that.$vuetify.breakpoint.mdAndUp) {
+                  val.flex = 6
+                } else {
+                  val.flex = 12
+                }
+              })
+            }
+
+            return response
+          }
+        )
+    }
+  },
+  components: {
+    List,
+    CategoryCard
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

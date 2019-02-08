@@ -10,8 +10,8 @@
         <span class="font-weight-light headline user-name">Гаджиев Саид</span>
       </div>
     </v-toolbar>
-      <v-list dense class="white">
-        <v-list dense>
+    <v-list dense class="white">
+      <v-list dense>
         <v-list-tile v-if="isAuthenticated" :to="'/profile/' + getUser.id">
           <v-list-tile-action>
             <v-icon size="24">fas fa-home</v-icon>
@@ -52,54 +52,80 @@
             <v-list-tile-title>Созданные мной</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        </v-list>
-        <!--<v-list-tile to="/complaints">
+        <v-list-tile to="/create/bug" v-if="isAuthenticated">
           <v-list-tile-action>
-            <v-icon>fas fa-info</v-icon>
+            <v-icon size="24">fas fa-bug</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Жалобы</v-list-tile-title>
+            <v-list-tile-title>Сообщить об ошибке</v-list-tile-title>
           </v-list-tile-content>
-        </v-list-tile>-->
-        <v-list dense subheader v-if="_showModeratorBlock">
-          <v-subheader>Модерация</v-subheader>
-          <v-list-tile to="/moderation">
-            <v-list-tile-action>
-              <v-icon size="24">fas fa-shield-alt</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Модерация</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile to="/fixes">
-            <v-list-tile-action>
-              <v-icon size="24">fas fa-wrench</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Исправления</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-        <v-list dense subheader v-if="_showAdminBlock">
-          <v-subheader>Администрирование</v-subheader>
-          <v-list-tile to="/users">
-            <v-list-tile-action>
-              <v-icon size="24">fas fa-users-cog</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Пользователи</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile to="/statistics">
-            <v-list-tile-action>
-              <v-icon size="24">fas fa-clipboard-list</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Статистика</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
+        </v-list-tile>
       </v-list>
+      <!--<v-list-tile to="/complaints">
+        <v-list-tile-action>
+          <v-icon>fas fa-info</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>Жалобы</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>-->
+      <v-list dense subheader v-if="_showModeratorBlock">
+        <v-subheader>Модерация</v-subheader>
+        <v-list-tile to="/moderation">
+          <v-list-tile-action>
+            <v-icon size="24">fas fa-shield-alt</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Модерация</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/fixes">
+          <v-list-tile-action>
+            <v-icon size="24">fas fa-wrench</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Исправления</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+      <v-list dense subheader v-if="_showDeveloperBlock">
+        <v-list-tile to="/bug/tracking">
+          <v-list-tile-action>
+            <v-icon size="24">fas fa-bug</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Баг трекинг</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+      <v-list dense subheader v-if="_showAdminBlock">
+        <v-subheader>Администрирование</v-subheader>
+        <v-list-tile to="/categories">
+          <v-list-tile-action>
+            <v-icon size="24">fas fa-landmark</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Категории</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/users">
+          <v-list-tile-action>
+            <v-icon size="24">fas fa-users-cog</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Пользователи</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/statistics">
+          <v-list-tile-action>
+            <v-icon size="24">fas fa-chart-bar</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Статистика</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-list>
     <v-list v-if="$vuetify.breakpoint.smAndDown">
       <v-list-tile v-if="isAuthenticated" @click="signOut">
         <v-list-tile-action>
@@ -118,7 +144,7 @@
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
-    </v-navigation-drawer>
+  </v-navigation-drawer>
 </template>
 
 <script>
@@ -139,6 +165,9 @@ export default {
       'isAuthenticated',
       'isAuthorized'
     ]),
+    _showDeveloperBlock () {
+      return this.isAuthorized([ROLES.ROLE_DEVELOPER])
+    },
     _showModeratorBlock () {
       return this.isAuthorized([ROLES.ROLE_MODERATOR])
     },
@@ -174,6 +203,7 @@ export default {
   .user-name {
     word-break: break-word !important;
   }
+
   .md-drawer {
     height: auto !important;
     z-index: inherit;

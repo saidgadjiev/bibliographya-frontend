@@ -51,7 +51,7 @@ export default {
     },
     _biographyLink () {
       if (this.moderator) {
-        return '/biography/' + this.moderator.id
+        return '/biographies/' + this.moderator.id
       }
 
       return ''

@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     _biographyLink () {
-      return '/biography/' + this.id + '#comments'
+      return '/biographies/' + this.id + '#comments'
     }
   },
   methods: {

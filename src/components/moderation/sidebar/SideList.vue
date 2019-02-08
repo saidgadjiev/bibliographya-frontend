@@ -1,5 +1,4 @@
 <template>
-  <div>
   <v-list dense>
     <v-list-tile
       :class="{ active: clickedIndex === 1 }"
@@ -51,7 +50,6 @@
       </v-list-tile-content>
     </v-list-tile>
   </v-list>
-  </div>
 </template>
 
 <script>
