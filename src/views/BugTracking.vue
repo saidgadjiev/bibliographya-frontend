@@ -27,6 +27,13 @@
           @ignored="applyIgnoredFilter"
         ></side-list>
       </template>
+      <template slot="no-results">
+        <v-card>
+          <v-card-text>
+            Нет данных
+          </v-card-text>
+        </v-card>
+      </template>
     </list>
 </template>
 
@@ -67,19 +74,19 @@ export default {
       this.resetList()
     },
     applyAssignedMeFilter () {
-      this.query = 'fixer_id==' + this.getUser.id
+      this.query = 'status==' + BUG_STATUS.PENDING + ';fixer_id==' + this.getUser.id
       this.resetList()
     },
     applyClosedFilter () {
-      this.query = 'status==' + BUG_STATUS.CLOSED + '&fixer_id==' + this.getUser.id
+      this.query = 'status==' + BUG_STATUS.CLOSED + ';fixer_id==' + this.getUser.id
       this.resetList()
     },
     applyIgnoredFilter () {
-      this.query = 'status==' + BUG_STATUS.IGNORED + '&fixer_id==' + this.getUser.id
+      this.query = 'status==' + BUG_STATUS.IGNORED + ';fixer_id==' + this.getUser.id
       this.resetList()
     },
     infiniteLoad (limit, offset) {
-      return bugTrackingService.getBugs(limit, offset, this.query)
+      return bugTrackingService.getBugsTracking(limit, offset, this.query)
     }
   }
 }

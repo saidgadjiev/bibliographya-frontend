@@ -89,6 +89,7 @@
         </v-list-tile>
       </v-list>
       <v-list dense subheader v-if="_showDeveloperBlock">
+        <v-subheader>Разработка</v-subheader>
         <v-list-tile to="/bug/tracking">
           <v-list-tile-action>
             <v-icon size="24">fas fa-bug</v-icon>
@@ -201,7 +202,7 @@ export default {
 
 <style scoped>
   .user-name {
-    word-break: break-word !important;
+    word-break: break-all !important;
   }
 
   .md-drawer {

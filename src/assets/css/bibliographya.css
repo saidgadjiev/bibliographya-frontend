@@ -32,8 +32,12 @@
   text-decoration: none !important;
 }
 
-.word-break {
+.word-break-all {
   word-break: break-all;
+}
+
+.word-break-word {
+  word-break: break-word;
 }
 
 .biography-card-title {

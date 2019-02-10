@@ -19,26 +19,25 @@
 </template>
 
 <script>
-import biographyFixService from '../../../services/biography-fix-service'
-import { FIX_BUTTONS } from '../../../config'
-import TextareaDialog from '../../dialog/TextareaDialog'
+import bugTrackingService from '../../../../services/bug-tracking-service'
+import TextareaDialog from '../../../dialog/TextareaDialog'
+import { BUG_BUTTONS } from '../../../../config'
 
 export default {
-  name: 'FixButton',
+  name: 'BugButton',
   components: { TextareaDialog },
+  inheritAttrs: false,
   data () {
     return {
+      okFunction: () => {
+      },
       dialogVisible: false,
-      okFunction: () => {},
       loading: false
     }
   },
   props: {
     id: {
       type: Number
-    },
-    fixer: {
-      type: Object
     },
     action: {
       type: Object,
@@ -51,10 +50,10 @@ export default {
   methods: {
     doAction () {
       switch (this.action.name) {
-        case FIX_BUTTONS.ASSIGN_ME:
+        case BUG_BUTTONS.ASSIGN_ME:
           this.assignMe()
           break
-        case FIX_BUTTONS.IGNORE:
+        case BUG_BUTTONS.IGNORE:
           this.okFunction = this.ignore
           this.dialogVisible = true
           break
@@ -72,7 +71,7 @@ export default {
       let that = this
       that.loading = true
 
-      biographyFixService.assignMe(this.id, {
+      bugTrackingService.assignMe(this.id, {
         signal: this.action.signal,
         status: this.status
       })
@@ -87,7 +86,7 @@ export default {
 
               let currentFixer = that.fixer
               let message = '<a href="\'/biographies/' + currentFixer.id + '">' +
-                  currentFixer.firstName + ' ' + currentFixer.lastName + '</a>,&nbsp;уже взял исправление на себя.'
+                currentFixer.firstName + ' ' + currentFixer.lastName + '</a>,&nbsp;уже взял исправление на себя.'
 
               that.$swal.fire({
                 html: message,
@@ -99,15 +98,15 @@ export default {
           }
         )
     },
-    ignore (infoText) {
+    ignore (ignoreText) {
       let that = this
       that.dialogVisible = false
       that.loading = true
 
-      biographyFixService.complete(this.id, {
+      bugTrackingService.complete(this.id, {
         signal: this.action.signal,
         status: this.status,
-        info: infoText
+        info: ignoreText
       })
         .then(
           response => {
@@ -124,7 +123,7 @@ export default {
       let that = this
       that.loading = true
 
-      biographyFixService.complete(this.id, {
+      bugTrackingService.complete(this.id, {
         signal: this.action.signal,
         status: this.status
       })

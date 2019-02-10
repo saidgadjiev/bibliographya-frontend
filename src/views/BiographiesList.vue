@@ -6,7 +6,7 @@
     :delete-id="deleteId"
     :delete-index="deleteIndex"
   >
-    <template v-if="categoryName" slot="header">
+    <template v-if="categoryId" slot="header">
       <category-card :category="category" :height="200" :disable-link="true"/>
     </template>
     <template slot="item" slot-scope="{ item, index }">
@@ -36,7 +36,7 @@
     <template slot="no-results">
       <v-card>
         <v-card-text>
-          <h4 v-if="categoryName">В этой категории еще нет ни одной биографии.</h4>
+          <h4 v-if="categoryId">В этой категории еще нет ни одной биографии.</h4>
           <h4 v-else>Еще нет биографий.</h4>
         </v-card-text>
       </v-card>
@@ -69,8 +69,8 @@ export default {
     }
   },
   props: {
-    categoryName: {
-      type: String
+    categoryId: {
+      type: Number
     }
   },
   methods: {
@@ -81,8 +81,8 @@ export default {
     loadCategory () {
       let that = this
 
-      if (this.categoryName) {
-        biographyCategoryService.getCategory(this.categoryName)
+      if (this.categoryId) {
+        biographyCategoryService.getCategory(this.categoryId)
           .then(
             response => {
               that.category = response.data
@@ -113,8 +113,8 @@ export default {
         query += '&autobiographies=true'
       }
 
-      if (this.categoryName) {
-        return biographyCategoryService.getBiographies(cancelToken, this.categoryName, limit, offset, query)
+      if (this.categoryId) {
+        return biographyCategoryService.getBiographies(cancelToken, this.categoryId, limit, offset, query)
           .then(
             response => {
               if (response.status === 200) {

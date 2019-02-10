@@ -15,9 +15,7 @@
         <v-card-actions>
           <v-layout row wrap>
             <v-flex xs12 v-for="(action, index) in item.actions" :key="index">
-              <fix-ignore-button v-if="action.name === 'Ignore'" v-bind.sync="item" :action="action"/>
-              <fix-assign-me-button v-else-if="action.name === 'AssignMe'" v-bind.sync="item" :action="action"/>
-              <fix-button v-else v-bind.sync="item" :action="action"/>
+              <fix-button v-bind.sync="item" v-on="$listeners" :action="action"/>
             </v-flex>
           </v-layout>
         </v-card-actions>
@@ -39,23 +37,29 @@
         @closed="applyClosedFilter"
       />
     </template>
+    <template slot="no-results">
+      <v-card>
+        <v-card-text>
+          Нет данных
+        </v-card-text>
+      </v-card>
+    </template>
   </list>
 </template>
 
 <script>
 import SideBar from '../components/fix/sidebar/SideBar'
 import FixButton from '../components/fix/card/FixButton'
-import FixAssignMeButton from '../components/fix/card/FixAssignMeButton.vue'
 import BiographyCardActions from '../components/biography/card/BiographyCardActions.vue'
 import BiographyCardTitle from '../components/biography/card/BiographyCardTitle'
 import BiographyCardText from '../components/biography/card/BiographyCardText'
 import biographyFixService from '../services/biography-fix-service'
 import BiographyFixTitle from '../components/fix/card/BiographyFixTitle'
 import List from '../components/list/List'
+import SideList from '../components/fix/sidebar/SideList'
+
 import { FIX_STATUS } from '../config'
 import { mapGetters } from 'vuex'
-import FixIgnoreButton from '../components/fix/card/FixIgnoreButton'
-import SideList from '../components/fix/sidebar/SideList'
 
 export default {
   name: 'BiographiesFixesList',
@@ -97,13 +101,11 @@ export default {
   },
   components: {
     SideList,
-    FixIgnoreButton,
     List,
     BiographyFixTitle,
     BiographyCardText,
     BiographyCardTitle,
     FixButton,
-    FixAssignMeButton,
     SideBar,
     BiographyCardActions
   }

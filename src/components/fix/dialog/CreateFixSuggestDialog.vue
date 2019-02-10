@@ -5,14 +5,13 @@
       width="500"
     >
       <v-card>
-        <v-card-text>
+        <v-card-text class="pb-0">
           <v-form>
             <v-textarea
               v-validate="'required'"
               :error-messages="errors.collect('fixText')"
               name="fixText"
               type="text"
-              class="mt-0 pt-0"
               placeholder="Что вы предлагаете исправить?"
               v-model="fixText"
             ></v-textarea>

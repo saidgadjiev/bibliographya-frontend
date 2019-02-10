@@ -1,5 +1,5 @@
 <template>
-    <v-card class="side-card" :style="_cardStyles">
+    <v-card :style="_cardStyles">
       <v-list dense class="white">
         <v-list-tile
           :class="{ active: clickedIndex === 1 }"

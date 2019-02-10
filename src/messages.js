@@ -21,3 +21,7 @@ export const CREATE_BUG_TITLE = '<h2>Чем подробнее вы опишит
   '<h3>4) Нажать Сохранить. Возникла ошибка</h3>'
 
 export const BUG_CREATED = 'Ошибка создана. Наши разработчики приступят к ее исправлению в самое ближайшее время.'
+
+export const CATEGORY_CREATED = 'Категория создана'
+
+export const CATEGORY_CHANGED = 'Категория изменена'

@@ -11,11 +11,11 @@ export default {
 }
 
 function getBugs (limit, offset, query) {
-  return axios.get(getRestUrl('bugs') + '?limit=' + limit + '&offset=' + offset + (query ? '&' + query : ''))
+  return axios.get(getRestUrl('bugs') + '?limit=' + limit + '&offset=' + offset + (query ? '&query=' + query : ''))
 }
 
 function getBugsTracking (limit, offset, query) {
-  return axios.get(getRestUrl('bugs/tracking') + '?limit=' + limit + '&offset=' + offset + (query ? '&' + query : ''))
+  return axios.get(getRestUrl('bugs/tracking') + '?limit=' + limit + '&offset=' + offset + (query ? '&query=' + query : ''))
 }
 
 function assignMe (bugId, json) {

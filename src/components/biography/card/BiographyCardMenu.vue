@@ -132,7 +132,7 @@ export default {
         )
     },
     edit () {
-      this.$router.push('/biographies/' + this.id + '/edit/')
+      this.$router.push('/edit/biographies/' + this.id)
     }
   },
   components: {

@@ -1,20 +1,36 @@
 <template>
-  <v-btn
-    block
-    @click="complete"
-    color="primary"
-    :loading="loading"
-    :disabled="loading"
-  >{{ action.caption }}</v-btn>
+  <div>
+    <v-btn
+      block
+      @click="doAction"
+      color="primary"
+      :loading="loading"
+      :disabled="loading"
+    >{{ action.caption }}
+    </v-btn>
+    <textarea-dialog
+      :ok="okFunction"
+      placeholder="Причина отклонения"
+      :visible.sync="dialogVisible"
+      ok-caption="Ок"
+      required-text="Введите причину отклонения"
+    >
+    </textarea-dialog>
+  </div>
 </template>
 
 <script>
 import biographyModerationService from '../../../services/biography-moderation-service'
+import { MODERATION_BUTTONS } from '../../../config'
+import TextareaDialog from '../../dialog/TextareaDialog'
 
 export default {
   name: 'ModerationButton',
+  components: { TextareaDialog },
   data () {
     return {
+      okFunction: () => {},
+      dialogVisible: false,
       loading: false
     }
   },
@@ -26,11 +42,86 @@ export default {
       type: Object,
       required: true
     },
+    moderator: {
+      type: Object
+    },
     moderationStatus: {
       type: Number
     }
   },
   methods: {
+    doAction () {
+      switch (this.action.name) {
+        case MODERATION_BUTTONS.ASSIGN_ME:
+          this.assignMe()
+          break
+        case MODERATION_BUTTONS.REJECT:
+          this.okFunction = this.reject
+          this.dialogVisible = true
+          break
+        default:
+          this.complete()
+          break
+      }
+    },
+    updateModeratorInfo (info) {
+      this.$emit('update:moderator', info.moderator)
+      this.$emit('update:moderatorId', info.moderator.userId)
+      this.$emit('update:actions', info.actions)
+    },
+    assignMe () {
+      let that = this
+      that.loading = true
+
+      biographyModerationService.assignMe(this.id, {
+        signal: this.action.signal,
+        status: this.moderationStatus
+      })
+        .then(
+          response => {
+            that.updateModeratorInfo(response.data)
+            that.loading = false
+          },
+          e => {
+            if (e.response.status === 409) {
+              that.updateModeratorInfo(e.response.data)
+
+              let currentModerator = that.moderator
+              let message = '<a href="\'/biographies/' + currentModerator.id + '">' +
+                  currentModerator.firstName + ' ' + currentModerator.lastName + '</a>,&nbsp;уже взял биографию на модерацию.'
+
+              that.$swal.fire({
+                html: message,
+                type: 'error',
+                showCloseButton: true
+              })
+            }
+            that.loading = false
+          }
+        )
+    },
+    reject (rejectText) {
+      let that = this
+      that.dialogVisible = false
+      that.loading = true
+
+      biographyModerationService.complete(this.id, {
+        signal: this.action.signal,
+        status: this.moderationStatus,
+        info: rejectText
+      })
+        .then(
+          response => {
+            that.$emit('update:moderationInfo', response.data.moderationInfo)
+            that.$emit('update:moderationStatus', response.data.moderationStatus)
+            that.$emit('update:actions', response.data.actions)
+            that.loading = false
+          },
+          e => {
+            that.loading = false
+          }
+        )
+    },
     complete () {
       let that = this
       that.loading = true

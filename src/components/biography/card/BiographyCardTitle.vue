@@ -1,6 +1,6 @@
 <template>
   <v-card-title class="biography-card-title">
-    <span :class="_fullNameClasses" class="word-break">{{ _fullName }}</span>
+    <span :class="_fullNameClasses" class="word-break-all">{{ _fullName }}</span>
     <v-icon v-if="_isMarked" small color="blue darken-3" class="pl-1">mdi-check-decagram</v-icon>
     <biography-card-menu v-if="showMenu" :user-id="userId" v-bind="$attrs" v-on="$listeners"/>
   </v-card-title>

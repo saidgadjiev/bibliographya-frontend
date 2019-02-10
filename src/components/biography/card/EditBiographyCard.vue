@@ -82,6 +82,8 @@
               :items="categories"
               v-model="biographyForm.categories"
               :menu-props="{ maxHeight: '400' }"
+              item-text="name"
+              item-value="id"
               label="Категории"
               chips
               multiple
@@ -94,6 +96,8 @@
             <strong class="subheading">Ваша версия:</strong>
             <v-select
               v-model="myBiographyVersion.categories"
+              item-text="name"
+              item-value="id"
               readonly
               label="Категории"
               chips
@@ -163,7 +167,7 @@ export default {
       .then(
         response => {
           for (let i = 0; i < response.data.content.length; i++) {
-            that.categories.push(response.data.content[i].name)
+            that.categories.push(response.data.content[i])
           }
           that.categoriesLoading = false
         },
@@ -254,7 +258,11 @@ export default {
           that.saveLoading = true
 
           if (that.mode === 'edit') {
-            let categoriesDiff = diff.diffArrays(that.biographyForm.categories, that.inBiography.categories)
+            let categoriesDiff = diff.diffArrays(that.biographyForm.categories, that.inBiography.categories, {
+              comparator: function (left, right) {
+                return left.id === right.id
+              }
+            })
             let added = []
             let deleted = []
 
@@ -315,7 +323,7 @@ export default {
               lastName: that.biographyForm.lastName,
               middleName: that.biographyForm.middleName,
               biography: that.biographyForm.biography,
-              addedCategories: that.biographyForm.categories
+              addedCategories: that.biographyForm.categories.map(e => e.id)
             })
               .then(
                 () => {

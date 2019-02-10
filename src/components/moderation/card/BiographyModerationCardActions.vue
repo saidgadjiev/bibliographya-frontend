@@ -2,22 +2,7 @@
   <v-card-actions>
   <v-layout row wrap>
     <v-flex xs12 v-for="(action, index) in actions" :key="index">
-      <moderation-reject-button
-        v-if="action.name === 'Reject'"
-        v-bind="$attrs"
-        v-on="$listeners"
-        :key="action.name"
-        :action="action"
-      />
-      <moderation-assign-me-button
-        v-else-if="action.name === 'AssignMe'"
-        v-bind="$attrs"
-        v-on="$listeners"
-        :key="action.name"
-        :action="action"
-      />
       <moderation-button
-        v-else
         v-bind="$attrs"
         v-on="$listeners"
         :key="action.name"
@@ -31,8 +16,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import ModerationButton from './ModerationButton'
-import ModerationRejectButton from './ModerationRejectButton'
-import ModerationAssignMeButton from './ModerationAssignMeButton'
 
 export default {
   name: 'BiographyModerationCardActions',
@@ -59,9 +42,7 @@ export default {
     }
   },
   components: {
-    ModerationButton,
-    ModerationRejectButton,
-    ModerationAssignMeButton
+    ModerationButton
   }
 }
 </script>

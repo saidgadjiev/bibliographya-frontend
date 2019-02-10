@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title primary-title>
-      <h2 class="font-weight-bold word-break">{{ _fullName }}</h2>
+      <h2 class="font-weight-bold word-break-all">{{ _fullName }}</h2>
     </v-card-title>
     <v-card-text class="pt-0">
       <div class="subheading font-weight-bold">

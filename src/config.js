@@ -43,6 +43,21 @@ export const PLUGIN_EVENTS = {
   ALERT: 'alert'
 }
 
+export const MODERATION_BUTTONS = {
+  ASSIGN_ME: 'AssignMe',
+  REJECT: 'Reject'
+}
+
+export const BUG_BUTTONS = {
+  ASSIGN_ME: 'AssignMe',
+  IGNORE: 'Ignore'
+}
+
+export const FIX_BUTTONS = {
+  ASSIGN_ME: 'AssignMe',
+  IGNORE: 'Ignore'
+}
+
 export const getRestUrl = (url) => `${process.env.VUE_APP_REST_SERVER}${url}`
 
 export const isAccountRequest = (url) => url.endsWith('auth/account')

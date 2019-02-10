@@ -21,7 +21,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import fileService from './services/file-service'
 import NavBar from './components/NavBar.vue'
 import ToolBar from './components/ToolBar.vue'
 
@@ -44,10 +43,8 @@ export default {
       'backgroundImagePath'
     ]),
     getBackground () {
-      let url = fileService.getUrl('Bibliography.jpg')
-
       return {
-        'background': 'url(' + url + ') no-repeat center center fixed',
+        'background': 'url(/Bibliography.jpg) no-repeat center center fixed',
         '-webkit-background-size': 'cover',
         '-moz-background-size': 'cover',
         '-o-background-size': 'cover',

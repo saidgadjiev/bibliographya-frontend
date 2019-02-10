@@ -6,7 +6,7 @@
     :delete-id="deleteId"
     :delete-index="deleteIndex"
   >
-    <template slot="item" slot-scope="{ item }">
+    <template slot="item" slot-scope="{ item, index }">
       <biography-card
         show-moderation-block
         show-moderation-actions

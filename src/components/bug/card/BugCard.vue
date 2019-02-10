@@ -1,6 +1,7 @@
 <template>
   <v-card>
-    <v-card-title>
+    <bug-fix-title v-bind="$attrs" class="pb-0"/>
+    <v-card-title class>
       <h2>{{ theme }}</h2>
     </v-card-title>
     <v-card-text class="pt-0">
@@ -12,10 +13,11 @@
 
 <script>
 import BugActions from './action/BugActions'
+import BugFixTitle from './BugFixTitle'
 export default {
   name: 'BugCard',
   inheritAttrs: false,
-  components: { BugActions },
+  components: { BugFixTitle, BugActions },
   props: {
     theme: String,
     bugCase: String

@@ -9,6 +9,7 @@ import BiographyDetails from './views/BiographyDetails.vue'
 import CategoriesAdmin from './views/CategoriesAdmin'
 import BugTracking from './views/BugTracking'
 import CreateBug from './views/CreateBug'
+import EditCategory from './views/EditCategory'
 import EditBiography from './views/EditBiographyDetails'
 import CreateBiographyDetails from './views/CreateBiographyDetails'
 import CreatedByMeBiographies from './views/CreatedByMeBiographiesList'
@@ -86,6 +87,27 @@ let router = new Router({
   mode: 'history',
   routes: [
     {
+      path: '/create/category',
+      name: 'createCategory',
+      component: EditCategory,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_ADMIN]
+      }
+    },
+    {
+      path: '/edit/categories/:categoryId',
+      name: 'editCategory',
+      component: EditCategory,
+      props: (route) => ({ categoryId: parseInt(route.params.categoryId) }),
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_ADMIN]
+      }
+    },
+    {
       path: '/create/bug',
       name: 'createBug',
       component: CreateBug,
@@ -120,10 +142,10 @@ let router = new Router({
       component: CategoriesList
     },
     {
-      path: '/categories/:categoryName',
+      path: '/categories/:categoryId',
       name: 'categoryBiographies',
       component: BiographiesList,
-      props: (route) => ({ categoryName: route.params.categoryName })
+      props: (route) => ({ categoryId: parseInt(route.params.categoryId) })
     },
     {
       path: '/biographies',
@@ -135,8 +157,7 @@ let router = new Router({
       name: 'biography',
       component: BiographyDetails,
       props: (route) => ({
-        biographyId: parseInt(route.params.id),
-        categoryName: route.params.categoryName
+        biographyId: parseInt(route.params.id)
       })
     },
     {
@@ -188,7 +209,7 @@ let router = new Router({
       }
     },
     {
-      path: 'biographies/:id/edit/',
+      path: '/edit/biographies/:id',
       name: 'editBiography',
       component: EditBiography,
       props: (route) => ({ biographyId: parseInt(route.params.id) }),
