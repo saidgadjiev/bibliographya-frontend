@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { ROLES } from '../../config'
+import { ROLES, DATE_FORMAT } from '../../config'
 import biographyCommentService from '../../services/biography-comment-service'
 import EditComment from './EditComment'
 import { mapGetters } from 'vuex'
@@ -139,7 +139,7 @@ export default {
       return this.getUser.id === this.userId
     },
     getTimeDiff () {
-      return this.$moment(new Date(this.createdAt)).fromNow()
+      return this.$moment(this.createdAt, DATE_FORMAT).fromNow()
     }
   },
   methods: {
@@ -180,7 +180,6 @@ export default {
     position: relative !important;
     display: block !important;
     margin-bottom: -1px !important;
-    background-color: #fff !important;
     border: 1px solid rgba(0, 0, 0, 0.125) !important;
   }
 </style>
