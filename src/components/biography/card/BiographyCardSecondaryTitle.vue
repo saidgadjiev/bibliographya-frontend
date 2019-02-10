@@ -40,7 +40,7 @@ export default {
       return this.creator.firstName + ' ' + this.creator.lastName
     },
     _isNotAutobiography () {
-      return !!!this.userId
+      return !this.userId
     },
     _hasVisibleItems () {
       return (this.categories && this.categories.length > 0) || this._isNotAutobiography
