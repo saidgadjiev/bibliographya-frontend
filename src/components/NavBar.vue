@@ -7,7 +7,7 @@
   >
     <v-toolbar flat class="transparent pt-3 pb-3" v-if="$vuetify.breakpoint.smAndDown && isAuthenticated">
       <div>
-        <span class="font-weight-light headline user-name">Гаджиев Саид</span>
+        <span class="font-weight-light headline user-name">{{ _fullName }}</span>
       </div>
     </v-toolbar>
     <v-list dense class="white">
@@ -166,6 +166,9 @@ export default {
       'isAuthenticated',
       'isAuthorized'
     ]),
+    _fullName () {
+      return this.getUser.biography.lastName + ' ' + this.getUser.biography.firstName
+    },
     _showDeveloperBlock () {
       return this.isAuthorized([ROLES.ROLE_DEVELOPER])
     },
