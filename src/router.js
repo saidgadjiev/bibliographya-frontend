@@ -4,6 +4,7 @@ import CategoriesList from './views/CategoriesList'
 import BiographiesList from './views/BiographiesList'
 import Profile from './views/Profile.vue'
 import SignIn from './views/SignIn.vue'
+import SignUp from './views/SignUp'
 import AdminSignIn from './views/AdminSignIn'
 import BiographyDetails from './views/BiographyDetails.vue'
 import CategoriesAdmin from './views/CategoriesAdmin'
@@ -22,7 +23,7 @@ import UsersList from './views/UsersList'
 import store from './store/store'
 import error403 from './views/403'
 import error404 from './views/404'
-import { ROLES } from './config'
+import { ROLES, LAYOUTS } from './config'
 import biographyService from './services/biography-service'
 
 Vue.use(Router)
@@ -236,10 +237,19 @@ let router = new Router({
       }
     },
     {
+      path: '/signUp',
+      name: 'signUp',
+      component: SignUp,
+      beforeEnter: ifNotAuthenticated
+    },
+    {
       path: '/signIn',
       name: 'signIn',
       component: SignIn,
-      beforeEnter: ifNotAuthenticated
+      beforeEnter: ifNotAuthenticated,
+      meta: {
+        layout: LAYOUTS.AUTH_LAYOUT
+      }
     },
     {
       path: '/admin',
@@ -279,6 +289,40 @@ let router = new Router({
       component: error404
     }
   ]
+})
+
+router.beforeResolve((to, from, next) => {
+  function proceed () {
+    let meta = to.meta
+    let currentLayout = store.getters.layout
+    let nextLayout = null
+
+    if (meta.layout) {
+      nextLayout = meta.layout
+    } else {
+      if (store.getters.isAuthenticated) {
+        nextLayout = LAYOUTS.SIGNED_IN_LAYOUT
+      } else {
+        nextLayout = LAYOUTS.ANONYMOUS_LAYOUT
+      }
+    }
+
+    if (currentLayout !== nextLayout) {
+      store.commit('setLayout', nextLayout)
+    }
+
+    next()
+  }
+
+  if (store.getters.status.notSignedIn || store.getters.status.signingIn) {
+    store.watch(store.getters.watchStatus, function () {
+      if (!store.getters.status.notSignedIn && !store.getters.status.signingIn) {
+        proceed()
+      }
+    })
+  } else {
+    proceed()
+  }
 })
 
 export default router

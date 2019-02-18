@@ -6,6 +6,12 @@ export const ROLES = {
   ROLE_DEVELOPER: 'ROLE_DEVELOPER'
 }
 
+export const LAYOUTS = {
+  SIGNED_IN_LAYOUT: 'signed-in-layout',
+  AUTH_LAYOUT: 'auth-layout',
+  ANONYMOUS_LAYOUT: 'anonymous-layout'
+}
+
 export const BUG_STATUS = {
   PENDING: 0,
   CLOSED: 1,

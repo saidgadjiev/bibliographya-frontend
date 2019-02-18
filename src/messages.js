@@ -25,3 +25,5 @@ export const BUG_CREATED = 'Ошибка создана. Наши разрабо
 export const CATEGORY_CREATED = 'Категория создана'
 
 export const CATEGORY_CHANGED = 'Категория изменена'
+
+export const INTERNET_ERROR = 'Проверьте подключение к интернету.'

@@ -37,7 +37,8 @@ export default {
   name: 'SignIn',
   computed: {
     ...mapGetters([
-      'status'
+      'status',
+      'isAuthenticated'
     ]),
     ...mapState('alert', ['type'])
   },

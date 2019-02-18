@@ -23,6 +23,15 @@
             ></v-text-field>
             <v-text-field
               class="mt-2"
+              v-validate="'required'"
+              v-model="signUpForm.firstName"
+              :error-messages="errors.collect('firstName')"
+              label="Имя"
+              type="text"
+              name="firstName"
+            ></v-text-field>
+            <v-text-field
+              class="mt-2"
               label="Отчество"
               type="text"
               v-model="signUpForm.middleName"

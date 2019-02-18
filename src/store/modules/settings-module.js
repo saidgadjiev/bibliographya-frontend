@@ -1,19 +1,16 @@
 const state = {
-  backgroundImagePath: undefined
+  layout: undefined
 }
 
 const mutations = {
-  setBackgroundImage (state, imagePath) {
-    state.backgroundImagePath = imagePath
-  },
-  clearBackgroundImage (state) {
-    state.backgroundImagePath = undefined
+  setLayout (state, layout) {
+    state.layout = layout
   }
 }
 
 const getters = {
-  backgroundImagePath: state => {
-    return state.backgroundImagePath
+  layout: state => {
+    return state.layout
   }
 }
 
