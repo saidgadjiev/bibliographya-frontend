@@ -31,7 +31,7 @@
                 data-vv-name="email"
               ></v-text-field>
             </v-form>
-            <div class="error--text word-break-all" v-if="userNotFoundError">
+            <div class="error--text word-break-all" v-if="error === ERROR.USER_NOT_FOUND">
               Пользователя с таким email не найдено.
             </div>
           </v-card-text>
@@ -39,6 +39,8 @@
 
         <v-btn
           color="primary"
+          :loading="request === REQUEST.RESTORE_PASSWORD"
+          :disabled="request === REQUEST.RESTORE_PASSWORD"
           @click="restorePassword"
         >
           Получить код
@@ -60,7 +62,7 @@
               data-vv-name="code"
               name="code"
             ></v-text-field>
-            <div class="error--text" v-if="preconditionFailed">
+            <div class="error--text" v-if="error === ERROR.PRECONDITION_FAILED">
               Неверный код
             </div>
           </v-card-text>
@@ -71,6 +73,8 @@
             <v-btn
               color="light-green darken-2"
               class="white--text"
+              :loading="request === REQUEST.VERIFY"
+              :disabled="request === REQUEST.VERIFY"
               @click="verify"
             >
               Подтвердить
@@ -80,6 +84,8 @@
             <v-btn
               color="blue darken-3"
               class="white--text"
+              :loading="request === REQUEST.RESEND_CODE"
+              :disabled="request === REQUEST.RESEND_CODE"
               @click="resend"
             >
               Отправить повторно
@@ -99,6 +105,8 @@
 
         <v-btn
           color="primary"
+          :loading="request === REQUEST.CHANGE_PASSWORD"
+          :disabled="request === REQUEST.CHANGE_PASSWORD"
           @click="changePassword"
         >
           Сохранить
@@ -112,14 +120,27 @@
 import userAccountService from '../services/user-account-service'
 import emailService from '../services/email-service'
 
+const ERROR = {
+  NONE: -1,
+  USER_NOT_FOUND: 0,
+  PRECONDITION_FAILED: 1
+}
+
+const REQUEST = {
+  NONE: -1,
+  RESTORE_PASSWORD: 0,
+  VERIFY: 1,
+  RESEND_CODE: 2,
+  CHANGE_PASSWORD: 3
+}
+
 export default {
   name: 'RestorePassword',
   data () {
     return {
       step: 0,
-      userNotFoundError: false,
-      restorePasswordRequest: false,
-      preconditionFailed: false,
+      error: ERROR.NONE,
+      request: REQUEST.NONE,
       restoreForm: {
         email: '',
         code: '',
@@ -129,42 +150,76 @@ export default {
   },
   methods: {
     changePassword () {
+      let that = this
+      that.request = REQUEST.CHANGE_PASSWORD
+
       userAccountService.changePassword(this.restoreForm)
         .then(
           () => {
-
+            that.request = REQUEST.NONE
+            that.$router.push('/signIn')
           },
           e => {
-
+            that.step = 0
+            that.request = REQUEST.NONE
           }
         )
     },
     resend () {
+      let that = this
+      that.request = REQUEST.RESEND_CODE
+
       emailService.resend(this.restoreForm.email)
+        .then(
+          () => {
+            that.request = REQUEST.NONE
+          },
+          e => {
+            that.request = REQUEST.NONE
+          }
+        )
     },
     verify () {
-      this.$validator.validate('code')
-      emailService.verify(this.restoreForm.email, this.restoreForm.code)
+      let that = this
+
+      this.$validator.validate('code').then(result => {
+        if (result) {
+          that.request = REQUEST.VERIFY
+
+          emailService.verify(this.restoreForm.email, this.restoreForm.code)
+            .then(
+              () => {
+                that.step = 3
+                that.request = REQUEST.NONE
+              },
+              e => {
+                if (e.response.status === 428) {
+                  that.error = ERROR.PRECONDITION_FAILED
+                }
+                that.request = REQUEST.NONE
+              }
+            )
+        }
+      })
     },
     restorePassword () {
       let that = this
 
       this.$validator.validate('email').then(result => {
         if (result) {
-          that.restorePasswordRequest = true
+          that.request = REQUEST.RESTORE_PASSWORD
 
           userAccountService.restorePassword(that.restoreForm.email)
             .then(
               () => {
                 that.step = 2
-                that.restorePasswordRequest = false
-                that.userNotFoundError = false
+                that.request = REQUEST.NONE
               },
               e => {
                 if (e.response.status === 404) {
-                  that.userNotFoundError = true
+                  that.error = ERROR.USER_NOT_FOUND
                 }
-                that.restorePasswordRequest = false
+                that.request = REQUEST.NONE
               }
             )
         }

@@ -138,8 +138,8 @@ let router = new Router({
     },
     {
       path: '/',
-      name: 'categories',
-      component: CategoriesList
+      alias: '/signIn',
+      component: SignIn
     },
     {
       path: '/categories/:categoryId',
