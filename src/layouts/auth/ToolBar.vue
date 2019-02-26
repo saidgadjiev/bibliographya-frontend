@@ -27,12 +27,30 @@
         <router-link to="/" class="title pl-2 white--text">Библиография</router-link>
       </div>
     </v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-toolbar-items class="hidden-sm-and-down">
+      <v-btn icon @click="cancelSignUp">
+        <v-icon>fa-sign-out-alt</v-icon>
+      </v-btn>
+    </v-toolbar-items>
   </v-toolbar>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'ToolBar'
+  name: 'ToolBar',
+  computed: {
+    ...mapGetters([
+      'status'
+    ])
+  },
+  methods: {
+    cancelSignUp () {
+      this.$store.dispatch('cancelSignUp')
+    }
+  }
 }
 </script>
 

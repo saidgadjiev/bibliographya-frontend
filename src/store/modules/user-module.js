@@ -1,19 +1,6 @@
 import authService from '../../services/auth-service'
 
-export const SIGN_IN_STATUS = {
-  NOT_SIGNED_IN: 0,
-  SIGNING_IN: 1,
-  SIGNED_IN: 2,
-  SIGN_IN_FAILURE: 3,
-  SIGNED_OUT: 4
-}
-
-export const SIGN_UP_STATUS = {
-  SIGNING_UP: 0,
-  SIGNED_UP: 1
-}
-
-const state = { status: { notSignedIn: true }, user: {}, roles: [] }
+const state = { status: { gettingAccount: true }, user: {}, roles: [] }
 
 const mutations = {
   signInSuccess (state, payload) {
@@ -24,26 +11,20 @@ const mutations = {
     })
   },
   signOutSuccess (state) {
-    state.status = { signedOut: true }
+    state.status = { anonymous: true }
     state.user = {}
     state.roles = {}
   },
   signInRequest (state) {
-    state.status = { signingIn: true }
+    state.status = { signInRequest: true }
   },
   signInFailure (state) {
-    state.status = { signInFailure: true }
+    state.status = { signInRequestFailure: true }
     state.user = {}
     state.roles = {}
   },
-  signUpSuccess (state) {
-    state.status = { signedUp: true }
-  },
-  signUpRequest (state) {
-    state.status = { signingUp: true }
-  },
-  signUpFailure (state) {
-    state.status = {}
+  preconditionRequired (state, payload) {
+    state.status = { preconditionRequired: true, signUpForm: { email: payload.email } }
   }
 }
 
@@ -97,19 +78,33 @@ const actions = {
         )
     })
   },
+  confirmSignUp ({ dispatch, commit }, code) {
+    return new Promise((resolve, reject) => {
+      authService.confirmSignUp(code)
+        .then(
+          response => {
+            console.log('Success confirm ' + response.data)
+            resolve()
+          },
+          e => {
+            dispatch('alert/error', e)
+            reject(e)
+          }
+        )
+    })
+  },
+  cancelSignUp () {
+    authService.cancelSignUp()
+  },
   signUp ({ dispatch, commit }, signUpForm) {
-    commit('signUpRequest')
-
     return new Promise((resolve, reject) => {
       authService.signUp(signUpForm)
         .then(
           response => {
             console.log('Success sign up ' + response.data)
-            commit('signUpSuccess')
             resolve()
           },
           error => {
-            commit('signUpFailure')
             dispatch('alert/error', error)
             reject(error)
           }
@@ -125,15 +120,17 @@ const actions = {
       )
   },
   getAccount ({ dispatch, commit }) {
-    commit('signInRequest')
-
     authService.getAccount()
       .then(
         accountResponse => {
           commit('signInSuccess', accountResponse.data)
         },
         e => {
-          commit('signUpFailure')
+          if (e.response.status === 428) {
+            commit('preconditionRequired', e.response.data)
+          } else {
+            commit('signOutSuccess')
+          }
         }
       )
   }

@@ -16,8 +16,7 @@ import store from './store/store'
 
 import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.css'
-import { SERVER_ERROR, RESOURCE_NOT_FOUND, INTERNET_ERROR } from './messages'
-import { isAccountRequest } from './config'
+import { SERVER_ERROR, INTERNET_ERROR } from './messages'
 
 require('moment/locale/ru')
 
@@ -84,15 +83,6 @@ axios.interceptors.response.use(function (response) {
         break
       case 403:
         router.push('/403')
-        break
-      case 404:
-        if (!isAccountRequest(err.config.url)) {
-          Vue.swal.fire({
-            text: RESOURCE_NOT_FOUND,
-            type: 'error',
-            showCloseButton: true
-          })
-        }
         break
       case 500:
         Vue.swal.fire({

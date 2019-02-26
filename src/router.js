@@ -5,6 +5,8 @@ import BiographiesList from './views/BiographiesList'
 import Profile from './views/Profile.vue'
 import SignIn from './views/SignIn.vue'
 import SignUp from './views/SignUp'
+import Confirm from './views/Confirm'
+import RestorePassword from './views/RestorePassword'
 import AdminSignIn from './views/AdminSignIn'
 import BiographyDetails from './views/BiographyDetails.vue'
 import CategoriesAdmin from './views/CategoriesAdmin'
@@ -28,6 +30,18 @@ import biographyService from './services/biography-service'
 
 Vue.use(Router)
 
+const waitForAccount = function (callback) {
+  if (store.getters.status.gettingAccount) {
+    store.watch(store.getters.watchStatus, function () {
+      if (!store.getters.status.gettingAccount) {
+        callback()
+      }
+    })
+  } else {
+    callback()
+  }
+}
+
 const requireAuth = function (to, from, next) {
   function proceed () {
     let meta = to.meta
@@ -48,15 +62,7 @@ const requireAuth = function (to, from, next) {
     }
   }
 
-  if (store.getters.status.notSignedIn || store.getters.status.signingIn) {
-    store.watch(store.getters.watchStatus, function () {
-      if (!store.getters.status.notSignedIn && !store.getters.status.signingIn) {
-        proceed()
-      }
-    })
-  } else {
-    proceed()
-  }
+  waitForAccount(proceed)
 }
 
 const ifNotAuthenticated = function (to, from, next) {
@@ -73,15 +79,8 @@ const ifNotAuthenticated = function (to, from, next) {
 
     next()
   }
-  if (store.getters.status.notSignedIn || store.getters.status.signingIn) {
-    store.watch(store.getters.watchStatus, function () {
-      if (!store.getters.status.notSignedIn && !store.getters.status.signingIn) {
-        proceed()
-      }
-    })
-  } else {
-    proceed()
-  }
+
+  waitForAccount(proceed)
 }
 
 let router = new Router({
@@ -240,7 +239,34 @@ let router = new Router({
       path: '/signUp',
       name: 'signUp',
       component: SignUp,
-      beforeEnter: ifNotAuthenticated
+      beforeEnter: ifNotAuthenticated,
+      meta: {
+        layout: LAYOUTS.AUTH_LAYOUT
+      }
+    },
+    {
+      path: '/signUp/confirm',
+      name: 'signUpConfirm',
+      component: Confirm,
+      beforeEnter: function (to, from, next) {
+        function proceed () {
+          if (store.getters.status.preconditionRequired) {
+            next()
+          } else {
+            next(false)
+          }
+        }
+
+        waitForAccount(proceed)
+      },
+      meta: {
+        layout: LAYOUTS.AUTH_LAYOUT
+      }
+    },
+    {
+      path: '/restore',
+      name: 'restorePassword',
+      component: RestorePassword
     },
     {
       path: '/signIn',
@@ -291,6 +317,18 @@ let router = new Router({
   ]
 })
 
+router.beforeEach((to, from, next) => {
+  function proceed () {
+    if (store.getters.status.preconditionRequired && to.name !== 'signUpConfirm') {
+      next('/signUp/confirm')
+    } else {
+      next()
+    }
+  }
+
+  waitForAccount(proceed)
+})
+
 router.beforeResolve((to, from, next) => {
   function proceed () {
     let meta = to.meta
@@ -314,15 +352,7 @@ router.beforeResolve((to, from, next) => {
     next()
   }
 
-  if (store.getters.status.notSignedIn || store.getters.status.signingIn) {
-    store.watch(store.getters.watchStatus, function () {
-      if (!store.getters.status.notSignedIn && !store.getters.status.signingIn) {
-        proceed()
-      }
-    })
-  } else {
-    proceed()
-  }
+  waitForAccount(proceed)
 })
 
 export default router

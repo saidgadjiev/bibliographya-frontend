@@ -38,7 +38,7 @@
             block
             color="primary"
             @click="signIn"
-            :loading="status.signingIn"
+            :loading="status.signInRequest"
           >Войти
           </v-btn>
         </v-card-actions>
