@@ -12,5 +12,5 @@ function isExistEmail (email) {
 }
 
 function restorePassword (email) {
-  return axios.post(getRestUrl('user-account/restore-password') + '?email=' + email)
+  return axios.post(getRestUrl('user-accounts/restore-password') + '?email=' + email)
 }

@@ -31,7 +31,7 @@
                 data-vv-name="email"
               ></v-text-field>
             </v-form>
-            <div class="error--text word-break-all" v-if="error === ERROR.USER_NOT_FOUND">
+            <div class="error--text word-break-all" v-if="_userNotFound">
               Пользователя с таким email не найдено.
             </div>
           </v-card-text>
@@ -39,8 +39,8 @@
 
         <v-btn
           color="primary"
-          :loading="request === REQUEST.RESTORE_PASSWORD"
-          :disabled="request === REQUEST.RESTORE_PASSWORD"
+          :loading="_restorePassword"
+          :disabled="_restorePassword"
           @click="restorePassword"
         >
           Получить код
@@ -53,16 +53,24 @@
           color="grey lighten-3"
         >
           <v-card-text>
+            <strong>Код подтверждения отправлен вам на почту.</strong>
+            <v-text-field
+              v-model="restoreForm.email"
+              disabled
+              label="Почта"
+              type="text"
+              name="email"
+            ></v-text-field>
             <v-text-field
               v-validate="'required'"
-              v-model="confirmForm.code"
+              v-model="restoreForm.code"
               :error-messages="errors.collect('code')"
               label="Код"
               type="text"
               data-vv-name="code"
               name="code"
             ></v-text-field>
-            <div class="error--text" v-if="error === ERROR.PRECONDITION_FAILED">
+            <div class="error--text" v-if="_preconditionFailed">
               Неверный код
             </div>
           </v-card-text>
@@ -73,8 +81,8 @@
             <v-btn
               color="light-green darken-2"
               class="white--text"
-              :loading="request === REQUEST.VERIFY"
-              :disabled="request === REQUEST.VERIFY"
+              :loading="_verify"
+              :disabled="_verify"
               @click="verify"
             >
               Подтвердить
@@ -84,8 +92,8 @@
             <v-btn
               color="blue darken-3"
               class="white--text"
-              :loading="request === REQUEST.RESEND_CODE"
-              :disabled="request === REQUEST.RESEND_CODE"
+              :loading="_resendCode"
+              :disabled="_resendCode"
               @click="resend"
             >
               Отправить повторно
@@ -105,8 +113,8 @@
 
         <v-btn
           color="primary"
-          :loading="request === REQUEST.CHANGE_PASSWORD"
-          :disabled="request === REQUEST.CHANGE_PASSWORD"
+          :loading="_changePassword"
+          :disabled="_changePassword"
           @click="changePassword"
         >
           Сохранить
@@ -146,6 +154,26 @@ export default {
         code: '',
         newPassword: ''
       }
+    }
+  },
+  computed: {
+    _restorePassword () {
+      return this.request === REQUEST.RESTORE_PASSWORD
+    },
+    _resendCode () {
+      return this.request === REQUEST.RESEND_CODE
+    },
+    _verify () {
+      return this.request === REQUEST.VERIFY
+    },
+    _changePassword () {
+      return this.request === REQUEST.CHANGE_PASSWORD
+    },
+    _userNotFound () {
+      return this.error === ERROR.USER_NOT_FOUND
+    },
+    _preconditionFailed () {
+      return this.error === ERROR.PRECONDITION_FAILED
     }
   },
   methods: {

@@ -71,7 +71,7 @@ const ifNotAuthenticated = function (to, from, next) {
       if (from.name) {
         next(false)
       } else {
-        next('/')
+        next('/categories')
       }
 
       return
@@ -127,7 +127,7 @@ let router = new Router({
       }
     },
     {
-      path: '/categories',
+      path: '/categories/admin',
       name: 'categoriesAdmin',
       component: CategoriesAdmin,
       beforeEnter: requireAuth,
@@ -137,9 +137,18 @@ let router = new Router({
       }
     },
     {
+      path: '/categories',
+      name: 'categories',
+      component: CategoriesList
+    },
+    {
       path: '/',
       alias: '/signIn',
-      component: SignIn
+      component: SignIn,
+      beforeEnter: ifNotAuthenticated,
+      meta: {
+        layout: LAYOUTS.AUTH_LAYOUT
+      }
     },
     {
       path: '/categories/:categoryId',
