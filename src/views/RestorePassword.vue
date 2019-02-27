@@ -54,28 +54,29 @@
         >
           <v-card-text>
             <strong>Код подтверждения отправлен вам на почту.</strong>
-            <v-text-field
-              v-model="restoreForm.email"
-              disabled
-              label="Почта"
-              type="text"
-              name="email"
-            ></v-text-field>
-            <v-text-field
-              v-validate="'required'"
-              v-model="restoreForm.code"
-              :error-messages="errors.collect('code')"
-              label="Код"
-              type="text"
-              data-vv-name="code"
-              name="code"
-            ></v-text-field>
-            <div class="error--text" v-if="_preconditionFailed">
-              Неверный код
-            </div>
+            <v-form>
+              <v-text-field
+                v-model="restoreForm.email"
+                disabled
+                label="Почта"
+                type="text"
+                name="email"
+              ></v-text-field>
+              <v-text-field
+                v-validate="'required'"
+                v-model="restoreForm.code"
+                :error-messages="errors.collect('code')"
+                label="Код"
+                type="text"
+                data-vv-name="code"
+                name="code"
+              ></v-text-field>
+              <div class="error--text" v-if="_preconditionFailed">
+                Неверный код
+              </div>
+            </v-form>
           </v-card-text>
         </v-card>
-
         <v-layout row justify-start>
           <v-flex xs12 sm3>
             <v-btn
@@ -108,11 +109,32 @@
           color="grey lighten-1"
           height="200px"
         >
-
+          <v-form>
+            <v-text-field
+              v-model="restoreForm.email"
+              disabled
+              label="Почта"
+              type="text"
+              name="email"
+            ></v-text-field>
+            <v-text-field
+              v-validate="'required'"
+              :error-messages="errors.collect('newPassword')"
+              :append-icon="showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+              :type="showNewPassword ? 'text' : 'password'"
+              @click:append="showNewPassword = !showNewPassword"
+              v-model="restoreForm.newPassword"
+              class="mt-2"
+              name="newPassword"
+              label="Новый пароль"
+              data-vv-name="newPassword"
+            ></v-text-field>
+          </v-form>
         </v-card>
 
         <v-btn
-          color="primary"
+          color="light-green darken-2"
+          class="white--text"
           :loading="_changePassword"
           :disabled="_changePassword"
           @click="changePassword"
@@ -149,6 +171,7 @@ export default {
       step: 0,
       error: ERROR.NONE,
       request: REQUEST.NONE,
+      showNewPassword: false,
       restoreForm: {
         email: '',
         code: '',
@@ -179,19 +202,23 @@ export default {
   methods: {
     changePassword () {
       let that = this
-      that.request = REQUEST.CHANGE_PASSWORD
 
-      userAccountService.changePassword(this.restoreForm)
-        .then(
-          () => {
-            that.request = REQUEST.NONE
-            that.$router.push('/signIn')
-          },
-          e => {
-            that.step = 0
-            that.request = REQUEST.NONE
-          }
-        )
+      this.$validator.validate('newPassword').then(result => {
+        if (result) {
+          that.request = REQUEST.CHANGE_PASSWORD
+
+          userAccountService.changePassword(this.restoreForm)
+            .then(
+              () => {
+                that.request = REQUEST.NONE
+                that.$router.push('/signIn')
+              },
+              e => {
+                that.request = REQUEST.NONE
+              }
+            )
+        }
+      })
     },
     resend () {
       let that = this

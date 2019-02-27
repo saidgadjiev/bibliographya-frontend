@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 
 export default {
   name: 'SignUp',
@@ -116,6 +116,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions('alert', [
+      'clear'
+    ]),
     signUp () {
       let that = this
 
@@ -136,6 +139,9 @@ export default {
         }
       })
     }
+  },
+  beforeDestroy () {
+    this.clear()
   }
 }
 </script>

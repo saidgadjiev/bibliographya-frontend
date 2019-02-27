@@ -4,7 +4,8 @@ const axios = require('axios')
 
 export default {
   isExistEmail,
-  restorePassword
+  restorePassword,
+  savePassword
 }
 
 function isExistEmail (email) {
@@ -13,4 +14,8 @@ function isExistEmail (email) {
 
 function restorePassword (email) {
   return axios.post(getRestUrl('user-accounts/restore-password') + '?email=' + email)
+}
+
+function savePassword (passwordForm) {
+  return axios.post(getRestUrl('user-accounts/save-password'), passwordForm)
 }

@@ -27,3 +27,7 @@ export const CATEGORY_CREATED = 'Категория создана'
 export const CATEGORY_CHANGED = 'Категория изменена'
 
 export const INTERNET_ERROR = 'Проверьте подключение к интернету.'
+
+export const PASSWORD_CHANGE_SUCCESS = 'Пароль успешно изменен.'
+
+export const OLD_PASSWORD_WRONG = 'Старый пароль введен неверно.'
