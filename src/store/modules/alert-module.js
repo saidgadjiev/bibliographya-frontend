@@ -25,7 +25,7 @@ const mutations = {
     state.type = 'alert-danger'
     state.error = error
   },
-  clear (state, message) {
+  clear (state) {
     state.type = null
     state.message = null
     state.error = null

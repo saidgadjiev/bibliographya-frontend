@@ -1,36 +1,40 @@
 import authService from '../../services/auth-service'
 
-const state = { status: { gettingAccount: true }, user: {}, roles: [] }
+const USER_STATE = {
+  SIGNED_ID: 0,
+  ANONYMOUS: 1
+}
+
+const REQUEST = {
+  NONE: -1,
+  SIGN_IN: 0,
+  SIGN_UP: 1,
+  GET_ACCOUNT: 2
+}
+
+const state = { status: { state: USER_STATE.ANONYMOUS }, user: {}, roles: [] }
 
 const mutations = {
   signInSuccess (state, payload) {
-    state.status = { signedIn: true }
+    state.status.state = USER_STATE.SIGNED_ID
     state.user = payload
     state.roles = payload.authorities.map(function (authority) {
       return authority.authority
     })
   },
   signOutSuccess (state) {
-    state.status = { anonymous: true }
-    state.user = {}
-    state.roles = {}
-  },
-  signInRequest (state) {
-    state.status = { signInRequest: true }
-  },
-  signInFailure (state) {
-    state.status = { signInRequestFailure: true }
+    state.status.state = USER_STATE.ANONYMOUS
     state.user = {}
     state.roles = {}
   },
   preconditionRequired (state, payload) {
-    state.status = { preconditionRequired: true, signUpForm: { email: payload.email } }
+    state.status = { signUpForm: { email: payload.email } }
   }
 }
 
 const actions = {
   signIn ({ dispatch, commit }, signInForm) {
-    commit('signInRequest')
+    dispatch('request', REQUEST.SIGN_IN)
 
     return new Promise((resolve, reject) => {
       authService.signIn(signInForm)
@@ -40,7 +44,6 @@ const actions = {
             resolve()
           },
           e => {
-            commit('signInFailure')
             dispatch('alert/error', e)
             reject(e)
           }
@@ -48,7 +51,7 @@ const actions = {
     })
   },
   socialSignIn ({ dispatch, commit }, payload) {
-    commit('signInRequest')
+    dispatch('request', REQUEST.SIGN_IN)
 
     return new Promise((resolve, reject) => {
       authService.socialSignIn(payload.provider, payload.redirectUri, payload.code)
@@ -58,7 +61,6 @@ const actions = {
             resolve(signInResponse.data)
           },
           e => {
-            commit('signInFailure')
             dispatch('alert/error', e)
             reject(e)
           }
@@ -83,7 +85,6 @@ const actions = {
       authService.confirmSignUp(code)
         .then(
           response => {
-            console.log('Success confirm ' + response.data)
             resolve()
           },
           e => {
@@ -93,8 +94,13 @@ const actions = {
         )
     })
   },
-  cancelSignUp () {
+  cancelSignUp ({ commit }) {
     authService.cancelSignUp()
+      .then(
+        () => {
+          commit('signOutSuccess')
+        }
+      )
   },
   signUp ({ dispatch, commit }, signUpForm) {
     return new Promise((resolve, reject) => {

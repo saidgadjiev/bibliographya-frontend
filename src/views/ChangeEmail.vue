@@ -34,9 +34,9 @@
             <v-btn
               color="blue darken-3"
               class="white--text"
-              :loading="_newEmailRequest"
-              :disabled="_newEmailRequest"
-              @click="newEmail"
+              :loading="_changeEmailRequest"
+              :disabled="_changeEmailRequest"
+              @click="changeEmail"
             >
               Отправить повторно
             </v-btn>
@@ -107,8 +107,8 @@
 <script>
 const REQUEST = {
   NONE: -1,
-  NEW_EMAIL: 0,
-  CHANGE_EMAIL: 1,
+  CHANGE_EMAIL: 0,
+  SAVE_EMAIL: 1,
   RESEND_CODE: 2
 }
 
@@ -137,14 +137,14 @@ export default {
     _preconditionFailedError () {
       return this.error === ERROR.PRECONDITION_FAILED
     },
-    _newEmailRequest () {
-      return this.request === REQUEST.NEW_EMAIL
+    _changeEmailRequest () {
+      return this.request === REQUEST.CHANGE_EMAIL
     },
     _resendCodeRequest () {
       return this.request === REQUEST.RESEND_CODE
     },
     _saveEmailRequest () {
-      return this.request === REQUEST.CHANGE_EMAIL
+      return this.request === REQUEST.SAVE_EMAIL
     }
   }
 }
