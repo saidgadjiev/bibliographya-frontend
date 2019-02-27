@@ -123,20 +123,20 @@ export default {
         return false
       }
 
-      return this.getUser.id === this.userId
+      return this.getUserId === this.userId
     },
     _showRemove () {
       if (!this.isAuthenticated) {
         return false
       }
-      if (this.getUser.id === this.userId) {
+      if (this.getUserId === this.userId) {
         return true
       }
       if (this.isAuthorized([ROLES.ROLE_MODERATOR])) {
         return true
       }
 
-      return this.getUser.id === this.userId
+      return this.getUserId === this.userId
     },
     getTimeDiff () {
       return this.$moment(new Date(this.createdAt)).fromNow()

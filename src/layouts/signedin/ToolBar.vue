@@ -81,11 +81,11 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getUser',
+      'getFirstName',
       'isAuthenticated'
     ]),
     _firstName () {
-      return this.getUser.biography.firstName
+      return this.getFirstName
     }
   },
   methods: {

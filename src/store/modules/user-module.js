@@ -1,39 +1,56 @@
 import authService from '../../services/auth-service'
+import { REQUEST } from '../../config'
 
-const USER_STATE = {
+export const USER_STATE = {
+  NONE: -1,
   SIGNED_ID: 0,
   ANONYMOUS: 1
 }
 
-const REQUEST = {
-  NONE: -1,
-  SIGN_IN: 0,
-  SIGN_UP: 1,
-  GET_ACCOUNT: 2
-}
+const state = { status: { state: USER_STATE.NONE }, user: {}, roles: [] }
 
-const state = { status: { state: USER_STATE.ANONYMOUS }, user: {}, roles: [] }
+export const SIGN_IN = 'SIGN_IN'
+
+export const SOCIAL_SIGN_IN = 'SOCIAL_SIGN_IN'
+
+export const ERROR_SOCIAL_SIGN_IN = 'ERROR_SOCIAL_SIGN_IN'
+
+export const CONFIRM_SIGN_UP = 'CONFIRM_SIGN_UP'
+
+export const CANCEL_SIGN_UP = 'CANCEL_SIGN_UP'
+
+export const SIGN_UP = 'SIGN_UP'
+
+export const SIGN_OUT = 'SIGN_OUT'
+
+export const GET_ACCOUNT = 'GET_ACCOUNT'
+
+export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS'
+
+export const SIGN_OUT_SUCCESS = 'SIGN_OUT_SUCCESS'
+
+export const PRECONDITION_REQUIRED = 'PRECONDITION_REQUIRED'
 
 const mutations = {
-  signInSuccess (state, payload) {
+  [SIGN_IN_SUCCESS] (state, payload) {
     state.status.state = USER_STATE.SIGNED_ID
     state.user = payload
     state.roles = payload.authorities.map(function (authority) {
       return authority.authority
     })
   },
-  signOutSuccess (state) {
+  [SIGN_OUT_SUCCESS] (state) {
     state.status.state = USER_STATE.ANONYMOUS
     state.user = {}
     state.roles = {}
   },
-  preconditionRequired (state, payload) {
-    state.status = { signUpForm: { email: payload.email } }
+  [PRECONDITION_REQUIRED] (state, payload) {
+    state.status.signUpForm = { email: payload.email }
   }
 }
 
 const actions = {
-  signIn ({ dispatch, commit }, signInForm) {
+  [SIGN_IN] ({ dispatch, commit }, signInForm) {
     dispatch('request', REQUEST.SIGN_IN)
 
     return new Promise((resolve, reject) => {
@@ -50,7 +67,7 @@ const actions = {
         )
     })
   },
-  socialSignIn ({ dispatch, commit }, payload) {
+  [SOCIAL_SIGN_IN] ({ dispatch, commit }, payload) {
     dispatch('request', REQUEST.SIGN_IN)
 
     return new Promise((resolve, reject) => {
@@ -67,7 +84,7 @@ const actions = {
         )
     })
   },
-  errorSocialSignIn ({ dispatch, commit }, payload) {
+  [ERROR_SOCIAL_SIGN_IN] ({ dispatch, commit }, payload) {
     return new Promise((resolve, reject) => {
       authService.errorSocialSignIn(payload.provider, payload.code, payload.errorDescription)
         .then(
@@ -80,7 +97,7 @@ const actions = {
         )
     })
   },
-  confirmSignUp ({ dispatch, commit }, code) {
+  [CONFIRM_SIGN_UP] ({ dispatch, commit }, code) {
     return new Promise((resolve, reject) => {
       authService.confirmSignUp(code)
         .then(
@@ -94,7 +111,7 @@ const actions = {
         )
     })
   },
-  cancelSignUp ({ commit }) {
+  [CANCEL_SIGN_UP] ({ commit }) {
     authService.cancelSignUp()
       .then(
         () => {
@@ -102,7 +119,7 @@ const actions = {
         }
       )
   },
-  signUp ({ dispatch, commit }, signUpForm) {
+  [SIGN_UP] ({ dispatch, commit }, signUpForm) {
     return new Promise((resolve, reject) => {
       authService.signUp(signUpForm)
         .then(
@@ -117,7 +134,7 @@ const actions = {
         )
     })
   },
-  signOut ({ commit }) {
+  [SIGN_OUT] ({ commit }) {
     return authService.signOut()
       .then(
         () => {
@@ -125,7 +142,9 @@ const actions = {
         }
       )
   },
-  getAccount ({ dispatch, commit }) {
+  [GET_ACCOUNT] ({ dispatch, commit }) {
+    commit('request', REQUEST.GET_ACCOUNT)
+
     authService.getAccount()
       .then(
         accountResponse => {
@@ -133,10 +152,11 @@ const actions = {
         },
         e => {
           if (e.response.status === 428) {
+            dispatch('alert/error', e)
             commit('preconditionRequired', e.response.data)
-          } else {
-            commit('signOutSuccess')
           }
+
+          commit('signOutSuccess')
         }
       )
   }
@@ -148,14 +168,32 @@ const getters = {
       return state.status
     }
   },
-  status: state => {
+  getStatus: state => {
     return state.status
   },
   isAuthenticated: state => {
-    return state.status.signedIn
+    return state.status.state === USER_STATE.SIGNED_ID
   },
   getUser: state => {
     return state.user
+  },
+  getUserId: (state, getters) => {
+    return getters.getUser.id
+  },
+  getBiography: (state, getters) => {
+    return getters.getUser.biography
+  },
+  getFirstName: (state, getters) => {
+    return getters.getBiography.firstName
+  },
+  getLastName: (state, getters) => {
+    return getters.getBiography.lastName
+  },
+  getMiddleName: (state, getters) => {
+    return getters.getBiography.middleName
+  },
+  getBiographyId: (state, getters) => {
+    return getters.getBiography.id
   },
   isAuthorized: (state, getters) => roles => {
     if (!getters.isAuthenticated) {

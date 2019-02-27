@@ -162,12 +162,13 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getUser',
+      'getFirstName',
+      'getLastName',
       'isAuthenticated',
       'isAuthorized'
     ]),
     _fullName () {
-      return this.getUser.biography.lastName + ' ' + this.getUser.biography.firstName
+      return this.getFirstName + ' ' + this.getLastName
     },
     _showDeveloperBlock () {
       return this.isAuthorized([ROLES.ROLE_DEVELOPER])

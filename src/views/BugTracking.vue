@@ -74,15 +74,15 @@ export default {
       this.resetList()
     },
     applyAssignedMeFilter () {
-      this.query = 'status==' + BUG_STATUS.PENDING + ';fixer_id==' + this.getUser.id
+      this.query = 'status==' + BUG_STATUS.PENDING + ';fixer_id==' + this.getUserId
       this.resetList()
     },
     applyClosedFilter () {
-      this.query = 'status==' + BUG_STATUS.CLOSED + ';fixer_id==' + this.getUser.id
+      this.query = 'status==' + BUG_STATUS.CLOSED + ';fixer_id==' + this.getUserId
       this.resetList()
     },
     applyIgnoredFilter () {
-      this.query = 'status==' + BUG_STATUS.IGNORED + ';fixer_id==' + this.getUser.id
+      this.query = 'status==' + BUG_STATUS.IGNORED + ';fixer_id==' + this.getUserId
       this.resetList()
     },
     infiniteLoad (limit, offset) {

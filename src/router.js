@@ -27,13 +27,14 @@ import error403 from './views/403'
 import error404 from './views/404'
 import { ROLES, LAYOUTS } from './config'
 import biographyService from './services/biography-service'
+import { USER_STATE } from './store/modules/user-module'
 
 Vue.use(Router)
 
 const waitForAccount = function (callback) {
-  if (store.getters.status.gettingAccount) {
+  if (store.getters.status.state === USER_STATE.NONE) {
     store.watch(store.getters.watchStatus, function () {
-      if (!store.getters.status.gettingAccount) {
+      if (!store.getters.status.NONE) {
         callback()
       }
     })

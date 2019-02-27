@@ -6,6 +6,13 @@ export const ROLES = {
   ROLE_DEVELOPER: 'ROLE_DEVELOPER'
 }
 
+export const REQUEST = {
+  NONE: -1,
+  SIGN_IN: 0,
+  SIGN_UP: 1,
+  GET_ACCOUNT: 2
+}
+
 export const LAYOUTS = {
   SIGNED_IN_LAYOUT: 'signed-in-layout',
   AUTH_LAYOUT: 'auth-layout',

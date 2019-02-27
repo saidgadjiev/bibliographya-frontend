@@ -32,13 +32,13 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getUser'
+      'getBiographyId'
     ])
   },
   created () {
     let that = this
 
-    biographyService.getBiographyById(this.getUser.biography.id)
+    biographyService.getBiographyById(this.getBiographyId)
       .then(
         response => {
           that.biography = response.data
