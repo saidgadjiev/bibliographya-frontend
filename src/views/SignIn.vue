@@ -5,7 +5,7 @@
         <v-card-title primary-title style="justify-content: center">
           <h3 class="headline font-weight-bold mb-0">Вход в Библиографию</h3>
         </v-card-title>
-        <v-card-text v-if="type === 'alert-danger'">
+        <v-card-text v-if="alertType === 'alert-danger'">
           <strong class="error--text">
             Email или пароль введены неправильно.
           </strong>
@@ -41,8 +41,8 @@
                 class="white--text"
                 block
                 @click="signIn"
-                :loading="status.signInRequest"
-                :disabled="status.signInRequest"
+                :loading="_isSignInRequest"
+                :disabled="_isSignInRequest"
               >Войти</v-btn>
             </v-flex>
             <v-flex xs12 sm8>
@@ -75,12 +75,16 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex'
+import alert from '../mixins/alert'
+import request from '../mixins/request'
+import { mapGetters } from 'vuex'
 import { getRedirectUri } from '../config'
 import authService from '../services/auth-service'
+import { SIGN_IN } from '../store/action-types'
 
 export default {
   name: 'SignIn',
+  mixins: [alert, request],
   data () {
     return {
       showPassword: false,
@@ -90,18 +94,10 @@ export default {
       }
     }
   },
-  props: {
-    anonymous: {
-      type: Boolean,
-      default: false
-    }
-  },
   computed: {
     ...mapGetters([
-      'status',
       'isAuthenticated'
-    ]),
-    ...mapState('alert', ['type'])
+    ])
   },
   created () {
     this.$validator.localize('ru', {
@@ -116,9 +112,6 @@ export default {
     })
   },
   methods: {
-    ...mapActions('alert', [
-      'clear'
-    ]),
     auth (provider) {
       authService.getOauthUrl(provider, getRedirectUri(provider))
         .then(
@@ -132,20 +125,15 @@ export default {
 
       this.$validator.validateAll().then(result => {
         if (result) {
-          this.$store.dispatch('signIn', that.signInForm)
+          this.$store.dispatch(SIGN_IN, that.signInForm)
             .then(
-              response => {
+              () => {
                 that.$router.push('/')
-              },
-              e => {
               }
             )
         }
       })
     }
-  },
-  beforeDestroy () {
-    this.clear()
   }
 }
 </script>

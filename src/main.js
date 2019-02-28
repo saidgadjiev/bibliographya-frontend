@@ -11,6 +11,7 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import VueLogger from 'vuejs-logger'
 import VueMoment from 'vue-moment'
 import moment from 'moment-timezone'
+import { REQUEST } from './config'
 
 import store from './store/store'
 
@@ -99,8 +100,12 @@ axios.interceptors.response.use(function (response) {
   return Promise.reject(err)
 })
 
+let HttpStatus = require('http-status-codes')
+
 new Vue({
   router,
   store,
+  HttpStatus: HttpStatus,
+  Request: REQUEST,
   render: h => h(App)
 }).$mount('#app')

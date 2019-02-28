@@ -1,5 +1,18 @@
 import authService from '../../services/auth-service'
 import { REQUEST } from '../../config'
+import { PRECONDITION_REQUIRED, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, CLEAR } from '../mutation-types'
+import {
+  CANCEL_SIGN_UP,
+  CONFIRM_SIGN_UP,
+  ERROR_SOCIAL_SIGN_IN,
+  GET_ACCOUNT,
+  SIGN_IN,
+  SIGN_OUT,
+  SIGN_UP,
+  SOCIAL_SIGN_IN,
+  SET_REQUEST,
+  CLEAR
+} from '../action-types'
 
 export const USER_STATE = {
   NONE: -1,
@@ -8,28 +21,6 @@ export const USER_STATE = {
 }
 
 const state = { status: { state: USER_STATE.NONE }, user: {}, roles: [] }
-
-export const SIGN_IN = 'SIGN_IN'
-
-export const SOCIAL_SIGN_IN = 'SOCIAL_SIGN_IN'
-
-export const ERROR_SOCIAL_SIGN_IN = 'ERROR_SOCIAL_SIGN_IN'
-
-export const CONFIRM_SIGN_UP = 'CONFIRM_SIGN_UP'
-
-export const CANCEL_SIGN_UP = 'CANCEL_SIGN_UP'
-
-export const SIGN_UP = 'SIGN_UP'
-
-export const SIGN_OUT = 'SIGN_OUT'
-
-export const GET_ACCOUNT = 'GET_ACCOUNT'
-
-export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS'
-
-export const SIGN_OUT_SUCCESS = 'SIGN_OUT_SUCCESS'
-
-export const PRECONDITION_REQUIRED = 'PRECONDITION_REQUIRED'
 
 const mutations = {
   [SIGN_IN_SUCCESS] (state, payload) {
@@ -51,7 +42,7 @@ const mutations = {
 
 const actions = {
   [SIGN_IN] ({ dispatch, commit }, signInForm) {
-    dispatch('request', REQUEST.SIGN_IN)
+    dispatch('request/' + SET_REQUEST, REQUEST.SIGN_IN)
 
     return new Promise((resolve, reject) => {
       authService.signIn(signInForm)
@@ -65,10 +56,13 @@ const actions = {
             reject(e)
           }
         )
+        .finally(() => {
+          dispatch('request/' + CLEAR)
+        })
     })
   },
   [SOCIAL_SIGN_IN] ({ dispatch, commit }, payload) {
-    dispatch('request', REQUEST.SIGN_IN)
+    dispatch('request/' + SET_REQUEST, REQUEST.SIGN_IN)
 
     return new Promise((resolve, reject) => {
       authService.socialSignIn(payload.provider, payload.redirectUri, payload.code)
@@ -82,6 +76,9 @@ const actions = {
             reject(e)
           }
         )
+        .finally(() => {
+          dispatch('request/' + CLEAR)
+        })
     })
   },
   [ERROR_SOCIAL_SIGN_IN] ({ dispatch, commit }, payload) {
@@ -98,6 +95,8 @@ const actions = {
     })
   },
   [CONFIRM_SIGN_UP] ({ dispatch, commit }, code) {
+    dispatch('request/' + SET_REQUEST, REQUEST.CONFIRM_SIGN_UP)
+
     return new Promise((resolve, reject) => {
       authService.confirmSignUp(code)
         .then(
@@ -109,6 +108,9 @@ const actions = {
             reject(e)
           }
         )
+        .finally(() => {
+          dispatch('request/' + CLEAR)
+        })
     })
   },
   [CANCEL_SIGN_UP] ({ commit }) {
@@ -120,6 +122,8 @@ const actions = {
       )
   },
   [SIGN_UP] ({ dispatch, commit }, signUpForm) {
+    dispatch('request/' + SET_REQUEST, REQUEST.SIGN_UP)
+
     return new Promise((resolve, reject) => {
       authService.signUp(signUpForm)
         .then(
@@ -132,6 +136,9 @@ const actions = {
             reject(error)
           }
         )
+        .finally(() => {
+          dispatch('request/' + CLEAR)
+        })
     })
   },
   [SIGN_OUT] ({ commit }) {
@@ -143,7 +150,7 @@ const actions = {
       )
   },
   [GET_ACCOUNT] ({ dispatch, commit }) {
-    commit('request', REQUEST.GET_ACCOUNT)
+    dispatch('request/' + SET_REQUEST, REQUEST.GET_ACCOUNT)
 
     authService.getAccount()
       .then(
@@ -159,6 +166,9 @@ const actions = {
           commit('signOutSuccess')
         }
       )
+      .finally(() => {
+        dispatch('request/' + CLEAR)
+      })
   }
 }
 
@@ -177,11 +187,17 @@ const getters = {
   getUser: state => {
     return state.user
   },
+  getUserAccount:(state, getters) => {
+    return getters.getUser.userAccount
+  },
   getUserId: (state, getters) => {
     return getters.getUser.id
   },
   getBiography: (state, getters) => {
     return getters.getUser.biography
+  },
+  getEmail: (state, getters) => {
+    return getters.getUserAccount.email
   },
   getFirstName: (state, getters) => {
     return getters.getBiography.firstName

@@ -22,7 +22,7 @@
               type="text"
               name="code"
             ></v-text-field>
-            <div class="error--text" v-if="_preconditionFailed">
+            <div class="error--text" v-if="_isPreconditionFailedError">
               Неверный код
             </div>
           </v-form>
@@ -34,8 +34,8 @@
                 color="light-green darken-2"
                 class="white--text"
                 block
-                :loading="confirmRequest"
-                :disabled="confirmRequest"
+                :loading="_isConfirmSignUpRequest"
+                :disabled="_isConfirmSignUpRequest"
                 @click="confirm">
                 Подтвердить
               </v-btn>
@@ -45,8 +45,8 @@
                 color="blue darken-3"
                 class="white--text"
                 block
-                :loading="resendCode"
-                :disabled="resendCode"
+                :loading="_isResendCodeRequest"
+                :disabled="_isResendCodeRequest"
                 @click="resend">
                 Отправить повторно
               </v-btn>
@@ -60,27 +60,20 @@
 
 <script>
 import emailService from '../services/email-service'
-import { mapGetters, mapState, mapActions } from 'vuex'
+import alert from '../mixins/alert'
+import request from '../mixins/request'
+import { CONFIRM_SIGN_UP } from '../store/action-types'
+import { REQUEST } from '../config'
 
 export default {
   name: 'Confirm',
+  mixins: [alert, request],
   data () {
     return {
-      resendCode: false,
-      confirmRequest: false,
       confirmForm: {
         email: '',
         code: ''
       }
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'status'
-    ]),
-    ...mapState('alert', ['type', 'error']),
-    _preconditionFailed () {
-      return this.error && this.error.response.status === 412
     }
   },
   created () {
@@ -94,46 +87,27 @@ export default {
     this.confirmForm.email = this.status.signUpForm.email
   },
   methods: {
-    ...mapActions('alert', [
-      'clear'
-    ]),
     confirm () {
-      let that = this
-      that.confirmRequest = true
-
-      this.$store.dispatch('confirmSignUp', this.confirmForm.code)
+      this.$store.dispatch(CONFIRM_SIGN_UP, this.confirmForm.code)
         .then(
           () => {
-            that.confirmRequest = false
             this.$router.push('/signIn')
-          },
-          e => {
-            that.confirmRequest = false
           }
         )
     },
     resend () {
-      let that = this
+      this.setRequest(REQUEST.RESEND_CODE)
 
-      that.resendCode = true
       emailService.resend(this.confirmForm.email)
-        .then(
-          response => {
-            that.resendCode = false
-          },
-          e => {
-            that.resendCode = false
-          }
-        )
+        .finally(() => {
+          this.clearRequest()
+        })
     }
   },
   watch: {
     'confirmForm.code' (newVal) {
-      this.clear()
+      this.clearAlert()
     }
-  },
-  beforeDestroy () {
-    this.clear()
   }
 }
 </script>

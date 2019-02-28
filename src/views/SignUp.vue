@@ -39,7 +39,7 @@
               label="Почта"
               type="email"
             ></v-text-field>
-            <div class="error--text word-break-all" v-if="_isEmailConflict">
+            <div class="error--text word-break-all" v-if="_isConflictError">
               Такой email уже занят выберите другой.&nbsp;<router-link class="bibliographya-a" to="/restore">Забыли пароль?</router-link>
             </div>
             <v-text-field
@@ -60,8 +60,8 @@
             block
             @click="signUp"
             color="primary"
-            :loading="signUpRequest"
-            :disabled="signUpRequest"
+            :loading="_isSignUpRequest"
+            :disabled="_isSignUpRequest"
           >Зарегистрироваться</v-btn>
         </v-card-actions>
       </v-card>
@@ -70,10 +70,13 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex'
+  import alert from '../mixins/alert'
+  import request from '../mixins/request'
+  import { SIGN_UP } from '../store/action-types'
 
-export default {
+  export default {
   name: 'SignUp',
+  mixins: [alert, request],
   data () {
     return {
       signUpForm: {
@@ -83,7 +86,6 @@ export default {
         lastName: '',
         middleName: ''
       },
-      signUpRequest: false,
       showPassword: false
     }
   },
@@ -106,42 +108,21 @@ export default {
       }
     })
   },
-  computed: {
-    ...mapGetters([
-      'status'
-    ]),
-    ...mapState('alert', ['type', 'error']),
-    _isEmailConflict () {
-      return this.type === 'alert-danger' && this.error.response.status === 409
-    }
-  },
   methods: {
-    ...mapActions('alert', [
-      'clear'
-    ]),
     signUp () {
       let that = this
 
       this.$validator.validateAll().then(result => {
         if (result) {
-          that.signUpRequest = true
-
-          this.$store.dispatch('signUp', that.signUpForm)
+          this.$store.dispatch(SIGN_UP, that.signUpForm)
             .then(
               () => {
-                that.signUpRequest = false
                 that.$router.push('/signUp/confirm')
-              },
-              e => {
-                that.signUpRequest = false
               }
             )
         }
       })
     }
-  },
-  beforeDestroy () {
-    this.clear()
   }
 }
 </script>

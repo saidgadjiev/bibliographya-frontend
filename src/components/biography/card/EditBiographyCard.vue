@@ -149,10 +149,6 @@ export default {
     }
   },
   props: {
-    editProfile: {
-      type: Boolean,
-      default: false
-    },
     mode: {
       type: String,
       default: 'edit'
@@ -282,8 +278,7 @@ export default {
               biography: that.biographyForm.biography,
               addCategories: added,
               deleteCategories: deleted,
-              lastModified: that.biographyForm.lastModified,
-              userId: that.editProfile ? that.getUser.id : null
+              lastModified: that.biographyForm.lastModified
             })
               .then(
                 response => {

@@ -1,3 +1,6 @@
+import { SET_SUCCESS as SET_SUCCESS_MUTATION, SET_ERROR as SET_ERROR_MUTATION, CLEAR as CLEAR_MUTATION } from '../mutation-types'
+import { SET_SUCCESS, SET_ERROR, CLEAR } from '../action-types'
+
 const state = {
   type: null,
   message: null,
@@ -5,27 +8,27 @@ const state = {
 }
 
 const actions = {
-  success ({ commit }, message) {
+  [SET_SUCCESS_MUTATION] ({ commit }, message) {
     commit('success', message)
   },
-  error ({ commit }, error) {
+  [SET_ERROR_MUTATION] ({ commit }, error) {
     commit('error', error)
   },
-  clear ({ commit }, message) {
+  [CLEAR_MUTATION] ({ commit }, message) {
     commit('clear', message)
   }
 }
 
 const mutations = {
-  success (state, message) {
+  [SET_SUCCESS] (state, message) {
     state.type = 'alert-success'
     state.message = message
   },
-  error (state, error) {
+  [SET_ERROR] (state, error) {
     state.type = 'alert-danger'
     state.error = error
   },
-  clear (state) {
+  [CLEAR] (state) {
     state.type = null
     state.message = null
     state.error = null
@@ -35,6 +38,9 @@ const mutations = {
 const getters = {
   type: state => {
     return state.type
+  },
+  error: state => {
+    return state.error
   },
   message: state => {
     return state.message

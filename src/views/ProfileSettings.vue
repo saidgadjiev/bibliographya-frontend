@@ -14,7 +14,7 @@
           name="oldPassword"
           label="Старый пароль"
         ></v-text-field>
-        <div class="error--text word-break-all" v-if="_oldPasswordError">
+        <div class="error--text word-break-all" v-if="_isError(HttpStatus.BAD_REQUEST)">
           Старый пароль введен неверно.&nbsp;<router-link class="bibliographya-a" to="/restore">Забыли пароль?</router-link>
         </div>
         <v-text-field
@@ -32,8 +32,8 @@
           color="blue darken-3"
           class="white--text"
           block
-          :loading="_savePasswordRequest"
-          :disabled="_savePasswordRequest"
+          :loading="_isSavePasswordRequest"
+          :disabled="_isSavePasswordRequest"
           @click="savePassword">
           Изменить
         </v-btn>
@@ -41,7 +41,7 @@
       <v-divider></v-divider>
       <v-form>
         <v-text-field
-          :value="getUser.userAccount.email"
+          :value="getEmail"
           disabled
           label="Почта"
           type="text"
@@ -60,30 +60,22 @@
 </template>
 
 <script>
+import alert from '../mixins/alert'
+import request from '../mixins/request'
 import userAccountsService from '../services/user-account-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import { PASSWORD_CHANGE_SUCCESS } from '../messages'
-import { mapGetters, mapActions, mapState } from 'vuex'
-
-const REQUEST = {
-  NONE: -1,
-  SAVE_PASSWORD: 0
-}
-
-const ERROR = {
-  NONE: -1,
-  OLD_PASSWORD_WRONG: 0
-}
+import { mapGetters } from 'vuex'
+import { REQUEST } from '../config'
 
 export default {
   name: 'ProfileSettings',
+  mixins: [alert, request],
   components: { AlertMessage },
   data () {
     return {
       showOldPassword: false,
       showNewPassword: false,
-      request: REQUEST.NONE,
-      error: ERROR.NONE,
       savePasswordForm: {
         oldPassword: '',
         newPassword: ''
@@ -91,48 +83,37 @@ export default {
     }
   },
   methods: {
-    ...mapActions('alert', [
-      'clear'
-    ]),
     savePassword () {
       let that = this
 
       this.$validator.validateAll('savePasswordForm').then(result => {
         if (result) {
-          that.request = REQUEST.SAVE_PASSWORD
+          that.setRequest(REQUEST.SAVE_PASSWORD)
 
           userAccountsService.savePassword(that.savePasswordForm)
             .then(
               () => {
-                that.request = REQUEST.NONE
-                that.$store.dispatch('alert/success', PASSWORD_CHANGE_SUCCESS)
+                that.setAlertSuccess(PASSWORD_CHANGE_SUCCESS)
               },
               e => {
-                that.request = REQUEST.NONE
-
                 if (e.response.status === 412) {
-                  that.error = ERROR.OLD_PASSWORD_WRONG
+                  that.setAlertError(e)
                 }
               }
-            )
+            ).finally(() => {
+              that.clearRequest()
+            })
         }
       })
+    },
+    changeEmail () {
+      this.$router.push('/settings/email')
     }
   },
   computed: {
     ...mapGetters([
-      'getUser'
-    ]),
-    ...mapState('alert', ['type', 'error']),
-    _oldPasswordError () {
-      return this.error === ERROR.OLD_PASSWORD_WRONG
-    },
-    _savePasswordRequest () {
-      return this.request === REQUEST.SAVE_PASSWORD
-    }
-  },
-  beforeDestroy () {
-    this.clear()
+      'getEmail'
+    ])
   }
 }
 </script>

@@ -10,7 +10,13 @@ export const REQUEST = {
   NONE: -1,
   SIGN_IN: 0,
   SIGN_UP: 1,
-  GET_ACCOUNT: 2
+  GET_ACCOUNT: 2,
+  CONFIRM_SIGN_UP: 3,
+  RESEND_CODE: 4,
+  RESTORE_PASSWORD: 5,
+  VERIFY: 6,
+  CHANGE_PASSWORD: 7,
+  SAVE_PASSWORD: 8
 }
 
 export const LAYOUTS = {
@@ -72,8 +78,6 @@ export const FIX_BUTTONS = {
 }
 
 export const getRestUrl = (url) => `${process.env.VUE_APP_REST_SERVER}${url}`
-
-export const isAccountRequest = (url) => url.endsWith('auth/account')
 
 export const getRedirectUri = (providerId) => {
   return window.location.origin + '/' + providerId + '/callback'

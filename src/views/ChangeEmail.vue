@@ -105,25 +105,10 @@
 </template>
 
 <script>
-const REQUEST = {
-  NONE: -1,
-  CHANGE_EMAIL: 0,
-  SAVE_EMAIL: 1,
-  RESEND_CODE: 2
-}
-
-const ERROR = {
-  NONE: -1,
-  EMAIL_CONFLICT: 0,
-  PRECONDITION_FAILED: 1
-}
-
 export default {
   name: 'ChangeEmail',
   data () {
     return {
-      request: REQUEST.NONE,
-      error: ERROR.NONE,
       saveEmailForm: {
         newEmail: '',
         code: ''
@@ -131,21 +116,6 @@ export default {
     }
   },
   computed: {
-    _emailConflictError () {
-      return this.error === ERROR.EMAIL_CONFLICT
-    },
-    _preconditionFailedError () {
-      return this.error === ERROR.PRECONDITION_FAILED
-    },
-    _changeEmailRequest () {
-      return this.request === REQUEST.CHANGE_EMAIL
-    },
-    _resendCodeRequest () {
-      return this.request === REQUEST.RESEND_CODE
-    },
-    _saveEmailRequest () {
-      return this.request === REQUEST.SAVE_EMAIL
-    }
   }
 }
 </script>
