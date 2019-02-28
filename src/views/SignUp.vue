@@ -70,11 +70,11 @@
 </template>
 
 <script>
-  import alert from '../mixins/alert'
-  import request from '../mixins/request'
-  import { SIGN_UP } from '../store/action-types'
+import alert from '../mixins/alert'
+import request from '../mixins/request'
+import { SIGN_UP } from '../store/action-types'
 
-  export default {
+export default {
   name: 'SignUp',
   mixins: [alert, request],
   data () {

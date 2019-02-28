@@ -16,7 +16,9 @@ export const REQUEST = {
   RESTORE_PASSWORD: 5,
   VERIFY: 6,
   CHANGE_PASSWORD: 7,
-  SAVE_PASSWORD: 8
+  SAVE_PASSWORD: 8,
+  CHANGE_EMAIL: 9,
+  SAVE_EMAIL: 10
 }
 
 export const LAYOUTS = {

@@ -25,7 +25,7 @@
               type="email"
               data-vv-name="newEmail"
             ></v-text-field>
-            <div class="error--text word-break-all" v-if="_emailConflictError">
+            <div class="error--text word-break-all" v-if="_isError(HttpStatus.CONFLICT)">
               Такой email уже занят выберите другой.&nbsp;<router-link class="bibliographya-a" to="/restore">Забыли пароль?</router-link>
             </div>
             </v-form>
@@ -34,8 +34,8 @@
             <v-btn
               color="blue darken-3"
               class="white--text"
-              :loading="_changeEmailRequest"
-              :disabled="_changeEmailRequest"
+              :loading="_isRequest(Request.CHANGE_EMAIL)"
+              :disabled="_isRequest(Request.CHANGE_EMAIL)"
               @click="changeEmail"
             >
               Отправить повторно
@@ -67,7 +67,7 @@
                 data-vv-name="code"
                 name="code"
               ></v-text-field>
-              <div class="error--text" v-if="_preconditionFailedError">
+              <div class="error--text" v-if="_isError(HttpStatus.PRECONDITION_FAILED)">
                 Неверный код
               </div>
             </v-form>
@@ -79,9 +79,9 @@
                   color="light-green darken-2"
                   class="white--text"
                   block
-                  :loading="_saveEmailRequest"
-                  :disabled="_saveEmailRequest"
-                  @click="savePassword">
+                  :loading="_isRequest(Request.SAVE_EMAIL)"
+                  :disabled="_isRequest(Request.SAVE_EMAIL)"
+                  @click="saveEmail">
                   Подтвердить
                 </v-btn>
               </v-flex>
@@ -90,8 +90,8 @@
                   color="blue darken-3"
                   class="white--text"
                   block
-                  :loading="_resendCodeRequest"
-                  :disabled="_resendCodeRequest"
+                  :loading="_isRequest(Request.RESEND_CODE)"
+                  :disabled="_isRequest(Request.RESEND_CODE)"
                   @click="resend">
                   Отправить повторно
                 </v-btn>
@@ -105,8 +105,12 @@
 </template>
 
 <script>
+import alert from '../mixins/alert'
+import request from '../mixins/request'
+
 export default {
   name: 'ChangeEmail',
+  mixins: [alert, request],
   data () {
     return {
       saveEmailForm: {
@@ -115,7 +119,13 @@ export default {
       }
     }
   },
-  computed: {
+  methods: {
+    changeEmail () {
+
+    },
+    saveEmail () {
+
+    }
   }
 }
 </script>

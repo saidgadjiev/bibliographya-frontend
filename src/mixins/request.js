@@ -7,6 +7,9 @@ export default {
     ...mapGetters({
       'currentRequest': 'request/request'
     }),
+    _isRequest (request) {
+      return this.currentRequest === request
+    },
     _isRestorePasswordRequest () {
       return this.currentRequest === REQUEST.RESTORE_PASSWORD
     },
