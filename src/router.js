@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import CategoriesList from './views/CategoriesList'
 import BiographiesList from './views/BiographiesList'
 import Profile from './views/Profile.vue'
+import ProfileSettings from './views/ProfileSettings'
+import ChangeEmail from './views/ChangeEmail'
 import SignIn from './views/SignIn.vue'
 import SignUp from './views/SignUp'
 import Confirm from './views/Confirm'
@@ -87,6 +89,26 @@ const ifNotAuthenticated = function (to, from, next) {
 let router = new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/settings',
+      name: 'settings',
+      component: ProfileSettings,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_USER]
+      }
+    },
+    {
+      path: '/settings/email',
+      name: 'changeEmail',
+      component: ChangeEmail,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_USER]
+      }
+    },
     {
       path: '/create/category',
       name: 'createCategory',
