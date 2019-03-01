@@ -32,8 +32,8 @@
           color="blue darken-3"
           class="white--text"
           block
-          :loading="_isSavePasswordRequest"
-          :disabled="_isSavePasswordRequest"
+          :loading="_isRequest(Request.SAVE_PASSWORD)"
+          :disabled="_isRequest(Request.SAVE_PASSWORD)"
           @click="savePassword">
           Изменить
         </v-btn>

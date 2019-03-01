@@ -22,7 +22,7 @@
               type="text"
               name="code"
             ></v-text-field>
-            <div class="error--text" v-if="_isPreconditionFailedError">
+            <div class="error--text" v-if="_isError(HttpStatus.PRECONDITION_FAILED)">
               Неверный код
             </div>
           </v-form>
@@ -34,8 +34,8 @@
                 color="light-green darken-2"
                 class="white--text"
                 block
-                :loading="_isConfirmSignUpRequest"
-                :disabled="_isConfirmSignUpRequest"
+                :loading="_isRequest(Request.CONFIRM_SIGN_UP)"
+                :disabled="_isRequest(Request.CONFIRM_SIGN_UP)"
                 @click="confirm">
                 Подтвердить
               </v-btn>
@@ -45,8 +45,8 @@
                 color="blue darken-3"
                 class="white--text"
                 block
-                :loading="_isResendCodeRequest"
-                :disabled="_isResendCodeRequest"
+                :loading="_isRequest(Request.RESEND_CODE)"
+                :disabled="_isRequest(Request.RESEND_CODE)"
                 @click="resend">
                 Отправить повторно
               </v-btn>

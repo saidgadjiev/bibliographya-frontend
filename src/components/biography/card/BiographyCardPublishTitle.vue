@@ -27,10 +27,12 @@
 import { PUBLISHED, UNPUBLISHED, CANT_PUBLISH } from '../../../messages'
 import { PUBLISH_STATUS } from '../../../config'
 import biographyService from '../../../services/biography-service'
+import alert from '../../../mixins/alert'
 
 export default {
   name: 'BiographyCardPublishTitle',
   inheritAttrs: false,
+  mixins: [alert],
   data () {
     return {
       publishLoading: false,
@@ -62,7 +64,7 @@ export default {
         .then(
           () => {
             that.$emit('update:publishStatus', PUBLISH_STATUS.PUBLISHED)
-            that.$store.dispatch('alert/success', PUBLISHED)
+            that.setAlertSuccess(PUBLISHED)
             that.publishLoading = false
           },
           e => {
@@ -85,7 +87,7 @@ export default {
         .then(
           () => {
             that.$emit('update:publishStatus', PUBLISH_STATUS.NOT_PUBLISHED)
-            that.$store.dispatch('alert/success', UNPUBLISHED)
+            that.setAlertSuccess(UNPUBLISHED)
             that.unpublishLoading = false
           },
           e => {

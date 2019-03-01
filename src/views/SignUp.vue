@@ -39,7 +39,7 @@
               label="Почта"
               type="email"
             ></v-text-field>
-            <div class="error--text word-break-all" v-if="_isConflictError">
+            <div class="error--text word-break-all" v-if="_isError(HttpStatus.CONFLICT)">
               Такой email уже занят выберите другой.&nbsp;<router-link class="bibliographya-a" to="/restore">Забыли пароль?</router-link>
             </div>
             <v-text-field
@@ -60,8 +60,8 @@
             block
             @click="signUp"
             color="primary"
-            :loading="_isSignUpRequest"
-            :disabled="_isSignUpRequest"
+            :loading="_isRequest(Request.SIGN_UP)"
+            :disabled="_isRequest(Request.SIGN_UP)"
           >Зарегистрироваться</v-btn>
         </v-card-actions>
       </v-card>

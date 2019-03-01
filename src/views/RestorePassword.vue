@@ -31,7 +31,7 @@
                 data-vv-name="email"
               ></v-text-field>
             </v-form>
-            <div class="error--text word-break-all" v-if="_isNotFoundError">
+            <div class="error--text word-break-all" v-if="_isError(HttpStatus.NOT_FOUND)">
               Пользователя с таким email не найдено.
             </div>
           </v-card-text>
@@ -39,8 +39,8 @@
 
         <v-btn
           color="primary"
-          :loading="_isRestorePasswordRequest"
-          :disabled="_isRestorePasswordRequest"
+          :loading="_isRequest(Request.RESTORE_PASSWORD)"
+          :disabled="_isRequest(Request.RESTORE_PASSWORD)"
           @click="restorePassword"
         >
           Получить код
@@ -71,7 +71,7 @@
                 data-vv-name="code"
                 name="code"
               ></v-text-field>
-              <div class="error--text" v-if="_isPreconditionFailedError">
+              <div class="error--text" v-if="_isError(HttpStatus.PRECONDITION_FAILED)">
                 Неверный код
               </div>
             </v-form>
@@ -82,8 +82,8 @@
             <v-btn
               color="light-green darken-2"
               class="white--text"
-              :loading="_isVerifyRequest"
-              :disabled="_isVerifyRequest"
+              :loading="_isRequest(Request.VERIFY)"
+              :disabled="_isRequest(Request.VERIFY)"
               @click="verify"
             >
               Подтвердить
@@ -93,8 +93,8 @@
             <v-btn
               color="blue darken-3"
               class="white--text"
-              :loading="_isResendCodeRequest"
-              :disabled="_isResendCodeRequest"
+              :loading="_isRequest(Request.RESEND_CODE)"
+              :disabled="_isRequest(Request.RESEND_CODE)"
               @click="resend"
             >
               Отправить повторно
@@ -135,8 +135,8 @@
         <v-btn
           color="light-green darken-2"
           class="white--text"
-          :loading="_isChangePasswordRequest"
-          :disabled="_isChangePasswordRequest"
+          :loading="_isRequest(Request.CHANGE_PASSWORD)"
+          :disabled="_isRequest(Request.CHANGE_PASSWORD)"
           @click="changePassword"
         >
           Сохранить

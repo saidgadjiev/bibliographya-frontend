@@ -116,12 +116,14 @@
 import biographyService from '../../../services/biography-service'
 import biographyCategoryService from '../../../services/biography-category-service'
 import TinyEditor from '../../tinymce/TinyEditor'
+import alert from '../../../mixins/alert'
 
 const diff = require('diff')
 const he = require('he')
 
 export default {
   name: 'EditBiographyCard',
+  mixins: [alert],
   data () {
     return {
       saveLoading: false,
@@ -285,7 +287,7 @@ export default {
                   that.biographyForm.lastModified = response.data.lastModified
                   that.updateParent(that.biographyForm)
 
-                  that.$store.dispatch('alert/success', 'Изменения сохранены.')
+                  that.setAlertSuccess('Изменения сохранены.')
 
                   that.conflict = false
                   that.myBiographyVersion = {}
@@ -323,7 +325,7 @@ export default {
               .then(
                 () => {
                   that.clearBiographyForm()
-                  that.$store.dispatch('alert/success', 'Биография создана. Вы можете увидеть ее в разделе Созданные мной.')
+                  that.setAlertSuccess('Биография создана. Вы можете увидеть ее в разделе Созданные мной.')
                   that.saveLoading = false
                   that.$validator.reset()
                 },

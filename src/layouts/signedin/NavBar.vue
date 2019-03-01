@@ -12,7 +12,7 @@
     </v-toolbar>
     <v-list dense class="white">
       <v-list dense>
-        <v-list-tile v-if="isAuthenticated" :to="'/profile/' + getUser.id">
+        <v-list-tile v-if="isAuthenticated" :to="'/profile/' + getUserId">
           <v-list-tile-action>
             <v-icon size="24">fas fa-home</v-icon>
           </v-list-tile-action>
@@ -20,7 +20,15 @@
             <v-list-tile-title>Моя биография</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile to="/">
+        <v-list-tile v-if="isAuthenticated" to="/settings">
+          <v-list-tile-action>
+            <v-icon size="24">fas fa-cog</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Настройки</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/categories">
           <v-list-tile-action>
             <v-icon size="24">mdi-library-books</v-icon>
           </v-list-tile-action>
@@ -101,7 +109,7 @@
       </v-list>
       <v-list dense subheader v-if="_showAdminBlock">
         <v-subheader>Администрирование</v-subheader>
-        <v-list-tile to="/categories">
+        <v-list-tile to="/categories/admin">
           <v-list-tile-action>
             <v-icon size="24">fas fa-landmark</v-icon>
           </v-list-tile-action>
@@ -162,6 +170,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'getUserId',
       'getFirstName',
       'getLastName',
       'isAuthenticated',

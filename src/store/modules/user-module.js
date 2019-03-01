@@ -1,6 +1,6 @@
 import authService from '../../services/auth-service'
 import { REQUEST } from '../../config'
-import { PRECONDITION_REQUIRED, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, CLEAR } from '../mutation-types'
+import { PRECONDITION_REQUIRED, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS } from '../mutation-types'
 import {
   CANCEL_SIGN_UP,
   CONFIRM_SIGN_UP,
@@ -11,7 +11,8 @@ import {
   SIGN_UP,
   SOCIAL_SIGN_IN,
   SET_REQUEST,
-  CLEAR
+  CLEAR,
+  SET_ERROR
 } from '../action-types'
 
 export const USER_STATE = {
@@ -48,11 +49,11 @@ const actions = {
       authService.signIn(signInForm)
         .then(
           signInResponse => {
-            commit('signInSuccess', signInResponse.data)
+            commit(SIGN_IN_SUCCESS, signInResponse.data)
             resolve()
           },
           e => {
-            dispatch('alert/error', e)
+            dispatch('alert/' + SET_ERROR, e)
             reject(e)
           }
         )
@@ -68,11 +69,11 @@ const actions = {
       authService.socialSignIn(payload.provider, payload.redirectUri, payload.code)
         .then(
           signInResponse => {
-            commit('signInSuccess', signInResponse.data)
+            commit(SIGN_IN_SUCCESS, signInResponse.data)
             resolve(signInResponse.data)
           },
           e => {
-            dispatch('alert/error', e)
+            dispatch('alert/' + SET_ERROR, e)
             reject(e)
           }
         )
@@ -104,7 +105,7 @@ const actions = {
             resolve()
           },
           e => {
-            dispatch('alert/error', e)
+            dispatch('alert/' + SET_ERROR, e)
             reject(e)
           }
         )
@@ -117,7 +118,7 @@ const actions = {
     authService.cancelSignUp()
       .then(
         () => {
-          commit('signOutSuccess')
+          commit(SIGN_OUT_SUCCESS)
         }
       )
   },
@@ -127,12 +128,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       authService.signUp(signUpForm)
         .then(
-          response => {
-            console.log('Success sign up ' + response.data)
+          () => {
             resolve()
           },
           error => {
-            dispatch('alert/error', error)
+            dispatch('alert/' + SET_ERROR, error)
             reject(error)
           }
         )
@@ -145,7 +145,7 @@ const actions = {
     return authService.signOut()
       .then(
         () => {
-          commit('signOutSuccess')
+          commit(SIGN_OUT_SUCCESS)
         }
       )
   },
@@ -155,15 +155,15 @@ const actions = {
     authService.getAccount()
       .then(
         accountResponse => {
-          commit('signInSuccess', accountResponse.data)
+          commit(SIGN_IN_SUCCESS, accountResponse.data)
         },
         e => {
           if (e.response.status === 428) {
-            dispatch('alert/error', e)
-            commit('preconditionRequired', e.response.data)
+            dispatch('alert/' + SET_ERROR, e)
+            commit(PRECONDITION_REQUIRED, e.response.data)
           }
 
-          commit('signOutSuccess')
+          commit(SIGN_OUT_SUCCESS)
         }
       )
       .finally(() => {

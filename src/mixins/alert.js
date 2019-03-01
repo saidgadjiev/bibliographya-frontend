@@ -1,26 +1,21 @@
 import { SET_SUCCESS, SET_ERROR, CLEAR } from '../store/action-types'
 import { mapGetters, mapActions } from 'vuex'
+const HttpStatus = require('http-status-codes')
 
 export default {
+  data () {
+    return {
+      HttpStatus: HttpStatus
+    }
+  },
   computed: {
     ...mapGetters({
       'alertType': 'alert/type',
-      'alertError': 'alert/error'
+      'alertError': 'alert/error',
+      'alertMessage': 'alert/message'
     }),
     _isError (status) {
       return this.alertError.response.status === status
-    },
-    _isConflictError () {
-      return this.alertError.response.status === 409
-    },
-    _isNotFoundError () {
-      return this.alertError.response.status === 404
-    },
-    _isBadRequestError () {
-      return this.alertError.response.status === 400
-    },
-    _isPreconditionFailedError () {
-      return this.alertError.response.status === 412
     }
   },
   methods: {

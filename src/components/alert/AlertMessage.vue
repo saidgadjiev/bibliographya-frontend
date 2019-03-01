@@ -1,7 +1,7 @@
 <template>
   <div id="alert">
     <v-alert
-      v-if="type === 'alert-success'"
+      v-if="alertType === 'alert-success'"
       :value="true"
       @input="clear"
       dismissible
@@ -9,28 +9,29 @@
       color="light-green darken-2"
       id="alert-success"
     >
-      {{ message }}
+      {{ alertMessage }}
     </v-alert>
     <v-alert
-      v-if="type === 'alert-danger'"
+      v-if="alertType === 'alert-danger'"
       :value="true"
       @input="clear"
       dismissible
       type="error"
       id="alert-error"
     >
-      {{ message }}
+      {{ alertMessage }}
     </v-alert>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import EventBus from '../../eventbus/eventbus'
 import { PLUGIN_EVENTS } from '../../config'
+import alert from '../../mixins/alert'
 
 export default {
   name: 'AlertMessage',
+  mixins: [alert],
   data () {
     return {
       options: {
@@ -54,15 +55,7 @@ export default {
   beforeDestroy () {
     EventBus.$off(PLUGIN_EVENTS.ALERT)
   },
-  computed: {
-    ...mapGetters('alert', [
-      'type', 'message'
-    ])
-  },
   methods: {
-    ...mapActions('alert', [
-      'clear'
-    ]),
     alert () {
       let that = this
 

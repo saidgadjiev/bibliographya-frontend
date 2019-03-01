@@ -41,8 +41,8 @@
                 class="white--text"
                 block
                 @click="signIn"
-                :loading="_isSignInRequest"
-                :disabled="_isSignInRequest"
+                :loading="_isRequest(Request.SIGN_IN)"
+                :disabled="_isRequest(Request.SIGN_IN)"
               >Войти</v-btn>
             </v-flex>
             <v-flex xs12 sm8>
