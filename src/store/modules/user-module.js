@@ -1,6 +1,7 @@
 import authService from '../../services/auth-service'
+import userAccountService from '../../services/user-account-service'
 import { REQUEST } from '../../config'
-import { PRECONDITION_REQUIRED, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS } from '../mutation-types'
+import { PRECONDITION_REQUIRED, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, SET_EMAIL } from '../mutation-types'
 import {
   CANCEL_SIGN_UP,
   CONFIRM_SIGN_UP,
@@ -12,8 +13,11 @@ import {
   SOCIAL_SIGN_IN,
   SET_REQUEST,
   CLEAR,
-  SET_ERROR
+  SET_ERROR,
+  SAVE_EMAIL
 } from '../action-types'
+
+const HttpStatus = require('http-status-codes')
 
 export const USER_STATE = {
   NONE: -1,
@@ -35,6 +39,9 @@ const mutations = {
     state.status.state = USER_STATE.ANONYMOUS
     state.user = {}
     state.roles = {}
+  },
+  [SET_EMAIL] (state, email) {
+    state.user.userAccount.email = email
   },
   [PRECONDITION_REQUIRED] (state, payload) {
     state.status.signUpForm = { email: payload.email }
@@ -122,6 +129,26 @@ const actions = {
         }
       )
   },
+  [SAVE_EMAIL] ({ dispatch, commit }, emailForm) {
+    dispatch('request/' + SET_REQUEST, REQUEST.SAVE_EMAIL)
+
+    return new Promise((resolve, reject) => {
+      userAccountService.saveEmail(emailForm)
+        .then(
+          () => {
+            commit(SET_EMAIL, emailForm.newEmail)
+            resolve()
+          },
+          error => {
+            if (error.response.status === HttpStatus.PRECONDITION_FAILED) {
+              dispatch('alert/' + SET_ERROR, error)
+            }
+            reject(error)
+          }
+        )
+        .finally(() => dispatch('request/' + CLEAR))
+    })
+  },
   [SIGN_UP] ({ dispatch, commit }, signUpForm) {
     dispatch('request/' + SET_REQUEST, REQUEST.SIGN_UP)
 
@@ -187,7 +214,7 @@ const getters = {
   getUser: state => {
     return state.user
   },
-  getUserAccount:(state, getters) => {
+  getUserAccount: (state, getters) => {
     return getters.getUser.userAccount
   },
   getUserId: (state, getters) => {

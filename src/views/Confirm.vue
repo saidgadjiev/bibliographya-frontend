@@ -97,10 +97,11 @@ export default {
     },
     resend () {
       this.setRequest(REQUEST.RESEND_CODE)
+      let that = this
 
       emailService.resend(this.confirmForm.email)
         .finally(() => {
-          this.clearRequest()
+          that.clearRequest()
         })
     }
   },

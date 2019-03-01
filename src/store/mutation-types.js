@@ -10,4 +10,6 @@ export const SET_ERROR = 'SET_ERROR'
 
 export const SET_REQUEST = 'SET_REQUEST'
 
+export const SET_EMAIL = 'SET_EMAIL'
+
 export const CLEAR = 'CLEAR'

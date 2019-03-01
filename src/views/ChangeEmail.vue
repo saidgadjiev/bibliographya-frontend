@@ -107,12 +107,17 @@
 <script>
 import alert from '../mixins/alert'
 import request from '../mixins/request'
+import userAccountService from '../services/user-account-service'
+import emailService from '../services/email-service'
+import { SAVE_EMAIL } from '../store/action-types'
+import { REQUEST } from '../config'
 
 export default {
   name: 'ChangeEmail',
   mixins: [alert, request],
   data () {
     return {
+      step: 0,
       saveEmailForm: {
         newEmail: '',
         code: ''
@@ -121,10 +126,51 @@ export default {
   },
   methods: {
     changeEmail () {
+      let that = this
 
+      this.$validator.validate('newEmail').then(result => {
+        if (result) {
+          that.setRequest(this.Request.CHANGE_EMAIL)
+
+          userAccountService.changeEmail(this.saveEmailForm.newEmail)
+            .then(
+              () => {
+                that.step = 2
+              },
+              error => {
+                if (error.response.status === this.HttpStatus.CONFLICT) {
+                  that.setAlertError(error)
+                }
+              }
+            )
+            .finally(() => {
+              that.clearRequest()
+            })
+        }
+      })
+    },
+    resend () {
+      this.setRequest(REQUEST.RESEND_CODE)
+      let that = this
+
+      emailService.resend(this.saveEmailForm.newEmail)
+        .finally(() => {
+          that.clearRequest()
+        })
     },
     saveEmail () {
+      let that = this
 
+      this.$validator.validate('code').then(result => {
+        if (result) {
+          that.$store.dispatch(SAVE_EMAIL)
+            .then(
+              () => {
+                that.$router.push('/settings')
+              }
+            )
+        }
+      })
     }
   }
 }

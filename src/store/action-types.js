@@ -21,3 +21,5 @@ export const SET_ERROR = 'SET_ERROR'
 export const CLEAR = 'CLEAR'
 
 export const SET_REQUEST = 'SET'
+
+export const SAVE_EMAIL = 'SAVE_EMAIL'
