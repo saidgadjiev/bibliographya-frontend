@@ -1,8 +1,8 @@
 <template>
   <v-card>
     <alert-message/>
-    <v-card-text>
-      <v-form data-vv-scope="savePasswordForm">
+    <v-card-text class="pb-0">
+      <v-form>
         <v-text-field
           v-validate="'required'"
           :error-messages="errors.collect('oldPassword')"
@@ -28,18 +28,20 @@
           name="newPassword"
           label="Новый пароль"
         ></v-text-field>
-        <v-btn
-          color="blue darken-3"
-          class="white--text"
-          block
-          :loading="_isRequest(Request.SAVE_PASSWORD)"
-          :disabled="_isRequest(Request.SAVE_PASSWORD)"
-          @click="savePassword">
-          Изменить
-        </v-btn>
       </v-form>
+    </v-card-text>
+    <v-card-actions class="pt-0" style="justify-content: center">
+      <v-btn
+        color="blue darken-3"
+        class="white--text"
+        :loading="_isRequest(Request.SAVE_PASSWORD)"
+        :disabled="_isRequest(Request.SAVE_PASSWORD)"
+        @click="savePassword">
+        Изменить
+      </v-btn>
+    </v-card-actions>
       <v-divider></v-divider>
-      <v-form>
+    <v-card-text class="pb-0">
         <v-text-field
           :value="getEmail"
           disabled
@@ -47,15 +49,15 @@
           type="text"
           name="email"
         ></v-text-field>
-        <v-btn
-          color="blue darken-3"
-          class="white--text"
-          block
-          @click="changeEmail">
-          Изменить
-        </v-btn>
-      </v-form>
     </v-card-text>
+    <v-card-actions class="pt-0" style="justify-content: center">
+      <v-btn
+        color="blue darken-3"
+        class="white--text"
+        @click="changeEmail">
+        Изменить
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -82,11 +84,23 @@ export default {
       }
     }
   },
+  created () {
+    this.$validator.localize('ru', {
+      custom: {
+        oldPassword: {
+          required: () => 'Введите старый пароль'
+        },
+        newPassword: {
+          required: () => 'Введите новый пароль'
+        }
+      }
+    })
+  },
   methods: {
     savePassword () {
       let that = this
 
-      this.$validator.validateAll('savePasswordForm').then(result => {
+      this.$validator.validateAll().then(result => {
         if (result) {
           that.setRequest(REQUEST.SAVE_PASSWORD)
 

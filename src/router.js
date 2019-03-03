@@ -31,12 +31,20 @@ import { ROLES, LAYOUTS } from './config'
 import biographyService from './services/biography-service'
 import { USER_STATE } from './store/modules/user-module'
 
+const HttpStatus = require('http-status-codes')
+
 Vue.use(Router)
 
+const requireConfirm = function () {
+  let error = store.getters['alert/error'] || {}
+
+  return error.response && error.response.status === HttpStatus.PRECONDITION_REQUIRED
+}
+
 const waitForAccount = function (callback) {
-  if (store.getters.status.state === USER_STATE.NONE) {
-    store.watch(store.getters.watchStatus, function () {
-      if (!store.getters.status.NONE) {
+  if (store.getters.getStatus.state === USER_STATE.NONE) {
+    store.watch(store.getters.watchState, function () {
+      if (store.getters.getState !== USER_STATE.NONE) {
         callback()
       }
     })
@@ -282,7 +290,7 @@ let router = new Router({
       component: Confirm,
       beforeEnter: function (to, from, next) {
         function proceed () {
-          if (store.getters.status.preconditionRequired) {
+          if (requireConfirm()) {
             next()
           } else {
             next(false)
@@ -351,7 +359,7 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
   function proceed () {
-    if (store.getters.status.preconditionRequired && to.name !== 'signUpConfirm') {
+    if (requireConfirm() && to.name !== 'signUpConfirm') {
       next('/signUp/confirm')
     } else {
       next()

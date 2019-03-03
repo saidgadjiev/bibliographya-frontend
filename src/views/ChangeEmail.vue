@@ -14,6 +14,7 @@
           class="mb-5"
           color="grey lighten-3">
           <v-card-text>
+            <span>Ваша текущая почта <strong>{{ getEmail }}</strong> .</span>
             <v-form>
             <v-text-field
               class="mt-2"
@@ -25,9 +26,6 @@
               type="email"
               data-vv-name="newEmail"
             ></v-text-field>
-            <div class="error--text word-break-all" v-if="_isError(HttpStatus.CONFLICT)">
-              Такой email уже занят выберите другой.&nbsp;<router-link class="bibliographya-a" to="/restore">Забыли пароль?</router-link>
-            </div>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -38,7 +36,7 @@
               :disabled="_isRequest(Request.CHANGE_EMAIL)"
               @click="changeEmail"
             >
-              Отправить повторно
+              Изменить
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -105,12 +103,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import alert from '../mixins/alert'
 import request from '../mixins/request'
 import userAccountService from '../services/user-account-service'
 import emailService from '../services/email-service'
 import { SAVE_EMAIL } from '../store/action-types'
 import { REQUEST } from '../config'
+import { SERVER_ERROR, EMAIL_CHANGE_SUCCESS } from '../messages'
 
 export default {
   name: 'ChangeEmail',
@@ -124,7 +124,33 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'getEmail'
+    ])
+  },
+  created () {
+    this.$validator.localize('ru', {
+      custom: {
+        newEmail: {
+          required: () => 'Введите почту',
+          email: () => 'Введите корректную почту'
+        },
+        code: {
+          required: () => 'Введите код'
+        },
+        newPassword: {
+          required: () => 'Введите пароль'
+        }
+      }
+    })
+  },
   methods: {
+    resetForm () {
+      this.step = 1
+      this.saveEmailForm.newEmail = ''
+      this.saveEmailForm.code = ''
+    },
     changeEmail () {
       let that = this
 
@@ -154,6 +180,15 @@ export default {
       let that = this
 
       emailService.resend(this.saveEmailForm.newEmail)
+        .catch(e => {
+          if (e.response.status === that.HttpStatus.BAD_REQUEST) {
+            that.$swal.fire({
+              text: SERVER_ERROR,
+              type: 'error',
+              showCloseButton: true
+            })
+          }
+        })
         .finally(() => {
           that.clearRequest()
         })
@@ -163,14 +198,27 @@ export default {
 
       this.$validator.validate('code').then(result => {
         if (result) {
-          that.$store.dispatch(SAVE_EMAIL)
+          that.$store.dispatch(SAVE_EMAIL, that.saveEmailForm)
             .then(
               () => {
+                that.$swal.fire({
+                  text: EMAIL_CHANGE_SUCCESS,
+                  type: 'info',
+                  showCloseButton: true
+                })
                 that.$router.push('/settings')
               }
             )
         }
       })
+    }
+  },
+  watch: {
+    'restoreForm.newEmail' (newVal) {
+      this.clearAlert()
+    },
+    'restoreForm.code' (newVal) {
+      this.clearAlert()
     }
   }
 }

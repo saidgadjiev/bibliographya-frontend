@@ -9,13 +9,13 @@ const state = {
 
 const actions = {
   [SET_SUCCESS_MUTATION] ({ commit }, message) {
-    commit('success', message)
+    commit(SET_SUCCESS, message)
   },
   [SET_ERROR_MUTATION] ({ commit }, error) {
-    commit('error', error)
+    commit(SET_ERROR, error)
   },
   [CLEAR_MUTATION] ({ commit }, message) {
-    commit('clear', message)
+    commit(CLEAR, message)
   }
 }
 

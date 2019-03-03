@@ -7,7 +7,8 @@ export default {
   restorePassword,
   savePassword,
   changeEmail,
-  saveEmail
+  saveEmail,
+  changePassword
 }
 
 function isExistEmail (email) {
@@ -28,4 +29,8 @@ function changeEmail (email) {
 
 function saveEmail (emailForm) {
   return axios.post(getRestUrl('user-accounts/save-email'), emailForm)
+}
+
+function changePassword (restoreForm) {
+  return axios.post(getRestUrl('user-accounts/change-password'), restoreForm)
 }

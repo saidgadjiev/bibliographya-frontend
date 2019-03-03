@@ -30,4 +30,4 @@ export const INTERNET_ERROR = 'Проверьте подключение к ин
 
 export const PASSWORD_CHANGE_SUCCESS = 'Пароль успешно изменен.'
 
-export const OLD_PASSWORD_WRONG = 'Старый пароль введен неверно.'
+export const EMAIL_CHANGE_SUCCESS = 'Почта успешно изменена'

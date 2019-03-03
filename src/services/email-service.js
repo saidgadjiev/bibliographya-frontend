@@ -8,7 +8,7 @@ export default {
 }
 
 function verify (email, code) {
-  return axios.post(getRestUrl('emails/resend') + '?email=' + email + '&code=' + code)
+  return axios.post(getRestUrl('emails/verify') + '?email=' + email + '&code=' + code)
 }
 
 function resend (email) {

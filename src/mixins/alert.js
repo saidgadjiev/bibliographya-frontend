@@ -13,17 +13,19 @@ export default {
       'alertType': 'alert/type',
       'alertError': 'alert/error',
       'alertMessage': 'alert/message'
-    }),
-    _isError (status) {
-      return this.alertError.response.status === status
-    }
+    })
   },
   methods: {
     ...mapActions({
       'setAlertSuccess': 'alert/' + SET_SUCCESS,
       'setAlertError': 'alert/' + SET_ERROR,
       'clearAlert': 'alert/' + CLEAR
-    })
+    }),
+    _isError (status) {
+      let error = this.alertError || {}
+
+      return error.response && error.response.status === status
+    }
   },
   beforeDestroy () {
     this.clearAlert()

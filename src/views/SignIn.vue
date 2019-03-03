@@ -128,7 +128,7 @@ export default {
           this.$store.dispatch(SIGN_IN, that.signInForm)
             .then(
               () => {
-                that.$router.push('/')
+                that.$router.push('/categories')
               }
             )
         }

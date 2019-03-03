@@ -200,10 +200,13 @@ const actions = {
 }
 
 const getters = {
-  watchStatus: state => {
+  watchState: state => {
     return function () {
-      return state.status
+      return state.status.state
     }
+  },
+  getState: (state, getters) => {
+    return getters.getStatus.state
   },
   getStatus: state => {
     return state.status

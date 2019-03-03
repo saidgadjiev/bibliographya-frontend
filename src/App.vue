@@ -8,6 +8,7 @@
 import SignedInLayout from './layouts/signedin/SignedInLayout.vue'
 import AuthLayout from './layouts/auth/AuthLayout'
 import AnonymousLayout from './layouts/anonymous/AnonymousLayout'
+import { GET_ACCOUNT } from './store/action-types'
 
 export default {
   name: 'App',
@@ -22,7 +23,7 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('getAccount')
+    this.$store.dispatch(GET_ACCOUNT)
   },
   components: {
     'signed-in-layout': SignedInLayout,

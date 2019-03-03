@@ -19,11 +19,11 @@ const mutations = {
 }
 
 const actions = {
-  [SET_REQUEST] (state, request) {
-    state.request = request
+  [SET_REQUEST] ({ commit }, request) {
+    commit(SET_REQUEST_MUTATION, request)
   },
-  [CLEAR] (state) {
-    state.request = REQUEST.NONE
+  [CLEAR] ({ commit }) {
+    commit(CLEAR_MUTATION)
   }
 }
 

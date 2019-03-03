@@ -11,16 +11,16 @@ export default {
   computed: {
     ...mapGetters({
       'currentRequest': 'request/request'
-    }),
-    _isRequest (request) {
-      return this.currentRequest === request
-    }
+    })
   },
   methods: {
     ...mapActions({
       'setRequest': 'request/' + SET_REQUEST,
       'clearRequest': 'request/' + CLEAR
-    })
+    }),
+    _isRequest (request) {
+      return this.currentRequest === request
+    }
   },
   beforeDestroy () {
     this.clearRequest()

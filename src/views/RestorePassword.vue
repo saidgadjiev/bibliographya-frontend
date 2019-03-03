@@ -106,9 +106,9 @@
       <v-stepper-content step="3">
         <v-card
           class="mb-5"
-          color="grey lighten-1"
-          height="200px"
+          color="grey lighten-3"
         >
+          <v-card-text>
           <v-form>
             <v-text-field
               v-model="restoreForm.email"
@@ -130,6 +130,7 @@
               data-vv-name="newPassword"
             ></v-text-field>
           </v-form>
+          </v-card-text>
         </v-card>
 
         <v-btn
@@ -150,6 +151,7 @@
 import alert from '../mixins/alert'
 import request from '../mixins/request'
 import { REQUEST } from '../config'
+import { SERVER_ERROR, PASSWORD_CHANGE_SUCCESS } from '../messages'
 import userAccountService from '../services/user-account-service'
 import emailService from '../services/email-service'
 
@@ -158,7 +160,7 @@ export default {
   mixins: [alert, request],
   data () {
     return {
-      step: 0,
+      step: 1,
       showNewPassword: false,
       restoreForm: {
         email: '',
@@ -167,7 +169,29 @@ export default {
       }
     }
   },
+  created () {
+    this.$validator.localize('ru', {
+      custom: {
+        email: {
+          required: () => 'Введите почту',
+          email: () => 'Введите корректную почту'
+        },
+        code: {
+          required: () => 'Введите код'
+        },
+        newPassword: {
+          required: () => 'Введите пароль'
+        }
+      }
+    })
+  },
   methods: {
+    resetForm () {
+      this.step = 1
+      this.restoreForm.code = ''
+      this.restoreForm.email = ''
+      this.restoreForm.newPassword = ''
+    },
     changePassword () {
       let that = this
 
@@ -178,7 +202,23 @@ export default {
           userAccountService.changePassword(this.restoreForm)
             .then(
               () => {
+                that.$swal.fire({
+                  text: PASSWORD_CHANGE_SUCCESS,
+                  type: 'info',
+                  showCloseButton: true
+                })
                 that.$router.push('/signIn')
+              },
+              e => {
+                if (e.response.status === that.HttpStatus.PRECONDITION_FAILED) {
+                  that.resetForm()
+
+                  that.$swal.fire({
+                    text: SERVER_ERROR,
+                    type: 'error',
+                    showCloseButton: true
+                  })
+                }
               }
             ).finally(() => {
               that.clearRequest()
@@ -191,6 +231,17 @@ export default {
       that.setRequest(REQUEST.RESEND_CODE)
 
       emailService.resend(this.restoreForm.email)
+        .catch(e => {
+          if (e.response.status === that.HttpStatus.BAD_REQUEST) {
+            that.resetForm()
+
+            that.$swal.fire({
+              text: SERVER_ERROR,
+              type: 'error',
+              showCloseButton: true
+            })
+          }
+        })
         .finally(() => {
           that.clearRequest()
         })
@@ -208,7 +259,7 @@ export default {
                 that.step = 3
               },
               e => {
-                if (e.response.status === 428) {
+                if (e.response.status === that.HttpStatus.PRECONDITION_FAILED) {
                   that.setAlertError(e)
                 }
               }
@@ -232,7 +283,7 @@ export default {
                 that.request = REQUEST.NONE
               },
               e => {
-                if (e.response.status === 404) {
+                if (e.response.status === that.HttpStatus.NOT_FOUND) {
                   that.setAlertError(e)
                 }
               }
@@ -241,6 +292,14 @@ export default {
             })
         }
       })
+    }
+  },
+  watch: {
+    'restoreForm.email' (newVal) {
+      this.clearAlert()
+    },
+    'restoreForm.code' (newVal) {
+      this.clearAlert()
     }
   }
 }
