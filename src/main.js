@@ -83,9 +83,7 @@ axios.interceptors.response.use(function (response) {
         router.push('/signIn')
         break
       case 403:
-        if (store.getters['request/request'] !== REQUEST.SIGN_IN) {
-          router.push('/403')
-        }
+        router.push('/403')
         break
       case 500:
         Vue.swal.fire({
