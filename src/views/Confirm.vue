@@ -34,7 +34,7 @@ export default {
       this.$store.dispatch(CONFIRM_SIGN_UP, this.confirmForm.code)
         .then(
           () => {
-            this.$router.push('/signIn')
+            this.$router.push('/')
           }
         )
     }
