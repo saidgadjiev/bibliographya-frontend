@@ -16,16 +16,16 @@
           <v-card-text>
             <span>Ваша текущая почта <strong>{{ getEmail }}</strong> .</span>
             <v-form>
-            <v-text-field
-              class="mt-2"
-              v-validate="'required|email'"
-              v-model="saveEmailForm.newEmail"
-              :error-messages="errors.collect('newEmail')"
-              name="newEmail"
-              label="Новая почта"
-              type="email"
-              data-vv-name="newEmail"
-            ></v-text-field>
+              <v-text-field
+                class="mt-2"
+                v-validate="'required|email'"
+                v-model="saveEmailForm.newEmail"
+                :error-messages="errors.collect('newEmail')"
+                name="newEmail"
+                label="Новая почта"
+                type="email"
+                data-vv-name="newEmail"
+              ></v-text-field>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -42,61 +42,12 @@
         </v-card>
       </v-stepper-content>
       <v-stepper-content step="2">
-        <v-card
-          class="mb-5"
-          color="grey lighten-3"
-        >
-          <v-card-text>
-            <strong>Код подтверждения отправлен вам на почту.</strong>
-            <v-form>
-              <v-text-field
-                v-model="saveEmailForm.newEmail"
-                disabled
-                label="Новая почта"
-                type="text"
-                name="newEmail"
-              ></v-text-field>
-              <v-text-field
-                v-validate="'required'"
-                v-model="saveEmailForm.code"
-                :error-messages="errors.collect('code')"
-                label="Код"
-                type="text"
-                data-vv-name="code"
-                name="code"
-              ></v-text-field>
-              <div class="error--text" v-if="_isError(HttpStatus.PRECONDITION_FAILED)">
-                Неверный код
-              </div>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-layout row wrap>
-              <v-flex xs12 sm4>
-                <v-btn
-                  color="light-green darken-2"
-                  class="white--text"
-                  block
-                  :loading="_isRequest(Request.SAVE_EMAIL)"
-                  :disabled="_isRequest(Request.SAVE_EMAIL)"
-                  @click="saveEmail">
-                  Подтвердить
-                </v-btn>
-              </v-flex>
-              <v-flex xs12 sm8>
-                <v-btn
-                  color="blue darken-3"
-                  class="white--text"
-                  block
-                  :loading="_isRequest(Request.RESEND_CODE)"
-                  :disabled="_isRequest(Request.RESEND_CODE)"
-                  @click="resend">
-                  Отправить повторно
-                </v-btn>
-              </v-flex>
-            </v-layout>
-          </v-card-actions>
-        </v-card>
+        <confirm-code
+          :email="saveEmailForm.email"
+          :code.sync="saveEmailForm.code"
+          label="Код подтверждения отправлен вам на почту."
+          :confirm="saveEmail"
+        ></confirm-code>
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -107,13 +58,13 @@ import { mapGetters } from 'vuex'
 import alert from '../mixins/alert'
 import request from '../mixins/request'
 import userAccountService from '../services/user-account-service'
-import emailService from '../services/email-service'
 import { SAVE_EMAIL } from '../store/action-types'
-import { REQUEST } from '../config'
-import { SERVER_ERROR, EMAIL_CHANGE_SUCCESS } from '../messages'
+import { EMAIL_CHANGE_SUCCESS } from '../messages'
+import ConfirmCode from '../components/auth/ConfirmCode'
 
 export default {
   name: 'ChangeEmail',
+  components: { ConfirmCode },
   mixins: [alert, request],
   data () {
     return {
@@ -135,9 +86,6 @@ export default {
         newEmail: {
           required: () => 'Введите почту',
           email: () => 'Введите корректную почту'
-        },
-        code: {
-          required: () => 'Введите код'
         },
         newPassword: {
           required: () => 'Введите пароль'
@@ -175,49 +123,24 @@ export default {
         }
       })
     },
-    resend () {
-      this.setRequest(REQUEST.RESEND_CODE)
-      let that = this
-
-      emailService.resend(this.saveEmailForm.newEmail)
-        .catch(e => {
-          if (e.response.status === that.HttpStatus.BAD_REQUEST) {
-            that.$swal.fire({
-              text: SERVER_ERROR,
-              type: 'error',
-              showCloseButton: true
-            })
-          }
-        })
-        .finally(() => {
-          that.clearRequest()
-        })
-    },
     saveEmail () {
       let that = this
 
-      this.$validator.validate('code').then(result => {
-        if (result) {
-          that.$store.dispatch(SAVE_EMAIL, that.saveEmailForm)
-            .then(
-              () => {
-                that.$swal.fire({
-                  text: EMAIL_CHANGE_SUCCESS,
-                  type: 'info',
-                  showCloseButton: true
-                })
-                that.$router.push('/settings')
-              }
-            )
-        }
-      })
+      that.$store.dispatch(SAVE_EMAIL, that.saveEmailForm)
+        .then(
+          () => {
+            that.$swal.fire({
+              text: EMAIL_CHANGE_SUCCESS,
+              type: 'info',
+              showCloseButton: true
+            })
+            that.$router.push('/settings')
+          }
+        )
     }
   },
   watch: {
     'restoreForm.newEmail' (newVal) {
-      this.clearAlert()
-    },
-    'restoreForm.code' (newVal) {
       this.clearAlert()
     }
   }

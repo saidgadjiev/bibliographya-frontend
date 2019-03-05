@@ -42,9 +42,6 @@ const mutations = {
   },
   [SET_EMAIL] (state, email) {
     state.user.userAccount.email = email
-  },
-  [PRECONDITION_REQUIRED] (state, payload) {
-    state.status.signUpForm = { email: payload.email }
   }
 }
 

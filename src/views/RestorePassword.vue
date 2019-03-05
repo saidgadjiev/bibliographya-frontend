@@ -48,12 +48,20 @@
       </v-stepper-content>
 
       <v-stepper-content step="2">
+        <confirm-code
+          :email="restoreForm.email"
+          :code.sync="restoreForm.code"
+          label="Код подтверждения отправлен вам на почту."
+          :confirm="verify"
+        />
+      </v-stepper-content>
+
+      <v-stepper-content step="3">
         <v-card
           class="mb-5"
           color="grey lighten-3"
         >
           <v-card-text>
-            <strong>Код подтверждения отправлен вам на почту.</strong>
             <v-form>
               <v-text-field
                 v-model="restoreForm.email"
@@ -64,72 +72,17 @@
               ></v-text-field>
               <v-text-field
                 v-validate="'required'"
-                v-model="restoreForm.code"
-                :error-messages="errors.collect('code')"
-                label="Код"
-                type="text"
-                data-vv-name="code"
-                name="code"
+                :error-messages="errors.collect('newPassword')"
+                :append-icon="showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                :type="showNewPassword ? 'text' : 'password'"
+                @click:append="showNewPassword = !showNewPassword"
+                v-model="restoreForm.newPassword"
+                class="mt-2"
+                name="newPassword"
+                label="Новый пароль"
+                data-vv-name="newPassword"
               ></v-text-field>
-              <div class="error--text" v-if="_isError(HttpStatus.PRECONDITION_FAILED)">
-                Неверный код
-              </div>
             </v-form>
-          </v-card-text>
-        </v-card>
-        <v-layout row justify-start>
-          <v-flex xs12 sm3>
-            <v-btn
-              color="light-green darken-2"
-              class="white--text"
-              :loading="_isRequest(Request.VERIFY)"
-              :disabled="_isRequest(Request.VERIFY)"
-              @click="verify"
-            >
-              Подтвердить
-            </v-btn>
-          </v-flex>
-          <v-flex xs12 sm4>
-            <v-btn
-              color="blue darken-3"
-              class="white--text"
-              :loading="_isRequest(Request.RESEND_CODE)"
-              :disabled="_isRequest(Request.RESEND_CODE)"
-              @click="resend"
-            >
-              Отправить повторно
-            </v-btn>
-          </v-flex>
-        </v-layout>
-      </v-stepper-content>
-
-      <v-stepper-content step="3">
-        <v-card
-          class="mb-5"
-          color="grey lighten-3"
-        >
-          <v-card-text>
-          <v-form>
-            <v-text-field
-              v-model="restoreForm.email"
-              disabled
-              label="Почта"
-              type="text"
-              name="email"
-            ></v-text-field>
-            <v-text-field
-              v-validate="'required'"
-              :error-messages="errors.collect('newPassword')"
-              :append-icon="showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
-              :type="showNewPassword ? 'text' : 'password'"
-              @click:append="showNewPassword = !showNewPassword"
-              v-model="restoreForm.newPassword"
-              class="mt-2"
-              name="newPassword"
-              label="Новый пароль"
-              data-vv-name="newPassword"
-            ></v-text-field>
-          </v-form>
           </v-card-text>
         </v-card>
 
@@ -154,9 +107,11 @@ import { REQUEST } from '../config'
 import { SERVER_ERROR, PASSWORD_CHANGE_SUCCESS } from '../messages'
 import userAccountService from '../services/user-account-service'
 import emailService from '../services/email-service'
+import ConfirmCode from '../components/auth/ConfirmCode'
 
 export default {
   name: 'RestorePassword',
+  components: { ConfirmCode },
   mixins: [alert, request],
   data () {
     return {
@@ -175,9 +130,6 @@ export default {
         email: {
           required: () => 'Введите почту',
           email: () => 'Введите корректную почту'
-        },
-        code: {
-          required: () => 'Введите код'
         },
         newPassword: {
           required: () => 'Введите пароль'
@@ -226,48 +178,24 @@ export default {
         }
       })
     },
-    resend () {
-      let that = this
-      that.setRequest(REQUEST.RESEND_CODE)
-
-      emailService.resend(this.restoreForm.email)
-        .catch(e => {
-          if (e.response.status === that.HttpStatus.BAD_REQUEST) {
-            that.resetForm()
-
-            that.$swal.fire({
-              text: SERVER_ERROR,
-              type: 'error',
-              showCloseButton: true
-            })
-          }
-        })
-        .finally(() => {
-          that.clearRequest()
-        })
-    },
     verify () {
       let that = this
 
-      this.$validator.validate('code').then(result => {
-        if (result) {
-          that.setRequest(REQUEST.VERIFY)
+      that.setRequest(REQUEST.VERIFY)
 
-          emailService.verify(this.restoreForm.email, this.restoreForm.code)
-            .then(
-              () => {
-                that.step = 3
-              },
-              e => {
-                if (e.response.status === that.HttpStatus.PRECONDITION_FAILED) {
-                  that.setAlertError(e)
-                }
-              }
-            ).finally(() => {
-              that.clearRequest()
-            })
-        }
-      })
+      emailService.verify(this.restoreForm.email, this.restoreForm.code)
+        .then(
+          () => {
+            that.step = 3
+          },
+          e => {
+            if (e.response.status === that.HttpStatus.PRECONDITION_FAILED) {
+              that.setAlertError(e)
+            }
+          }
+        ).finally(() => {
+          that.clearRequest()
+        })
     },
     restorePassword: function () {
       let that = this
@@ -296,9 +224,6 @@ export default {
   },
   watch: {
     'restoreForm.email' (newVal) {
-      this.clearAlert()
-    },
-    'restoreForm.code' (newVal) {
       this.clearAlert()
     }
   }

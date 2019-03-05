@@ -5,6 +5,7 @@ import BiographiesList from './views/BiographiesList'
 import Profile from './views/Profile.vue'
 import ProfileSettings from './views/ProfileSettings'
 import ChangeEmail from './views/ChangeEmail'
+import EmailConfirm from './views/EmailConfirm'
 import SignIn from './views/SignIn.vue'
 import SignUp from './views/SignUp'
 import Confirm from './views/Confirm'
@@ -291,6 +292,27 @@ let router = new Router({
       beforeEnter: function (to, from, next) {
         function proceed () {
           if (requireConfirm()) {
+            next()
+          } else {
+            next(false)
+          }
+        }
+
+        waitForAccount(proceed)
+      },
+      meta: {
+        layout: LAYOUTS.AUTH_LAYOUT
+      }
+    },
+    {
+      path: '/email/confirm',
+      name: 'emailConfirm',
+      component: EmailConfirm,
+      beforeEnter: function (to, from, next) {
+        function proceed () {
+          let error = store.getters['alert/error'] || {}
+
+          if (error.response && error.response.status === HttpStatus.FORBIDDEN) {
             next()
           } else {
             next(false)
