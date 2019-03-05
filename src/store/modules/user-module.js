@@ -14,7 +14,8 @@ import {
   SET_REQUEST,
   CLEAR,
   SET_ERROR,
-  SAVE_EMAIL
+  SAVE_EMAIL,
+  VERIFY_EMAIL
 } from '../action-types'
 
 const HttpStatus = require('http-status-codes')
@@ -133,7 +134,27 @@ const actions = {
       userAccountService.saveEmail(emailForm)
         .then(
           () => {
-            commit(SET_EMAIL, emailForm.newEmail)
+            commit(SET_EMAIL, emailForm.email)
+            resolve()
+          },
+          error => {
+            if (error.response.status === HttpStatus.PRECONDITION_FAILED) {
+              dispatch('alert/' + SET_ERROR, error)
+            }
+            reject(error)
+          }
+        )
+        .finally(() => dispatch('request/' + CLEAR))
+    })
+  },
+  [VERIFY_EMAIL] ({ dispatch, commit }, emailForm) {
+    dispatch('request/' + SET_REQUEST, REQUEST.SAVE_EMAIL)
+
+    return new Promise((resolve, reject) => {
+      userAccountService.verifyEmailFinish(emailForm)
+        .then(
+          () => {
+            commit(SET_EMAIL, emailForm.email)
             resolve()
           },
           error => {
@@ -216,6 +237,9 @@ const getters = {
   },
   getUserAccount: (state, getters) => {
     return getters.getUser.userAccount
+  },
+  isEmailVerified: (state, getters) => {
+    return getters.getUserAccount.emailVerified
   },
   getUserId: (state, getters) => {
     return getters.getUser.id

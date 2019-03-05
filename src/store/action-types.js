@@ -23,3 +23,5 @@ export const CLEAR = 'CLEAR'
 export const SET_REQUEST = 'SET'
 
 export const SAVE_EMAIL = 'SAVE_EMAIL'
+
+export const VERIFY_EMAIL = 'VERIFY_EMAIL'

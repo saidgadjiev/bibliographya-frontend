@@ -305,24 +305,24 @@ let router = new Router({
       }
     },
     {
-      path: '/email/confirm',
+      path: '/settings/email/confirm',
       name: 'emailConfirm',
       component: EmailConfirm,
-      beforeEnter: function (to, from, next) {
-        function proceed () {
-          let error = store.getters['alert/error'] || {}
-
-          if (error.response && error.response.status === HttpStatus.FORBIDDEN) {
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        expression: function (to, from, next) {
+          if (store.getters.isEmailVerified) {
             next()
           } else {
-            next(false)
+            if (from.name) {
+              next(false)
+            } else {
+              next('/categories')
+            }
           }
-        }
-
-        waitForAccount(proceed)
-      },
-      meta: {
-        layout: LAYOUTS.AUTH_LAYOUT
+        },
+        roles: [ROLES.ROLE_USER]
       }
     },
     {

@@ -72,15 +72,15 @@
               ></v-text-field>
               <v-text-field
                 v-validate="'required'"
-                :error-messages="errors.collect('newPassword')"
-                :append-icon="showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
-                :type="showNewPassword ? 'text' : 'password'"
-                @click:append="showNewPassword = !showNewPassword"
-                v-model="restoreForm.newPassword"
+                :error-messages="errors.collect('password')"
+                :append-icon="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                :type="showPassword ? 'text' : 'password'"
+                @click:append="showPassword = !showPassword"
+                v-model="restoreForm.password"
                 class="mt-2"
-                name="newPassword"
+                name="password"
                 label="Новый пароль"
-                data-vv-name="newPassword"
+                data-vv-name="password"
               ></v-text-field>
             </v-form>
           </v-card-text>
@@ -116,11 +116,11 @@ export default {
   data () {
     return {
       step: 1,
-      showNewPassword: false,
+      showPassword: false,
       restoreForm: {
         email: '',
         code: '',
-        newPassword: ''
+        password: ''
       }
     }
   },
@@ -131,7 +131,7 @@ export default {
           required: () => 'Введите почту',
           email: () => 'Введите корректную почту'
         },
-        newPassword: {
+        password: {
           required: () => 'Введите пароль'
         }
       }
@@ -142,12 +142,12 @@ export default {
       this.step = 1
       this.restoreForm.code = ''
       this.restoreForm.email = ''
-      this.restoreForm.newPassword = ''
+      this.restoreForm.password = ''
     },
     changePassword () {
       let that = this
 
-      this.$validator.validate('newPassword').then(result => {
+      this.$validator.validate('password').then(result => {
         if (result) {
           that.setRequest(REQUEST.CHANGE_PASSWORD)
 

@@ -15,7 +15,8 @@
           label="Старый пароль"
         ></v-text-field>
         <div class="error--text word-break-all" v-if="_isError(HttpStatus.BAD_REQUEST)">
-          Старый пароль введен неверно.&nbsp;<router-link class="bibliographya-a" to="/restore">Забыли пароль?</router-link>
+          Старый пароль введен неверно.&nbsp;<router-link class="bibliographya-a" to="/restore">Забыли пароль?
+        </router-link>
         </div>
         <v-text-field
           v-validate="'required'"
@@ -40,15 +41,21 @@
         Изменить
       </v-btn>
     </v-card-actions>
-      <v-divider></v-divider>
+    <v-divider></v-divider>
     <v-card-text class="pb-0">
-        <v-text-field
-          :value="getEmail"
-          disabled
-          label="Почта"
-          type="text"
-          name="email"
-        ></v-text-field>
+      <div class="error--text word-break-all">
+        Кто то другой привязал вашу почту к своей странице. Подтвердите пожалуйста почту или вход на страницу будет утерян.
+        <router-link to="/settings/email/confirm">
+          <strong>Подтвердить</strong>
+        </router-link>
+      </div>
+      <v-text-field
+        :value="getEmail"
+        disabled
+        label="Почта"
+        type="text"
+        name="email"
+      ></v-text-field>
     </v-card-text>
     <v-card-actions class="pt-0" style="justify-content: center">
       <v-btn

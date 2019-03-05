@@ -19,12 +19,12 @@
               <v-text-field
                 class="mt-2"
                 v-validate="'required|email'"
-                v-model="saveEmailForm.newEmail"
-                :error-messages="errors.collect('newEmail')"
-                name="newEmail"
+                v-model="saveEmailForm.email"
+                :error-messages="errors.collect('email')"
+                name="email"
                 label="Новая почта"
                 type="email"
-                data-vv-name="newEmail"
+                data-vv-name="email"
               ></v-text-field>
             </v-form>
           </v-card-text>
@@ -70,7 +70,7 @@ export default {
     return {
       step: 0,
       saveEmailForm: {
-        newEmail: '',
+        email: '',
         code: ''
       }
     }
@@ -83,11 +83,11 @@ export default {
   created () {
     this.$validator.localize('ru', {
       custom: {
-        newEmail: {
+        email: {
           required: () => 'Введите почту',
           email: () => 'Введите корректную почту'
         },
-        newPassword: {
+        password: {
           required: () => 'Введите пароль'
         }
       }
@@ -96,25 +96,20 @@ export default {
   methods: {
     resetForm () {
       this.step = 1
-      this.saveEmailForm.newEmail = ''
+      this.saveEmailForm.email = ''
       this.saveEmailForm.code = ''
     },
     changeEmail () {
       let that = this
 
-      this.$validator.validate('newEmail').then(result => {
+      this.$validator.validate('email').then(result => {
         if (result) {
           that.setRequest(this.Request.CHANGE_EMAIL)
 
-          userAccountService.changeEmail(this.saveEmailForm.newEmail)
+          userAccountService.changeEmail(this.saveEmailForm.email)
             .then(
               () => {
                 that.step = 2
-              },
-              error => {
-                if (error.response.status === this.HttpStatus.CONFLICT) {
-                  that.setAlertError(error)
-                }
               }
             )
             .finally(() => {
@@ -140,7 +135,7 @@ export default {
     }
   },
   watch: {
-    'restoreForm.newEmail' (newVal) {
+    'restoreForm.email' (newVal) {
       this.clearAlert()
     }
   }
