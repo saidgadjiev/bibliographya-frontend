@@ -2,16 +2,16 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import CategoriesList from './views/CategoriesList'
 import BiographiesList from './views/BiographiesList'
-import Profile from './views/Profile.vue'
+import Profile from './views/Profile'
 import ProfileSettings from './views/ProfileSettings'
 import ChangeEmail from './views/ChangeEmail'
 import EmailConfirm from './views/EmailConfirm'
-import SignIn from './views/SignIn.vue'
-import SignUp from './views/SignUp'
+import SignIn from './views/SignInView'
+import SignUp from './views/SignUpView'
 import Confirm from './views/Confirm'
 import RestorePassword from './views/RestorePassword'
 import AdminSignIn from './views/AdminSignIn'
-import BiographyDetails from './views/BiographyDetails.vue'
+import BiographyDetails from './views/BiographyDetails'
 import CategoriesAdmin from './views/CategoriesAdmin'
 import BugTracking from './views/BugTracking'
 import CreateBug from './views/CreateBug'
@@ -31,26 +31,27 @@ import error404 from './views/404'
 import { ROLES, LAYOUTS } from './config'
 import biographyService from './services/biography-service'
 import { USER_STATE } from './store/modules/user-module'
-
-const HttpStatus = require('http-status-codes')
+import { GET_CONFIRMATION } from './store/action-types'
 
 Vue.use(Router)
 
-const requireConfirm = function () {
-  let error = store.getters['alert/error'] || {}
-
-  return error.response && error.response.status === HttpStatus.PRECONDITION_REQUIRED
-}
-
 const waitForAccount = function (callback) {
-  if (store.getters.getStatus.state === USER_STATE.NONE) {
+  if (store.getters.getStatus === USER_STATE.NONE) {
     store.watch(store.getters.watchState, function () {
-      if (store.getters.getState !== USER_STATE.NONE) {
+      if (store.getters.getStatus !== USER_STATE.NONE) {
         callback()
       }
     })
   } else {
     callback()
+  }
+}
+
+const moveToRootOrDefault = function (from, next) {
+  if (from.name) {
+    next(false)
+  } else {
+    next('/categories')
   }
 }
 
@@ -80,16 +81,16 @@ const requireAuth = function (to, from, next) {
 const ifNotAuthenticated = function (to, from, next) {
   function proceed () {
     if (store.getters.isAuthenticated) {
-      if (from.name) {
-        next(false)
+      moveToRootOrDefault(from, next)
+    } else {
+      let meta = to.meta
+
+      if (meta.expression) {
+        meta.expression(to, from, next)
       } else {
-        next('/categories')
+        next()
       }
-
-      return
     }
-
-    next()
   }
 
   waitForAccount(proceed)
@@ -289,19 +290,24 @@ let router = new Router({
       path: '/signUp/confirm',
       name: 'signUpConfirm',
       component: Confirm,
-      beforeEnter: function (to, from, next) {
-        function proceed () {
-          if (requireConfirm()) {
-            next()
-          } else {
-            next(false)
-          }
-        }
-
-        waitForAccount(proceed)
-      },
+      beforeEnter: ifNotAuthenticated,
       meta: {
-        layout: LAYOUTS.AUTH_LAYOUT
+        layout: LAYOUTS.AUTH_LAYOUT,
+        expression: function (to, from, next) {
+          store.dispatch(GET_CONFIRMATION)
+            .then(
+              confirmation => {
+                if (confirmation) {
+                  next()
+                } else {
+                  moveToRootOrDefault(from, next)
+                }
+              },
+              e => {
+                moveToRootOrDefault(from, next)
+              }
+            )
+        }
       }
     },
     {
@@ -312,14 +318,10 @@ let router = new Router({
       meta: {
         loginRequired: true,
         expression: function (to, from, next) {
-          if (store.getters.isEmailVerified) {
+          if (!store.getters.isEmailVerified) {
             next()
           } else {
-            if (from.name) {
-              next(false)
-            } else {
-              next('/categories')
-            }
+            moveToRootOrDefault(from, next)
           }
         },
         roles: [ROLES.ROLE_USER]
@@ -377,18 +379,6 @@ let router = new Router({
       component: error404
     }
   ]
-})
-
-router.beforeEach((to, from, next) => {
-  function proceed () {
-    if (requireConfirm() && to.name !== 'signUpConfirm') {
-      next('/signUp/confirm')
-    } else {
-      next()
-    }
-  }
-
-  waitForAccount(proceed)
 })
 
 router.beforeResolve((to, from, next) => {

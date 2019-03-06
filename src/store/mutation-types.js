@@ -13,3 +13,7 @@ export const SET_REQUEST = 'SET_REQUEST'
 export const SET_EMAIL = 'SET_EMAIL'
 
 export const CLEAR = 'CLEAR'
+
+export const SET_CONFIRMATION = 'SET_CONFIRMATION'
+
+export const REMOVE_CONFIRMATION = 'REMOVE_CONFIRMATION'

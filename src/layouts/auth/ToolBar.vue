@@ -28,9 +28,12 @@
       </div>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn icon @click="cancelSignUp">
-        <v-icon>fa-sign-out-alt</v-icon>
+    <v-toolbar-items>
+      <v-btn flat @click="cancelSignUp" v-if="isConfirmation">
+        Выйти
+      </v-btn>
+      <v-btn v-else-if="layout === 'anonymous-layout'" flat @click="$router.push('/signIn')">
+        Войти
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>
@@ -38,17 +41,20 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { CANCEL_SIGN_UP } from '../../store/action-types'
 
 export default {
   name: 'ToolBar',
   computed: {
     ...mapGetters([
-      'status'
+      'isConfirmation',
+      'layout'
     ])
   },
   methods: {
     cancelSignUp () {
-      this.$store.dispatch('cancelSignUp')
+      this.$store.dispatch(CANCEL_SIGN_UP)
+      this.$router.push('/signIn')
     }
   }
 }

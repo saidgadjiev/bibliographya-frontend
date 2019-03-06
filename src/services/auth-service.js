@@ -11,7 +11,8 @@ export default {
   getOauthUrl,
   socialSignIn,
   errorSocialSignIn,
-  confirmSignUp
+  confirmSignUp,
+  getConfirmation
 }
 
 function signIn (signInForm) {
@@ -48,4 +49,8 @@ function confirmSignUp (code) {
 
 function cancelSignUp () {
   return axios.post(getRestUrl('auth/signUp/cancel'))
+}
+
+function getConfirmation () {
+  return axios.get(getRestUrl('auth/signUp/confirmation'))
 }

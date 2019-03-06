@@ -14,6 +14,8 @@ export const SIGN_OUT = 'SIGN_OUT'
 
 export const GET_ACCOUNT = 'GET_ACCOUNT'
 
+export const GET_CONFIRMATION = 'GET_CONFIRMATION'
+
 export const SET_SUCCESS = 'SET_SUCCESS'
 
 export const SET_ERROR = 'SET_ERROR'

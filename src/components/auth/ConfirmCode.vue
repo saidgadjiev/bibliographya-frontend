@@ -6,19 +6,20 @@
     <v-card-text>
       <v-form>
         <v-text-field
-          v-model="confirmForm.email"
+          v-model="email"
           disabled
           label="Почта"
           type="text"
           name="email"
         ></v-text-field>
         <v-text-field
-          v-validate="'required'"
-          v-model="code"
+          v-validate="'required|digits:4'"
+          v-model="_code"
           :error-messages="errors.collect('code')"
           label="Код"
           type="text"
           name="code"
+          data-vv-name="code"
         ></v-text-field>
         <div class="error--text" v-if="_isError(HttpStatus.PRECONDITION_FAILED)">
           Неверный код
@@ -32,8 +33,8 @@
             color="light-green darken-2"
             class="white--text"
             block
-            :loading="_isRequest(Request.CONFIRM_SIGN_UP)"
-            :disabled="_isRequest(Request.CONFIRM_SIGN_UP)"
+            :loading="_isRequest(request)"
+            :disabled="_isRequest(request)"
             @click="doConfirm">
             Подтвердить
           </v-btn>
@@ -64,7 +65,8 @@ export default {
   name: 'ConfirmCode',
   mixins: [alert, request],
   props: {
-    code: Number,
+    request: Number,
+    code: [Number, String],
     email: String,
     label: String,
     confirm: Function
@@ -83,7 +85,7 @@ export default {
       this.setRequest(REQUEST.RESEND_CODE)
       let that = this
 
-      emailService.resend(this.confirmForm.email)
+      emailService.resend(this.email)
         .finally(() => {
           that.clearRequest()
         })
@@ -93,7 +95,8 @@ export default {
     this.$validator.localize('ru', {
       custom: {
         code: {
-          required: () => 'Введите код'
+          required: () => 'Введите код',
+          digits: () => 'Введите 4 цифры'
         }
       }
     })
@@ -104,12 +107,12 @@ export default {
         return this.code
       },
       set (val) {
-        this.$emit('update:code', this.code)
+        this.$emit('update:code', val)
       }
     }
   },
   watch: {
-    'confirmForm.code' (newVal) {
+    'code' (newVal) {
       this.clearAlert()
     }
   }

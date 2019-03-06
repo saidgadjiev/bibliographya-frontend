@@ -42,5 +42,5 @@ function verifyEmailStart (email) {
 }
 
 function verifyEmailFinish (emailForm) {
-  return axios.post(getRestUrl('user-accounts/verify-email/start'), emailForm)
+  return axios.post(getRestUrl('user-accounts/verify-email/finish'), emailForm)
 }

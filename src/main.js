@@ -17,7 +17,6 @@ import store from './store/store'
 import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.css'
 import { SERVER_ERROR, INTERNET_ERROR } from './messages'
-import { REQUEST } from './config'
 
 require('moment/locale/ru')
 

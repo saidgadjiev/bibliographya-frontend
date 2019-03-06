@@ -1,36 +1,20 @@
 <template>
   <v-navigation-drawer
-    class="md-drawer"
+    class="sidebar"
+    fixed
   >
-    <v-card class="elevation-12">
-      <v-card-actions>
-        <v-layout row wrap>
-          <v-flex xs12>
-            <v-btn
-              class="white--text"
-              block
-              color="light-green darken-2"
-              @click="auth('vk')"
-            ><v-icon
-              left
-              color="blue darken-3">
-              fab fa-vk
-            </v-icon>
-              Войти через VK
-            </v-btn>
-          </v-flex>
-        </v-layout>
-      </v-card-actions>
-    </v-card>
+    <sign-in mode="navbar"/>
   </v-navigation-drawer>
 </template>
 
 <script>
 import authService from '../../services/auth-service'
 import { getRedirectUri } from '../../config'
+import SignIn from '../../components/auth/SignIn'
 
 export default {
   name: 'NavBar',
+  components: { SignIn },
   methods: {
     auth (provider) {
       authService.getOauthUrl(provider, getRedirectUri(provider))

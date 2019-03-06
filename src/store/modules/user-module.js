@@ -1,12 +1,13 @@
 import authService from '../../services/auth-service'
 import userAccountService from '../../services/user-account-service'
 import { REQUEST } from '../../config'
-import { PRECONDITION_REQUIRED, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, SET_EMAIL } from '../mutation-types'
+import { SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, SET_EMAIL, SET_CONFIRMATION, REMOVE_CONFIRMATION } from '../mutation-types'
 import {
   CANCEL_SIGN_UP,
   CONFIRM_SIGN_UP,
   ERROR_SOCIAL_SIGN_IN,
   GET_ACCOUNT,
+  GET_CONFIRMATION,
   SIGN_IN,
   SIGN_OUT,
   SIGN_UP,
@@ -26,23 +27,30 @@ export const USER_STATE = {
   ANONYMOUS: 1
 }
 
-const state = { status: { state: USER_STATE.NONE }, user: {}, roles: [] }
+const state = { status: USER_STATE.NONE, user: {}, confirmation: undefined, roles: [] }
 
 const mutations = {
   [SIGN_IN_SUCCESS] (state, payload) {
-    state.status.state = USER_STATE.SIGNED_ID
+    state.status = USER_STATE.SIGNED_ID
     state.user = payload
     state.roles = payload.authorities.map(function (authority) {
       return authority.authority
     })
   },
   [SIGN_OUT_SUCCESS] (state) {
-    state.status.state = USER_STATE.ANONYMOUS
+    state.status = USER_STATE.ANONYMOUS
     state.user = {}
     state.roles = {}
   },
   [SET_EMAIL] (state, email) {
     state.user.userAccount.email = email
+    state.user.userAccount.emailVerified = true
+  },
+  [SET_CONFIRMATION] (state, payload) {
+    state.confirmation = payload
+  },
+  [REMOVE_CONFIRMATION] (state) {
+    state.confirmation = undefined
   }
 }
 
@@ -108,7 +116,7 @@ const actions = {
         .then(
           response => {
             commit(SIGN_IN_SUCCESS, response.data)
-            resolve()
+            resolve(response.data)
           },
           e => {
             dispatch('alert/' + SET_ERROR, e)
@@ -120,11 +128,28 @@ const actions = {
         })
     })
   },
+  [GET_CONFIRMATION] ({ commit }) {
+    return new Promise((resolve, reject) => {
+      authService.getConfirmation()
+        .then(
+          response => {
+            if (response.status === HttpStatus.OK) {
+              commit(SET_CONFIRMATION, response.data)
+            }
+
+            resolve(response.data)
+          },
+          e => {
+            reject(e)
+          }
+        )
+    })
+  },
   [CANCEL_SIGN_UP] ({ commit }) {
     authService.cancelSignUp()
       .then(
         () => {
-          commit(SIGN_OUT_SUCCESS)
+          commit(REMOVE_CONFIRMATION)
         }
       )
   },
@@ -174,8 +199,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       authService.signUp(signUpForm)
         .then(
-          () => {
-            resolve()
+          response => {
+            resolve(response)
           },
           error => {
             dispatch('alert/' + SET_ERROR, error)
@@ -206,7 +231,6 @@ const actions = {
         e => {
           if (e.response.status === 428) {
             dispatch('alert/' + SET_ERROR, e)
-            commit(PRECONDITION_REQUIRED, e.response.data)
           }
 
           commit(SIGN_OUT_SUCCESS)
@@ -221,17 +245,20 @@ const actions = {
 const getters = {
   watchState: state => {
     return function () {
-      return state.status.state
+      return state.status
     }
   },
-  getState: (state, getters) => {
-    return getters.getStatus.state
+  getConfirmationEmail: state => {
+    return state.confirmation.email
+  },
+  isConfirmation: state => {
+    return state.confirmation
   },
   getStatus: state => {
     return state.status
   },
   isAuthenticated: state => {
-    return state.status.state === USER_STATE.SIGNED_ID
+    return state.status === USER_STATE.SIGNED_ID
   },
   getUser: state => {
     return state.user

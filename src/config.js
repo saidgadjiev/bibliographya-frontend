@@ -21,10 +21,6 @@ export const REQUEST = {
   SAVE_EMAIL: 10
 }
 
-export const SESSION_STATE = {
-  EMAIL_CONFIRM: 'EMAIL_CONFIRM'
-}
-
 export const LAYOUTS = {
   SIGNED_IN_LAYOUT: 'signed-in-layout',
   AUTH_LAYOUT: 'auth-layout',

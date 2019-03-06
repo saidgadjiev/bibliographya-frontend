@@ -1,4 +1,6 @@
 <template>
+  <v-layout row fill-height>
+    <v-flex xs12>
   <v-card>
     <alert-message/>
     <v-card-text class="pb-0">
@@ -43,9 +45,9 @@
     </v-card-actions>
     <v-divider></v-divider>
     <v-card-text class="pb-0">
-      <div class="error--text word-break-all">
+      <div class="error--text word-break-all" v-if="!isEmailVerified">
         Кто то другой привязал вашу почту к своей странице. Подтвердите пожалуйста почту или вход на страницу будет утерян.
-        <router-link to="/settings/email/confirm">
+        <router-link to="/settings/email/confirm" class="bibliographya-a">
           <strong>Подтвердить</strong>
         </router-link>
       </div>
@@ -59,6 +61,7 @@
     </v-card-text>
     <v-card-actions class="pt-0" style="justify-content: center">
       <v-btn
+        v-if="isEmailVerified"
         color="blue darken-3"
         class="white--text"
         @click="changeEmail">
@@ -66,6 +69,8 @@
       </v-btn>
     </v-card-actions>
   </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -133,7 +138,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getEmail'
+      'getEmail',
+      'isEmailVerified'
     ])
   }
 }

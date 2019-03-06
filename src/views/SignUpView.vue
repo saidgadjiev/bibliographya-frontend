@@ -75,7 +75,7 @@ import request from '../mixins/request'
 import { SIGN_UP } from '../store/action-types'
 
 export default {
-  name: 'SignUp',
+  name: 'SignUpView',
   mixins: [alert, request],
   data () {
     return {
@@ -122,6 +122,11 @@ export default {
             )
         }
       })
+    }
+  },
+  watch: {
+    'signUpForm.email' (newVal) {
+      this.clearAlert()
     }
   }
 }

@@ -1,18 +1,16 @@
 <template>
-  <v-stepper v-model="step">
+  <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
     <v-stepper-header>
       <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Изменение</v-stepper-step>
 
-      <v-divider></v-divider>
+      <v-divider class="hidden-sm-and-down"></v-divider>
 
       <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2">Подтверждение</v-stepper-step>
     </v-stepper-header>
 
     <v-stepper-items>
       <v-stepper-content step="1">
-        <v-card
-          class="mb-5"
-          color="grey lighten-3">
+        <v-card>
           <v-card-text>
             <v-form>
               <v-text-field
@@ -44,6 +42,7 @@
         <confirm-code
           :email="confirmForm.email"
           :code.sync="confirmForm.code"
+          :request="Request.SAVE_EMAIL"
           label="Код подтверждения отправлен вам на почту."
           :confirm="verifyEmailFinish"
         ></confirm-code>
@@ -118,7 +117,7 @@ export default {
     verifyEmailFinish () {
       let that = this
 
-      that.$store.dispatch(VERIFY_EMAIL, that.saveEmailForm)
+      that.$store.dispatch(VERIFY_EMAIL, that.confirmForm)
         .then(
           () => {
             that.$swal.fire({

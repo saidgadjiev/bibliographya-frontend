@@ -18,7 +18,7 @@
 
 <script>
 import NavBar from './NavBar'
-import ToolBar from './ToolBar'
+import ToolBar from '../auth/ToolBar'
 
 export default {
   name: 'AnonymousLayout',

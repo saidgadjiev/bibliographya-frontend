@@ -3,6 +3,7 @@
     <v-flex xs12 sm6>
       <confirm-code
         :confirm="confirm"
+        :request="Request.CONFIRM_SIGN_UP"
         :email="confirmForm.email"
         :code.sync="confirmForm.code"
         label="На вашу почту был отправлен код подтверждения регистрации."
@@ -13,11 +14,14 @@
 
 <script>
 import { CONFIRM_SIGN_UP } from '../store/action-types'
-import { WELCOME_TITLE, WELCOME } from '../messages'
+import { WELCOME_TITLE, WELCOME, SERVER_ERROR } from '../messages'
 import ConfirmCode from '../components/auth/ConfirmCode'
+import { mapGetters } from 'vuex'
+import request from '../mixins/request'
 
 export default {
   name: 'Confirm',
+  mixins: [request],
   components: { ConfirmCode },
   data () {
     return {
@@ -27,8 +31,13 @@ export default {
       }
     }
   },
-  created () {
-    this.confirmForm.email = this.alertError.response.data.email
+  mounted () {
+    this.confirmForm.email = this.getConfirmationEmail
+  },
+  computed: {
+    ...mapGetters([
+      'getConfirmationEmail'
+    ])
   },
   methods: {
     confirm () {
@@ -45,6 +54,16 @@ export default {
                 type: 'info',
                 showCloseButton: true
               })
+            }
+          },
+          e => {
+            if (e.response.status === this.HttpStatus.BAD_REQUEST) {
+              that.$swal.fire({
+                text: SERVER_ERROR,
+                type: 'error',
+                showCloseButton: true
+              })
+              that.$router.push('/')
             }
           }
         )
