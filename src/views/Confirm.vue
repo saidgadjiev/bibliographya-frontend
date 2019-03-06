@@ -13,6 +13,7 @@
 
 <script>
 import { CONFIRM_SIGN_UP } from '../store/action-types'
+import { WELCOME_TITLE, WELCOME } from '../messages'
 import ConfirmCode from '../components/auth/ConfirmCode'
 
 export default {
@@ -31,10 +32,20 @@ export default {
   },
   methods: {
     confirm () {
+      let that = this
+
       this.$store.dispatch(CONFIRM_SIGN_UP, this.confirmForm.code)
         .then(
-          () => {
-            this.$router.push('/')
+          user => {
+            that.$router.push('/')
+            if (user.isNew) {
+              that.$swal.fire({
+                title: WELCOME_TITLE,
+                text: WELCOME,
+                type: 'info',
+                showCloseButton: true
+              })
+            }
           }
         )
     }

@@ -107,6 +107,7 @@ const actions = {
       authService.confirmSignUp(code)
         .then(
           response => {
+            commit(SIGN_IN_SUCCESS, response.data)
             resolve()
           },
           e => {
