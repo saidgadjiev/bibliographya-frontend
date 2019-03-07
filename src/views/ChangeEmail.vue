@@ -1,43 +1,34 @@
 <template>
   <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
-    <v-stepper-header>
+    <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
       <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Изменение</v-stepper-step>
 
-      <v-divider class="hidden-sm-and-down"></v-divider>
+      <v-divider></v-divider>
 
       <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2">Подтверждение</v-stepper-step>
     </v-stepper-header>
 
-    <v-stepper-items>
+    <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">Изменение</v-stepper-step>
+
+    <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
+      <step-one :step.sync="step"/>
+    </v-stepper-content>
+
+    <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">Подтверждение</v-stepper-step>
+
+    <v-stepper-content step="2" v-if="$vuetify.breakpoint.smAndDown">
+      <confirm-code
+        :email="saveEmailForm.email"
+        :code.sync="saveEmailForm.code"
+        :request="Request.SAVE_EMAIL"
+        label="Код подтверждения отправлен вам на почту."
+        :confirm="saveEmail"
+      ></confirm-code>
+    </v-stepper-content>
+
+    <v-stepper-items v-if="$vuetify.breakpoint.mdAndUp">
       <v-stepper-content step="1">
-        <v-card>
-          <v-card-text>
-            <span>Ваша текущая почта <strong>{{ saveEmailForm.email }}</strong> .</span>
-            <v-form>
-              <v-text-field
-                class="mt-2"
-                v-validate="'required|email'"
-                v-model="saveEmailForm.email"
-                :error-messages="errors.collect('email')"
-                name="email"
-                label="Новая почта"
-                type="email"
-                data-vv-name="email"
-              ></v-text-field>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              color="blue darken-3"
-              class="white--text"
-              :loading="_isRequest(Request.CHANGE_EMAIL)"
-              :disabled="_isRequest(Request.CHANGE_EMAIL)"
-              @click="changeEmail"
-            >
-              Изменить
-            </v-btn>
-          </v-card-actions>
-        </v-card>
+        <step-one :step.sync="step"/>
       </v-stepper-content>
       <v-stepper-content step="2">
         <confirm-code
@@ -59,10 +50,11 @@ import request from '../mixins/request'
 import settingsService from '../services/settings-service'
 import { EMAIL_CHANGE_SUCCESS } from '../messages'
 import ConfirmCode from '../components/auth/ConfirmCode'
+import StepOne from '../components/auth/change/email/StepOne'
 
 export default {
   name: 'ChangeEmail',
-  components: { ConfirmCode },
+  components: { StepOne, ConfirmCode },
   mixins: [alert, request],
   data () {
     return {
