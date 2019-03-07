@@ -3,9 +3,8 @@ import Router from 'vue-router'
 import CategoriesList from './views/CategoriesList'
 import BiographiesList from './views/BiographiesList'
 import Profile from './views/Profile'
-import ProfileSettings from './views/ProfileSettings'
+import ProfileSettings from './views/Settings'
 import ChangeEmail from './views/ChangeEmail'
-import EmailConfirm from './views/EmailConfirm'
 import SignIn from './views/SignInView'
 import SignUp from './views/SignUpView'
 import Confirm from './views/Confirm'
@@ -308,23 +307,6 @@ let router = new Router({
               }
             )
         }
-      }
-    },
-    {
-      path: '/settings/email/confirm',
-      name: 'emailConfirm',
-      component: EmailConfirm,
-      beforeEnter: requireAuth,
-      meta: {
-        loginRequired: true,
-        expression: function (to, from, next) {
-          if (!store.getters.isEmailVerified) {
-            next()
-          } else {
-            moveToRootOrDefault(from, next)
-          }
-        },
-        roles: [ROLES.ROLE_USER]
       }
     },
     {

@@ -45,14 +45,14 @@
     </v-card-actions>
     <v-divider></v-divider>
     <v-card-text class="pb-0">
-      <div class="error--text word-break-all" v-if="!isEmailVerified">
+      <div class="error--text word-break-all" v-if="!settings.emailVerified">
         Кто то другой привязал вашу почту к своей странице. Подтвердите пожалуйста почту или вход на страницу будет утерян.
-        <router-link to="/settings/email/confirm" class="bibliographya-a">
+        <router-link to="/settings/email" class="bibliographya-a">
           <strong>Подтвердить</strong>
         </router-link>
       </div>
       <v-text-field
-        :value="getEmail"
+        :value="settings.email"
         disabled
         label="Почта"
         type="text"
@@ -61,7 +61,7 @@
     </v-card-text>
     <v-card-actions class="pt-0" style="justify-content: center">
       <v-btn
-        v-if="isEmailVerified"
+        v-if="settings.emailVerified"
         color="blue darken-3"
         class="white--text"
         @click="changeEmail">
@@ -76,20 +76,23 @@
 <script>
 import alert from '../mixins/alert'
 import request from '../mixins/request'
-import userAccountsService from '../services/user-account-service'
+import settingsService from '../services/settings-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import { PASSWORD_CHANGE_SUCCESS } from '../messages'
-import { mapGetters } from 'vuex'
 import { REQUEST } from '../config'
 
 export default {
-  name: 'ProfileSettings',
+  name: 'Settings',
   mixins: [alert, request],
   components: { AlertMessage },
   data () {
     return {
       showOldPassword: false,
       showNewPassword: false,
+      settings: {
+        email: '',
+        emailVerified: ''
+      },
       savePasswordForm: {
         oldPassword: '',
         newPassword: ''
@@ -107,8 +110,20 @@ export default {
         }
       }
     })
+    this.loadSettings()
   },
   methods: {
+    loadSettings () {
+      let that = this
+
+      settingsService.getGeneralSettings()
+        .then(
+          response => {
+            that.settings.email = response.data.email
+            that.settings.emailVerified = response.data.emailVerified
+          }
+        )
+    },
     savePassword () {
       let that = this
 
@@ -116,7 +131,7 @@ export default {
         if (result) {
           that.setRequest(REQUEST.SAVE_PASSWORD)
 
-          userAccountsService.savePassword(that.savePasswordForm)
+          settingsService.savePassword(that.savePasswordForm)
             .then(
               () => {
                 that.setAlertSuccess(PASSWORD_CHANGE_SUCCESS)
@@ -135,12 +150,6 @@ export default {
     changeEmail () {
       this.$router.push('/settings/email')
     }
-  },
-  computed: {
-    ...mapGetters([
-      'getEmail',
-      'isEmailVerified'
-    ])
   }
 }
 </script>

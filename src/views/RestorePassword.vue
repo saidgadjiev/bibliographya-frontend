@@ -1,7 +1,6 @@
 <template>
-  <!-- TODO: stepper для мобилки -->
   <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
-    <v-stepper-header>
+    <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
       <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Восстановление</v-stepper-step>
 
       <v-divider class="hidden-sm-and-down"></v-divider>
@@ -103,7 +102,7 @@ import alert from '../mixins/alert'
 import request from '../mixins/request'
 import { REQUEST } from '../config'
 import { SERVER_ERROR, PASSWORD_CHANGE_SUCCESS } from '../messages'
-import userAccountService from '../services/user-account-service'
+import settingsService from '../services/settings-service'
 import emailService from '../services/email-service'
 import ConfirmCode from '../components/auth/ConfirmCode'
 
@@ -149,7 +148,7 @@ export default {
         if (result) {
           that.setRequest(REQUEST.CHANGE_PASSWORD)
 
-          userAccountService.changePassword(this.restoreForm)
+          settingsService.changePassword(this.restoreForm)
             .then(
               () => {
                 that.$swal.fire({
@@ -202,7 +201,7 @@ export default {
         if (result) {
           that.setRequest(REQUEST.RESTORE_PASSWORD)
 
-          userAccountService.restorePassword(that.restoreForm.email)
+          settingsService.restorePassword(that.restoreForm.email)
             .then(
               () => {
                 that.step = 2

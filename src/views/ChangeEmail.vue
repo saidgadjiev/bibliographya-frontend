@@ -12,7 +12,7 @@
       <v-stepper-content step="1">
         <v-card>
           <v-card-text>
-            <span>Ваша текущая почта <strong>{{ getEmail }}</strong> .</span>
+            <span>Ваша текущая почта <strong>{{ saveEmailForm.email }}</strong> .</span>
             <v-form>
               <v-text-field
                 class="mt-2"
@@ -43,6 +43,7 @@
         <confirm-code
           :email="saveEmailForm.email"
           :code.sync="saveEmailForm.code"
+          :request="Request.SAVE_EMAIL"
           label="Код подтверждения отправлен вам на почту."
           :confirm="saveEmail"
         ></confirm-code>
@@ -55,8 +56,7 @@
 import { mapGetters } from 'vuex'
 import alert from '../mixins/alert'
 import request from '../mixins/request'
-import userAccountService from '../services/user-account-service'
-import { SAVE_EMAIL } from '../store/action-types'
+import settingsService from '../services/settings-service'
 import { EMAIL_CHANGE_SUCCESS } from '../messages'
 import ConfirmCode from '../components/auth/ConfirmCode'
 
@@ -74,9 +74,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'getEmail'
-    ])
+    ...mapGetters([])
   },
   created () {
     this.$validator.localize('ru', {
@@ -90,8 +88,20 @@ export default {
         }
       }
     })
+
+    this.loadEmailSettings()
   },
   methods: {
+    loadEmailSettings () {
+      let that = this
+
+      settingsService.getEmailSettings()
+        .then(
+          response => {
+            that.saveEmailForm.email = response.email
+          }
+        )
+    },
     resetForm () {
       this.step = 1
       this.saveEmailForm.email = ''
@@ -104,7 +114,7 @@ export default {
         if (result) {
           that.setRequest(this.Request.CHANGE_EMAIL)
 
-          userAccountService.changeEmail(this.saveEmailForm.email)
+          settingsService.changeEmail(this.saveEmailForm.email)
             .then(
               () => {
                 that.step = 2
@@ -119,7 +129,8 @@ export default {
     saveEmail () {
       let that = this
 
-      that.$store.dispatch(SAVE_EMAIL, that.saveEmailForm)
+      that.setRequest(this.Request.SAVE_EMAIL)
+      settingsService.saveEmail(that.saveEmailForm)
         .then(
           () => {
             that.$swal.fire({
@@ -129,11 +140,13 @@ export default {
             })
             that.$router.push('/settings')
           }
-        )
+        ).finally(() => {
+          that.clearRequest()
+        })
     }
   },
   watch: {
-    'restoreForm.email' (newVal) {
+    'saveEmailForm.email' (newVal) {
       this.clearAlert()
     }
   }

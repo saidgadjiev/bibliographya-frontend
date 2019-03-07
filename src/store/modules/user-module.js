@@ -1,7 +1,6 @@
 import authService from '../../services/auth-service'
-import userAccountService from '../../services/user-account-service'
 import { REQUEST } from '../../config'
-import { SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, SET_EMAIL, SET_CONFIRMATION, REMOVE_CONFIRMATION } from '../mutation-types'
+import { SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, SET_CONFIRMATION, REMOVE_CONFIRMATION } from '../mutation-types'
 import {
   CANCEL_SIGN_UP,
   CONFIRM_SIGN_UP,
@@ -14,9 +13,7 @@ import {
   SOCIAL_SIGN_IN,
   SET_REQUEST,
   CLEAR,
-  SET_ERROR,
-  SAVE_EMAIL,
-  VERIFY_EMAIL
+  SET_ERROR
 } from '../action-types'
 
 const HttpStatus = require('http-status-codes')
@@ -41,10 +38,6 @@ const mutations = {
     state.status = USER_STATE.ANONYMOUS
     state.user = {}
     state.roles = {}
-  },
-  [SET_EMAIL] (state, email) {
-    state.user.userAccount.email = email
-    state.user.userAccount.emailVerified = true
   },
   [SET_CONFIRMATION] (state, payload) {
     state.confirmation = payload
@@ -153,46 +146,6 @@ const actions = {
         }
       )
   },
-  [SAVE_EMAIL] ({ dispatch, commit }, emailForm) {
-    dispatch('request/' + SET_REQUEST, REQUEST.SAVE_EMAIL)
-
-    return new Promise((resolve, reject) => {
-      userAccountService.saveEmail(emailForm)
-        .then(
-          () => {
-            commit(SET_EMAIL, emailForm.email)
-            resolve()
-          },
-          error => {
-            if (error.response.status === HttpStatus.PRECONDITION_FAILED) {
-              dispatch('alert/' + SET_ERROR, error)
-            }
-            reject(error)
-          }
-        )
-        .finally(() => dispatch('request/' + CLEAR))
-    })
-  },
-  [VERIFY_EMAIL] ({ dispatch, commit }, emailForm) {
-    dispatch('request/' + SET_REQUEST, REQUEST.SAVE_EMAIL)
-
-    return new Promise((resolve, reject) => {
-      userAccountService.verifyEmailFinish(emailForm)
-        .then(
-          () => {
-            commit(SET_EMAIL, emailForm.email)
-            resolve()
-          },
-          error => {
-            if (error.response.status === HttpStatus.PRECONDITION_FAILED) {
-              dispatch('alert/' + SET_ERROR, error)
-            }
-            reject(error)
-          }
-        )
-        .finally(() => dispatch('request/' + CLEAR))
-    })
-  },
   [SIGN_UP] ({ dispatch, commit }, signUpForm) {
     dispatch('request/' + SET_REQUEST, REQUEST.SIGN_UP)
 
@@ -266,17 +219,11 @@ const getters = {
   getUserAccount: (state, getters) => {
     return getters.getUser.userAccount
   },
-  isEmailVerified: (state, getters) => {
-    return getters.getUserAccount.emailVerified
-  },
   getUserId: (state, getters) => {
     return getters.getUser.id
   },
   getBiography: (state, getters) => {
     return getters.getUser.biography
-  },
-  getEmail: (state, getters) => {
-    return getters.getUserAccount.email
   },
   getFirstName: (state, getters) => {
     return getters.getBiography.firstName
