@@ -39,4 +39,3 @@ function saveEmail (emailForm) {
 function changePassword (restoreForm) {
   return axios.post(getRestUrl('settings/restore-password/finish'), restoreForm)
 }
-

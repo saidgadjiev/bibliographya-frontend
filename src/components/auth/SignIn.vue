@@ -3,7 +3,7 @@
     <v-card-title primary-title style="justify-content: center" v-if="mode === 'auth'">
       <h3 class="headline font-weight-bold mb-0">Вход в Библиографию</h3>
     </v-card-title>
-    <v-card-text v-if="_isError(HttpStatus.UNAUTHORIZED)">
+    <v-card-text v-if="_isError(HttpStatus.BAD_REQUEST)">
       <strong class="error--text">
         Email или пароль введены неправильно.
       </strong>
@@ -32,10 +32,10 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-layout row wrap>
+      <v-layout row wrap justify-center align-center align-content-center>
         <v-flex xs12 :sm4="mode === 'auth'">
           <v-btn
-            color="light-green darken-2"
+            color="blue darken-3"
             class="white--text"
             block
             @click="signIn"
@@ -67,6 +67,9 @@
             </v-icon>
             Войти через VK
           </v-btn>
+        </v-flex>
+        <v-flex shrink>
+           <router-link class="bibliographya-a" to="/restore">Забыли пароль?</router-link>
         </v-flex>
       </v-layout>
     </v-card-actions>

@@ -30,7 +30,7 @@
       <v-layout row wrap>
         <v-flex xs12 sm4>
           <v-btn
-            color="light-green darken-2"
+            color="blue darken-3"
             class="white--text"
             block
             :loading="_isRequest(request)"

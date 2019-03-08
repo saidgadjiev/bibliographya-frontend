@@ -11,7 +11,7 @@
     <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">Изменение</v-stepper-step>
 
     <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
-      <step-one :step.sync="step"/>
+      <step-one :step.sync="step" :email.sync="saveEmailForm.email" :current-email="currentEmail"/>
     </v-stepper-content>
 
     <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">Подтверждение</v-stepper-step>
@@ -28,7 +28,7 @@
 
     <v-stepper-items v-if="$vuetify.breakpoint.mdAndUp">
       <v-stepper-content step="1">
-        <step-one :step.sync="step"/>
+        <step-one :step.sync="step" :email.sync="saveEmailForm.email" :current-email="currentEmail"/>
       </v-stepper-content>
       <v-stepper-content step="2">
         <confirm-code
@@ -44,13 +44,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import alert from '../mixins/alert'
 import request from '../mixins/request'
 import settingsService from '../services/settings-service'
 import { EMAIL_CHANGE_SUCCESS } from '../messages'
 import ConfirmCode from '../components/auth/ConfirmCode'
-import StepOne from '../components/auth/change/email/StepOne'
+import StepOne from '../components/auth/change/email/StepOneChangeEmail'
 
 export default {
   name: 'ChangeEmail',
@@ -59,28 +58,14 @@ export default {
   data () {
     return {
       step: 0,
+      currentEmail: '',
       saveEmailForm: {
         email: '',
         code: ''
       }
     }
   },
-  computed: {
-    ...mapGetters([])
-  },
   created () {
-    this.$validator.localize('ru', {
-      custom: {
-        email: {
-          required: () => 'Введите почту',
-          email: () => 'Введите корректную почту'
-        },
-        password: {
-          required: () => 'Введите пароль'
-        }
-      }
-    })
-
     this.loadEmailSettings()
   },
   methods: {
@@ -90,7 +75,8 @@ export default {
       settingsService.getEmailSettings()
         .then(
           response => {
-            that.saveEmailForm.email = response.email
+            that.saveEmailForm.email = response.data.email
+            that.currentEmail = response.data.email
           }
         )
     },
@@ -98,25 +84,6 @@ export default {
       this.step = 1
       this.saveEmailForm.email = ''
       this.saveEmailForm.code = ''
-    },
-    changeEmail () {
-      let that = this
-
-      this.$validator.validate('email').then(result => {
-        if (result) {
-          that.setRequest(this.Request.CHANGE_EMAIL)
-
-          settingsService.changeEmail(this.saveEmailForm.email)
-            .then(
-              () => {
-                that.step = 2
-              }
-            )
-            .finally(() => {
-              that.clearRequest()
-            })
-        }
-      })
     },
     saveEmail () {
       let that = this
@@ -135,11 +102,6 @@ export default {
         ).finally(() => {
           that.clearRequest()
         })
-    }
-  },
-  watch: {
-    'saveEmailForm.email' (newVal) {
-      this.clearAlert()
     }
   }
 }

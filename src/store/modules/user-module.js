@@ -182,10 +182,6 @@ const actions = {
           commit(SIGN_IN_SUCCESS, accountResponse.data)
         },
         e => {
-          if (e.response.status === 428) {
-            dispatch('alert/' + SET_ERROR, e)
-          }
-
           commit(SIGN_OUT_SUCCESS)
         }
       )

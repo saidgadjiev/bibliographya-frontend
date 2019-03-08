@@ -40,7 +40,7 @@
         :loading="_isRequest(Request.SAVE_PASSWORD)"
         :disabled="_isRequest(Request.SAVE_PASSWORD)"
         @click="savePassword">
-        Изменить
+        Сохранить
       </v-btn>
     </v-card-actions>
     <v-divider></v-divider>
@@ -91,7 +91,7 @@ export default {
       showNewPassword: false,
       settings: {
         email: '',
-        emailVerified: ''
+        emailVerified: true
       },
       savePasswordForm: {
         oldPassword: '',

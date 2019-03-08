@@ -15,7 +15,7 @@
     <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">Восстановление</v-stepper-step>
 
     <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
-      <step-one :step.sync="step"/>
+      <step-one :step.sync="step" :email.sync="restoreForm.email"/>
     </v-stepper-content>
 
     <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">Подтверждение</v-stepper-step>
@@ -33,12 +33,12 @@
     <v-stepper-step complete-icon="fas fa-check" step="3" v-if="$vuetify.breakpoint.smAndDown">Новый пароль</v-stepper-step>
 
     <v-stepper-content step="3" v-if="$vuetify.breakpoint.smAndDown">
-      <step-three/>
+      <step-three :email="restoreForm.email" :code="restoreForm.code"/>
     </v-stepper-content>
 
     <v-stepper-items v-if="$vuetify.breakpoint.mdAndUp">
       <v-stepper-content step="1">
-        <step-one :step.sync="step"/>
+        <step-one :step.sync="step" :email.sync="restoreForm.email"/>
       </v-stepper-content>
 
       <v-stepper-content step="2">
@@ -52,7 +52,7 @@
       </v-stepper-content>
 
       <v-stepper-content step="3">
-        <step-three/>
+        <step-three :email="restoreForm.email" :code="restoreForm.code"/>
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -74,7 +74,6 @@ export default {
   data () {
     return {
       step: 1,
-      showPassword: false,
       restoreForm: {
         email: '',
         code: '',

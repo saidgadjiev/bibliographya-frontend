@@ -7,7 +7,7 @@
       class="pb-0"
       v-on="$listeners"/>
     <biography-card-secondary-title v-bind="_attrs" v-on="$listeners" class="pb-0"/>
-    <biography-card-title v-bind="_attrs" v-on="$listeners"/>
+    <biography-card-title v-bind="_attrs" v-on="$listeners" class="pr-5"/>
     <v-divider></v-divider>
     <biography-card-text v-if="_showBiography" v-bind="_attrs"/>
     <v-divider v-if="_showBiography"></v-divider>

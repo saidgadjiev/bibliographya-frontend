@@ -1,6 +1,7 @@
 <template>
   <v-card>
     <v-card-text>
+      <span>Ваша текущая почта <strong>{{ currentEmail }}</strong>.</span>
       <v-form>
         <v-text-field
           class="mt-2"
@@ -8,23 +9,21 @@
           v-model="_email"
           :error-messages="errors.collect('email')"
           name="email"
-          label="Почта"
+          label="Новая почта"
           type="email"
           data-vv-name="email"
         ></v-text-field>
       </v-form>
-      <div class="error--text word-break-all" v-if="_isError(HttpStatus.NOT_FOUND)">
-        Пользователя с таким email не найдено.
-      </div>
     </v-card-text>
     <v-card-actions style="justify-content: center">
       <v-btn
-        color="primary"
-        :loading="_isRequest(Request.RESTORE_PASSWORD)"
-        :disabled="_isRequest(Request.RESTORE_PASSWORD)"
-        @click="restorePassword"
+        color="blue darken-3"
+        class="white--text"
+        :loading="_isRequest(Request.CHANGE_EMAIL)"
+        :disabled="_isRequest(Request.CHANGE_EMAIL)"
+        @click="changeEmail"
       >
-        Получить код
+        Изменить
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -33,15 +32,24 @@
 <script>
 import alert from '../../../../mixins/alert'
 import request from '../../../../mixins/request'
-import { REQUEST } from '../../../../config'
 import settingsService from '../../../../services/settings-service'
 
 export default {
-  name: 'StepOne',
+  name: 'StepOneChangeEmail',
   mixins: [alert, request],
   props: {
-    step: Number,
-    email: String
+    email: String,
+    currentEmail: String
+  },
+  computed: {
+    _email: {
+      get () {
+        return this.email
+      },
+      set (val) {
+        this.$emit('update:email', val)
+      }
+    }
   },
   created () {
     this.$validator.localize('ru', {
@@ -54,38 +62,29 @@ export default {
     })
   },
   methods: {
-    restorePassword: function () {
+    changeEmail () {
       let that = this
 
       this.$validator.validate('email').then(result => {
         if (result) {
-          that.setRequest(REQUEST.RESTORE_PASSWORD)
+          that.setRequest(this.Request.CHANGE_EMAIL)
 
-          settingsService.restorePassword(that.email)
+          settingsService.changeEmail(this.email)
             .then(
               () => {
                 that.$emit('update:step', 2)
-              },
-              e => {
-                if (e.response.status === that.HttpStatus.NOT_FOUND) {
-                  that.setAlertError(e)
-                }
               }
-            ).finally(() => {
+            )
+            .finally(() => {
               that.clearRequest()
             })
         }
       })
     }
   },
-  computed: {
-    _email: {
-      get () {
-        return this.email
-      },
-      set (val) {
-        this.$emit('update:email', val)
-      }
+  watch: {
+    'email' (newVal) {
+      this.clearAlert()
     }
   }
 }

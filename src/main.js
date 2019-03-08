@@ -25,7 +25,9 @@ Vue.use(VueMoment, {
 })
 
 Vue.use(Vuex)
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  iconfont: 'fa'
+})
 Vue.use(VueSweetalert2)
 
 Vue.component('infinite-loading', InfiniteLoading)

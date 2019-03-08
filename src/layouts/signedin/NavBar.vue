@@ -159,6 +159,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { ROLES } from '../../config'
+import { SIGN_OUT } from '../../store/action-types'
 
 export default {
   name: 'NavBar',
@@ -199,7 +200,7 @@ export default {
   },
   methods: {
     signOut () {
-      this.$store.dispatch('signOut')
+      this.$store.dispatch(SIGN_OUT)
         .then(
           () => {
             this.$router.push('/signIn')

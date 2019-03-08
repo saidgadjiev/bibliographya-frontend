@@ -1,7 +1,8 @@
 <template>
   <v-card-title class="biography-card-title">
-    <span :class="_fullNameClasses" class="word-break-all">{{ _fullName }}</span>
-    <v-icon v-if="_isMarked" small color="blue darken-3" class="pl-1">mdi-check-decagram</v-icon>
+    <span :class="_fullNameClasses" class="word-break-word">{{ _fullName }}
+      <v-icon v-if="_isMarked" small color="blue darken-3" class="pb-1">mdi-check-decagram</v-icon>
+    </span>
     <biography-card-menu v-if="showMenu" :user-id="userId" v-bind="$attrs" v-on="$listeners"/>
   </v-card-title>
 </template>

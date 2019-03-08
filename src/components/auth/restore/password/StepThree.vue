@@ -3,7 +3,7 @@
     <v-card-text>
       <v-form>
         <v-text-field
-          v-model="restoreForm.email"
+          v-model="email"
           disabled
           label="Почта"
           type="text"
@@ -23,9 +23,9 @@
         ></v-text-field>
       </v-form>
     </v-card-text>
-    <v-card-actions>
+    <v-card-actions style="justify-content: center">
       <v-btn
-        color="light-green darken-2"
+        color="blue darken-3"
         class="white--text"
         :loading="_isRequest(Request.CHANGE_PASSWORD)"
         :disabled="_isRequest(Request.CHANGE_PASSWORD)"
@@ -47,6 +47,20 @@ import { SERVER_ERROR, PASSWORD_CHANGE_SUCCESS } from '../../../../messages'
 export default {
   name: 'StepThree',
   mixins: [alert, request],
+  data () {
+    return {
+      showPassword: false,
+      restoreForm: {
+        email: '',
+        code: '',
+        password: ''
+      }
+    }
+  },
+  props: {
+    email: String,
+    code: String
+  },
   created () {
     this.$validator.localize('ru', {
       custom: {
@@ -64,7 +78,9 @@ export default {
         if (result) {
           that.setRequest(REQUEST.CHANGE_PASSWORD)
 
-          settingsService.changePassword(this.restoreForm)
+          that.restoreForm.email = that.email
+          that.restoreForm.code = that.code
+          settingsService.changePassword(that.restoreForm)
             .then(
               () => {
                 that.$swal.fire({

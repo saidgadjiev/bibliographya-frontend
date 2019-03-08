@@ -139,7 +139,7 @@ export default {
       return this.getUserId === this.userId
     },
     getTimeDiff () {
-      return this.$moment(new Date(this.createdAt)).fromNow()
+      return this.$moment(this.createdAt, 'DD-MM-YYYY HH:mm:ss').fromNow()
     }
   },
   methods: {
