@@ -1,5 +1,5 @@
 <template>
-  <v-layout align-center justify-center row fill-height column>
+  <v-layout align-center justify-center row fill-height>
     <h1 class="white--text">Доступ запрещен</h1>
     <v-btn color="red" href="/">Домой</v-btn>
   </v-layout>

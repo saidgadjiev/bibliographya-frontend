@@ -1,6 +1,13 @@
 <template>
   <v-app class="background">
-    <component v-bind:is="_layout"></component>
+    <v-layout align-center justify-center row v-if="_isRequest(Request.GET_ACCOUNT)">
+      <v-progress-circular
+        :size="100"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
+    </v-layout>
+    <component v-else v-bind:is="_layout"></component>
   </v-app>
 </template>
 
@@ -9,9 +16,11 @@ import SignedInLayout from './layouts/signedin/SignedInLayout.vue'
 import AuthLayout from './layouts/auth/AuthLayout'
 import AnonymousLayout from './layouts/anonymous/AnonymousLayout'
 import { GET_ACCOUNT } from './store/action-types'
+import request from './mixins/request'
 
 export default {
   name: 'App',
+  mixins: [request],
   data () {
     return {
       drawer: false
