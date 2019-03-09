@@ -102,8 +102,6 @@ export const PROVIDERS = {
   USERNAME_PASSWORD: 'Логин и пароль'
 }
 
-export const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss'
-
 export default {
   ROLES
 }
