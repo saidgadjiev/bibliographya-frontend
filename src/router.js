@@ -46,7 +46,7 @@ const waitForAccount = function (callback) {
   }
 }
 
-const moveToRootOrDefault = function (from, next) {
+const cancelRoute = function (from, next) {
   if (from.name) {
     next(false)
   } else {
@@ -80,7 +80,7 @@ const requireAuth = function (to, from, next) {
 const ifNotAuthenticated = function (to, from, next) {
   function proceed () {
     if (store.getters.isAuthenticated) {
-      moveToRootOrDefault(from, next)
+      cancelRoute(from, next)
     } else {
       let meta = to.meta
 
@@ -289,24 +289,23 @@ let router = new Router({
       path: '/signUp/confirm',
       name: 'signUpConfirm',
       component: Confirm,
-      beforeEnter: ifNotAuthenticated,
-      meta: {
-        layout: LAYOUTS.AUTH_LAYOUT,
-        expression: function (to, from, next) {
-          store.dispatch(GET_CONFIRMATION)
-            .then(
-              confirmation => {
-                if (confirmation) {
-                  next()
-                } else {
-                  moveToRootOrDefault(from, next)
-                }
-              },
-              e => {
-                moveToRootOrDefault(from, next)
+      beforeEnter: function (to, from, next) {
+        store.dispatch(GET_CONFIRMATION)
+          .then(
+            confirmation => {
+              if (confirmation) {
+                next()
+              } else {
+                cancelRoute(from, next)
               }
-            )
-        }
+            },
+            e => {
+              cancelRoute(from, next)
+            }
+          )
+      },
+      meta: {
+        layout: LAYOUTS.AUTH_LAYOUT
       }
     },
     {

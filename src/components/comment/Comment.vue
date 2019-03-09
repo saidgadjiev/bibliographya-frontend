@@ -39,14 +39,14 @@
           </span>
           <span v-else>{{ content }}</span>
         </div>
-        <h4>{{ getTimeDiff + ',' }}&nbsp;<a class="font-weight-regular" @click="reply">Ответить</a></h4>
+        <h4>{{ _getTimeDiff + ',' }}&nbsp;<a class="font-weight-regular" @click="reply">Ответить</a></h4>
       </v-card-text>
     </v-card>
   </v-hover>
 </template>
 
 <script>
-import { ROLES } from '../../config'
+import { ROLES, DATE_FORMAT } from '../../config'
 import biographyCommentService from '../../services/biography-comment-service'
 import EditComment from './EditComment'
 import { mapGetters } from 'vuex'
@@ -138,8 +138,8 @@ export default {
 
       return this.getUserId === this.userId
     },
-    getTimeDiff () {
-      return this.$moment(this.createdAt, 'DD-MM-YYYY HH:mm:ss').fromNow()
+    _getTimeDiff () {
+      return this.$moment(this.createdAt, DATE_FORMAT).fromNow()
     }
   },
   methods: {

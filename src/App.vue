@@ -3,6 +3,7 @@
     <v-layout align-center justify-center row v-if="_isRequest(Request.GET_ACCOUNT)">
       <v-progress-circular
         :size="100"
+        :width="10"
         color="primary"
         indeterminate
       ></v-progress-circular>

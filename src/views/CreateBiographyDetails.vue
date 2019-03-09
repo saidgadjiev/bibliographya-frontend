@@ -12,18 +12,11 @@
 <script>
 import EditBiographyCard from '../components/biography/card/EditBiographyCard.vue'
 import AlertMessage from '../components/alert/AlertMessage'
-import { mapActions } from 'vuex'
+import alert from '../mixins/alert'
 
 export default {
   name: 'CreateBiographyDetails',
-  methods: {
-    ...mapActions('alert', [
-      'clear'
-    ])
-  },
-  beforeDestroy () {
-    this.clear()
-  },
+  mixins: [alert],
   components: {
     AlertMessage,
     EditBiographyCard

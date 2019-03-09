@@ -4,15 +4,27 @@
       ответ <a @click="gotoReply">{{ _replyToFirstName }}</a>&nbsp;
       <v-icon style="font-size: 18px" @click="resetReply">fas fa-times</v-icon>
     </div>
-    <v-textarea
-      auto-grow
-      rows="1"
-      @click:append-outer="submit"
-      append-outer-icon="fas fa-paper-plane"
-      placeholder="Написать комментарий..."
-      v-model="content"
-      class="pt-0"
-    ></v-textarea>
+    <div style="position: relative; padding-right:40px">
+      <v-textarea
+        auto-grow
+        rows="1"
+        placeholder="Комментарий..."
+        v-model="content"
+        class="pt-0 mt-0"
+      ></v-textarea>
+      <v-btn
+        flat
+        icon
+        color="blue darken-1"
+        @click="submit"
+        absolute
+        style="top:0; right:0"
+        :disabled="submitting"
+        :loading="submitting"
+      >
+        <v-icon>fas fa-paper-plane</v-icon>
+      </v-btn>
+    </div>
   </v-form>
 </template>
 
@@ -25,6 +37,7 @@ export default {
   data () {
     return {
       content: '',
+      submitting: false,
       options: {
         duration: 300,
         offset: 0,
@@ -81,12 +94,10 @@ export default {
         }
 
         if (this.replyToComment) {
-          json.parent = {
-            id: this.replyToComment.id,
-            firstName: this._replyToFirstName
-          }
+          json.parentId = this.replyToComment.id
         }
 
+        that.submitting = true
         this.addComment(this.id, json)
           .then(
             response => {
@@ -94,10 +105,11 @@ export default {
               that.$emit('comment-added', response.data)
               that.$emit('update:commentsCount', that.commentsCount + 1)
             },
-            e => {
-              this.$log.error(e)
-            }
+            e => {}
           )
+          .finally(() => {
+            that.submitting = false
+          })
       }
     }
   }

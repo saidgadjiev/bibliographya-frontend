@@ -3,7 +3,7 @@
     <v-card-title primary-title style="justify-content: center" v-if="mode === 'auth'">
       <h3 class="headline font-weight-bold mb-0">Вход в Библиографию</h3>
     </v-card-title>
-    <v-card-text v-if="_isError(HttpStatus.BAD_REQUEST)">
+    <v-card-text v-if="_isError(HttpStatus.UNAUTHORIZED)">
       <strong class="error--text">
         Email или пароль введены неправильно.
       </strong>
@@ -138,11 +138,7 @@ export default {
               () => {
                 that.$router.push('/categories')
               },
-              e => {
-                if (e.response.status === that.HttpStatus.FORBIDDEN) {
-                  that.$router.push('/email/confirm')
-                }
-              }
+              e => {}
             )
         }
       })

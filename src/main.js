@@ -17,7 +17,7 @@ import store from './store/store'
 import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.css'
 import { SERVER_ERROR, INTERNET_ERROR } from './messages'
-
+moment.tz.setDefault('Europe/Moscow')
 require('moment/locale/ru')
 
 Vue.use(VueMoment, {

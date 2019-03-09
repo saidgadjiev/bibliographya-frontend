@@ -230,9 +230,6 @@ export default {
         }
       }
     }
-  },
-  beforeDestroy () {
-    this.clear()
   }
 }
 </script>

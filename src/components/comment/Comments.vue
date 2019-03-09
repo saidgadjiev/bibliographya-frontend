@@ -1,6 +1,6 @@
 <template>
   <list
-    class="ml-0 mr-0"
+    class="ml-0 mr-2"
     :infinite-load="infiniteLoad"
     :infinite-id.sync="infiniteId"
     :delete-id="deleteId"

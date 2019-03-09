@@ -8,27 +8,27 @@ const state = {
 }
 
 const actions = {
-  [SET_SUCCESS_MUTATION] ({ commit }, message) {
-    commit(SET_SUCCESS, message)
+  [SET_SUCCESS] ({ commit }, message) {
+    commit(SET_SUCCESS_MUTATION, message)
   },
-  [SET_ERROR_MUTATION] ({ commit }, error) {
-    commit(SET_ERROR, error)
+  [SET_ERROR] ({ commit }, error) {
+    commit(SET_ERROR_MUTATION, error)
   },
-  [CLEAR_MUTATION] ({ commit }, message) {
-    commit(CLEAR, message)
+  [CLEAR] ({ commit }, message) {
+    commit(CLEAR_MUTATION, message)
   }
 }
 
 const mutations = {
-  [SET_SUCCESS] (state, message) {
+  [SET_SUCCESS_MUTATION] (state, message) {
     state.type = 'alert-success'
     state.message = message
   },
-  [SET_ERROR] (state, error) {
+  [SET_ERROR_MUTATION] (state, error) {
     state.type = 'alert-danger'
     state.error = error
   },
-  [CLEAR] (state) {
+  [CLEAR_MUTATION] (state) {
     state.type = null
     state.message = null
     state.error = null

@@ -13,22 +13,19 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
+import alert from '../mixins/alert'
 import BiographyCard from '../components/biography/card/BiographyCard'
 import biographyService from '../services/biography-service'
 import AlertMessage from '../components/alert/AlertMessage'
 
 export default {
   name: 'Profile',
+  mixins: [alert],
   data () {
     return {
       biography: undefined
     }
-  },
-  methods: {
-    ...mapActions('alert', [
-      'clear'
-    ])
   },
   computed: {
     ...mapGetters([
@@ -43,13 +40,8 @@ export default {
         response => {
           that.biography = response.data
         },
-        e => {
-          console.log(e)
-        }
+        e => {}
       )
-  },
-  beforeDestroy () {
-    this.clear()
   },
   components: {
     AlertMessage,

@@ -42,6 +42,7 @@ import alert from '../../../../mixins/alert'
 import request from '../../../../mixins/request'
 import { REQUEST } from '../../../../config'
 import settingsService from '../../../../services/settings-service'
+import { mapGetters } from 'vuex'
 import { SERVER_ERROR, PASSWORD_CHANGE_SUCCESS } from '../../../../messages'
 
 export default {
@@ -88,12 +89,10 @@ export default {
                   type: 'info',
                   showCloseButton: true
                 })
-                that.$router.push('/signIn')
+                that.$router.push('/settings')
               },
               e => {
                 if (e.response.status === that.HttpStatus.PRECONDITION_FAILED) {
-                  that.resetForm()
-
                   that.$swal.fire({
                     text: SERVER_ERROR,
                     type: 'error',
@@ -107,6 +106,11 @@ export default {
         }
       })
     }
+  },
+  computed: {
+    ...mapGetters([
+      'isAuthenticated'
+    ])
   }
 }
 </script>

@@ -98,6 +98,11 @@ export default {
               showCloseButton: true
             })
             that.$router.push('/settings')
+          },
+          e => {
+            if (e.response.status === this.HttpStatus.PRECONDITION_FAILED) {
+              that.setAlertError(e)
+            }
           }
         ).finally(() => {
           that.clearRequest()

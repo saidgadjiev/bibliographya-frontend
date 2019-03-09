@@ -1,23 +1,9 @@
 <template>
   <div id="alert">
     <v-alert
-      v-if="alertType === 'alert-success'"
-      :value="true"
-      @input="clear"
+      v-model="_alert"
       dismissible
-      type="success"
-      color="light-green darken-2"
-      id="alert-success"
-    >
-      {{ alertMessage }}
-    </v-alert>
-    <v-alert
-      v-if="alertType === 'alert-danger'"
-      :value="true"
-      @input="clear"
-      dismissible
-      type="error"
-      id="alert-error"
+      :type="_alertType"
     >
       {{ alertMessage }}
     </v-alert>
@@ -36,9 +22,26 @@ export default {
     return {
       options: {
         duration: 300,
-        offset: -61,
+        offset: 10,
         easing: 'easeInOutCubic'
       }
+    }
+  },
+  computed: {
+    _alert: {
+      get () {
+        return this.types.indexOf(this.alertType) !== -1
+      },
+      set (val) {
+        this.clearAlert()
+      }
+    },
+    _alertType () {
+      if (this.alertType === 'alert-success') {
+        return 'success'
+      }
+
+      return 'error'
     }
   },
   props: {
@@ -59,7 +62,7 @@ export default {
     alert () {
       let that = this
 
-      if (that.types.indexOf(that.type) !== -1) {
+      if (that.types.indexOf(that.alertType) !== -1) {
         that.$nextTick(function () {
           that.$vuetify.goTo('#alert', that.options)
         })

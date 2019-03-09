@@ -27,6 +27,8 @@ export const LAYOUTS = {
   ANONYMOUS_LAYOUT: 'anonymous-layout'
 }
 
+export const DATE_FORMAT = 'DD-MM-YYYY HH:mm:ss.SSSSSS'
+
 export const BUG_STATUS = {
   PENDING: 0,
   CLOSED: 1,
