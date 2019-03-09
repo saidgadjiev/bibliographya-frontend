@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="category" :to="disableLink ? undefined : '/categories/' + category.name" :height="height">
+  <v-card v-if="category" :to="disableLink ? undefined : '/categories/' + category.id" :height="height">
     <v-img
       :height="height"
       :src="imageSrc"

@@ -34,7 +34,6 @@
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
       <v-menu
-        v-if="isAuthenticated"
         min-width="200px"
         offset-y
         origin="center center"
@@ -64,15 +63,13 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-      <v-btn v-else icon @click="$router.push('/signIn')">
-        <v-icon>fas fa-sign-in-alt</v-icon>
-      </v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { SIGN_OUT } from '../../store/action-types'
 
 export default {
   name: 'ToolBar',
@@ -81,16 +78,16 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getUser',
+      'getFirstName',
       'isAuthenticated'
     ]),
     _firstName () {
-      return this.getUser.biography.firstName
+      return this.getFirstName
     }
   },
   methods: {
     signOut () {
-      this.$store.dispatch('signOut')
+      this.$store.dispatch(SIGN_OUT)
         .then(
           () => {
             this.$router.push('/signIn')

@@ -6,6 +6,29 @@ export const ROLES = {
   ROLE_DEVELOPER: 'ROLE_DEVELOPER'
 }
 
+export const REQUEST = {
+  NONE: -1,
+  SIGN_IN: 0,
+  SIGN_UP: 1,
+  GET_ACCOUNT: 2,
+  CONFIRM_SIGN_UP: 3,
+  RESEND_CODE: 4,
+  RESTORE_PASSWORD: 5,
+  VERIFY: 6,
+  CHANGE_PASSWORD: 7,
+  SAVE_PASSWORD: 8,
+  CHANGE_EMAIL: 9,
+  SAVE_EMAIL: 10
+}
+
+export const LAYOUTS = {
+  SIGNED_IN_LAYOUT: 'signed-in-layout',
+  AUTH_LAYOUT: 'auth-layout',
+  ANONYMOUS_LAYOUT: 'anonymous-layout'
+}
+
+export const DATE_FORMAT = 'DD-MM-YYYY HH:mm:ss.SSSSSS'
+
 export const BUG_STATUS = {
   PENDING: 0,
   CLOSED: 1,
@@ -59,8 +82,6 @@ export const FIX_BUTTONS = {
 }
 
 export const getRestUrl = (url) => `${process.env.VUE_APP_REST_SERVER}${url}`
-
-export const isAccountRequest = (url) => url.endsWith('auth/account')
 
 export const getRedirectUri = (providerId) => {
   return window.location.origin + '/' + providerId + '/callback'

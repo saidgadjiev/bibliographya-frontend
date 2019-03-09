@@ -15,11 +15,9 @@ import moment from 'moment-timezone'
 import store from './store/store'
 
 import 'vuetify/dist/vuetify.min.css'
-import './assets/css/bibliographya.css'
 import '@mdi/font/css/materialdesignicons.css'
-import { SERVER_ERROR, RESOURCE_NOT_FOUND } from './messages'
-import { isAccountRequest } from './config'
-
+import { SERVER_ERROR, INTERNET_ERROR } from './messages'
+moment.tz.setDefault('Europe/Moscow')
 require('moment/locale/ru')
 
 Vue.use(VueMoment, {
@@ -27,7 +25,9 @@ Vue.use(VueMoment, {
 })
 
 Vue.use(Vuex)
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  iconfont: 'fa'
+})
 Vue.use(VueSweetalert2)
 
 Vue.component('infinite-loading', InfiniteLoading)
@@ -72,30 +72,30 @@ axios.interceptors.request.use(function (request) {
 axios.interceptors.response.use(function (response) {
   return response
 }, function (err) {
-  switch (err.response.status) {
-    case 401:
-      router.push('/signIn')
-      break
-    case 403:
-      router.push('/403')
-      break
-    case 404:
-      if (!isAccountRequest(err.config.url)) {
+  if (!err.response) {
+    Vue.swal.fire({
+      text: INTERNET_ERROR,
+      type: 'error',
+      showCloseButton: true
+    })
+  } else {
+    switch (err.response.status) {
+      case 401:
+        router.push('/signIn')
+        break
+      case 403:
+        router.push('/403')
+        break
+      case 500:
         Vue.swal.fire({
-          text: RESOURCE_NOT_FOUND,
+          text: SERVER_ERROR,
           type: 'error',
           showCloseButton: true
         })
-      }
-      break
-    case 500:
-      Vue.swal.fire({
-        text: SERVER_ERROR,
-        type: 'error',
-        showCloseButton: true
-      })
-      break
+        break
+    }
   }
+
   Vue.$log.error(err)
 
   return Promise.reject(err)

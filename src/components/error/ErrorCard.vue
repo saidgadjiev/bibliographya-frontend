@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-text>
+    <v-card-text class="text-xs-center">
       <span class="font-weight-bold">
         Произошла ошибка
       </span>

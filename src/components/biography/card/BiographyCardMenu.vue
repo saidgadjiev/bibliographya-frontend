@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getUser',
+      'getUserId',
       'isAuthenticated',
       'isAuthorized'
     ]),
@@ -79,7 +79,7 @@ export default {
       if (this.isAuthorized([ROLES.ROLE_MODERATOR])) {
         return true
       }
-      if (this.getUser.id === this.creatorId) {
+      if (this.getUserId === this.creatorId) {
         return true
       }
 
@@ -92,7 +92,7 @@ export default {
       if (this.isAuthorized([ROLES.ROLE_MODERATOR])) {
         return true
       }
-      if (this.getUser.id === this.creatorId) {
+      if (this.getUserId === this.creatorId) {
         return true
       }
 
@@ -103,7 +103,7 @@ export default {
         return true
       }
 
-      return this.creatorId !== this.getUser.id
+      return this.creatorId !== this.getUserId
     },
     _icon () {
       if (this.$vuetify.breakpoint.mdAndUp) {

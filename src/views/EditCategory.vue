@@ -57,10 +57,11 @@ import fileService from '../services/file-service'
 import biographyCategoryService from '../services/biography-category-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import { CATEGORY_CREATED, CATEGORY_CHANGED } from '../messages'
-import { mapActions } from 'vuex'
+import alert from '../mixins/alert'
 
 export default {
   name: 'CategoryCard',
+  mixins: [alert],
   components: { AlertMessage },
   data () {
     return {
@@ -110,9 +111,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions('alert', [
-      'clear'
-    ]),
     resetForm () {
       this.resetFile()
       this.form.id = ''
@@ -153,7 +151,7 @@ export default {
               .then(
                 path => {
                   that.form.imagePath = path
-                  that.$store.dispatch('alert/success', CATEGORY_CHANGED)
+                  that.setAlertSuccess(CATEGORY_CHANGED)
                   that.saving = false
                   that.resetFile()
                 }
@@ -179,7 +177,7 @@ export default {
               .then(
                 () => {
                   that.resetForm()
-                  that.$store.dispatch('alert/success', CATEGORY_CREATED)
+                  that.setAlertSuccess(CATEGORY_CREATED)
                   that.saving = false
                 }
               )
@@ -232,9 +230,6 @@ export default {
         }
       }
     }
-  },
-  beforeDestroy () {
-    this.clear()
   }
 }
 </script>

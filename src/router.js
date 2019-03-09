@@ -2,10 +2,15 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import CategoriesList from './views/CategoriesList'
 import BiographiesList from './views/BiographiesList'
-import Profile from './views/Profile.vue'
-import SignIn from './views/SignIn.vue'
+import Profile from './views/Profile'
+import ProfileSettings from './views/Settings'
+import ChangeEmail from './views/ChangeEmail'
+import SignIn from './views/SignInView'
+import SignUp from './views/SignUpView'
+import Confirm from './views/Confirm'
+import RestorePassword from './views/RestorePassword'
 import AdminSignIn from './views/AdminSignIn'
-import BiographyDetails from './views/BiographyDetails.vue'
+import BiographyDetails from './views/BiographyDetails'
 import CategoriesAdmin from './views/CategoriesAdmin'
 import BugTracking from './views/BugTracking'
 import CreateBug from './views/CreateBug'
@@ -22,10 +27,32 @@ import UsersList from './views/UsersList'
 import store from './store/store'
 import error403 from './views/403'
 import error404 from './views/404'
-import { ROLES } from './config'
+import { ROLES, LAYOUTS } from './config'
 import biographyService from './services/biography-service'
+import { USER_STATE } from './store/modules/user-module'
+import { GET_CONFIRMATION } from './store/action-types'
 
 Vue.use(Router)
+
+const waitForAccount = function (callback) {
+  if (store.getters.getStatus === USER_STATE.NONE) {
+    store.watch(store.getters.watchState, function () {
+      if (store.getters.getStatus !== USER_STATE.NONE) {
+        callback()
+      }
+    })
+  } else {
+    callback()
+  }
+}
+
+const cancelRoute = function (from, next) {
+  if (from.name) {
+    next(false)
+  } else {
+    next('/categories')
+  }
+}
 
 const requireAuth = function (to, from, next) {
   function proceed () {
@@ -47,45 +74,50 @@ const requireAuth = function (to, from, next) {
     }
   }
 
-  if (store.getters.status.notSignedIn || store.getters.status.signingIn) {
-    store.watch(store.getters.watchStatus, function () {
-      if (!store.getters.status.notSignedIn && !store.getters.status.signingIn) {
-        proceed()
-      }
-    })
-  } else {
-    proceed()
-  }
+  waitForAccount(proceed)
 }
 
 const ifNotAuthenticated = function (to, from, next) {
   function proceed () {
     if (store.getters.isAuthenticated) {
-      if (from.name) {
-        next(false)
+      cancelRoute(from, next)
+    } else {
+      let meta = to.meta
+
+      if (meta.expression) {
+        meta.expression(to, from, next)
       } else {
-        next('/')
+        next()
       }
-
-      return
     }
+  }
 
-    next()
-  }
-  if (store.getters.status.notSignedIn || store.getters.status.signingIn) {
-    store.watch(store.getters.watchStatus, function () {
-      if (!store.getters.status.notSignedIn && !store.getters.status.signingIn) {
-        proceed()
-      }
-    })
-  } else {
-    proceed()
-  }
+  waitForAccount(proceed)
 }
 
 let router = new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/settings',
+      name: 'settings',
+      component: ProfileSettings,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_USER]
+      }
+    },
+    {
+      path: '/settings/email',
+      name: 'changeEmail',
+      component: ChangeEmail,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_USER]
+      }
+    },
     {
       path: '/create/category',
       name: 'createCategory',
@@ -127,7 +159,7 @@ let router = new Router({
       }
     },
     {
-      path: '/categories',
+      path: '/categories/admin',
       name: 'categoriesAdmin',
       component: CategoriesAdmin,
       beforeEnter: requireAuth,
@@ -137,9 +169,18 @@ let router = new Router({
       }
     },
     {
-      path: '/',
+      path: '/categories',
       name: 'categories',
       component: CategoriesList
+    },
+    {
+      path: '/',
+      alias: '/signIn',
+      component: SignIn,
+      beforeEnter: ifNotAuthenticated,
+      meta: {
+        layout: LAYOUTS.AUTH_LAYOUT
+      }
     },
     {
       path: '/categories/:categoryId',
@@ -236,10 +277,50 @@ let router = new Router({
       }
     },
     {
+      path: '/signUp',
+      name: 'signUp',
+      component: SignUp,
+      beforeEnter: ifNotAuthenticated,
+      meta: {
+        layout: LAYOUTS.AUTH_LAYOUT
+      }
+    },
+    {
+      path: '/signUp/confirm',
+      name: 'signUpConfirm',
+      component: Confirm,
+      beforeEnter: function (to, from, next) {
+        store.dispatch(GET_CONFIRMATION)
+          .then(
+            confirmation => {
+              if (confirmation) {
+                next()
+              } else {
+                cancelRoute(from, next)
+              }
+            },
+            e => {
+              cancelRoute(from, next)
+            }
+          )
+      },
+      meta: {
+        layout: LAYOUTS.AUTH_LAYOUT
+      }
+    },
+    {
+      path: '/restore',
+      name: 'restorePassword',
+      component: RestorePassword
+    },
+    {
       path: '/signIn',
       name: 'signIn',
       component: SignIn,
-      beforeEnter: ifNotAuthenticated
+      beforeEnter: ifNotAuthenticated,
+      meta: {
+        layout: LAYOUTS.AUTH_LAYOUT
+      }
     },
     {
       path: '/admin',
@@ -279,6 +360,32 @@ let router = new Router({
       component: error404
     }
   ]
+})
+
+router.beforeResolve((to, from, next) => {
+  function proceed () {
+    let meta = to.meta
+    let currentLayout = store.getters.layout
+    let nextLayout = null
+
+    if (meta.layout) {
+      nextLayout = meta.layout
+    } else {
+      if (store.getters.isAuthenticated) {
+        nextLayout = LAYOUTS.SIGNED_IN_LAYOUT
+      } else {
+        nextLayout = LAYOUTS.ANONYMOUS_LAYOUT
+      }
+    }
+
+    if (currentLayout !== nextLayout) {
+      store.commit('setLayout', nextLayout)
+    }
+
+    next()
+  }
+
+  waitForAccount(proceed)
 })
 
 export default router

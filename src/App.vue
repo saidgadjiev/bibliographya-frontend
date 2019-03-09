@@ -1,56 +1,44 @@
 <template>
-  <div id="app">
-    <v-app>
-      <nav-bar :drawer.sync="drawer" v-if="$vuetify.breakpoint.smAndDown"></nav-bar>
-      <tool-bar :drawer.sync="drawer"></tool-bar>
-      <v-content :style="getBackground">
-        <v-container grid-list-lg fill-height :class="{ 'md-content' : $vuetify.breakpoint.mdAndUp }">
-          <v-layout row fill-height>
-            <v-flex md3 v-if="$vuetify.breakpoint.mdAndUp">
-              <nav-bar></nav-bar>
-            </v-flex>
-            <v-flex xs12 md9>
-              <router-view></router-view>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-content>
-    </v-app>
-  </div>
+  <v-app class="background">
+    <v-layout align-center justify-center row v-if="_isRequest(Request.GET_ACCOUNT)">
+      <v-progress-circular
+        :size="100"
+        :width="10"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
+    </v-layout>
+    <component v-else v-bind:is="_layout"></component>
+  </v-app>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import NavBar from './components/NavBar.vue'
-import ToolBar from './components/ToolBar.vue'
+import SignedInLayout from './layouts/signedin/SignedInLayout.vue'
+import AuthLayout from './layouts/auth/AuthLayout'
+import AnonymousLayout from './layouts/anonymous/AnonymousLayout'
+import { GET_ACCOUNT } from './store/action-types'
+import request from './mixins/request'
 
 export default {
   name: 'App',
+  mixins: [request],
   data () {
     return {
       drawer: false
     }
   },
+  computed: {
+    _layout () {
+      return this.$store.getters.layout
+    }
+  },
   created () {
-    this.$store.dispatch('getAccount')
+    this.$store.dispatch(GET_ACCOUNT)
   },
   components: {
-    NavBar,
-    ToolBar
-  },
-  computed: {
-    ...mapGetters([
-      'backgroundImagePath'
-    ]),
-    getBackground () {
-      return {
-        'background': 'url(/Bibliography.jpg) no-repeat center center fixed',
-        '-webkit-background-size': 'cover',
-        '-moz-background-size': 'cover',
-        '-o-background-size': 'cover',
-        'background-size': 'cover'
-      }
-    }
+    'signed-in-layout': SignedInLayout,
+    'auth-layout': AuthLayout,
+    'anonymous-layout': AnonymousLayout
   }
 }
 </script>
@@ -62,6 +50,7 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
   }
+
   .md-content {
     margin: auto !important;
     padding-top: 0 !important;

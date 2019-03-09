@@ -80,7 +80,7 @@ export default {
       ++this.resetId
     },
     applyClosedFilter () {
-      this.filter = 'fixer_id==' + this.getUser.id + ';status==' + FIX_STATUS.CLOSED
+      this.filter = 'fixer_id==' + this.getUserId + ';status==' + FIX_STATUS.CLOSED
       this.resetList()
     },
     applyNotAssignedFilter () {
@@ -92,7 +92,7 @@ export default {
       this.resetList()
     },
     applyAssignedMeFilter () {
-      this.filter = 'fixer_id==' + this.getUser.id
+      this.filter = 'fixer_id==' + this.getUserId
       this.resetList()
     },
     infiniteLoad (limit, offset) {

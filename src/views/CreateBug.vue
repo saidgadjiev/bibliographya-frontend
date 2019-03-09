@@ -38,9 +38,11 @@
 import { CREATE_BUG_TITLE, BUG_CREATED } from '../messages'
 import bugTrackingService from '../services/bug-tracking-service'
 import AlertMessage from '../components/alert/AlertMessage'
+import alert from '../mixins/alert'
 
 export default {
   name: 'BugsList',
+  mixins: [alert],
   components: { AlertMessage },
   data () {
     return {
@@ -85,7 +87,7 @@ export default {
             .then(
               response => {
                 that.loading = false
-                that.$store.dispatch('alert/success', BUG_CREATED)
+                that.setAlertSuccess(BUG_CREATED)
                 that.resetForm()
               },
               e => {

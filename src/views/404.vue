@@ -1,5 +1,5 @@
 <template>
-  <v-layout align-center justify-center row fill-height column>
+  <v-layout align-center justify-center row fill-height>
     <h1 class="white--text">Страница не найдена</h1>
     <v-btn color="blue darken-3" href="/">Домой</v-btn>
   </v-layout>

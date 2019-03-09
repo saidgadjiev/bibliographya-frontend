@@ -34,30 +34,32 @@
             <strong class="subheading">Конфликт:</strong>
             <p v-html="fioConflict" class="title font-weight-light"></p>
             <strong class="subheading">Ваша версия:</strong>
-            <v-flex xs12 sm6 md3 class="pl-0">
-              <v-text-field
-                v-model="myBiographyVersion.lastName"
-                readonly
-                label="Фамилия"
-                type="text"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm6 md3>
-              <v-text-field
-                v-model="myBiographyVersion.firstName"
-                readonly
-                label="Имя"
-                type="text"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm6 md3>
-              <v-text-field
-                v-model="myBiographyVersion.middleName"
-                readonly
-                label="Отчество"
-                type="text"
-              ></v-text-field>
-            </v-flex>
+            <v-layout row wrap>
+              <v-flex xs12 sm6 md3 class="pl-0">
+                <v-text-field
+                  v-model="myBiographyVersion.lastName"
+                  readonly
+                  label="Фамилия"
+                  type="text"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6 md3>
+                <v-text-field
+                  v-model="myBiographyVersion.firstName"
+                  readonly
+                  label="Имя"
+                  type="text"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm6 md3>
+                <v-text-field
+                  v-model="myBiographyVersion.middleName"
+                  readonly
+                  label="Отчество"
+                  type="text"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
           </v-flex>
           <v-flex xs12>
             <span>Биография:</span>
@@ -116,12 +118,14 @@
 import biographyService from '../../../services/biography-service'
 import biographyCategoryService from '../../../services/biography-category-service'
 import TinyEditor from '../../tinymce/TinyEditor'
+import alert from '../../../mixins/alert'
 
 const diff = require('diff')
 const he = require('he')
 
 export default {
   name: 'EditBiographyCard',
+  mixins: [alert],
   data () {
     return {
       saveLoading: false,
@@ -135,7 +139,7 @@ export default {
         lastName: '',
         middleName: '',
         biography: '',
-        lastModified: undefined,
+        updatedAt: undefined,
         categories: []
       },
       myBiographyVersion: {
@@ -149,10 +153,6 @@ export default {
     }
   },
   props: {
-    editProfile: {
-      type: Boolean,
-      default: false
-    },
     mode: {
       type: String,
       default: 'edit'
@@ -204,8 +204,8 @@ export default {
       return this.cleanUp(d)
     },
     biographyDiff () {
-      let b1 = he.escape(this.myBiographyVersion.biography).replace(/\n/g, '<br>')
-      let b2 = he.escape(this.biographyForm.biography).replace(/\n/g, '<br>')
+      let b1 = he.escape(this.myBiographyVersion.biography || '').replace(/\n/g, '<br>')
+      let b2 = he.escape(this.biographyForm.biography || '').replace(/\n/g, '<br>')
 
       return this.cleanUp(diff.diffWords(b1, b2))
     },
@@ -239,7 +239,7 @@ export default {
         lastName: '',
         middleName: '',
         biography: '',
-        lastModified: undefined,
+        updatedAt: undefined,
         categories: []
       })
     },
@@ -248,7 +248,7 @@ export default {
       this.$emit('update:lastName', data.lastName)
       this.$emit('update:middleName', data.middleName)
       this.$emit('update:biography', data.biography)
-      this.$emit('update:lastModified', data.lastModified)
+      this.$emit('update:updatedAt', data.updatedAt)
       this.$emit('update:categories', data.categories)
     },
     doSave () {
@@ -282,22 +282,25 @@ export default {
               biography: that.biographyForm.biography,
               addCategories: added,
               deleteCategories: deleted,
-              lastModified: that.biographyForm.lastModified,
-              userId: that.editProfile ? that.getUser.id : null
+              updatedAt: that.biographyForm.updatedAt
             })
               .then(
                 response => {
-                  that.biographyForm.lastModified = response.data.lastModified
+                  that.biographyForm.updatedAt = response.data.updatedAt
                   that.updateParent(that.biographyForm)
 
-                  that.$store.dispatch('alert/success', 'Изменения сохранены.')
+                  that.setAlertSuccess('Изменения сохранены.')
 
                   that.conflict = false
                   that.myBiographyVersion = {}
-                  that.saveLoading = false
                 },
                 e => {
                   if (e.response.status === 409) {
+                    that.$swal.fire({
+                      text: 'Произошел конфликт. Пожалуйста перенесите свои изменения в соответствии с текущей версией',
+                      type: 'error',
+                      showCloseButton: true
+                    })
                     Object.assign(that.myBiographyVersion, that.biographyForm)
 
                     Object.assign(that.biographyForm, e.response.data)
@@ -305,18 +308,12 @@ export default {
                     that.fioConflict = that.fioDiff()
                     that.biographyConflict = that.biographyDiff()
                     that.categoriesConflict = that.categoriesDiff()
-
-                    that.$swal.fire({
-                      text: 'Произошел конфликт. Пожалуйста перенесите свои изменения в соответствии с текущей версией',
-                      type: 'error',
-                      showCloseButton: true
-                    })
-                  } else {
-                    console.log(e)
                   }
-                  that.saveLoading = false
                 }
               )
+              .finally(() => {
+                that.saveLoading = false
+              })
           } else if (that.mode === 'create') {
             biographyService.create({
               firstName: that.biographyForm.firstName,
@@ -328,12 +325,11 @@ export default {
               .then(
                 () => {
                   that.clearBiographyForm()
-                  that.$store.dispatch('alert/success', 'Биография создана. Вы можете увидеть ее в разделе Созданные мной.')
+                  that.setAlertSuccess('Биография создана. Вы можете увидеть ее в разделе Созданные мной.')
                   that.saveLoading = false
                   that.$validator.reset()
                 },
                 e => {
-                  console.log(e)
                   that.saveLoading = false
                 }
               )

@@ -39,7 +39,7 @@
           </span>
           <span v-else>{{ content }}</span>
         </div>
-        <h4>{{ getTimeDiff + ',' }}&nbsp;<a class="font-weight-regular" @click="reply">Ответить</a></h4>
+        <h4>{{ _getTimeDiff + ',' }}&nbsp;<a class="font-weight-regular" @click="reply">Ответить</a></h4>
       </v-card-text>
     </v-card>
   </v-hover>
@@ -123,22 +123,22 @@ export default {
         return false
       }
 
-      return this.getUser.id === this.userId
+      return this.getUserId === this.userId
     },
     _showRemove () {
       if (!this.isAuthenticated) {
         return false
       }
-      if (this.getUser.id === this.userId) {
+      if (this.getUserId === this.userId) {
         return true
       }
       if (this.isAuthorized([ROLES.ROLE_MODERATOR])) {
         return true
       }
 
-      return this.getUser.id === this.userId
+      return this.getUserId === this.userId
     },
-    getTimeDiff () {
+    _getTimeDiff () {
       return this.$moment(this.createdAt, DATE_FORMAT).fromNow()
     }
   },
@@ -180,6 +180,7 @@ export default {
     position: relative !important;
     display: block !important;
     margin-bottom: -1px !important;
+    background-color: #fff !important;
     border: 1px solid rgba(0, 0, 0, 0.125) !important;
   }
 </style>

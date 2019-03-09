@@ -3,9 +3,9 @@ import { getRestUrl } from '../config'
 const axios = require('axios')
 
 export default {
-  isExistUsername
+  isExistEmail
 }
 
-function isExistUsername (username) {
-  return axios.head(getRestUrl('users/exist/' + username))
+function isExistEmail (email) {
+  return axios.head(getRestUrl('user-accounts/exist/' + email))
 }

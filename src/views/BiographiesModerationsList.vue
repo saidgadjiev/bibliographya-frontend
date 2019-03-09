@@ -90,11 +90,11 @@ export default {
       ++this.resetId
     },
     applyRejectedFilter () {
-      this.filter = 'moderator_id==' + this.getUser.id + ';moderation_status==' + MODERATION_STATUS.REJECTED
+      this.filter = 'moderator_id==' + this.getUserId + ';moderation_status==' + MODERATION_STATUS.REJECTED
       this.resetList()
     },
     applyApprovedFilter () {
-      this.filter = 'moderator_id==' + this.getUser.id + ';moderation_status==' + MODERATION_STATUS.APPROVED
+      this.filter = 'moderator_id==' + this.getUserId + ';moderation_status==' + MODERATION_STATUS.APPROVED
       this.resetList()
     },
     applyNotAssignedFilter () {
@@ -106,7 +106,7 @@ export default {
       this.resetList()
     },
     applyAssignedMeFilter () {
-      this.filter = 'moderator_id==' + this.getUser.id
+      this.filter = 'moderator_id==' + this.getUserId
       this.resetList()
     },
     infiniteLoad (limit, offset) {
