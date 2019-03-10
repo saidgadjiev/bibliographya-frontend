@@ -1,12 +1,9 @@
 <template>
   <v-app class="background">
     <v-layout align-center justify-center row v-if="_isRequest(Request.GET_ACCOUNT)">
-      <v-progress-circular
-        :size="100"
-        :width="10"
-        color="primary"
-        indeterminate
-      ></v-progress-circular>
+      <v-flex shrink>
+        <progress-circular/>
+      </v-flex>
     </v-layout>
     <component v-else v-bind:is="_layout"></component>
   </v-app>
@@ -18,6 +15,7 @@ import AuthLayout from './layouts/auth/AuthLayout'
 import AnonymousLayout from './layouts/anonymous/AnonymousLayout'
 import { GET_ACCOUNT } from './store/action-types'
 import request from './mixins/request'
+import ProgressCircular from './components/progress/ProgressCircular'
 
 export default {
   name: 'App',
@@ -36,6 +34,7 @@ export default {
     this.$store.dispatch(GET_ACCOUNT)
   },
   components: {
+    ProgressCircular,
     'signed-in-layout': SignedInLayout,
     'auth-layout': AuthLayout,
     'anonymous-layout': AnonymousLayout

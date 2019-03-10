@@ -138,7 +138,8 @@
     <v-list v-if="$vuetify.breakpoint.smAndDown">
       <v-list-tile v-if="isAuthenticated" @click="signOut">
         <v-list-tile-action>
-          <v-icon>fas fa-sign-out-alt</v-icon>
+          <progress-circular v-if="_isRequest(Request.SIGN_OUT)" :size="20"/>
+          <v-icon v-else>fas fa-sign-out-alt</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
           <v-list-tile-title>Выход</v-list-tile-title>
@@ -160,9 +161,13 @@
 import { mapGetters } from 'vuex'
 import { ROLES } from '../../config'
 import { SIGN_OUT } from '../../store/action-types'
+import ProgressCircular from '../../components/progress/ProgressCircular'
+import request from '../../mixins/request'
 
 export default {
   name: 'NavBar',
+  components: { ProgressCircular },
+  mixins: [request],
   props: {
     drawer: {
       type: Boolean,
@@ -205,9 +210,7 @@ export default {
           () => {
             this.$router.push('/signIn')
           },
-          e => {
-            console.log(e)
-          }
+          e => {}
         )
     }
   }

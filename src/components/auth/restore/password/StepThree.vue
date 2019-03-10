@@ -12,7 +12,7 @@
         <v-text-field
           v-validate="'required'"
           :error-messages="errors.collect('password')"
-          :append-icon="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+          :append-icon="showPassword ? 'mdi-lock-open-outline' : 'mdi-lock-outline'"
           :type="showPassword ? 'text' : 'password'"
           @click:append="showPassword = !showPassword"
           v-model="restoreForm.password"

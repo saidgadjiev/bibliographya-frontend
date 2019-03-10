@@ -12,11 +12,7 @@
         <v-flex md6 xs12 align>
           <infinite-loading style="width: 100%;" :identifier="infiniteId" @infinite="load">
             <template slot="spinner">
-              <v-progress-circular
-                :size="50"
-                color="primary"
-                indeterminate
-              ></v-progress-circular>
+              <progress-circular/>
             </template>
             <div slot="no-more" :style="loadMoreStyles">
               <a @click="loadMore">Показать еще</a>
@@ -59,10 +55,11 @@
 <script>
 import { CancelToken } from '../../axios/axios'
 import ErrorCard from '../error/ErrorCard'
+import ProgressCircular from '../progress/ProgressCircular'
 
 export default {
   name: 'List',
-  components: { ErrorCard },
+  components: { ProgressCircular, ErrorCard },
   inheritAttrs: false,
   data () {
     return {

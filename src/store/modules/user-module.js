@@ -165,13 +165,17 @@ const actions = {
         })
     })
   },
-  [SIGN_OUT] ({ commit }) {
+  [SIGN_OUT] ({ dispatch, commit }) {
+    dispatch('request/' + SET_REQUEST, REQUEST.SIGN_OUT)
+
     return authService.signOut()
       .then(
         () => {
           commit(SIGN_OUT_SUCCESS)
         }
-      )
+      ).finally(() => {
+        dispatch('request/' + CLEAR)
+      })
   },
   [GET_ACCOUNT] ({ dispatch, commit }) {
     dispatch('request/' + SET_REQUEST, REQUEST.GET_ACCOUNT)

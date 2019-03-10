@@ -8,7 +8,7 @@
             <v-text-field
               v-validate="'required'"
               :error-messages="errors.collect('oldPassword')"
-              :append-icon="showOldPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+              :append-icon="showOldPassword ? 'mdi-lock-open-outline' : 'mdi-lock-outline'"
               :type="showOldPassword ? 'text' : 'password'"
               @click:append="showOldPassword = !showOldPassword"
               v-model="savePasswordForm.oldPassword"

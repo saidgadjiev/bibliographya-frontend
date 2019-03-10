@@ -23,7 +23,7 @@
             <v-text-field
               v-validate="'required'"
               :error-messages="errors.collect('password')"
-              :append-icon="showPassword ? 'visibility_off' : 'visibility'"
+              :append-icon="showPassword ? 'mdi-lock-open-outline' : 'mdi-lock-outline'"
               :type="showPassword ? 'text' : 'password'"
               @click:append="showPassword = !showPassword"
               v-model="signInForm.password"

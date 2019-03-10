@@ -1,12 +1,7 @@
 <template>
   <v-layout justify-center row class="ma-0 pa-0">
     <error-card v-if="error" :trigger="gotoSignIn"></error-card>
-    <v-progress-circular
-      v-else
-      :size="50"
-      color="primary"
-      indeterminate
-    ></v-progress-circular>
+    <progress-circular v-else/>
   </v-layout>
 </template>
 
@@ -14,6 +9,7 @@
 import { WELCOME, WELCOME_TITLE } from '../messages'
 import { getRedirectUri } from '../config'
 import ErrorCard from '../components/error/ErrorCard'
+import ProgressCircular from '../components/progress/ProgressCircular'
 
 export default {
   name: 'OAuthCallback',
@@ -22,7 +18,7 @@ export default {
       error: false
     }
   },
-  components: { ErrorCard },
+  components: { ProgressCircular, ErrorCard },
   props: {
     providerId: {
       type: String,

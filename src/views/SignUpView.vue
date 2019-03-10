@@ -49,7 +49,7 @@
               name="password"
               label="Пароль"
               v-model="signUpForm.password"
-              :append-icon="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+              :append-icon="showPassword ? 'mdi-lock-open-outline' : 'mdi-lock-outline'"
               :type="showPassword ? 'text' : 'password'"
               @click:append="showPassword = !showPassword"
             ></v-text-field>

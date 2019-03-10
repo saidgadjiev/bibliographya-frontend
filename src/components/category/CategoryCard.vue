@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="category" :to="disableLink ? undefined : '/categories/' + category.id" :height="height">
+  <v-card v-if="category" :to="disableLink ? undefined : '/categories/' + category.id" :height="height" tile>
     <v-img
       :height="height"
       :src="imageSrc"
@@ -13,7 +13,7 @@
         justify-center
         ma-0
       >
-        <v-progress-circular indeterminate color="blue darken-3"></v-progress-circular>
+        <progress-circular/>
       </v-layout>
       <v-container
         v-else
@@ -31,9 +31,11 @@
 
 <script>
 import fileService from '../../services/file-service'
+import ProgressCircular from '../progress/ProgressCircular'
 
 export default {
   name: 'CategoryCard',
+  components: { ProgressCircular },
   data () {
     return {
       loading: true

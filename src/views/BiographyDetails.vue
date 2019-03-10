@@ -1,8 +1,10 @@
 <template>
-  <v-layout row fill-height="true">
-    <v-flex xs12>
+  <v-layout row fill-height="true" justify-center>
+    <v-flex shrink v-if="biographyLoading">
+      <progress-circular/>
+    </v-flex>
+    <v-flex xs12 v-else>
       <biography-card
-        v-if="biography"
         live
         show-comments
         v-bind.sync="biography"
@@ -16,11 +18,13 @@
 <script>
 import biographyService from '../services/biography-service'
 import BiographyCard from '../components/biography/card/BiographyCard'
+import ProgressCircular from '../components/progress/ProgressCircular'
 
 export default {
   name: 'BiographyDetails',
   data () {
     return {
+      biographyLoading: true,
       biography: undefined
     }
   },
@@ -38,15 +42,19 @@ export default {
       this.$router.push('/')
     },
     loadBiography () {
+      let that = this
+
+      that.biographyLoading = true
       biographyService.getBiographyById(this.biographyId)
         .then(
           response => {
-            this.biography = response.data
+            that.biography = response.data
           },
-          e => {
-            console.log(e)
-          }
+          e => {}
         )
+        .finally(() => {
+          that.biographyLoading = false
+        })
     }
   },
   watch: {
@@ -56,6 +64,7 @@ export default {
     }
   },
   components: {
+    ProgressCircular,
     BiographyCard
   }
 }

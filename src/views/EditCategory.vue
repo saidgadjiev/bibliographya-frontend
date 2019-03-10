@@ -3,11 +3,7 @@
     <v-flex xs8>
       <alert-message/>
       <v-layout justify-center row class="ma-0 pa-0" v-if="loadingCategory">
-        <v-progress-circular
-          :size="50"
-          color="primary"
-          indeterminate
-        ></v-progress-circular>
+        <progress-circular/>
       </v-layout>
       <v-card v-else>
         <v-img
@@ -21,7 +17,7 @@
             justify-center
             ma-0
           >
-            <v-progress-circular indeterminate color="blue darken-3"></v-progress-circular>
+            <progress-circular/>
           </v-layout>
         </v-img>
         <v-card-text style="justify-content: center">
@@ -58,11 +54,12 @@ import biographyCategoryService from '../services/biography-category-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import { CATEGORY_CREATED, CATEGORY_CHANGED } from '../messages'
 import alert from '../mixins/alert'
+import ProgressCircular from '../components/progress/ProgressCircular'
 
 export default {
   name: 'CategoryCard',
   mixins: [alert],
-  components: { AlertMessage },
+  components: { ProgressCircular, AlertMessage },
   data () {
     return {
       saving: false,

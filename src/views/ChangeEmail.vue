@@ -8,13 +8,22 @@
       <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2">Подтверждение</v-stepper-step>
     </v-stepper-header>
 
-    <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">Изменение</v-stepper-step>
+    <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">
+      Изменение
+    </v-stepper-step>
 
     <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
-      <step-one :step.sync="step" :email.sync="saveEmailForm.email" :current-email="currentEmail"/>
+      <v-layout row justify-center align-center v-if="_isRequest(Request.LOADING_EMAIL_SETTINGS)">
+        <v-flex shrink>
+          <progress-circular/>
+        </v-flex>
+      </v-layout>
+      <step-one v-else :step.sync="step" :email.sync="saveEmailForm.email" :current-email="currentEmail"/>
     </v-stepper-content>
 
-    <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">Подтверждение</v-stepper-step>
+    <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">
+      Подтверждение
+    </v-stepper-step>
 
     <v-stepper-content step="2" v-if="$vuetify.breakpoint.smAndDown">
       <confirm-code
@@ -28,7 +37,12 @@
 
     <v-stepper-items v-if="$vuetify.breakpoint.mdAndUp">
       <v-stepper-content step="1">
-        <step-one :step.sync="step" :email.sync="saveEmailForm.email" :current-email="currentEmail"/>
+        <v-layout row justify-center align-center v-if="_isRequest(Request.LOADING_EMAIL_SETTINGS)">
+          <v-flex shrink>
+            <progress-circular/>
+          </v-flex>
+        </v-layout>
+        <step-one v-else :step.sync="step" :email.sync="saveEmailForm.email" :current-email="currentEmail"/>
       </v-stepper-content>
       <v-stepper-content step="2">
         <confirm-code
@@ -50,10 +64,11 @@ import settingsService from '../services/settings-service'
 import { EMAIL_CHANGE_SUCCESS } from '../messages'
 import ConfirmCode from '../components/auth/ConfirmCode'
 import StepOne from '../components/auth/change/email/StepOneChangeEmail'
+import ProgressCircular from '../components/progress/ProgressCircular'
 
 export default {
   name: 'ChangeEmail',
-  components: { StepOne, ConfirmCode },
+  components: { ProgressCircular, StepOne, ConfirmCode },
   mixins: [alert, request],
   data () {
     return {
@@ -72,6 +87,7 @@ export default {
     loadEmailSettings () {
       let that = this
 
+      that.setRequest(that.Request.LOADING_EMAIL_SETTINGS)
       settingsService.getEmailSettings()
         .then(
           response => {
@@ -79,6 +95,9 @@ export default {
             that.currentEmail = response.data.email
           }
         )
+        .finally(() => {
+          that.clearRequest()
+        })
     },
     resetForm () {
       this.step = 1

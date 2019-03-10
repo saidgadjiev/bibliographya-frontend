@@ -60,7 +60,7 @@ export default {
       editContent: '',
       options: {
         duration: 300,
-        offset: -100,
+        offset: 100,
         easing: 'easeInOutCubic'
       }
     }
@@ -159,10 +159,10 @@ export default {
       this.$vuetify.goTo('#_c' + this.parentId, this.options)
       let el = document.getElementById('_c' + this.parentId)
 
-      el.classList.add('light-blue', 'lighten-4')
+      el.classList.add('highlight')
 
       setTimeout(function () {
-        el.classList.remove('light-blue', 'lighten-4')
+        el.classList.remove('highlight')
       }, 2000)
     },
     reply () {
@@ -182,5 +182,9 @@ export default {
     margin-bottom: -1px !important;
     background-color: #fff !important;
     border: 1px solid rgba(0, 0, 0, 0.125) !important;
+  }
+
+  .highlight {
+    background-color: #B3E5FC !important;
   }
 </style>
