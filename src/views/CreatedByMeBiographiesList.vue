@@ -26,7 +26,7 @@
           <h4>У вас еще нет созданных биографий.</h4>
         </v-card-text>
         <v-card-actions style="justify-content: center">
-          <v-btn color="green darken-2" @click="createBiography">
+          <v-btn color="green darken-2" @click="createBiography" class="white--text">
             Создать биографию
           </v-btn>
         </v-card-actions>

@@ -3,7 +3,7 @@
     <v-card-text>
       <v-form>
         <v-layout row wrap>
-          <v-flex xs12 sm6 md3 class="pl-0">
+          <v-flex xs12 sm6 md3>
             <v-text-field
               v-model="biographyForm.lastName"
               :error-messages="errors.collect('lastName')"

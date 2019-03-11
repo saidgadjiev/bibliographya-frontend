@@ -1,7 +1,9 @@
 <template>
   <v-layout justify-center row class="ma-0 pa-0">
-    <error-card v-if="error" :trigger="gotoSignIn"></error-card>
-    <progress-circular v-else/>
+    <v-flex shrink>
+      <error-card v-if="error" :trigger="gotoSignIn"></error-card>
+      <progress-circular v-else/>
+    </v-flex>
   </v-layout>
 </template>
 
@@ -10,6 +12,7 @@ import { WELCOME, WELCOME_TITLE } from '../messages'
 import { getRedirectUri } from '../config'
 import ErrorCard from '../components/error/ErrorCard'
 import ProgressCircular from '../components/progress/ProgressCircular'
+import { SOCIAL_SIGN_IN, ERROR_SOCIAL_SIGN_IN } from '../store/action-types'
 
 export default {
   name: 'OAuthCallback',
@@ -37,7 +40,7 @@ export default {
       let that = this
 
       if (this.$route.query.code) {
-        this.$store.dispatch('socialSignIn', {
+        this.$store.dispatch(SOCIAL_SIGN_IN, {
           provider: this.providerId,
           code: this.$route.query.code,
           redirectUri: getRedirectUri(this.providerId)
@@ -59,7 +62,7 @@ export default {
             }
           )
       } else {
-        this.$store.dispatch('errorSocialSignIn', {
+        this.$store.dispatch(ERROR_SOCIAL_SIGN_IN, {
           provider: this.providerId,
           error: this.$route.query.error,
           errorDescription: this.$route.query.error_description

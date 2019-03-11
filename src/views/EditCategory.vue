@@ -1,6 +1,6 @@
 <template>
   <v-layout justify-center row>
-    <v-flex xs8>
+    <v-flex xs12 sm8>
       <alert-message/>
       <v-layout justify-center row class="ma-0 pa-0" v-if="loadingCategory">
         <progress-circular/>
