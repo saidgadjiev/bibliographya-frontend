@@ -20,9 +20,9 @@
     <v-card-actions style="justify-content: center">
       <v-btn
         color="primary"
-        :loading="_isRequest(Request.RESTORE_PASSWORD)"
-        :disabled="_isRequest(Request.RESTORE_PASSWORD)"
-        @click="restorePassword"
+        :loading="_isRequest(Request.CONFIRM_SIGN_UP_START)"
+        :disabled="_isRequest(Request.CONFIRM_SIGN_UP_START)"
+        @click="confirmSignUpStart"
       >
         Получить код
       </v-btn>
@@ -31,64 +31,64 @@
 </template>
 
 <script>
-  import alert from '../../../../mixins/alert'
-  import request from '../../../../mixins/request'
-  import { REQUEST } from '../../../../config'
-  import settingsService from '../../../../services/settings-service'
+import alert from '../../../mixins/alert'
+import request from '../../../mixins/request'
+import { REQUEST } from '../../../config'
+import authService from '../../../services/auth-service'
 
-  export default {
-    name: 'StepOne',
-    mixins: [alert, request],
-    props: {
-      step: Number,
-      email: String
-    },
-    created () {
-      this.$validator.localize('ru', {
-        custom: {
-          email: {
-            required: () => 'Введите почту',
-            email: () => 'Введите корректную почту'
-          }
+export default {
+  name: 'StepOne',
+  mixins: [alert, request],
+  props: {
+    step: Number,
+    email: String
+  },
+  created () {
+    this.$validator.localize('ru', {
+      custom: {
+        email: {
+          required: () => 'Введите почту',
+          email: () => 'Введите корректную почту'
         }
-      })
-    },
-    methods: {
-      restorePassword: function () {
-        let that = this
+      }
+    })
+  },
+  methods: {
+    confirmSignUpStart: function () {
+      let that = this
 
-        this.$validator.validate('email').then(result => {
-          if (result) {
-            that.setRequest(REQUEST.RESTORE_PASSWORD)
+      this.$validator.validate('email').then(result => {
+        if (result) {
+          that.setRequest(REQUEST.CONFIRM_SIGN_UP_START)
 
-            settingsService.restorePassword(that.email)
-              .then(
-                () => {
-                  that.$emit('update:step', 2)
-                },
-                e => {
-                  if (e.response.status === that.HttpStatus.NOT_FOUND) {
-                    that.setAlertError(e)
-                  }
+          authService.confirmSignUpStart(that.email)
+            .then(
+              () => {
+                that.$emit('update:step', 2)
+              },
+              e => {
+                if (e.response.status === that.HttpStatus.CONFLICT) {
+                  that.setAlertError(e)
                 }
-              ).finally(() => {
+              }
+            ).finally(() => {
               that.clearRequest()
             })
-          }
-        })
-      }
-    },
-    computed: {
-      _email: {
-        get () {
-          return this.email
-        },
-        set (val) {
-          this.$emit('update:email', val)
         }
+      })
+    }
+  },
+  computed: {
+    _email: {
+      get () {
+        return this.email
+      },
+      set (val) {
+        this.$emit('update:email', val)
       }
     }
   }
+}
 </script>
 
 <style scoped>

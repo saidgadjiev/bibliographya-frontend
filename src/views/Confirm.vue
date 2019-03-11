@@ -1,15 +1,64 @@
 <template>
-  <v-layout justify-center>
-    <v-flex xs12 sm6>
+  <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
+    <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
+      <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Почта</v-stepper-step>
+
+      <v-divider></v-divider>
+
+      <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2">Подтверждение</v-stepper-step>
+
+      <v-divider></v-divider>
+
+      <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2">Пароль</v-stepper-step>
+    </v-stepper-header>
+
+    <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">
+      Изменение
+    </v-stepper-step>
+
+    <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
+      <v-layout row justify-center align-center v-if="_isRequest(Request.LOADING_EMAIL_SETTINGS)">
+        <v-flex shrink>
+          <progress-circular/>
+        </v-flex>
+      </v-layout>
+      <step-one v-else :step.sync="step" :email.sync="saveEmailForm.email" :current-email="currentEmail"/>
+    </v-stepper-content>
+
+    <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">
+      Подтверждение
+    </v-stepper-step>
+
+    <v-stepper-content step="2" v-if="$vuetify.breakpoint.smAndDown">
       <confirm-code
         :confirm="confirm"
-        :request="Request.CONFIRM_SIGN_UP"
+        :request="Request.CONFIRM_SIGN_UP_START"
         :email="confirmForm.email"
         :code.sync="confirmForm.code"
         label="На вашу почту был отправлен код подтверждения регистрации."
       />
-    </v-flex>
-  </v-layout>
+    </v-stepper-content>
+
+    <v-stepper-items v-if="$vuetify.breakpoint.mdAndUp">
+      <v-stepper-content step="1">
+        <v-layout row justify-center align-center v-if="_isRequest(Request.LOADING_EMAIL_SETTINGS)">
+          <v-flex shrink>
+            <progress-circular/>
+          </v-flex>
+        </v-layout>
+        <step-one v-else :step.sync="step" :email.sync="saveEmailForm.email" :current-email="currentEmail"/>
+      </v-stepper-content>
+      <v-stepper-content step="2">
+        <confirm-code
+          :confirm="confirm"
+          :request="Request.CONFIRM_SIGN_UP_START"
+          :email="confirmForm.email"
+          :code.sync="confirmForm.code"
+          label="На вашу почту был отправлен код подтверждения регистрации."
+        />
+      </v-stepper-content>
+    </v-stepper-items>
+  </v-stepper>
 </template>
 
 <script>

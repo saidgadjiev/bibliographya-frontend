@@ -4,7 +4,7 @@ import { SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, SET_CONFIRMATION, REMOVE_CONFIRMATIO
 import {
   CANCEL_SIGN_UP,
   CONFIRM_SIGN_UP,
-  ERROR_SOCIAL_SIGN_IN,
+  ERROR_SOCIAL_SIGN_UP,
   GET_ACCOUNT,
   GET_CONFIRMATION,
   SIGN_IN,
@@ -24,7 +24,7 @@ export const USER_STATE = {
   ANONYMOUS: 1
 }
 
-const state = { status: USER_STATE.NONE, user: {}, confirmation: undefined, roles: [] }
+const state = { status: USER_STATE.NONE, user: {}, confirmation: false, roles: [] }
 
 const mutations = {
   [SIGN_IN_SUCCESS] (state, payload) {
@@ -40,10 +40,10 @@ const mutations = {
     state.roles = {}
   },
   [SET_CONFIRMATION] (state, payload) {
-    state.confirmation = payload
+    state.confirmation = true
   },
   [REMOVE_CONFIRMATION] (state) {
-    state.confirmation = undefined
+    state.confirmation = false
   }
 }
 
@@ -87,7 +87,7 @@ const actions = {
         })
     })
   },
-  [ERROR_SOCIAL_SIGN_IN] ({ dispatch, commit }, payload) {
+  [ERROR_SOCIAL_SIGN_UP] ({ dispatch, commit }, payload) {
     return new Promise((resolve, reject) => {
       authService.errorSocialSignIn(payload.provider, payload.code, payload.errorDescription)
         .then(
@@ -101,7 +101,7 @@ const actions = {
     })
   },
   [CONFIRM_SIGN_UP] ({ dispatch, commit }, confirmSignUp) {
-    dispatch('request/' + SET_REQUEST, REQUEST.CONFIRM_SIGN_UP)
+    dispatch('request/' + SET_REQUEST, REQUEST.CONFIRM_SIGN_UP_START)
 
     return new Promise((resolve, reject) => {
       authService.confirmSignUpFinish(confirmSignUp)
@@ -200,9 +200,6 @@ const getters = {
       return state.status
     }
   },
-  getConfirmationEmail: state => {
-    return state.confirmation.email
-  },
   isConfirmation: state => {
     return state.confirmation
   },
@@ -214,9 +211,6 @@ const getters = {
   },
   getUser: state => {
     return state.user
-  },
-  getUserAccount: (state, getters) => {
-    return getters.getUser.userAccount
   },
   getUserId: (state, getters) => {
     return getters.getUser.id

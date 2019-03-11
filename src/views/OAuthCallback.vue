@@ -12,7 +12,7 @@ import { WELCOME, WELCOME_TITLE } from '../messages'
 import { getRedirectUri } from '../config'
 import ErrorCard from '../components/error/ErrorCard'
 import ProgressCircular from '../components/progress/ProgressCircular'
-import { SOCIAL_SIGN_UP, ERROR_SOCIAL_SIGN_IN } from '../store/action-types'
+import { SOCIAL_SIGN_UP, ERROR_SOCIAL_SIGN_UP } from '../store/action-types'
 
 export default {
   name: 'OAuthCallback',
@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     gotoSignIn () {
-      this.$router.push('/signIn')
+      this.$router.push('/signUp')
     },
     signIn () {
       this.error = false
@@ -62,17 +62,17 @@ export default {
             }
           )
       } else {
-        this.$store.dispatch(ERROR_SOCIAL_SIGN_IN, {
+        this.$store.dispatch(ERROR_SOCIAL_SIGN_UP, {
           provider: this.providerId,
           error: this.$route.query.error,
           errorDescription: this.$route.query.error_description
         })
           .then(
             response => {
-              that.$router.push('/signIn')
+              that.$router.push('/signUp')
             },
             e => {
-              that.$router.push('/signIn')
+              that.$router.push('/signUp')
             }
           )
       }

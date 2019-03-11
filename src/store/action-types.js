@@ -1,8 +1,8 @@
 export const SIGN_IN = 'SIGN_IN'
 
-export const SOCIAL_SIGN_UP = 'SOCIAL_SIGN_IN'
+export const SOCIAL_SIGN_UP = 'SOCIAL_SIGN_UP'
 
-export const ERROR_SOCIAL_SIGN_IN = 'ERROR_SOCIAL_SIGN_IN'
+export const ERROR_SOCIAL_SIGN_UP = 'ERROR_SOCIAL_SIGN_UP'
 
 export const CONFIRM_SIGN_UP = 'CONFIRM_SIGN_UP'
 
