@@ -10,7 +10,7 @@ import {
   SIGN_IN,
   SIGN_OUT,
   SIGN_UP,
-  SOCIAL_SIGN_IN,
+  SOCIAL_SIGN_UP,
   SET_REQUEST,
   CLEAR,
   SET_ERROR
@@ -68,15 +68,14 @@ const actions = {
         })
     })
   },
-  [SOCIAL_SIGN_IN] ({ dispatch, commit }, payload) {
-    dispatch('request/' + SET_REQUEST, REQUEST.SIGN_IN)
+  [SOCIAL_SIGN_UP] ({ dispatch, commit }, payload) {
+    dispatch('request/' + SET_REQUEST, REQUEST.SIGN_UP)
 
     return new Promise((resolve, reject) => {
-      authService.socialSignIn(payload.provider, payload.redirectUri, payload.code)
+      authService.socialSignUp(payload.provider, payload.redirectUri, payload.code)
         .then(
-          signInResponse => {
-            commit(SIGN_IN_SUCCESS, signInResponse.data)
-            resolve(signInResponse.data)
+          response => {
+            resolve(response)
           },
           e => {
             dispatch('alert/' + SET_ERROR, e)
@@ -101,11 +100,11 @@ const actions = {
         )
     })
   },
-  [CONFIRM_SIGN_UP] ({ dispatch, commit }, code) {
+  [CONFIRM_SIGN_UP] ({ dispatch, commit }, confirmSignUp) {
     dispatch('request/' + SET_REQUEST, REQUEST.CONFIRM_SIGN_UP)
 
     return new Promise((resolve, reject) => {
-      authService.confirmSignUp(code)
+      authService.confirmSignUpFinish(confirmSignUp)
         .then(
           response => {
             commit(SIGN_IN_SUCCESS, response.data)

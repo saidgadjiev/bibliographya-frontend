@@ -1,6 +1,6 @@
 export const SIGN_IN = 'SIGN_IN'
 
-export const SOCIAL_SIGN_IN = 'SOCIAL_SIGN_IN'
+export const SOCIAL_SIGN_UP = 'SOCIAL_SIGN_IN'
 
 export const ERROR_SOCIAL_SIGN_IN = 'ERROR_SOCIAL_SIGN_IN'
 

@@ -56,13 +56,32 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn
-            block
-            @click="signUp"
-            color="primary"
-            :loading="_isRequest(Request.SIGN_UP)"
-            :disabled="_isRequest(Request.SIGN_UP)"
-          >Зарегистрироваться</v-btn>
+          <v-layout row justify-center>
+            <v-flex xs12>
+              <v-btn
+                block
+                @click="signUp"
+                color="primary"
+                :loading="_isRequest(Request.SIGN_UP)"
+                :disabled="_isRequest(Request.SIGN_UP)"
+              >Зарегистрироваться</v-btn>
+            </v-flex>
+            <v-flex xs12>
+              <v-btn
+                class="white--text"
+                block
+                color="light-green darken-2"
+                @click="socialSignUp('vk')"
+              >
+                <v-icon
+                  left
+                  color="blue darken-3">
+                  fab fa-vk
+                </v-icon>
+                Продолжить с VK
+              </v-btn>
+            </v-flex>
+          </v-layout>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -73,6 +92,8 @@
 import alert from '../mixins/alert'
 import request from '../mixins/request'
 import { SIGN_UP } from '../store/action-types'
+import { getRedirectUri } from '../config'
+import authService from '../services/auth-service'
 
 export default {
   name: 'SignUpView',
@@ -109,6 +130,14 @@ export default {
     })
   },
   methods: {
+    socialSignUp (provider) {
+      authService.getOauthUrl(provider, getRedirectUri(provider))
+        .then(
+          response => {
+            window.location.href = response.data
+          }
+        )
+    },
     signUp () {
       let that = this
 

@@ -53,21 +53,6 @@
           >Регистрация
           </v-btn>
         </v-flex>
-        <v-flex xs12>
-          <v-btn
-            class="white--text"
-            block
-            color="light-green darken-2"
-            @click="auth('vk')"
-          >
-            <v-icon
-              left
-              color="blue darken-3">
-              fab fa-vk
-            </v-icon>
-            Войти через VK
-          </v-btn>
-        </v-flex>
         <v-flex shrink>
            <router-link class="bibliographya-a" to="/restore">Забыли пароль?</router-link>
         </v-flex>
@@ -80,8 +65,6 @@
 import alert from '../../mixins/alert'
 import request from '../../mixins/request'
 import { mapGetters } from 'vuex'
-import { getRedirectUri } from '../../config'
-import authService from '../../services/auth-service'
 import { SIGN_IN } from '../../store/action-types'
 
 export default {
@@ -120,14 +103,6 @@ export default {
     })
   },
   methods: {
-    auth (provider) {
-      authService.getOauthUrl(provider, getRedirectUri(provider))
-        .then(
-          response => {
-            window.location.href = response.data
-          }
-        )
-    },
     signIn () {
       let that = this
 

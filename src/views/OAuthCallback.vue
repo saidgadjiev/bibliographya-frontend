@@ -12,7 +12,7 @@ import { WELCOME, WELCOME_TITLE } from '../messages'
 import { getRedirectUri } from '../config'
 import ErrorCard from '../components/error/ErrorCard'
 import ProgressCircular from '../components/progress/ProgressCircular'
-import { SOCIAL_SIGN_IN, ERROR_SOCIAL_SIGN_IN } from '../store/action-types'
+import { SOCIAL_SIGN_UP, ERROR_SOCIAL_SIGN_IN } from '../store/action-types'
 
 export default {
   name: 'OAuthCallback',
@@ -40,7 +40,7 @@ export default {
       let that = this
 
       if (this.$route.query.code) {
-        this.$store.dispatch(SOCIAL_SIGN_IN, {
+        this.$store.dispatch(SOCIAL_SIGN_UP, {
           provider: this.providerId,
           code: this.$route.query.code,
           redirectUri: getRedirectUri(this.providerId)
