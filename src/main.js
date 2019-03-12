@@ -11,12 +11,15 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import VueLogger from 'vuejs-logger'
 import VueMoment from 'vue-moment'
 import moment from 'moment-timezone'
+import VueYandexMetrika from 'vue-yandex-metrika'
+import { METRIKA_ID } from './config'
 
 import store from './store/store'
 
 import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.css'
-import { SERVER_ERROR, INTERNET_ERROR } from './messages'
+import { INTERNET_ERROR, SERVER_ERROR } from './messages'
+
 moment.tz.setDefault('Europe/Moscow')
 require('moment/locale/ru')
 
@@ -55,6 +58,13 @@ const config = {
     }
   }
 }
+
+Vue.use(VueYandexMetrika, {
+  id: METRIKA_ID,
+  router: router,
+  env: process.env.NODE_ENV,
+  debug: true
+})
 
 Vue.use(VeeValidate, config)
 

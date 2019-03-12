@@ -108,3 +108,5 @@ export const PROVIDERS = {
 export default {
   ROLES
 }
+
+export const METRIKA_ID = 52534486

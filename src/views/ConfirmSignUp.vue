@@ -5,7 +5,7 @@
         <strong>Пожалуйста не покидайте страницу, иначе придется проходить процедуру регистрации заново.</strong>
       </v-flex>
     </v-layout>
-    <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
+    <v-stepper-header v-ifзфсл="$vuetify.breakpoint.mdAndUp">
       <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Почта</v-stepper-step>
 
       <v-divider></v-divider>
