@@ -10,13 +10,6 @@
           <span>{{ _usersStats.count }}</span>
         </div>
         <v-divider></v-divider>
-        <div style="color: #F9A825">
-          Количество пользователей по типу провайдера:
-          <div v-for="(count, providerId) in _usersStats.usersByProvider" :key="providerId">
-            <span>{{ providerName(providerId) }}</span> : <span>{{ count }}</span>
-          </div>
-        </div>
-        <v-divider></v-divider>
         <div style="color: #00E676">
           Количество биографий:
           <span>{{ _biographiesStats.count }}</span>
@@ -73,9 +66,6 @@ export default {
 
           }
         )
-    },
-    providerName (providerId) {
-      return PROVIDERS[providerId] || providerId
     }
   },
   created () {
