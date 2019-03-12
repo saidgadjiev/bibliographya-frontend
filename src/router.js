@@ -7,7 +7,7 @@ import ProfileSettings from './views/Settings'
 import ChangeEmail from './views/ChangeEmail'
 import SignIn from './views/SignInView'
 import SignUp from './views/SignUpView'
-import Confirm from './views/Confirm'
+import ConfirmSignUp from './views/ConfirmSignUp'
 import RestorePassword from './views/RestorePassword'
 import AdminSignIn from './views/AdminSignIn'
 import BiographyDetails from './views/BiographyDetails'
@@ -288,12 +288,12 @@ let router = new Router({
     {
       path: '/signUp/confirm',
       name: 'signUpConfirm',
-      component: Confirm,
+      component: ConfirmSignUp,
       beforeEnter: function (to, from, next) {
         store.dispatch(GET_CONFIRMATION)
           .then(
-            confirmation => {
-              if (confirmation) {
+            () => {
+              if (store.getters.isConfirmation) {
                 next()
               } else {
                 cancelRoute(from, next)

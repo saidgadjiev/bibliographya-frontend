@@ -39,7 +39,7 @@ const mutations = {
     state.user = {}
     state.roles = {}
   },
-  [SET_CONFIRMATION] (state, payload) {
+  [SET_CONFIRMATION] (state) {
     state.confirmation = true
   },
   [REMOVE_CONFIRMATION] (state) {
@@ -89,7 +89,7 @@ const actions = {
   },
   [ERROR_SOCIAL_SIGN_UP] ({ dispatch, commit }, payload) {
     return new Promise((resolve, reject) => {
-      authService.errorSocialSignIn(payload.provider, payload.code, payload.errorDescription)
+      authService.errorSocialSignUp(payload.provider, payload.code, payload.errorDescription)
         .then(
           response => {
             resolve(response)
@@ -101,7 +101,7 @@ const actions = {
     })
   },
   [CONFIRM_SIGN_UP] ({ dispatch, commit }, confirmSignUp) {
-    dispatch('request/' + SET_REQUEST, REQUEST.CONFIRM_SIGN_UP_START)
+    dispatch('request/' + SET_REQUEST, REQUEST.CONFIRM_SIGN_UP_FINISH)
 
     return new Promise((resolve, reject) => {
       authService.confirmSignUpFinish(confirmSignUp)
@@ -126,10 +126,10 @@ const actions = {
         .then(
           response => {
             if (response.status === HttpStatus.OK) {
-              commit(SET_CONFIRMATION, response.data)
+              commit(SET_CONFIRMATION)
             }
 
-            resolve(response.data)
+            resolve(response)
           },
           e => {
             reject(e)

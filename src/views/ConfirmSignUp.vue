@@ -1,5 +1,10 @@
 <template>
   <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
+    <v-layout row justify-center>
+      <v-flex shrink>
+        <strong>Пожалуйста не покидайте страницу, иначе придется проходить процедуру регистрации заново.</strong>
+      </v-flex>
+    </v-layout>
     <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
       <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Почта</v-stepper-step>
 
@@ -13,16 +18,10 @@
     </v-stepper-header>
 
     <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">
-      Изменение
+      Почта
     </v-stepper-step>
-
     <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
-      <v-layout row justify-center align-center v-if="_isRequest(Request.LOADING_EMAIL_SETTINGS)">
-        <v-flex shrink>
-          <progress-circular/>
-        </v-flex>
-      </v-layout>
-      <step-one v-else :step.sync="step" :email.sync="saveEmailForm.email" :current-email="currentEmail"/>
+      <step-one :step.sync="step" :email.sync="confirmForm.email"/>
     </v-stepper-content>
 
     <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">
@@ -31,7 +30,7 @@
 
     <v-stepper-content step="2" v-if="$vuetify.breakpoint.smAndDown">
       <confirm-code
-        :confirm="confirm"
+        :confirm="verify"
         :request="Request.CONFIRM_SIGN_UP_START"
         :email="confirmForm.email"
         :code.sync="confirmForm.code"
@@ -39,15 +38,17 @@
       />
     </v-stepper-content>
 
+    <v-stepper-step complete-icon="fas fa-check" step="3" v-if="$vuetify.breakpoint.smAndDown">Пароль</v-stepper-step>
+
+    <v-stepper-content step="3" v-if="$vuetify.breakpoint.smAndDown">
+      <step-three :email="confirmForm.email" :code="confirmForm.code"/>
+    </v-stepper-content>
+
     <v-stepper-items v-if="$vuetify.breakpoint.mdAndUp">
       <v-stepper-content step="1">
-        <v-layout row justify-center align-center v-if="_isRequest(Request.LOADING_EMAIL_SETTINGS)">
-          <v-flex shrink>
-            <progress-circular/>
-          </v-flex>
-        </v-layout>
-        <step-one v-else :step.sync="step" :email.sync="saveEmailForm.email" :current-email="currentEmail"/>
+        <step-one :step.sync="step" :email.sync="confirmForm.email"/>
       </v-stepper-content>
+
       <v-stepper-content step="2">
         <confirm-code
           :confirm="confirm"
@@ -57,65 +58,54 @@
           label="На вашу почту был отправлен код подтверждения регистрации."
         />
       </v-stepper-content>
+
+      <v-stepper-content step="3">
+        <step-three :email="confirmForm.email" :code="confirmForm.code"/>
+      </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
 </template>
 
 <script>
-import { CONFIRM_SIGN_UP } from '../store/action-types'
-import { WELCOME_TITLE, WELCOME, SERVER_ERROR } from '../messages'
 import ConfirmCode from '../components/auth/ConfirmCode'
-import { mapGetters } from 'vuex'
 import request from '../mixins/request'
+import StepOne from '../components/auth/confirm/StepOne'
+import { REQUEST } from '../config'
+import emailService from '../services/email-service'
+import StepThree from '../components/auth/restore/password/StepThree'
 
 export default {
-  name: 'Confirm',
+  name: 'ConfirmSignUp',
   mixins: [request],
-  components: { ConfirmCode },
+  components: { StepThree, StepOne, ConfirmCode },
   data () {
     return {
+      step: 1,
       confirmForm: {
         email: '',
         code: ''
       }
     }
   },
-  mounted () {
-    this.confirmForm.email = this.getConfirmationEmail
-  },
-  computed: {
-    ...mapGetters([
-      'getConfirmationEmail'
-    ])
-  },
   methods: {
-    confirm () {
+    verify () {
       let that = this
 
-      this.$store.dispatch(CONFIRM_SIGN_UP, this.confirmForm.code)
+      that.setRequest(REQUEST.VERIFY)
+
+      emailService.verify(this.confirmForm.email, this.confirmForm.code)
         .then(
-          user => {
-            that.$router.push('/')
-            if (user.isNew) {
-              that.$swal.fire({
-                title: WELCOME_TITLE,
-                text: WELCOME,
-                type: 'info',
-                showCloseButton: true
-              })
-            }
+          () => {
+            that.step = 3
           },
           e => {
-            if (e.response.status === this.HttpStatus.BAD_REQUEST) {
-              that.$swal.fire({
-                text: SERVER_ERROR,
-                type: 'error',
-                showCloseButton: true
-              })
-              that.$router.push('/')
+            if (e.response.status === that.HttpStatus.PRECONDITION_FAILED) {
+              that.setAlertError(e)
             }
           }
-        )
+        ).finally(() => {
+          that.clearRequest()
+        })
     }
   }
 }

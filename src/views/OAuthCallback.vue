@@ -47,7 +47,7 @@ export default {
         })
           .then(
             user => {
-              that.$router.push('/')
+              that.$router.push('/signUp/confirm')
               if (user.isNew) {
                 that.$swal.fire({
                   title: WELCOME_TITLE,
@@ -67,14 +67,9 @@ export default {
           error: this.$route.query.error,
           errorDescription: this.$route.query.error_description
         })
-          .then(
-            response => {
-              that.$router.push('/signUp')
-            },
-            e => {
-              that.$router.push('/signUp')
-            }
-          )
+          .finally(() => {
+            that.$router.push('/signUp')
+          })
       }
     }
   }

@@ -3,7 +3,7 @@
     <v-flex xs12 sm8 md6>
       <v-card class="elevation-12">
         <v-card-title primary-title style="justify-content: center">
-          <h3 class="headline font-weight-bold mb-0">Регистрация в Библиографии</h3>
+          <h3 class="headline font-weight-bold mb-0">Регистрация</h3>
         </v-card-title>
         <v-card-text>
           <v-form>
@@ -29,29 +29,6 @@
               label="Отчество"
               type="text"
               v-model="signUpForm.middleName"
-            ></v-text-field>
-            <v-text-field
-              class="mt-2"
-              v-validate="'required|email'"
-              v-model="signUpForm.email"
-              :error-messages="errors.collect('email')"
-              name="email"
-              label="Почта"
-              type="email"
-            ></v-text-field>
-            <div class="error--text word-break-all" v-if="_isError(HttpStatus.CONFLICT)">
-              Такой email уже занят выберите другой.&nbsp;<router-link class="bibliographya-a" to="/restore">Забыли пароль?</router-link>
-            </div>
-            <v-text-field
-              class="mt-2"
-              v-validate="'required'"
-              :error-messages="errors.collect('password')"
-              name="password"
-              label="Пароль"
-              v-model="signUpForm.password"
-              :append-icon="showPassword ? 'mdi-lock-open-outline' : 'mdi-lock-outline'"
-              :type="showPassword ? 'text' : 'password'"
-              @click:append="showPassword = !showPassword"
             ></v-text-field>
           </v-form>
         </v-card-text>
@@ -81,6 +58,9 @@
                 Продолжить с VK
               </v-btn>
             </v-flex>
+            <v-flex shrink>
+              <router-link class="bibliographya-a" to="/singIn">У меня уже есть аккаунт</router-link>
+            </v-flex>
           </v-layout>
         </v-card-actions>
       </v-card>
@@ -101,13 +81,10 @@ export default {
   data () {
     return {
       signUpForm: {
-        email: '',
-        password: '',
         firstName: '',
         lastName: '',
         middleName: ''
-      },
-      showPassword: false
+      }
     }
   },
   created () {
@@ -118,13 +95,6 @@ export default {
         },
         lastName: {
           required: () => 'Введите фамилию'
-        },
-        email: {
-          required: () => 'Введите почту',
-          email: () => 'Введите корректную почту'
-        },
-        password: {
-          required: () => 'Введите пароль'
         }
       }
     })

@@ -10,7 +10,7 @@ export default {
   getAccount,
   getOauthUrl,
   socialSignUp,
-  errorSocialSignIn,
+  errorSocialSignUp,
   confirmSignUpStart,
   confirmSignUpFinish,
   getConfirmation
@@ -40,8 +40,8 @@ function socialSignUp (provider, redirectUri, code) {
   return axios.post(getRestUrl('auth/signUp/' + provider) + '?code=' + code + '&redirectUri=' + redirectUri)
 }
 
-function errorSocialSignIn (provider, error, errorDescription) {
-  return axios.post(getRestUrl('auth/signIn/' + provider) + '?error=' + error + (errorDescription ? '&' + errorDescription : ''))
+function errorSocialSignUp (provider, error, errorDescription) {
+  return axios.post(getRestUrl('auth/signUp/' + provider) + '?error=' + error + (errorDescription ? '&' + errorDescription : ''))
 }
 
 function confirmSignUpStart (code) {
