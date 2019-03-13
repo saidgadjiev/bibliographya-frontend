@@ -75,9 +75,9 @@ export default {
 
       that.$validator.validate('password').then(result => {
         if (result) {
-          that.restoreForm.email = that.email
-          that.restoreForm.code = that.code
-          this.$store.dispatch(CONFIRM_SIGN_UP, this.confirmForm.code)
+          that.confirmForm.email = that.email
+          that.confirmForm.code = that.code
+          this.$store.dispatch(CONFIRM_SIGN_UP, this.confirmForm)
             .then(
               user => {
                 if (user.isNew) {

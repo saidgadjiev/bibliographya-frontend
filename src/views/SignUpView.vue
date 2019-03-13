@@ -33,7 +33,7 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-layout row justify-center>
+          <v-layout row justify-center wrap>
             <v-flex xs12>
               <v-btn
                 block

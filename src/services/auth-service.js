@@ -44,8 +44,8 @@ function errorSocialSignUp (provider, error, errorDescription) {
   return axios.post(getRestUrl('auth/signUp/' + provider) + '?error=' + error + (errorDescription ? '&' + errorDescription : ''))
 }
 
-function confirmSignUpStart (code) {
-  return axios.post(getRestUrl('auth/signUp/confirm-start') + '?code=' + code)
+function confirmSignUpStart (email) {
+  return axios.post(getRestUrl('auth/signUp/confirm-start') + '?email=' + email)
 }
 
 function confirmSignUpFinish (confirmSignUp) {

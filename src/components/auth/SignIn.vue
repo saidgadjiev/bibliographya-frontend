@@ -32,7 +32,7 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-layout row wrap justify-center align-center align-content-center>
+      <v-layout row wrap justify-center align-center>
         <v-flex xs12 :sm4="mode === 'auth'">
           <v-btn
             color="blue darken-3"
