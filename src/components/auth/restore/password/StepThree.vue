@@ -10,7 +10,7 @@
           name="email"
         ></v-text-field>
         <v-text-field
-          v-validate="'required'"
+          v-validate="'required|digits:6'"
           :error-messages="errors.collect('password')"
           :append-icon="showPassword ? 'mdi-lock-open-outline' : 'mdi-lock-outline'"
           :type="showPassword ? 'text' : 'password'"
@@ -42,7 +42,6 @@ import alert from '../../../../mixins/alert'
 import request from '../../../../mixins/request'
 import { REQUEST } from '../../../../config'
 import settingsService from '../../../../services/settings-service'
-import { mapGetters } from 'vuex'
 import { SERVER_ERROR, PASSWORD_CHANGE_SUCCESS } from '../../../../messages'
 
 export default {
@@ -66,7 +65,8 @@ export default {
     this.$validator.localize('ru', {
       custom: {
         password: {
-          required: () => 'Введите пароль'
+          required: () => 'Введите пароль',
+          digits: () => 'Пароль должен быть длиной 6 символов'
         }
       }
     })
