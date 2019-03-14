@@ -1,69 +1,72 @@
 <template>
-  <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
-    <v-layout row justify-center>
-      <v-flex shrink>
-        <strong>Пожалуйста не покидайте страницу, иначе придется проходить процедуру регистрации заново.</strong>
-      </v-flex>
-    </v-layout>
-    <v-stepper-header v-ifзфсл="$vuetify.breakpoint.mdAndUp">
-      <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Почта</v-stepper-step>
+  <v-layout row justify-center>
+    <v-flex xs12 sm8>
+      <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
+        <div class="pa-2">
+          <strong>Пожалуйста не покидайте эту страницу, иначе придется проходить процедуру регистрации заново.</strong>
+        </div>
+        <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
+          <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Почта</v-stepper-step>
 
-      <v-divider></v-divider>
+          <v-divider></v-divider>
 
-      <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2">Подтверждение</v-stepper-step>
+          <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2">Подтверждение</v-stepper-step>
 
-      <v-divider></v-divider>
+          <v-divider></v-divider>
 
-      <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2">Пароль</v-stepper-step>
-    </v-stepper-header>
+          <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2">Пароль</v-stepper-step>
+        </v-stepper-header>
 
-    <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">
-      Почта
-    </v-stepper-step>
-    <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
-      <step-one :step.sync="step" :email.sync="confirmForm.email"/>
-    </v-stepper-content>
+        <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">
+          Почта
+        </v-stepper-step>
+        <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
+          <step-one :step.sync="step" :email.sync="confirmForm.email"/>
+        </v-stepper-content>
 
-    <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">
-      Подтверждение
-    </v-stepper-step>
+        <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">
+          Подтверждение
+        </v-stepper-step>
 
-    <v-stepper-content step="2" v-if="$vuetify.breakpoint.smAndDown">
-      <confirm-code
-        :confirm="verify"
-        :request="Request.CONFIRM_SIGN_UP_START"
-        :email="confirmForm.email"
-        :code.sync="confirmForm.code"
-        label="На вашу почту был отправлен код подтверждения регистрации."
-      />
-    </v-stepper-content>
+        <v-stepper-content step="2" v-if="$vuetify.breakpoint.smAndDown">
+          <confirm-code
+            :confirm="verify"
+            :request="Request.VERIFY"
+            :email="confirmForm.email"
+            :code.sync="confirmForm.code"
+            label="На вашу почту был отправлен код подтверждения регистрации."
+          />
+        </v-stepper-content>
 
-    <v-stepper-step complete-icon="fas fa-check" step="3" v-if="$vuetify.breakpoint.smAndDown">Пароль</v-stepper-step>
+        <v-stepper-step complete-icon="fas fa-check" step="3" v-if="$vuetify.breakpoint.smAndDown">Пароль
+        </v-stepper-step>
 
-    <v-stepper-content step="3" v-if="$vuetify.breakpoint.smAndDown">
-      <step-three :email="confirmForm.email" :code="confirmForm.code"/>
-    </v-stepper-content>
+        <v-stepper-content step="3" v-if="$vuetify.breakpoint.smAndDown">
+          <step-three :email="confirmForm.email" :code="confirmForm.code"/>
+        </v-stepper-content>
 
-    <v-stepper-items v-if="$vuetify.breakpoint.mdAndUp">
-      <v-stepper-content step="1">
-        <step-one :step.sync="step" :email.sync="confirmForm.email"/>
-      </v-stepper-content>
+        <v-stepper-items v-if="$vuetify.breakpoint.mdAndUp">
+          <v-stepper-content step="1">
+            <step-one :step.sync="step" :email.sync="confirmForm.email"/>
+          </v-stepper-content>
 
-      <v-stepper-content step="2">
-        <confirm-code
-          :confirm="confirm"
-          :request="Request.CONFIRM_SIGN_UP_START"
-          :email="confirmForm.email"
-          :code.sync="confirmForm.code"
-          label="На вашу почту был отправлен код подтверждения регистрации."
-        />
-      </v-stepper-content>
+          <v-stepper-content step="2">
+            <confirm-code
+              :confirm="verify"
+              :request="Request.VERIFY"
+              :email="confirmForm.email"
+              :code.sync="confirmForm.code"
+              label="На вашу почту был отправлен код подтверждения регистрации."
+            />
+          </v-stepper-content>
 
-      <v-stepper-content step="3">
-        <step-three :email="confirmForm.email" :code="confirmForm.code"/>
-      </v-stepper-content>
-    </v-stepper-items>
-  </v-stepper>
+          <v-stepper-content step="3">
+            <step-three :email="confirmForm.email" :code="confirmForm.code"/>
+          </v-stepper-content>
+        </v-stepper-items>
+      </v-stepper>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -72,7 +75,7 @@ import request from '../mixins/request'
 import StepOne from '../components/auth/confirm/StepOne'
 import { REQUEST } from '../config'
 import emailService from '../services/email-service'
-import StepThree from '../components/auth/restore/password/StepThree'
+import StepThree from '../components/auth/confirm/StepThreeConfirmSignUp'
 
 export default {
   name: 'ConfirmSignUp',

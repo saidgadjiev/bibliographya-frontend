@@ -9,7 +9,6 @@ import SignIn from './views/SignInView'
 import SignUp from './views/SignUpView'
 import ConfirmSignUp from './views/ConfirmSignUp'
 import RestorePassword from './views/RestorePassword'
-import AdminSignIn from './views/AdminSignIn'
 import BiographyDetails from './views/BiographyDetails'
 import CategoriesAdmin from './views/CategoriesAdmin'
 import BugTracking from './views/BugTracking'
@@ -47,7 +46,7 @@ const waitForAccount = function (callback) {
 }
 
 const cancelRoute = function (from, next) {
-  if (from.name) {
+  if (from.name && from.name !== 'signUpConfirm') {
     next(false)
   } else {
     next('/categories')
@@ -321,12 +320,6 @@ let router = new Router({
       meta: {
         layout: LAYOUTS.AUTH_LAYOUT
       }
-    },
-    {
-      path: '/admin',
-      name: 'admin',
-      component: AdminSignIn,
-      beforeEnter: ifNotAuthenticated
     },
     {
       path: '/statistics',

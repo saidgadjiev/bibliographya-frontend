@@ -10,7 +10,7 @@
           name="email"
         ></v-text-field>
         <v-text-field
-          v-validate="'required'"
+          v-validate="'required|min:6'"
           :error-messages="errors.collect('password')"
           :append-icon="showPassword ? 'mdi-lock-open-outline' : 'mdi-lock-outline'"
           :type="showPassword ? 'text' : 'password'"
@@ -44,7 +44,7 @@ import { SERVER_ERROR, WELCOME_TITLE, WELCOME } from '../../../messages'
 import { CONFIRM_SIGN_UP } from '../../../store/action-types'
 
 export default {
-  name: 'StepThree',
+  name: 'StepThreeConfirmSignUp',
   mixins: [alert, request],
   data () {
     return {
@@ -64,7 +64,8 @@ export default {
     this.$validator.localize('ru', {
       custom: {
         password: {
-          required: () => 'Введите пароль'
+          required: () => 'Введите пароль',
+          min: () => 'Пароль слишком короткий. Используйте хотя бы 6 символов.'
         }
       }
     })
@@ -75,9 +76,9 @@ export default {
 
       that.$validator.validate('password').then(result => {
         if (result) {
-          that.restoreForm.email = that.email
-          that.restoreForm.code = that.code
-          this.$store.dispatch(CONFIRM_SIGN_UP, this.confirmForm.code)
+          that.confirmForm.email = that.email
+          that.confirmForm.code = that.code
+          this.$store.dispatch(CONFIRM_SIGN_UP, this.confirmForm)
             .then(
               user => {
                 if (user.isNew) {

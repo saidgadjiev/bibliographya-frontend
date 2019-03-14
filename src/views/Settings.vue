@@ -21,7 +21,7 @@
             </router-link>
             </div>
             <v-text-field
-              v-validate="'required'"
+              v-validate="'required|min:6'"
               :error-messages="errors.collect('newPassword')"
               :append-icon="showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
               :type="showNewPassword ? 'text' : 'password'"
@@ -108,7 +108,8 @@ export default {
           required: () => 'Введите старый пароль'
         },
         newPassword: {
-          required: () => 'Введите новый пароль'
+          required: () => 'Введите новый пароль',
+          min: () => 'Пароль слишком короткий. Используйте хотя бы 6 символов.'
         }
       }
     })
