@@ -13,7 +13,7 @@
           name="email"
         ></v-text-field>
         <v-text-field
-          v-validate="'required|digits:6'"
+          v-validate="'required|digits:4'"
           v-model="_code"
           :error-messages="errors.collect('code')"
           label="Код"

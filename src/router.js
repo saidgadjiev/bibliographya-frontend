@@ -46,7 +46,7 @@ const waitForAccount = function (callback) {
 }
 
 const cancelRoute = function (from, next) {
-  if (from.name) {
+  if (from.name && from.name !== 'signUpConfirm') {
     next(false)
   } else {
     next('/categories')

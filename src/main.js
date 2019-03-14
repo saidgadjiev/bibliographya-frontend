@@ -106,8 +106,6 @@ axios.interceptors.response.use(function (response) {
     }
   }
 
-  Vue.$log.error(err)
-
   return Promise.reject(err)
 })
 

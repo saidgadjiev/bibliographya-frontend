@@ -10,7 +10,7 @@
           name="email"
         ></v-text-field>
         <v-text-field
-          v-validate="'required|digits:6'"
+          v-validate="'required|min:6'"
           :error-messages="errors.collect('password')"
           :append-icon="showPassword ? 'mdi-lock-open-outline' : 'mdi-lock-outline'"
           :type="showPassword ? 'text' : 'password'"
@@ -66,7 +66,7 @@ export default {
       custom: {
         password: {
           required: () => 'Введите пароль',
-          digits: () => 'Пароль должен быть длиной 6 символов'
+          min: () => 'Пароль слишком короткий. Используйте хотя бы 6 символов.'
         }
       }
     })

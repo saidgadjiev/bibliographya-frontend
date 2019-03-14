@@ -3,7 +3,7 @@
     <v-flex xs12 sm8>
       <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
         <div class="pa-2">
-          <strong>Пожалуйста не покидайте страницу, иначе придется проходить процедуру регистрации заново.</strong>
+          <strong>Пожалуйста не покидайте эту страницу, иначе придется проходить процедуру регистрации заново.</strong>
         </div>
         <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
           <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Почта</v-stepper-step>
@@ -75,7 +75,7 @@ import request from '../mixins/request'
 import StepOne from '../components/auth/confirm/StepOne'
 import { REQUEST } from '../config'
 import emailService from '../services/email-service'
-import StepThree from '../components/auth/confirm/StepThree'
+import StepThree from '../components/auth/confirm/StepThreeConfirmSignUp'
 
 export default {
   name: 'ConfirmSignUp',
