@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <bug-fix-title v-bind="$attrs" class="pb-0"/>
-    <v-card-title class>
+    <v-card-title>
       <h2>{{ theme }}</h2>
     </v-card-title>
     <v-card-text class="pt-0">

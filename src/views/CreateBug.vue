@@ -2,7 +2,7 @@
     <v-card>
       <alert-message :types="['alert-success']"/>
       <v-card-title>
-        <div v-html="_message"></div>
+        <div class="pa-3" v-html="_message"></div>
       </v-card-title>
       <v-card-text>
         <v-form>

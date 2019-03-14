@@ -115,12 +115,10 @@ export default {
             that.$emit('update:moderationInfo', response.data.moderationInfo)
             that.$emit('update:moderationStatus', response.data.moderationStatus)
             that.$emit('update:actions', response.data.actions)
-            that.loading = false
-          },
-          e => {
-            that.loading = false
           }
-        )
+        ).finally(() => {
+          that.loading = false
+        })
     },
     complete () {
       let that = this

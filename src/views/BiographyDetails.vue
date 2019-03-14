@@ -1,5 +1,5 @@
 <template>
-  <v-layout row fill-height="true" justify-center>
+  <v-layout row fill-height justify-center>
     <v-flex shrink v-if="biographyLoading">
       <progress-circular/>
     </v-flex>
