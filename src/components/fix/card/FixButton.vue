@@ -113,6 +113,7 @@ export default {
           response => {
             that.$emit('update:actions', response.data.actions)
             that.$emit('update:info', response.data.info)
+            that.$emit('update:status', response.data.status)
             that.loading = false
           },
           e => {

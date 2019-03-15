@@ -1,6 +1,9 @@
 <template>
-  <v-layout row fill-height>
-    <v-flex xs12 sm8>
+  <v-layout row fill-height justify-center>
+    <v-flex shrink v-if="settingsLoading">
+      <progress-circular/>
+    </v-flex>
+    <v-flex xs12 md8 v-else>
       <v-card>
         <alert-message :types="alertTypes"/>
         <v-card-text class="pb-0">
@@ -71,6 +74,8 @@
         </v-card-actions>
       </v-card>
     </v-flex>
+    <v-flex md4 v-if="$vuetify.breakpoint.mdAndUp">
+    </v-flex>
   </v-layout>
 </template>
 
@@ -81,13 +86,15 @@ import settingsService from '../services/settings-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import { PASSWORD_CHANGE_SUCCESS } from '../messages'
 import { REQUEST } from '../config'
+import ProgressCircular from '../components/progress/ProgressCircular'
 
 export default {
   name: 'Settings',
   mixins: [alert, request],
-  components: { AlertMessage },
+  components: { ProgressCircular, AlertMessage },
   data () {
     return {
+      settingsLoading: true,
       showOldPassword: false,
       showNewPassword: false,
       alertTypes: ['alert-success'],
@@ -125,7 +132,9 @@ export default {
             that.settings.email = response.data.email
             that.settings.emailVerified = response.data.emailVerified
           }
-        )
+        ).finally(() => {
+          that.settingsLoading = false
+        })
     },
     resetSavePasswordForm () {
       this.savePasswordForm.oldPassword = ''

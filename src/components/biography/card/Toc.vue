@@ -128,9 +128,17 @@ export default {
 
           olElement.children.push(liElement)
 
-          html.push(olElement)
+          let peek = elementStack[elementStack.length - 1]
+
+          if (peek) {
+            peek.children.push(olElement)
+          }
+
           elementStack.push(liElement)
+        } else if (prevLevel > h.level) {
+          elementStack.pop()
         }
+
         let peek = elementStack[elementStack.length - 1]
 
         if (that.mode === BIOGRAPHY_CARD_MODE.READ) {
@@ -152,6 +160,8 @@ export default {
             }
           }, h.title))
         }
+
+        prevLevel = h.level
       }
 
       return html

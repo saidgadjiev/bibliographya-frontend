@@ -51,7 +51,7 @@ export default {
       }
     },
     _isMarked () {
-      return this.userId && this.publishStatus === PUBLISH_STATUS.PUBLISHED
+      return this.userId
     },
     _fullName () {
       let full = this.lastName + ' ' + this.firstName

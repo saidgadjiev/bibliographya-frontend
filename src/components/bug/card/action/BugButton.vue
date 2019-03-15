@@ -112,12 +112,11 @@ export default {
           response => {
             that.$emit('update:actions', response.data.actions)
             that.$emit('update:info', response.data.info)
-            that.loading = false
-          },
-          e => {
-            that.loading = false
+            that.$emit('update:status', response.data.status)
           }
-        )
+        ).finally(() => {
+          that.loading = false
+        })
     },
     complete () {
       let that = this

@@ -2,8 +2,8 @@
   <v-layout row justify-center>
     <v-flex xs12 sm8>
       <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
-        <div class="pa-2">
-          <strong>Пожалуйста не покидайте эту страницу, иначе придется проходить процедуру регистрации заново.</strong>
+        <div class="pa-5">
+          <h3>Пожалуйста не покидайте эту страницу, иначе придется проходить процедуру регистрации заново.</h3>
         </div>
         <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
           <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Почта</v-stepper-step>
