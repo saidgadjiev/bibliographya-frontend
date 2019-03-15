@@ -67,11 +67,11 @@ export default {
       loadingImage: true,
       file: undefined,
       previewImagePath: undefined,
-      currentImagePath: 'image-placeholder.jpg',
+      currentImagePath: '',
       form: {
         id: '',
         name: '',
-        imagePath: 'image-placeholder.jpg'
+        imagePath: ''
       }
     }
   },
@@ -100,9 +100,6 @@ export default {
       if (this.previewImagePath) {
         return this.previewImagePath
       }
-      if (this.form.imagePath === 'image-placeholder.jpg') {
-        return '/image-placeholder.jpg'
-      }
 
       return fileService.getCategoryResourceUrl(this.form.imagePath)
     }
@@ -112,7 +109,7 @@ export default {
       this.resetFile()
       this.form.id = ''
       this.form.name = ''
-      this.form.imagePath = 'image-placeholder.jpg'
+      this.form.imagePath = ''
       this.$validator.reset()
     },
     save () {
@@ -124,61 +121,42 @@ export default {
 
           if (that._isEdit) {
             that.saving = true
+            let formData = new FormData()
 
-            biographyCategoryService.edit(that.categoryId, {
-              name: that.form.name,
-              imagePath: that.currentImagePath
-            })
-              .then(
-                () => {
-                  if (that.file) {
-                    return new Promise(resolve => {
-                      fileService.uploadCategoryResource(that.categoryId, that.file)
-                        .then(
-                          response => {
-                            resolve(response.data.path)
-                          }
-                        )
-                    })
-                  }
+            formData.set('data', JSON.stringify({ name: that.form.name }))
 
-                  return Promise.resolve(that.currentImagePath)
-                }
-              )
+            if (that.file) {
+              formData.append('file', that.file)
+            }
+
+            biographyCategoryService.edit(that.categoryId, formData)
               .then(
-                path => {
-                  that.form.imagePath = path
+                response => {
+                  that.form.imagePath = response.data.imagePath
                   that.setAlertSuccess(CATEGORY_CHANGED)
                   that.saving = false
                   that.resetFile()
                 }
-              )
-              .catch(e => {
+              ).finally(() => {
                 that.saving = false
               })
           } else {
-            biographyCategoryService.create({
-              name: that.form.name,
-              imagePath: 'image-placeholder.jpg'
-            })
-              .then(
-                response => {
-                  return response.data
-                }
-              )
-              .then(
-                category => {
-                  return fileService.uploadCategoryResource(category.id, that.file)
-                }
-              )
+            let formData = new FormData()
+
+            formData.set('data', JSON.stringify({ name: that.form.name }))
+
+            if (that.file) {
+              formData.append('file', that.file)
+            }
+
+            biographyCategoryService.create(formData)
               .then(
                 () => {
                   that.resetForm()
                   that.setAlertSuccess(CATEGORY_CREATED)
                   that.saving = false
                 }
-              )
-              .catch(e => {
+              ).finally(() => {
                 that.saving = false
               })
           }

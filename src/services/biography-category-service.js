@@ -30,9 +30,19 @@ function remove (categoryId) {
 }
 
 function edit (id, category) {
-  return axios.put(getRestUrl('categories/' + id), category)
+  return axios({
+    method: 'post',
+    data: category,
+    url: getRestUrl('categories/' + id),
+    config: { headers: { 'Content-Type': 'multipart/form-data' } }
+  })
 }
 
 function create (category) {
-  return axios.post(getRestUrl('categories'), category)
+  return axios({
+    method: 'post',
+    data: category,
+    url: getRestUrl('categories'),
+    config: { headers: { 'Content-Type': 'multipart/form-data' } }
+  })
 }

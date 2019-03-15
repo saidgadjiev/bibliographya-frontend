@@ -56,10 +56,6 @@ export default {
   },
   computed: {
     imageSrc () {
-      if (this.category.imagePath === 'image-placeholder.jpg') {
-        return '/image-placeholder.jpg'
-      }
-
       return fileService.getCategoryResourceUrl(this.category.imagePath)
     }
   }
