@@ -34,6 +34,9 @@
                    v-on:change="handleFileUpload()"/>
             <v-btn block @click="selectFile" class="primary">Загрузить картинку</v-btn>
             <v-btn v-if="file" block color="red darken-3" @click="resetFile" class="white--text">Сбросить</v-btn>
+            <div class="error--text word-break-all" v-if="!_isEdit && !file">
+              Выберите картинку
+            </div>
           </v-form>
         </v-card-text>
         <v-card-actions style="justify-content: center">
@@ -55,6 +58,7 @@ import AlertMessage from '../components/alert/AlertMessage'
 import { CATEGORY_CREATED, CATEGORY_CHANGED } from '../messages'
 import alert from '../mixins/alert'
 import ProgressCircular from '../components/progress/ProgressCircular'
+import { DEFAULT_IMG_PATH } from '../rest'
 
 export default {
   name: 'CategoryCard',
@@ -99,6 +103,10 @@ export default {
     _imageSrc () {
       if (this.previewImagePath) {
         return this.previewImagePath
+      }
+
+      if (!this._isEdit) {
+        return fileService.getCategoryResourceUrl(DEFAULT_IMG_PATH)
       }
 
       return fileService.getCategoryResourceUrl(this.form.imagePath)

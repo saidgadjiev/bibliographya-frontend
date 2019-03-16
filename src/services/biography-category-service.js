@@ -1,4 +1,4 @@
-import { getRestUrl } from '../config'
+import { getRestUrl } from '../rest'
 
 const axios = require('axios')
 
@@ -31,7 +31,7 @@ function remove (categoryId) {
 
 function edit (id, category) {
   return axios({
-    method: 'post',
+    method: 'put',
     data: category,
     url: getRestUrl('categories/' + id),
     config: { headers: { 'Content-Type': 'multipart/form-data' } }

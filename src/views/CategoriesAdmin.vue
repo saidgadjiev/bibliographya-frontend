@@ -69,23 +69,12 @@ export default {
 
       biographyCategoryService.remove(category.id)
         .then(
-          response => {
-            return response
-          }
-        )
-        .then(
-          () => {
-            return fileService.deleteCategoryResource(category.imagePath)
-          }
-        )
-        .then(
           () => {
             ++that.deleteId
             that.deleteIndex = index
-            that.removeLoading = false
           }
         )
-        .catch(e => {
+        .finally(() => {
           that.removeLoading = false
         })
     },

@@ -1,4 +1,4 @@
-import { getRestUrl } from '../config'
+import { getRestUrl } from '../rest'
 
 const axios = require('axios')
 
