@@ -21,6 +21,9 @@
 import Clamp from './HtmlClamp'
 import Toc from './Toc'
 import cyrillicToTranslit from 'cyrillic-to-translit-js'
+import { BIOGRAPHY_CARD_MODE } from '../../../config'
+
+let htmlparser = require('htmlparser2')
 
 export default {
   name: 'BiographyCardText',
@@ -31,6 +34,10 @@ export default {
     }
   },
   props: {
+    mode: {
+      type: String,
+      default: BIOGRAPHY_CARD_MODE.LIST
+    },
     biography: {
       type: String,
       default: ''
@@ -51,7 +58,11 @@ export default {
       let children = this.$refs.biography.$el.children[0].children
       let headers = []
 
-      this.getHeaders(children, headers, this.guid(''))
+      if (this.mode === BIOGRAPHY_CARD_MODE.READ) {
+        this.getHeadersForRead(children, headers, this.guid(''))
+      } else {
+        this.getHeadersForList(this.biography, headers, this.guid(''))
+      }
 
       this.tocHeaders = headers
     }
@@ -63,14 +74,42 @@ export default {
         return prefix + counter++
       }
     },
-    getHeaders (root, headers, guid) {
+    getHeadersForList (source, headers, guid) {
+      let currentNode = {}
+
+      let parser = new htmlparser.Parser({
+        onopentag: function (name, attribs) {
+          if (/^h[1-9]$/i.test(name)) {
+            currentNode.level = parseInt(name.replace(/^H/i, ''), 10)
+          }
+        },
+        ontext: function (text) {
+          if (currentNode.level) {
+            currentNode.title = text
+          }
+        },
+        onclosetag: function (tagname) {
+          if (/^h[1-9]$/i.test(tagname)) {
+            currentNode.id = cyrillicToTranslit().transform(currentNode.title, '_') + '_' + guid()
+
+            headers.push(currentNode)
+            currentNode = {}
+          }
+        }
+      }, { decodeEntities: true })
+      parser.write(source)
+      parser.end()
+
+      return headers
+    },
+    getHeadersForRead (root, headers, guid) {
       for (let i = 0; i < root.length; ++i) {
         let child = root[i]
 
         if (/^h[1-9]$/i.test(child.localName)) {
           let level = parseInt(child.nodeName.replace(/^H/i, ''), 10)
           let text = child.textContent
-          let id = guid() + '_' + cyrillicToTranslit().transform(text, '_')
+          let id = cyrillicToTranslit().transform(text, '_') + '_' + guid()
 
           let node = {
             id: id,
@@ -83,7 +122,7 @@ export default {
         }
 
         if (child.children.length > 0) {
-          this.getHeaders(child.children, headers)
+          this.getHeadersForRead(child.children, headers)
         }
       }
 
@@ -95,7 +134,8 @@ export default {
       return Object.assign({},
         this.$attrs,
         {
-          id: this.id
+          id: this.id,
+          mode: this.mode
         }
       )
     },

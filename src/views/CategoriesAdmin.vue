@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import fileService from '../services/file-service'
 import biographyCategoryService from '../services/biography-category-service'
 import List from '../components/list/List'
 import CategoryCard from '../components/category/CategoryCard'

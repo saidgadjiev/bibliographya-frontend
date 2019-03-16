@@ -40,7 +40,12 @@ export default {
   inheritAttrs: false,
   data () {
     return {
-      availableMore: false
+      availableMore: false,
+      options: {
+        duration: 300,
+        offset: 0,
+        easing: 'easeInOutCubic'
+      }
     }
   },
   props: {
@@ -74,6 +79,15 @@ export default {
     showPublishBlock: {
       type: Boolean,
       default: false
+    }
+  },
+  mounted () {
+    let that = this
+
+    if (this.$route.hash) {
+      this.$nextTick(function () {
+        that.$vuetify.goTo(that.$route.hash, that.options)
+      })
     }
   },
   computed: {

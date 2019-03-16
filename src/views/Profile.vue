@@ -7,6 +7,7 @@
       <alert-message :types="['alert-success']"/>
       <biography-card
         v-bind.sync="biography"
+        mode="read"
         show-publish-block
         show-comments
       ></biography-card>

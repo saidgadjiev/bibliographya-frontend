@@ -8,7 +8,12 @@ export default {
     return {
       treeClamped: true,
       toc: '',
-      clampedToc: ''
+      clampedToc: '',
+      options: {
+        duration: 300,
+        offset: 0,
+        easing: 'easeInOutCubic'
+      }
     }
   },
   props: {
@@ -34,6 +39,13 @@ export default {
     }
   },
   methods: {
+    goTo (selector) {
+      let that = this
+
+      this.$nextTick(function () {
+        that.$vuetify.goTo(selector, that.options)
+      })
+    },
     getMinLevel (headers) {
       let i
       let minLevel = 9
@@ -110,44 +122,89 @@ export default {
     function renderToc () {
       let headers = that.headers
 
+      if (!headers.length) {
+        return
+      }
+
+      if (that._clamped && headers.length > that.treeClampSize) {
+        headers = headers.slice(0, that.treeClampSize)
+      }
       let i, h
       let prevLevel = that.getMinLevel(headers) - 1
       let html = []
-      let elementStack = []
+      let liElementStack = []
+      let olElementStack = []
+      let levelStack = []
 
       for (i = 0; i < headers.length; i++) {
         h = headers[i]
-        h.element.setAttribute('id', h.id)
-        if (prevLevel === h.level) {
-          let element = createElement('li')
+        if (that.mode === BIOGRAPHY_CARD_MODE.READ) {
+          h.element.setAttribute('id', h.id)
+        }
 
-          html.push(element)
+        if (prevLevel === h.level) {
+          let liElement = createElement('li', {}, [])
+
+          let peek = olElementStack[olElementStack.length - 1]
+
+          peek.children.push(liElement)
+          liElementStack.push(liElement)
+          levelStack.push(h.level)
         } else if (prevLevel < h.level) {
           let olElement = createElement('ol', {}, [])
           let liElement = createElement('li', {}, [])
 
           olElement.children.push(liElement)
 
-          let peek = elementStack[elementStack.length - 1]
+          if (html.length === 0) {
+            html.push(olElement)
+          }
 
-          if (peek) {
+          if (liElementStack.length > 0) {
+            let peek = liElementStack[liElementStack.length - 1]
+
             peek.children.push(olElement)
           }
 
-          elementStack.push(liElement)
+          liElementStack.push(liElement)
+          olElementStack.push(olElement)
+          levelStack.push(h.level)
         } else if (prevLevel > h.level) {
-          elementStack.pop()
+          let currentPeekLevel = levelStack[levelStack.length - 1]
+          let prevPeekLevel = currentPeekLevel
+
+          while (currentPeekLevel >= h.level && levelStack.length > 0) {
+            levelStack.pop()
+            liElementStack.pop()
+            if (prevPeekLevel > currentPeekLevel) {
+              olElementStack.pop()
+            }
+
+            prevPeekLevel = currentPeekLevel
+            currentPeekLevel = levelStack[levelStack.length - 1]
+          }
+
+          let liElement = createElement('li', {}, [])
+
+          let peekOl = olElementStack[olElementStack.length - 1]
+
+          peekOl.children.push(liElement)
+          liElementStack.push(liElement)
+          levelStack.push(h.level)
         }
 
-        let peek = elementStack[elementStack.length - 1]
+        let peek = liElementStack[liElementStack.length - 1]
+        let id = h.id
 
         if (that.mode === BIOGRAPHY_CARD_MODE.READ) {
-          peek.children.push(createElement('router-link', {
+          peek.children.push(createElement('a', {
             class: {
               'bibliographya-a': true
             },
-            attrs: {
-              to: '#' + h.id
+            on: {
+              click (e) {
+                that.goTo('#' + id)
+              }
             }
           }, h.title))
         } else {
@@ -156,7 +213,7 @@ export default {
               'bibliographya-a': true
             },
             attrs: {
-              to: '/biographies/' + that.id + '#' + h.id
+              to: '/biographies/' + that.id + '#' + id
             }
           }, h.title))
         }
@@ -170,7 +227,8 @@ export default {
     return createElement('div', {}, [
       createElement('div', {
         class: {
-          'toc': true
+          'toc': true,
+          'word-break-all': true
         }
       }, renderToc()),
       renderTemplate()
