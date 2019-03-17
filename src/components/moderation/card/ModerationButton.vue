@@ -21,7 +21,7 @@
 
 <script>
 import biographyModerationService from '../../../services/biography-moderation-service'
-import { MODERATION_BUTTONS } from '../../../config'
+import { MODERATION_BUTTON } from '../../../config'
 import TextareaDialog from '../../dialog/TextareaDialog'
 
 export default {
@@ -29,7 +29,8 @@ export default {
   components: { TextareaDialog },
   data () {
     return {
-      okFunction: () => {},
+      okFunction: () => {
+      },
       dialogVisible: false,
       loading: false
     }
@@ -52,12 +53,15 @@ export default {
   methods: {
     doAction () {
       switch (this.action.name) {
-        case MODERATION_BUTTONS.ASSIGN_ME:
+        case MODERATION_BUTTON.ASSIGN_ME:
           this.assignMe()
           break
-        case MODERATION_BUTTONS.REJECT:
+        case MODERATION_BUTTON.REJECT:
           this.okFunction = this.reject
           this.dialogVisible = true
+          break
+        case MODERATION_BUTTON.USER_PENDING:
+          this.okFunction = this.userComplete
           break
         default:
           this.complete()
@@ -141,6 +145,23 @@ export default {
             that.loading = false
           }
         )
+    },
+    userComplete () {
+      let that = this
+
+      that.loading = true
+      biographyModerationService.userComplete(this.id, {
+        signal: this.action.signal,
+        status: this.moderationStatus
+      })
+        .then(
+          response => {
+            that.$emit('update:moderationStatus', response.data.moderationStatus)
+            that.$emit('update:actions', response.data.actions)
+          }
+        ).finally(() => {
+          that.loading = false
+        })
     }
   }
 }

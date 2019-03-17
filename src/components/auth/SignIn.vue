@@ -33,7 +33,7 @@
     </v-card-text>
     <v-card-actions>
       <v-layout row wrap justify-center align-center>
-        <v-flex xs12 :sm4="mode === 'auth'">
+        <v-flex xs12 :md4="mode === 'auth'">
           <v-btn
             color="blue darken-3"
             class="white--text"
@@ -44,7 +44,7 @@
           >Войти
           </v-btn>
         </v-flex>
-        <v-flex xs12 :sm8="mode === 'auth'">
+        <v-flex xs12 :md8="mode === 'auth'">
           <v-btn
             block
             class="white--text"

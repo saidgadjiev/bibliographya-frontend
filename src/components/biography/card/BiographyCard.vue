@@ -12,9 +12,8 @@
     <biography-card-text v-if="_showBiography" v-bind="_attrs"/>
     <v-divider v-if="_showBiography"></v-divider>
     <biography-card-actions v-bind="_attrs" v-on="$listeners"/>
-    <biography-card-user-actions v-if="showUserActions" class="pt-0" v-bind="$attrs" v-on="$listeners"/>
     <biography-moderation-card-actions v-if="showModerationActions" v-bind="$attrs" v-on="$listeners"/>
-    <comments
+    <biography-comments
       v-if="showComments"
       v-bind="_attrs"
       v-on="listeners"
@@ -26,14 +25,11 @@
 import BiographyCardActions from './BiographyCardActions'
 import BiographyCardTitle from './BiographyCardTitle'
 import BiographyCardText from './BiographyCardText'
-import Comments from '../../comment/Comments'
-import likeService from '../../../services/like-service'
-import bigraphyCommentService from '../../../services/biography-comment-service'
 import BiographyCardPublishTitle from './BiographyCardPublishTitle'
-import BiographyCardUserActions from '../../moderation/card/BiographyCardUserActions'
 import BiographyCardTitleModeration from '../../moderation/card/BiographyCardTitleModeration'
 import BiographyModerationCardActions from '../../moderation/card/BiographyModerationCardActions'
 import BiographyCardSecondaryTitle from './BiographyCardSecondaryTitle'
+import BiographyComments from './BiographyComments'
 
 export default {
   name: 'BiographyCard',
@@ -100,9 +96,6 @@ export default {
         {
           commentsCount: this.commentsCount,
           likesCount: this.likesCount,
-          like: this.like,
-          unlike: this.unlike,
-          addComment: this.addComment,
           availableMore: this.availableMore,
           biography: this.biography
         }
@@ -121,24 +114,12 @@ export default {
       )
     }
   },
-  methods: {
-    addComment (biographyId, comment) {
-      return bigraphyCommentService.addComment(biographyId, comment)
-    },
-    like (id) {
-      return likeService.like(id)
-    },
-    unlike (id) {
-      return likeService.unlike(id)
-    }
-  },
   components: {
+    BiographyComments,
     BiographyCardSecondaryTitle,
     BiographyModerationCardActions,
     BiographyCardTitleModeration,
-    BiographyCardUserActions,
     BiographyCardPublishTitle,
-    Comments,
     BiographyCardActions,
     BiographyCardTitle,
     BiographyCardText

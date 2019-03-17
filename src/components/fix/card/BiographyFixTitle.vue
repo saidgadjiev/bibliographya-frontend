@@ -56,6 +56,8 @@ export default {
   computed: {
     _fixStatus () {
       switch (this.status) {
+        case FIX_STATUS.IGNORED:
+          return 'Закрыто без исправления'
         case FIX_STATUS.PENDING:
           return 'В обработке'
         case FIX_STATUS.CLOSED:

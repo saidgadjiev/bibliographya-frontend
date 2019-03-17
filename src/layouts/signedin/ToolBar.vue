@@ -36,6 +36,7 @@
       <v-menu
         min-width="200px"
         offset-y
+        left
         origin="center center"
         transition="scale-transition"
       >
@@ -87,14 +88,12 @@ export default {
   },
   methods: {
     signOut () {
+      this.$router.push('/signIn')
+
       this.$store.dispatch(SIGN_OUT)
         .then(
-          () => {
-            this.$router.push('/signIn')
-          },
-          e => {
-            console.log(e)
-          }
+          () => {},
+          e => {}
         )
     }
   }

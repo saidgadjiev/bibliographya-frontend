@@ -9,7 +9,7 @@
           <slot name="item" v-bind:item="item" v-bind:index="index">
           </slot>
         </v-flex>
-        <v-flex md6 xs12 align>
+        <v-flex md6 xs12>
           <infinite-loading style="width: 100%;" :identifier="infiniteId" @infinite="load">
             <template slot="spinner">
               <progress-circular/>
@@ -180,6 +180,10 @@ export default {
     },
     deleteId () {
       this.items.splice(this.deleteIndex, 1)
+
+      if (this.items.length === 0) {
+        this.$emit('update:infiniteId', this.infiniteId + 1)
+      }
     },
     resetId () {
       if (this.activeRequest) {

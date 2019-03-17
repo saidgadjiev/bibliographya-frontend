@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-flex xs12 sm8>
+    <v-flex xs12 md8>
       <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
         <div class="pa-5">
           <h3>Пожалуйста не покидайте эту страницу, иначе придется проходить процедуру регистрации заново.</h3>
@@ -72,6 +72,7 @@
 <script>
 import ConfirmCode from '../components/auth/ConfirmCode'
 import request from '../mixins/request'
+import alert from '../mixins/alert'
 import StepOne from '../components/auth/confirm/StepOne'
 import { REQUEST } from '../config'
 import emailService from '../services/email-service'
@@ -79,7 +80,7 @@ import StepThree from '../components/auth/confirm/StepThreeConfirmSignUp'
 
 export default {
   name: 'ConfirmSignUp',
-  mixins: [request],
+  mixins: [request, alert],
   components: { StepThree, StepOne, ConfirmCode },
   data () {
     return {

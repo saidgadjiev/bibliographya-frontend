@@ -3,6 +3,8 @@
     <like
       v-bind="$attrs"
       v-on="$listeners"
+      :like="like"
+      :unlike="unlike"
       class="ml-1"
     />
     <comment-icon v-bind="$attrs"/>
@@ -12,6 +14,7 @@
 <script>
 import Like from './LikeIcon.vue'
 import CommentIcon from './CommentIcon.vue'
+import likeService from '../../../services/like-service'
 
 export default {
   name: 'BiographyCardActions',
@@ -19,6 +22,14 @@ export default {
   components: {
     Like,
     CommentIcon
+  },
+  methods: {
+    like (id) {
+      return likeService.like(id)
+    },
+    unlike (id) {
+      return likeService.unlike(id)
+    }
   }
 }
 </script>

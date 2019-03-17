@@ -46,7 +46,8 @@ export const MODERATION_STATUS = {
 
 export const FIX_STATUS = {
   PENDING: 0,
-  CLOSED: 1
+  CLOSED: 1,
+  IGNORED: 2
 }
 
 export const PUBLISH_STATUS = {
@@ -69,9 +70,10 @@ export const PLUGIN_EVENTS = {
   ALERT: 'alert'
 }
 
-export const MODERATION_BUTTONS = {
+export const MODERATION_BUTTON = {
   ASSIGN_ME: 'AssignMe',
-  REJECT: 'Reject'
+  REJECT: 'Reject',
+  USER_PENDING: 'UserPending'
 }
 
 export const BUG_BUTTONS = {

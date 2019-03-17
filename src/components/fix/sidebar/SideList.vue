@@ -41,6 +41,15 @@
           <v-list-tile-title>Закрытые</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
+      <v-list-tile
+        :class="{ active: clickedIndex === 5 }"
+        href=""
+        @click="click(5, 'ignored')"
+      >
+        <v-list-tile-content>
+          <v-list-tile-title>Закрытые без исправления</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
     </v-list>
   </v-card>
 </template>

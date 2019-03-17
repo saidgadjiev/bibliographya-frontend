@@ -132,6 +132,7 @@ export default {
             that.$emit('update:actions', response.data.actions)
             that.$emit('update:fixerId', response.data.fixerId)
             that.$emit('update:fixer', response.data.fixer)
+            that.$emit('update:info', response.data.info)
             that.loading = false
           },
           e => {

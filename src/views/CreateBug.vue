@@ -1,37 +1,41 @@
 <template>
-    <v-card>
+  <v-layout row justify-center>
+    <v-flex xs12>
       <alert-message :types="['alert-success']"/>
-      <v-card-title>
-        <div class="pa-3" v-html="_message"></div>
-      </v-card-title>
-      <v-card-text>
-        <v-form>
-          <v-text-field
-            v-validate="'required'"
-            v-model="bugForm.theme"
-            :error-messages="errors.collect('theme')"
-            label="Тема ошибки"
-            type="text"
-            name="theme"
-          ></v-text-field>
-          <v-textarea
-            auto-grow
-            rows="10"
-            v-validate="'required'"
-            v-model="bugForm.bugCase"
-            :error-messages="errors.collect('bugCase')"
-            label="Шаги воспроизведения ошибки"
-            type="text"
-            name="bugCase"
-          ></v-textarea>
-        </v-form>
-      </v-card-text>
-      <v-card-actions style="justify-content: center">
-        <v-btn class="white--text" color="blue darken-3" @click="save" :loading="loading" :disabled="loading">
-          Создать
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+      <v-card>
+        <v-card-title>
+          <div class="pa-3" v-html="_message"></div>
+        </v-card-title>
+        <v-card-text>
+          <v-form>
+            <v-text-field
+              v-validate="'required'"
+              v-model="bugForm.theme"
+              :error-messages="errors.collect('theme')"
+              label="Тема ошибки"
+              type="text"
+              name="theme"
+            ></v-text-field>
+            <v-textarea
+              auto-grow
+              rows="10"
+              v-validate="'required'"
+              v-model="bugForm.bugCase"
+              :error-messages="errors.collect('bugCase')"
+              label="Шаги воспроизведения ошибки"
+              type="text"
+              name="bugCase"
+            ></v-textarea>
+          </v-form>
+        </v-card-text>
+        <v-card-actions style="justify-content: center">
+          <v-btn class="white--text" color="blue darken-3" @click="save" :loading="loading" :disabled="loading">
+            Создать
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

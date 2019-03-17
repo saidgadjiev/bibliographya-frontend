@@ -14,6 +14,7 @@
         biography-clamp
         :biography-clamp-size="_biographyClampSize"
         tree-clamp
+        :show-moderation-actions="item.actions.length > 0"
         :tree-clamp-size="_treeClampSize"
       ></biography-card>
     </template>

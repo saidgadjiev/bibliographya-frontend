@@ -28,7 +28,7 @@
     </v-card-text>
     <v-card-actions>
       <v-layout row wrap>
-        <v-flex xs12 sm4>
+        <v-flex xs12 md4>
           <v-btn
             color="blue darken-3"
             class="white--text"
@@ -39,7 +39,7 @@
             Подтвердить
           </v-btn>
         </v-flex>
-        <v-flex xs12 sm8>
+        <v-flex xs12 md8>
           <v-btn
             color="blue darken-3"
             class="white--text"

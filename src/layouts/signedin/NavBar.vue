@@ -145,14 +145,6 @@
           <v-list-tile-title>Выход</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile v-else to="/signIn">
-        <v-list-tile-action>
-          <v-icon>fas fa-sign-in-alt</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Войти</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -205,11 +197,11 @@ export default {
   },
   methods: {
     signOut () {
+      this.$router.push('/signIn')
+
       this.$store.dispatch(SIGN_OUT)
         .then(
-          () => {
-            this.$router.push('/signIn')
-          },
+          () => {},
           e => {}
         )
     }

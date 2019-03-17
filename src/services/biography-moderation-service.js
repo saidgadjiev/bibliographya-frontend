@@ -27,5 +27,5 @@ function complete (biographyId, json) {
 }
 
 function userComplete (biographyId, json) {
-  return axios.patch(getRestUrl('biographies/' + biographyId + '/moderation/user/complete/' + biographyId), json)
+  return axios.patch(getRestUrl('biographies/' + biographyId + '/moderation/user-complete/'), json)
 }

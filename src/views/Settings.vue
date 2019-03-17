@@ -4,8 +4,8 @@
       <progress-circular/>
     </v-flex>
     <v-flex xs12 md8 v-else>
+      <alert-message :types="alertTypes"/>
       <v-card>
-        <alert-message :types="alertTypes"/>
         <v-card-text class="pb-0">
           <v-form>
             <v-text-field
@@ -26,7 +26,7 @@
             <v-text-field
               v-validate="'required|min:6'"
               :error-messages="errors.collect('newPassword')"
-              :append-icon="showNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+              :append-icon="showNewPassword ? 'mdi-lock-open-outline' : 'mdi-lock-outline'"
               :type="showNewPassword ? 'text' : 'password'"
               @click:append="showNewPassword = !showNewPassword"
               v-model="savePasswordForm.newPassword"

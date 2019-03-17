@@ -3,7 +3,7 @@
     <span v-for="(category, index) in categories" :key="index">
       <router-link class="bibliographya-a" :to="'/categories/' + category.id">{{ category.name }}</router-link>&nbsp;&nbsp;
     </span>
-    <h4 v-if="_isNotAutobiography">
+    <h4 v-if="_showAuthor">
       Автор:
       <router-link class="bibliographya-a word-break-all" :to="_creatorBiographyLink">{{ _creatorName }}</router-link>
     </h4>
@@ -24,6 +24,9 @@ export default {
     userId: {
       type: Number
     },
+    creatorId: {
+      type: Number
+    },
     creator: {
       type: Object
     }
@@ -39,7 +42,7 @@ export default {
     _creatorName () {
       return this.creator.firstName + ' ' + this.creator.lastName
     },
-    _isNotAutobiography () {
+    _showAuthor () {
       return !this.userId
     },
     _hasVisibleItems () {

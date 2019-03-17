@@ -1,6 +1,6 @@
 <template>
   <v-layout justify-center row>
-    <v-flex xs12 sm8>
+    <v-flex xs12 md8>
       <alert-message/>
       <v-layout justify-center row class="ma-0 pa-0" v-if="loadingCategory">
         <progress-circular/>
@@ -46,7 +46,7 @@
         </v-card-actions>
       </v-card>
     </v-flex>
-    <v-flex xs4>
+    <v-flex v-if="$vuetify.breakpoint.mdAndUp" md4>
     </v-flex>
   </v-layout>
 </template>

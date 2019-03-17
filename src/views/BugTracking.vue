@@ -58,7 +58,7 @@ export default {
   components: { SideList, BugCard, SideBar, List },
   computed: {
     ...mapGetters([
-      'getUser'
+      'getUserId'
     ])
   },
   methods: {

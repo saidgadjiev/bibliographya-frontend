@@ -84,10 +84,13 @@ export default {
     parentId: {
       type: Number
     },
+    parentDeleted: {
+      type: Boolean
+    },
     user: {
       type: Object
     },
-    parent: {
+    parentUser: {
       type: Object
     },
     classes: {
@@ -96,12 +99,12 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getUser',
+      'getUserId',
       'isAuthenticated',
       'isAuthorized'
     ]),
     _repliedFirstName () {
-      return this.parent.user.firstName
+      return this.parentUser.firstName
     },
     _authorName () {
       return this.user.lastName + ' ' + this.user.firstName
@@ -110,7 +113,7 @@ export default {
       return '/biographies/' + this.biographyId
     },
     _repliedBiographyLink () {
-      return '/biographies/' + this.parent.biographyId
+      return '/biographies/' + this.parentUser.id
     },
     _showCommentButtons () {
       return this.$vuetify.breakpoint.smAndDown
@@ -156,14 +159,18 @@ export default {
         )
     },
     gotoReply () {
-      this.$vuetify.goTo('#_c' + this.parentId, this.options)
-      let el = document.getElementById('_c' + this.parentId)
+      let id = '_c' + this.parentId
+      let el = document.getElementById(id)
 
-      el.classList.add('highlight')
+      if (el) {
+        this.$vuetify.goTo('#' + id, this.options)
 
-      setTimeout(function () {
-        el.classList.remove('highlight')
-      }, 2000)
+        el.classList.add('highlight')
+
+        setTimeout(function () {
+          el.classList.remove('highlight')
+        }, 2000)
+      }
     },
     reply () {
       this.$emit('click-reply')

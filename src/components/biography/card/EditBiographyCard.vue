@@ -190,6 +190,7 @@ export default {
   mounted () {
     if (this.mode === 'edit') {
       Object.assign(this.biographyForm, this.inBiography)
+      this.biographyForm.categories = this.inBiography.categories.map(e => e.id)
     }
   },
   methods: {
@@ -258,19 +259,17 @@ export default {
           that.saveLoading = true
 
           if (that.mode === 'edit') {
-            let categoriesDiff = diff.diffArrays(that.biographyForm.categories, that.inBiography.categories, {
-              comparator: function (left, right) {
-                return left.id === right.id
-              }
-            })
+            let right = that.inBiography.categories.map(e => e.id)
+
+            let categoriesDiff = diff.diffArrays(right, that.biographyForm.categories)
             let added = []
             let deleted = []
 
             categoriesDiff.forEach(function (element) {
               if (element.added) {
-                deleted.push(...element.value)
-              } else if (element.removed) {
                 added.push(...element.value)
+              } else if (element.removed) {
+                deleted.push(...element.value)
               }
             })
 
@@ -320,7 +319,7 @@ export default {
               lastName: that.biographyForm.lastName,
               middleName: that.biographyForm.middleName,
               biography: that.biographyForm.biography,
-              addedCategories: that.biographyForm.categories.map(e => e.id)
+              addCategories: that.biographyForm.categories
             })
               .then(
                 () => {

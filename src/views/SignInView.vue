@@ -1,6 +1,6 @@
 <template>
   <v-layout justify-center>
-    <v-flex xs12 sm8 md6>
+    <v-flex xs12 md6>
       <sign-in/>
     </v-flex>
   </v-layout>

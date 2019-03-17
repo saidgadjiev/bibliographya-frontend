@@ -5,21 +5,7 @@
     :reset-id="resetId"
   >
     <template slot="item" slot-scope="{ item }">
-      <v-card>
-        <biography-fix-title class="pb-0" v-bind="item"/>
-        <biography-card-title :show-menu="false" v-bind="item.biography"/>
-        <v-divider></v-divider>
-        <biography-card-text v-bind="item.biography"/>
-        <v-divider></v-divider>
-        <biography-card-actions v-bind.sync="item.biography"/>
-        <v-card-actions>
-          <v-layout row wrap>
-            <v-flex xs12 v-for="(action, index) in item.actions" :key="index">
-              <fix-button v-bind.sync="item" v-on="$listeners" :action="action"/>
-            </v-flex>
-          </v-layout>
-        </v-card-actions>
-      </v-card>
+      <biography-fix-card v-bind.sync="item"/>
     </template>
     <template slot="sidebar">
       <side-bar
@@ -27,6 +13,7 @@
         @not-assigned="applyNotAssignedFilter"
         @assigned-me="applyAssignedMeFilter"
         @closed="applyClosedFilter"
+        @ignored="applyIgnoredFilter"
       />
     </template>
     <template slot="smSidebar">
@@ -35,6 +22,7 @@
         @not-assigned="applyNotAssignedFilter"
         @assigned-me="applyAssignedMeFilter"
         @closed="applyClosedFilter"
+        @ignored="applyIgnoredFilter"
       />
     </template>
     <template slot="no-results">
@@ -49,17 +37,13 @@
 
 <script>
 import SideBar from '../components/fix/sidebar/SideBar'
-import FixButton from '../components/fix/card/FixButton'
-import BiographyCardActions from '../components/biography/card/BiographyCardActions.vue'
-import BiographyCardTitle from '../components/biography/card/BiographyCardTitle'
-import BiographyCardText from '../components/biography/card/BiographyCardText'
 import biographyFixService from '../services/biography-fix-service'
-import BiographyFixTitle from '../components/fix/card/BiographyFixTitle'
 import List from '../components/list/List'
 import SideList from '../components/fix/sidebar/SideList'
 
 import { FIX_STATUS } from '../config'
 import { mapGetters } from 'vuex'
+import BiographyFixCard from '../components/fix/card/BiographyFixCard'
 
 export default {
   name: 'BiographiesFixesList',
@@ -72,12 +56,16 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getUser'
+      'getUserId'
     ])
   },
   methods: {
     resetList () {
       ++this.resetId
+    },
+    applyIgnoredFilter () {
+      this.filter = 'fixer_id==' + this.getUserId + ';status==' + FIX_STATUS.IGNORED
+      this.resetList()
     },
     applyClosedFilter () {
       this.filter = 'fixer_id==' + this.getUserId + ';status==' + FIX_STATUS.CLOSED
@@ -100,14 +88,10 @@ export default {
     }
   },
   components: {
+    BiographyFixCard,
     SideList,
     List,
-    BiographyFixTitle,
-    BiographyCardText,
-    BiographyCardTitle,
-    FixButton,
-    SideBar,
-    BiographyCardActions
+    SideBar
   }
 }
 </script>
