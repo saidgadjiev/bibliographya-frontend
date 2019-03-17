@@ -7,6 +7,13 @@
         :category="item"
       ></category-card>
     </template>
+    <template slot="no-results">
+      <v-card>
+        <v-card-text>
+          <h4>Еще категорий нет.</h4>
+        </v-card-text>
+      </v-card>
+    </template>
   </list>
 </template>
 
