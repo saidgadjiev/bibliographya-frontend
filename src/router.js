@@ -174,11 +174,18 @@ let router = new Router({
     },
     {
       path: '/',
-      alias: '/signIn',
-      component: SignIn,
-      beforeEnter: ifNotAuthenticated,
-      meta: {
-        layout: LAYOUTS.AUTH_LAYOUT
+      name: 'main',
+      component: CategoriesList,
+      beforeEnter: function (to, from, next) {
+        function proceed () {
+          if (store.getters.isAuthenticated) {
+            next()
+          } else {
+            next('/signIn')
+          }
+        }
+
+        waitForAccount(proceed)
       }
     },
     {
