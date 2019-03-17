@@ -176,6 +176,7 @@ let router = new Router({
       path: '/',
       name: 'main',
       alias: '/biographies',
+      component: BiographiesList,
       beforeEnter: function (to, from, next) {
         function proceed () {
           if (store.getters.isAuthenticated) {
