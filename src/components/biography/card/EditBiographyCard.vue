@@ -166,16 +166,17 @@ export default {
     biographyCategoryService.getCategories(2147483647, 0)
       .then(
         response => {
-          for (let i = 0; i < response.data.content.length; i++) {
-            that.categories.push(response.data.content[i])
+          if (response.status === that.HttpStatus.OK) {
+            for (let i = 0; i < response.data.content.length; i++) {
+              that.categories.push(response.data.content[i])
+            }
           }
-          that.categoriesLoading = false
         },
-        e => {
-          that.categoriesLoading = false
-          console.log(e)
-        }
-      )
+        e => {}
+      ).finally(() => {
+        that.categoriesLoading = false
+      })
+
     this.$validator.localize('ru', {
       custom: {
         firstName: {
