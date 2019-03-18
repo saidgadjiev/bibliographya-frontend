@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex align-center">
     <v-btn @click="clickLike" icon flat color="blue darken-1" :loading="likeLoading" :disabled="likeLoading">
-      <v-icon >{{ icon }}</v-icon>
+      <v-icon>{{ icon }}</v-icon>
     </v-btn>
     <span style="font-size: 18px; color: #007bff">{{ _animatedLikesCount }}</span>
   </div>
