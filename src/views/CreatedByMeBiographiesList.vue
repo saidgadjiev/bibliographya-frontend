@@ -18,9 +18,6 @@
         :tree-clamp-size="_treeClampSize"
       ></biography-card>
     </template>
-    <template slot="sidebar">
-      <div></div>
-    </template>
     <template slot="no-results">
       <v-card>
         <v-card-text>
