@@ -30,7 +30,13 @@
               type="text"
               name="name"
             ></v-text-field>
-            <input type="file" id="file" ref="file" style="display: none" accept="image/*"
+            <input v-validate="'size:5000'"
+                   type="file"
+                   id="file"
+                   ref="file"
+                   style="display: none"
+                   accept="image/*"
+                   name="file"
                    v-on:change="handleFileUpload()"/>
             <v-btn block @click="selectFile" class="primary">Загрузить картинку</v-btn>
             <v-btn v-if="file" block color="red darken-3" @click="resetFile" class="white--text">Сбросить</v-btn>
@@ -89,6 +95,9 @@ export default {
       custom: {
         name: {
           required: () => 'Введите название категории'
+        },
+        file: {
+          size: () => 'Максимальный размер файла 5Мб'
         }
       }
     })
@@ -140,9 +149,9 @@ export default {
             biographyCategoryService.edit(that.categoryId, formData)
               .then(
                 response => {
+                  that.currentImagePath = response.data.imagePath
                   that.form.imagePath = response.data.imagePath
                   that.setAlertSuccess(CATEGORY_CHANGED)
-                  that.saving = false
                   that.resetFile()
                 }
               ).finally(() => {
@@ -191,12 +200,12 @@ export default {
             that.form.id = response.data.id
             that.form.name = response.data.name
             that.form.imagePath = response.data.imagePath
-            that.loadingCategory = false
           },
-          e => {
-            that.loadingCategory = false
-          }
+          e => {}
         )
+        .finally(() => {
+          that.loadingCategory = false
+        })
     },
     handleFileUpload () {
       this.file = this.$refs.file.files[0]

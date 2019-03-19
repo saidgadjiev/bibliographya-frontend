@@ -191,7 +191,6 @@ export default {
   mounted () {
     if (this.mode === 'edit') {
       Object.assign(this.biographyForm, this.inBiography)
-      this.biographyForm.categories = this.inBiography.categories.map(e => e.id)
     }
   },
   methods: {
@@ -260,9 +259,7 @@ export default {
           that.saveLoading = true
 
           if (that.mode === 'edit') {
-            let right = that.inBiography.categories.map(e => e.id)
-
-            let categoriesDiff = diff.diffArrays(right, that.biographyForm.categories)
+            let categoriesDiff = diff.diffArrays(that.inBiography.categories, that.biographyForm.categories)
             let added = []
             let deleted = []
 
