@@ -49,7 +49,7 @@ const cancelRoute = function (from, next) {
   if (from.name && from.name !== 'signUpConfirm') {
     next(false)
   } else {
-    next('/categories')
+    next('/biographies')
   }
 }
 
@@ -174,11 +174,18 @@ let router = new Router({
     },
     {
       path: '/',
-      alias: '/signIn',
-      component: SignIn,
-      beforeEnter: ifNotAuthenticated,
-      meta: {
-        layout: LAYOUTS.AUTH_LAYOUT
+      name: 'main',
+      component: BiographiesList,
+      beforeEnter: function (to, from, next) {
+        function proceed () {
+          if (store.getters.isAuthenticated) {
+            next()
+          } else {
+            next('/signIn')
+          }
+        }
+
+        waitForAccount(proceed)
       }
     },
     {

@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import { PROVIDERS } from '../config'
 import statsService from '../services/stats-service'
 
 export default {

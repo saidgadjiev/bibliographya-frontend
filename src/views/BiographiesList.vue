@@ -37,7 +37,7 @@
       <v-card>
         <v-card-text>
           <h4 v-if="categoryId">В этой категории еще нет ни одной биографии.</h4>
-          <h4 v-else>Еще нет биографий.</h4>
+          <h4 v-else>Еще биографий нет.</h4>
         </v-card-text>
       </v-card>
     </template>

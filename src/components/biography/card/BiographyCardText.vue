@@ -20,7 +20,6 @@
 <script>
 import Clamp from './HtmlClamp'
 import Toc from './Toc'
-import cyrillicToTranslit from 'cyrillic-to-translit-js'
 import { BIOGRAPHY_CARD_MODE } from '../../../config'
 
 let htmlparser = require('htmlparser2')
@@ -59,23 +58,26 @@ export default {
       let headers = []
 
       if (this.mode === BIOGRAPHY_CARD_MODE.READ) {
-        this.getHeadersForRead(children, headers, this.guid(''))
+        this.getHeadersForRead(children, headers, this.guid())
       } else {
-        this.getHeadersForList(this.biography, headers, this.guid(''))
+        this.getHeadersForList(this.biography, headers, this.guid())
       }
 
       this.tocHeaders = headers
     }
   },
   methods: {
-    guid (prefix) {
+    guid () {
       let counter = 0
+
       return function () {
-        return prefix + counter++
+        return 'head_' + counter++
       }
     },
     getHeadersForList (source, headers, guid) {
       let currentNode = {}
+
+      currentNode.title = ''
 
       let parser = new htmlparser.Parser({
         onopentag: function (name, attribs) {
@@ -85,15 +87,16 @@ export default {
         },
         ontext: function (text) {
           if (currentNode.level) {
-            currentNode.title = text
+            currentNode.title += text.trim()
           }
         },
         onclosetag: function (tagname) {
           if (/^h[1-9]$/i.test(tagname)) {
-            currentNode.id = cyrillicToTranslit().transform(currentNode.title, '_') + '_' + guid()
+            currentNode.id = guid()
 
             headers.push(currentNode)
             currentNode = {}
+            currentNode.title = ''
           }
         }
       }, { decodeEntities: true })
@@ -109,7 +112,7 @@ export default {
         if (/^h[1-9]$/i.test(child.localName)) {
           let level = parseInt(child.nodeName.replace(/^H/i, ''), 10)
           let text = child.textContent
-          let id = cyrillicToTranslit().transform(text, '_') + '_' + guid()
+          let id = guid()
 
           let node = {
             id: id,

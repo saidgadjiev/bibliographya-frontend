@@ -2,4 +2,4 @@ export const getRestUrl = (url) => `${process.env.VUE_APP_REST_SERVER + process.
 
 export const getUploadUrl = (url) => `${process.env.VUE_APP_REST_SERVER}${url}`
 
-export const DEFAULT_IMG_PATH = 'upload/404.jpg'
+export const DEFAULT_IMG_PATH = '404.jpg'

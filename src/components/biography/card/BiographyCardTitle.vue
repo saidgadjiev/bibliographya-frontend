@@ -9,7 +9,6 @@
 
 <script>
 import BiographyCardMenu from '../card/BiographyCardMenu'
-import { PUBLISH_STATUS } from '../../../config'
 
 export default {
   name: 'BiographyCardTitle',

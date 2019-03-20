@@ -1,9 +1,11 @@
 <template>
-  <v-layout row>
-    <v-flex xs12>
+  <v-layout row fill-height justify-center>
+    <v-flex shrink v-if="biographyLoading">
+      <progress-circular/>
+    </v-flex>
+    <v-flex xs12 v-else>
       <alert-message></alert-message>
       <edit-biography-card
-        v-if="biography"
         :in-biography="biography"
         v-bind.sync="biography"
       ></edit-biography-card>
@@ -16,30 +18,37 @@ import biographyService from '../services/biography-service'
 import EditBiographyCard from '../components/biography/card/EditBiographyCard.vue'
 import AlertMessage from '../components/alert/AlertMessage'
 import alert from '../mixins/alert'
+import ProgressCircular from '../components/progress/ProgressCircular'
 
 export default {
   name: 'EditBiographyDetails',
   mixins: [alert],
   data () {
     return {
-      biography: undefined
+      biography: undefined,
+      biographyLoading: true
     }
   },
   props: {
     biographyId: Number
   },
   created () {
+    let that = this
+
     biographyService.getBiographyById(this.biographyId)
       .then(
         response => {
-          this.biography = response.data
+          that.biography = response.data
+          that.biography.categories = response.data.categories.map(e => e.id)
         },
-        e => {
-          console.log(e)
-        }
+        e => {}
       )
+      .finally(() => {
+        that.biographyLoading = false
+      })
   },
   components: {
+    ProgressCircular,
     AlertMessage,
     EditBiographyCard
   }

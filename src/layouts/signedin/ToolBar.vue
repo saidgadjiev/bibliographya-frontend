@@ -88,11 +88,11 @@ export default {
   },
   methods: {
     signOut () {
-      this.$router.push('/signIn')
-
       this.$store.dispatch(SIGN_OUT)
         .then(
-          () => {},
+          () => {
+            this.$router.push('/signIn')
+          },
           e => {}
         )
     }

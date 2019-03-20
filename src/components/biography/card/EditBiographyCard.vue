@@ -166,16 +166,17 @@ export default {
     biographyCategoryService.getCategories(2147483647, 0)
       .then(
         response => {
-          for (let i = 0; i < response.data.content.length; i++) {
-            that.categories.push(response.data.content[i])
+          if (response.status === that.HttpStatus.OK) {
+            for (let i = 0; i < response.data.content.length; i++) {
+              that.categories.push(response.data.content[i])
+            }
           }
-          that.categoriesLoading = false
         },
-        e => {
-          that.categoriesLoading = false
-          console.log(e)
-        }
-      )
+        e => {}
+      ).finally(() => {
+        that.categoriesLoading = false
+      })
+
     this.$validator.localize('ru', {
       custom: {
         firstName: {
@@ -190,7 +191,6 @@ export default {
   mounted () {
     if (this.mode === 'edit') {
       Object.assign(this.biographyForm, this.inBiography)
-      this.biographyForm.categories = this.inBiography.categories.map(e => e.id)
     }
   },
   methods: {
@@ -259,9 +259,7 @@ export default {
           that.saveLoading = true
 
           if (that.mode === 'edit') {
-            let right = that.inBiography.categories.map(e => e.id)
-
-            let categoriesDiff = diff.diffArrays(right, that.biographyForm.categories)
+            let categoriesDiff = diff.diffArrays(that.inBiography.categories, that.biographyForm.categories)
             let added = []
             let deleted = []
 

@@ -3,7 +3,7 @@
     <v-flex shrink v-if="settingsLoading">
       <progress-circular/>
     </v-flex>
-    <v-flex xs12 md8 v-else>
+    <v-flex xs12 v-else>
       <alert-message :types="alertTypes"/>
       <v-card>
         <v-card-text class="pb-0">
@@ -73,8 +73,6 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-flex>
-    <v-flex md4 v-if="$vuetify.breakpoint.mdAndUp">
     </v-flex>
   </v-layout>
 </template>
