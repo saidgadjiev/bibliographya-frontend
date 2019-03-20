@@ -24,12 +24,6 @@ export const REQUEST = {
   CONFIRM_SIGN_UP_FINISH: 13
 }
 
-export const LAYOUTS = {
-  SIGNED_IN_LAYOUT: 'signed-in-layout',
-  AUTH_LAYOUT: 'auth-layout',
-  ANONYMOUS_LAYOUT: 'anonymous-layout'
-}
-
 export const DATE_FORMAT = 'DD-MM-YYYY HH:mm:ss.SSSSSS'
 
 export const BUG_STATUS = {

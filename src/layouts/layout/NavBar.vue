@@ -145,6 +145,24 @@
           <v-list-tile-title>Выход</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
+      <template v-else>
+        <v-list-tile to="/signIn">
+          <v-list-tile-action>
+            <v-icon>fas fa-sign-in-alt</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Войти</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/signUp">
+          <v-list-tile-action>
+            <v-icon>fas fa-user-plus</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Регистрация</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </template>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -152,7 +170,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { ROLES } from '../../config'
-import { SIGN_OUT } from '../../store/action-types'
+import { SIGN_OUT, OPEN_OR_HIDE_DRAWER } from '../../store/action-types'
 import ProgressCircular from '../../components/progress/ProgressCircular'
 import request from '../../mixins/request'
 
@@ -172,7 +190,8 @@ export default {
       'getFirstName',
       'getLastName',
       'isAuthenticated',
-      'isAuthorized'
+      'isAuthorized',
+      'isDrawerOpened'
     ]),
     _fullName () {
       return this.getFirstName + ' ' + this.getLastName
@@ -188,10 +207,10 @@ export default {
     },
     _drawer: {
       get () {
-        return this.drawer
+        return this.isDrawerOpened
       },
       set (val) {
-        this.$emit('update:drawer', val)
+        this.$store.commit(OPEN_OR_HIDE_DRAWER)
       }
     }
   },

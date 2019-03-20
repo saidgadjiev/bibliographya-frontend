@@ -1,9 +1,13 @@
 <template>
   <v-content>
-    <toolbar/>
+    <nav-bar v-if="$vuetify.breakpoint.smAndDown"></nav-bar>
+    <tool-bar></tool-bar>
     <v-container grid-list-lg fill-height :class="{ 'md-content' : $vuetify.breakpoint.mdAndUp }">
       <v-layout row fill-height class="mt-0 mb-0">
-        <v-flex xs12>
+        <v-flex md3 v-if="$vuetify.breakpoint.mdAndUp">
+          <nav-bar></nav-bar>
+        </v-flex>
+        <v-flex xs12 md9>
           <router-view></router-view>
         </v-flex>
       </v-layout>
@@ -12,12 +16,14 @@
 </template>
 
 <script>
-import Toolbar from './ToolBar'
+import NavBar from './NavBar.vue'
+import ToolBar from './ToolBar.vue'
 
 export default {
-  name: 'AuthLayout',
+  name: 'Layout',
   components: {
-    Toolbar
+    NavBar,
+    ToolBar
   }
 }
 </script>

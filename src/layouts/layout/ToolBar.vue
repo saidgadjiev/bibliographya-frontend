@@ -9,7 +9,7 @@
   >
     <v-toolbar-title class="ml-0">
       <div v-if="$vuetify.breakpoint.smAndDown">
-        <v-toolbar-side-icon @click.stop="$emit('update:drawer', !drawer)"></v-toolbar-side-icon>
+        <v-toolbar-side-icon @click.stop="OPEN_OR_HIDE_DRAWER"></v-toolbar-side-icon>
         <router-link to="/" class="title pl-2 white--text">Библиография</router-link>
       </div>
       <div class="d-flex align-center" v-else>
@@ -34,6 +34,7 @@
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
       <v-menu
+        v-if="isAuthenticated"
         min-width="200px"
         offset-y
         left
@@ -64,19 +65,20 @@
           </v-list-tile>
         </v-list>
       </v-menu>
+      <v-btn v-else icon @click="$router.push('/signIn')">
+        Войти
+        <v-icon>fas fa-sign-in-alt</v-icon>
+      </v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { SIGN_OUT } from '../../store/action-types'
+import { mapGetters, mapActions } from 'vuex'
+import { SIGN_OUT, OPEN_OR_HIDE_DRAWER } from '../../store/action-types'
 
 export default {
   name: 'ToolBar',
-  props: {
-    drawer: Boolean
-  },
   computed: {
     ...mapGetters([
       'getFirstName',
@@ -87,6 +89,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      OPEN_OR_HIDE_DRAWER
+    ]),
     signOut () {
       this.$store.dispatch(SIGN_OUT)
         .then(
