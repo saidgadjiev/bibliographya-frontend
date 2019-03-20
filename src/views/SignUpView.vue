@@ -1,6 +1,6 @@
 <template>
   <v-layout justify-center>
-    <v-flex xs12 md6>
+    <v-flex xs12 md8>
       <v-card class="elevation-12">
         <v-card-title primary-title style="justify-content: center">
           <h3 class="headline font-weight-bold mb-0">Регистрация</h3>

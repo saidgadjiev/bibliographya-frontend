@@ -3,7 +3,7 @@
     :class="[ $vuetify.breakpoint.mdAndUp ? 'md-drawer': 'grey lighten-4' ]"
     :fixed="$vuetify.breakpoint.smAndDown"
     :app="$vuetify.breakpoint.smAndDown"
-    v-model="_drawer"
+    v-model="drawer"
   >
     <v-toolbar flat class="transparent pt-3 pb-3" v-if="$vuetify.breakpoint.smAndDown && isAuthenticated">
       <div>
@@ -170,7 +170,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { ROLES } from '../../config'
-import { SIGN_OUT, OPEN_OR_HIDE_DRAWER } from '../../store/action-types'
+import { SIGN_OUT } from '../../store/action-types'
 import ProgressCircular from '../../components/progress/ProgressCircular'
 import request from '../../mixins/request'
 
@@ -178,10 +178,9 @@ export default {
   name: 'NavBar',
   components: { ProgressCircular },
   mixins: [request],
-  props: {
-    drawer: {
-      type: Boolean,
-      default: true
+  data () {
+    return {
+      drawer: false
     }
   },
   computed: {
@@ -207,10 +206,14 @@ export default {
     },
     _drawer: {
       get () {
-        return this.isDrawerOpened
+        if (this.$vuetify.breakpoint.smAndDown) {
+          return this.drawer
+        }
+
+        return true
       },
       set (val) {
-        this.$store.commit(OPEN_OR_HIDE_DRAWER)
+        this.drawer = val
       }
     }
   },

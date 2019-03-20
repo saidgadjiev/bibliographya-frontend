@@ -25,7 +25,7 @@ const actions = {
 }
 
 const getters = {
-  isDrawerOpened : state => {
+  isDrawerOpened: state => {
     return state.drawer
   }
 }
