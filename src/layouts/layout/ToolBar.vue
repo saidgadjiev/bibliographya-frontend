@@ -9,7 +9,7 @@
   >
     <v-toolbar-title class="ml-0">
       <div v-if="$vuetify.breakpoint.smAndDown">
-        <v-toolbar-side-icon @click.stop="OPEN_OR_HIDE_DRAWER"></v-toolbar-side-icon>
+        <v-toolbar-side-icon @click.stop="doDrawer"></v-toolbar-side-icon>
         <router-link to="/" class="title pl-2 white--text">Библиография</router-link>
       </div>
       <div class="d-flex align-center" v-else>
@@ -65,33 +65,36 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-      <v-btn v-else icon @click="$router.push('/signIn')">
-        Войти
-        <v-icon>fas fa-sign-in-alt</v-icon>
-      </v-btn>
+      <v-list-tile v-else to="/signIn" active-class="">
+        <v-list-tile-content>
+          <v-list-tile-title>Войти</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
     </v-toolbar-items>
   </v-toolbar>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import { SIGN_OUT, OPEN_OR_HIDE_DRAWER } from '../../store/action-types'
+import { mapGetters } from 'vuex'
+import { SIGN_OUT } from '../../store/action-types'
+import { SET_DRAWER } from '../../store/mutation-types'
 
 export default {
   name: 'ToolBar',
   computed: {
     ...mapGetters([
       'getFirstName',
-      'isAuthenticated'
+      'isAuthenticated',
+      'drawer'
     ]),
     _firstName () {
       return this.getFirstName
     }
   },
   methods: {
-    ...mapActions([
-      OPEN_OR_HIDE_DRAWER
-    ]),
+    doDrawer () {
+      this.$store.commit(SET_DRAWER, !this.drawer)
+    },
     signOut () {
       this.$store.dispatch(SIGN_OUT)
         .then(

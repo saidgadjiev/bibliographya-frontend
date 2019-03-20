@@ -228,7 +228,7 @@ export default {
       createElement('div', {
         class: {
           'toc': true,
-          'word-break-all': true
+          'word-break-word': true
         }
       }, renderToc()),
       renderTemplate()

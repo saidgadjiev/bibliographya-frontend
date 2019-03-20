@@ -18,12 +18,18 @@
 <script>
 import NavBar from './NavBar.vue'
 import ToolBar from './ToolBar.vue'
+import { SET_DRAWER } from '../../store/mutation-types'
 
 export default {
   name: 'Layout',
   components: {
     NavBar,
     ToolBar
+  },
+  created () {
+    if (this.$vuetify.breakpoint.mdAndUp) {
+      this.$store.commit(SET_DRAWER, true)
+    }
   }
 }
 </script>

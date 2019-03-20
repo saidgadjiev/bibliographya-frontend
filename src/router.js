@@ -5,6 +5,7 @@ import BiographiesList from './views/BiographiesList'
 import Profile from './views/Profile'
 import ProfileSettings from './views/Settings'
 import ChangeEmail from './views/ChangeEmail'
+import About from './views/About'
 import SignIn from './views/SignInView'
 import SignUp from './views/SignUpView'
 import ConfirmSignUp from './views/ConfirmSignUp'
@@ -97,6 +98,11 @@ const ifNotAuthenticated = function (to, from, next) {
 let router = new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/about',
+      name: 'about',
+      component: About
+    },
     {
       path: '/settings',
       name: 'settings',

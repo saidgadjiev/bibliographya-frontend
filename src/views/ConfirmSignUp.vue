@@ -2,7 +2,7 @@
   <v-layout row justify-center>
     <v-flex xs12 md8>
       <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
-        <div class="pa-5">
+        <div class="pa-5 green lighten2 white--text">
           <h3>Пожалуйста не покидайте эту страницу, иначе придется проходить процедуру регистрации заново.</h3>
         </div>
         <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
