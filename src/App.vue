@@ -5,14 +5,12 @@
         <progress-circular/>
       </v-flex>
     </v-layout>
-    <component v-else v-bind:is="_layout"></component>
+    <layout v-else></layout>
   </v-app>
 </template>
 
 <script>
-import SignedInLayout from './layouts/signedin/SignedInLayout.vue'
-import AuthLayout from './layouts/auth/AuthLayout'
-import AnonymousLayout from './layouts/anonymous/AnonymousLayout'
+import Layout from './layouts/layout/Layout.vue'
 import { GET_ACCOUNT } from './store/action-types'
 import request from './mixins/request'
 import ProgressCircular from './components/progress/ProgressCircular'
@@ -25,19 +23,12 @@ export default {
       drawer: false
     }
   },
-  computed: {
-    _layout () {
-      return this.$store.getters.layout
-    }
-  },
   created () {
     this.$store.dispatch(GET_ACCOUNT)
   },
   components: {
     ProgressCircular,
-    'signed-in-layout': SignedInLayout,
-    'auth-layout': AuthLayout,
-    'anonymous-layout': AnonymousLayout
+    Layout
   }
 }
 </script>

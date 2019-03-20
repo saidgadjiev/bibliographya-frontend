@@ -135,7 +135,7 @@
         </v-list-tile>
       </v-list>
     </v-list>
-    <v-list v-if="$vuetify.breakpoint.smAndDown">
+    <v-list v-if="$vuetify.breakpoint.smAndDown" dense class="pb-0">
       <v-list-tile v-if="isAuthenticated" @click="signOut">
         <v-list-tile-action>
           <progress-circular v-if="_isRequest(Request.SIGN_OUT)" :size="20"/>
@@ -143,6 +143,26 @@
         </v-list-tile-action>
         <v-list-tile-content>
           <v-list-tile-title>Выход</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+      <template v-else>
+        <v-list-tile to="/signIn">
+          <v-list-tile-action>
+            <v-icon>fas fa-sign-in-alt</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Войти</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </template>
+    </v-list>
+    <v-list dense class="grey lighten-4" :class="{'pt-0': $vuetify.breakpoint.smAndDown}">
+      <v-list-tile to="/about">
+        <v-list-tile-action>
+          <v-icon>fas fa-question-circle</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>О нас</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
@@ -155,24 +175,20 @@ import { ROLES } from '../../config'
 import { SIGN_OUT } from '../../store/action-types'
 import ProgressCircular from '../../components/progress/ProgressCircular'
 import request from '../../mixins/request'
+import { SET_DRAWER } from '../../store/mutation-types'
 
 export default {
   name: 'NavBar',
   components: { ProgressCircular },
   mixins: [request],
-  props: {
-    drawer: {
-      type: Boolean,
-      default: true
-    }
-  },
   computed: {
     ...mapGetters([
       'getUserId',
       'getFirstName',
       'getLastName',
       'isAuthenticated',
-      'isAuthorized'
+      'isAuthorized',
+      'drawer'
     ]),
     _fullName () {
       return this.getFirstName + ' ' + this.getLastName
@@ -191,7 +207,7 @@ export default {
         return this.drawer
       },
       set (val) {
-        this.$emit('update:drawer', val)
+        this.$store.commit(SET_DRAWER, val)
       }
     }
   },

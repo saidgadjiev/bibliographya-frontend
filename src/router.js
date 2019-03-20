@@ -5,6 +5,7 @@ import BiographiesList from './views/BiographiesList'
 import Profile from './views/Profile'
 import ProfileSettings from './views/Settings'
 import ChangeEmail from './views/ChangeEmail'
+import About from './views/About'
 import SignIn from './views/SignInView'
 import SignUp from './views/SignUpView'
 import ConfirmSignUp from './views/ConfirmSignUp'
@@ -26,7 +27,7 @@ import UsersList from './views/UsersList'
 import store from './store/store'
 import error403 from './views/403'
 import error404 from './views/404'
-import { ROLES, LAYOUTS } from './config'
+import { ROLES } from './config'
 import biographyService from './services/biography-service'
 import { USER_STATE } from './store/modules/user-module'
 import { GET_CONFIRMATION } from './store/action-types'
@@ -97,6 +98,11 @@ const ifNotAuthenticated = function (to, from, next) {
 let router = new Router({
   mode: process.env.CORDOVA_PLATFORM ? 'hash' : 'history',
   routes: [
+    {
+      path: '/about',
+      name: 'about',
+      component: About
+    },
     {
       path: '/settings',
       name: 'settings',
@@ -175,18 +181,7 @@ let router = new Router({
     {
       path: '/',
       name: 'main',
-      component: BiographiesList,
-      beforeEnter: function (to, from, next) {
-        function proceed () {
-          if (store.getters.isAuthenticated) {
-            next()
-          } else {
-            next('/signIn')
-          }
-        }
-
-        waitForAccount(proceed)
-      }
+      component: BiographiesList
     },
     {
       path: '/categories/:categoryId',
@@ -286,10 +281,7 @@ let router = new Router({
       path: '/signUp',
       name: 'signUp',
       component: SignUp,
-      beforeEnter: ifNotAuthenticated,
-      meta: {
-        layout: LAYOUTS.AUTH_LAYOUT
-      }
+      beforeEnter: ifNotAuthenticated
     },
     {
       path: '/signUp/confirm',
@@ -309,9 +301,6 @@ let router = new Router({
               cancelRoute(from, next)
             }
           )
-      },
-      meta: {
-        layout: LAYOUTS.AUTH_LAYOUT
       }
     },
     {
@@ -323,10 +312,7 @@ let router = new Router({
       path: '/signIn',
       name: 'signIn',
       component: SignIn,
-      beforeEnter: ifNotAuthenticated,
-      meta: {
-        layout: LAYOUTS.AUTH_LAYOUT
-      }
+      beforeEnter: ifNotAuthenticated
     },
     {
       path: '/statistics',
@@ -360,32 +346,6 @@ let router = new Router({
       component: error404
     }
   ]
-})
-
-router.beforeResolve((to, from, next) => {
-  function proceed () {
-    let meta = to.meta
-    let currentLayout = store.getters.layout
-    let nextLayout = null
-
-    if (meta.layout) {
-      nextLayout = meta.layout
-    } else {
-      if (store.getters.isAuthenticated) {
-        nextLayout = LAYOUTS.SIGNED_IN_LAYOUT
-      } else {
-        nextLayout = LAYOUTS.ANONYMOUS_LAYOUT
-      }
-    }
-
-    if (currentLayout !== nextLayout) {
-      store.commit('setLayout', nextLayout)
-    }
-
-    next()
-  }
-
-  waitForAccount(proceed)
 })
 
 export default router

@@ -17,3 +17,5 @@ export const CLEAR = 'CLEAR'
 export const SET_CONFIRMATION = 'SET_CONFIRMATION'
 
 export const REMOVE_CONFIRMATION = 'REMOVE_CONFIRMATION'
+
+export const SET_DRAWER = 'SET_DRAWER'

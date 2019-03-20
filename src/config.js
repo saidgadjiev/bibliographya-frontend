@@ -24,12 +24,6 @@ export const REQUEST = {
   CONFIRM_SIGN_UP_FINISH: 13
 }
 
-export const LAYOUTS = {
-  SIGNED_IN_LAYOUT: 'signed-in-layout',
-  AUTH_LAYOUT: 'auth-layout',
-  ANONYMOUS_LAYOUT: 'anonymous-layout'
-}
-
 export const DATE_FORMAT = 'DD-MM-YYYY HH:mm:ss.SSSSSS'
 
 export const BUG_STATUS = {
@@ -92,7 +86,7 @@ export const getRedirectUri = (providerId) => {
 
 export const BIOGRAPHY_CLAMP_SIZE = 150
 
-export const TREE_CLAMP_SIZE = 5
+export const TREE_CLAMP_SIZE = 4
 
 export const BIOGRAPHY_CARD_MODE = {
   READ: 'read',

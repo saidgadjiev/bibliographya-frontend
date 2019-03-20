@@ -1,16 +1,18 @@
+import { SET_DRAWER } from '../mutation-types'
+
 const state = {
-  layout: undefined
+  drawer: false
 }
 
 const mutations = {
-  setLayout (state, layout) {
-    state.layout = layout
+  [SET_DRAWER] (state, drawer) {
+    state.drawer = drawer
   }
 }
 
 const getters = {
-  layout: state => {
-    return state.layout
+  drawer: state => {
+    return state.drawer
   }
 }
 
