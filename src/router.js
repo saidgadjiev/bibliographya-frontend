@@ -95,7 +95,7 @@ const ifNotAuthenticated = function (to, from, next) {
 }
 
 let router = new Router({
-  mode: 'history',
+  mode: process.env.CORDOVA_PLATFORM ? 'hash' : 'history',
   routes: [
     {
       path: '/settings',
