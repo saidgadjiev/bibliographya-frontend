@@ -143,7 +143,7 @@ export default {
             formData.set('data', JSON.stringify({ name: that.form.name }))
 
             if (that.file) {
-              formData.append('file', that.file)
+              formData.set('file', that.file)
             }
 
             biographyCategoryService.edit(that.categoryId, formData)
@@ -163,7 +163,7 @@ export default {
             formData.set('data', JSON.stringify({ name: that.form.name }))
 
             if (that.file) {
-              formData.append('file', that.file)
+              formData.set('file', that.file)
             }
 
             biographyCategoryService.create(formData)
