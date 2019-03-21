@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <v-flex xs12 v-if="_hasHeaderSlot">
+    <v-flex xs12 v-if="headerSlot">
       <slot name="header"></slot>
     </v-flex>
     <v-flex v-bind="{ [`xs${rootFlex}`]: true }">
@@ -71,6 +71,10 @@ export default {
     }
   },
   props: {
+    headerSlot: {
+      type: Boolean,
+      default: false
+    },
     availableMore: {
       type: Boolean,
       default: false
@@ -155,9 +159,6 @@ export default {
       return {
         'display': 'none'
       }
-    },
-    _hasHeaderSlot () {
-      return !!this.$slots.header
     },
     hasFooterSlot () {
       return !!this.$slots.footer

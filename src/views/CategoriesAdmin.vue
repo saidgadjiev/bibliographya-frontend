@@ -4,6 +4,7 @@
     :infinite-id.sync="infiniteId"
     :delete-id="deleteId"
     :delete-index="deleteIndex"
+    :header-slot="true"
   >
     <template slot="header">
       <v-layout align-center justify-center row>
