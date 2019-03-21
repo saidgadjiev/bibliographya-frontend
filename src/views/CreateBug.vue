@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { CREATE_BUG_TITLE, BUG_CREATED } from '../messages'
+import { BUG_CREATED } from '../messages'
 import bugTrackingService from '../services/bug-tracking-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import alert from '../mixins/alert'
@@ -75,11 +75,6 @@ export default {
         }
       }
     })
-  },
-  computed: {
-    _message () {
-      return CREATE_BUG_TITLE
-    }
   },
   methods: {
     resetForm () {

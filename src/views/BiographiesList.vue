@@ -5,6 +5,7 @@
     :reset-id="resetId"
     :delete-id="deleteId"
     :delete-index="deleteIndex"
+    :header-slot="categoryId"
   >
     <template v-if="categoryId" slot="header">
       <category-card :category="category" :height="200" :disable-link="true"/>
