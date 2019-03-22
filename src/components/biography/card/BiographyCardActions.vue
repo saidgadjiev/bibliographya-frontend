@@ -1,14 +1,12 @@
 <template>
   <v-card-actions>
-    <v-hover :open-delay="500">
-      <like
-        v-bind="$attrs"
-        v-on="$listeners"
-        :like="like"
-        :unlike="unlike"
-        class="ml-1"
-      />
-    </v-hover>
+    <like
+      v-bind="$attrs"
+      v-on="$listeners"
+      :like="like"
+      :unlike="unlike"
+      class="ml-1"
+    />
     <comment-icon v-bind="$attrs"/>
   </v-card-actions>
 </template>

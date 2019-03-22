@@ -1,28 +1,102 @@
 <template>
-  <v-layout row justify-center>
-    <v-dialog v-model="dialog" persistent width="600px" :fullscreen="$vuetify.breakpoint.smAndDown">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Понравилось 6 людям</span>
-        </v-card-title>
-        <v-card-text>
-          <v-list dense>
-            <v-list-tile>
+  <v-dialog v-model="_visible" width="400" :fullscreen="$vuetify.breakpoint.smAndDown">
+    <v-card>
+      <v-card-title class="pb-0">
+        <strong style="color: #37474F !important;">Понравилось {{ likesCount }} людям</strong>
+        <v-spacer></v-spacer>
+        <v-icon small @click="$emit('update:visible', false)">fas fa-times</v-icon>
+      </v-card-title>
+      <v-card-text class="pt-0">
+        <v-list dense>
+          <template v-for="(item, index) in items">
+            <v-list-tile :key="index">
               <v-list-tile-content>
-                <router-link class="bibliographya-a">Гаджиев Саид</router-link>
+                <router-link :to="'/biographies/' + item.id" class="bibliographya-a">
+                  <h2>{{ userName(item) }}</h2>
+                </router-link>
               </v-list-tile-content>
             </v-list-tile>
-          </v-list>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-  </v-layout>
+            <v-divider v-if="index + 1 < items.length" :key="index"></v-divider>
+          </template>
+          <infinite-loading :identifier="infiniteId" @infinite="load">
+            <template slot="spinner">
+              <progress-circular/>
+            </template>
+            <span slot="no-more"></span>
+            <span slot="no-results"></span>
+            <span slot="error"></span>
+          </infinite-loading>
+        </v-list>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
-  export default {
-    name: 'Likes'
+import alert from '../../mixins/alert'
+import biographyLikeService from '../../services/biography-like-service'
+import ProgressCircular from '../progress/ProgressCircular'
+
+export default {
+  name: 'Likes',
+  components: { ProgressCircular },
+  mixins: [alert],
+  data () {
+    return {
+      infiniteId: +new Date(),
+      limit: 40,
+      offset: 0,
+      items: []
+    }
+  },
+  props: {
+    id: Number,
+    likesCount: Number,
+    visible: Boolean
+  },
+  computed: {
+    _visible: {
+      get () {
+        return this.visible
+      },
+      set (val) {
+        this.$emit('update:visible', val)
+      }
+    }
+  },
+  methods: {
+    userName (item) {
+      return item.lastName + ' ' + item.firstName
+    },
+    load ($state) {
+      let that = this
+
+      biographyLikeService.getLikes(this.id, this.limit, this.offset)
+        .then(
+          response => {
+            if (response.status === that.HttpStatus.OK) {
+              that.items.push(...response.data.content)
+              that.offset += response.data.content.length
+              $state.loaded()
+              that.$emit('update:likesCount', response.data.totalElements)
+            } else {
+              $state.complete()
+            }
+          }
+        )
+    }
+  },
+  watch: {
+    visible (newVal) {
+      if (newVal) {
+        this.items = []
+        this.limit = 40
+        this.offset = 0
+        ++this.infiniteId
+      }
+    }
   }
+}
 </script>
 
 <style scoped>
