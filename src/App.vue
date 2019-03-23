@@ -52,4 +52,8 @@ export default {
   .sm-content {
     padding: 0 !important;
   }
+
+  .sm-content .flex {
+    padding: 0 !important;
+  }
 </style>
