@@ -35,7 +35,8 @@
     "moment-timezone": "^0.5.23",
     "http-status-codes": "^1.3.0",
     "vue-yandex-metrika": "^1.7.3",
-    "htmlparser2": "^3.10.1"
+    "htmlparser2": "^3.10.1",
+    "vue-pull-to": "^0.1.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.1",
