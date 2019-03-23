@@ -1,5 +1,6 @@
 <script>
 import { BIOGRAPHY_CARD_MODE } from '../../../config'
+import utils from '../../../utils'
 
 export default {
   name: 'Toc',
@@ -39,13 +40,6 @@ export default {
     }
   },
   methods: {
-    goTo (selector) {
-      let that = this
-
-      this.$nextTick(function () {
-        that.$vuetify.goTo(selector, that.options)
-      })
-    },
     getMinLevel (headers) {
       let i
       let minLevel = 9
@@ -203,7 +197,7 @@ export default {
             },
             on: {
               click (e) {
-                that.goTo('#' + id)
+                utils.scrollIt(document.getElementById(id), 300, 'easeOutQuad', () => {})
               }
             }
           }, h.title))
