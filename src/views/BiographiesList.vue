@@ -54,6 +54,7 @@ import CategoryCard from '../components/category/CategoryCard'
 import SideBar from '../components/biography/sidebar/SideBar'
 import SideList from '../components/biography/sidebar/SideList'
 import { TREE_CLAMP_SIZE, BIOGRAPHY_CLAMP_SIZE } from '../config'
+import { SET_PULL_TO_REFRESH_METHOD } from '../store/mutation-types'
 
 export default {
   name: 'BiographiesList',
@@ -73,6 +74,14 @@ export default {
     categoryId: {
       type: Number
     }
+  },
+  mounted: function () {
+    let that = this
+
+    this.$store.commit(SET_PULL_TO_REFRESH_METHOD, function (loaded) {
+      loaded('done')
+      ++that.resetId
+    })
   },
   methods: {
     biographyRemoved (index) {

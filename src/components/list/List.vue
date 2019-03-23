@@ -56,6 +56,7 @@
 import { CancelToken } from '../../axios/axios'
 import ErrorCard from '../error/ErrorCard'
 import ProgressCircular from '../progress/ProgressCircular'
+import { SET_PULL_TO_LOAD_MORE_METHOD } from '../../store/mutation-types'
 
 export default {
   name: 'List',
@@ -100,6 +101,25 @@ export default {
     infiniteLoad: {
       type: Function
     }
+  },
+  mounted () {
+    let that = this
+
+    this.$store.commit(SET_PULL_TO_LOAD_MORE_METHOD, function (loaded) {
+      let state = {
+        loaded: function () {
+          loaded('done')
+        },
+        complete: function () {
+          loaded('done')
+        },
+        error: function () {
+          loaded('done')
+        }
+      }
+
+      that.load(state)
+    })
   },
   methods: {
     itemFlex (item) {

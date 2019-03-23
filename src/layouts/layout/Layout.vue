@@ -3,7 +3,12 @@
     <nav-bar v-if="$vuetify.breakpoint.smAndDown"></nav-bar>
     <tool-bar></tool-bar>
     <pull-to-wrapper>
-      <v-container grid-list-lg fill-height :class="{ 'md-content' : $vuetify.breakpoint.mdAndUp }" class="pl-0 pr-0">
+      <v-container
+        :grid-list-lg="$vuetify.breakpoint.mdAndUp"
+        :grid-list-sm="$vuetify.breakpoint.smAndDown"
+        fill-height
+        :class="[ $vuetify.breakpoint.mdAndUp ? 'md-container' : 'mobile-container' ]"
+      >
         <v-layout row fill-height class="mt-0 mb-0">
           <v-flex md3 v-if="$vuetify.breakpoint.mdAndUp">
             <nav-bar></nav-bar>

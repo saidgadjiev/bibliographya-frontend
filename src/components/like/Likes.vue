@@ -6,13 +6,14 @@
         <v-spacer></v-spacer>
         <v-icon small @click="$emit('update:visible', false)">fas fa-times</v-icon>
       </v-card-title>
-      <v-card-text class="pt-0">
+      <v-divider></v-divider>
+      <v-card-text class="pt-0 pl-0">
         <v-list dense>
           <template v-for="(item, index) in items">
             <v-list-tile :key="index">
               <v-list-tile-content>
                 <router-link :to="'/biographies/' + item.id" class="bibliographya-a">
-                  <h2>{{ userName(item) }}</h2>
+                  <h3>{{ userName(item) }}</h3>
                 </router-link>
               </v-list-tile-content>
             </v-list-tile>
