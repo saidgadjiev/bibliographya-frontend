@@ -5,19 +5,10 @@
     </v-flex>
     <v-flex v-bind="{ [`xs${rootFlex}`]: true }">
       <v-layout row wrap justify-center>
-        <vue-pull-to
-          :bottom-load-method="loadMore"
-        >
-          <v-flex v-bind="{ [`xs${itemFlex(item)}`]: true }" v-for="(item, index) in items" :key="item.id">
-            <slot name="item" v-bind:item="item" v-bind:index="index">
-            </slot>
-          </v-flex>
-          <template slot="bottom-block">
-            <div class="bottom-load-wrapper">
-              Pull to
-            </div>
-          </template>
-        </vue-pull-to>
+        <v-flex v-bind="{ [`xs${itemFlex(item)}`]: true }" v-for="(item, index) in items" :key="item.id">
+          <slot name="item" v-bind:item="item" v-bind:index="index">
+          </slot>
+        </v-flex>
         <v-flex md6 xs12>
           <infinite-loading style="width: 100%;" :identifier="infiniteId" @infinite="load">
             <template slot="spinner">
@@ -65,11 +56,10 @@
 import { CancelToken } from '../../axios/axios'
 import ErrorCard from '../error/ErrorCard'
 import ProgressCircular from '../progress/ProgressCircular'
-import VuePullTo from 'vue-pull-to/src/vue-pull-to'
 
 export default {
   name: 'List',
-  components: { VuePullTo, ProgressCircular, ErrorCard },
+  components: { ProgressCircular, ErrorCard },
   inheritAttrs: false,
   data () {
     return {

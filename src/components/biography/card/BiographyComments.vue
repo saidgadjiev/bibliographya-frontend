@@ -12,6 +12,7 @@ import Comments from '../../comment/Comments'
 
 export default {
   name: 'BiographyComments',
+  inheritAttrs: false,
   components: { Comments },
   methods: {
     addComment (biographyId, comment) {
