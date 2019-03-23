@@ -14,7 +14,7 @@
         ></v-text-field>
       </v-form>
       <div class="error--text word-break-all" v-if="_isError(HttpStatus.CONFLICT)">
-        Такой email уже занят выберите другой.&nbsp;<router-link class="bibliographya-a" to="/restore">Забыли пароль?</router-link>
+        Такой email уже занят выберите другой.&nbsp;<router-link class="bib-a" to="/restore">Забыли пароль?</router-link>
       </div>
     </v-card-text>
     <v-card-actions style="justify-content: center">

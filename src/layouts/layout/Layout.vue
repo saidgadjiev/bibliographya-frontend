@@ -7,7 +7,7 @@
         :grid-list-lg="$vuetify.breakpoint.mdAndUp"
         :grid-list-sm="$vuetify.breakpoint.smAndDown"
         fill-height
-        :class="[ $vuetify.breakpoint.mdAndUp ? 'md-container' : 'mobile-container' ]"
+        :class="[ $vuetify.breakpoint.mdAndUp ? 'bib-container' : 'bib-mobile-container' ]"
       >
         <v-layout row fill-height class="mt-0 mb-0">
           <v-flex md3 v-if="$vuetify.breakpoint.mdAndUp">

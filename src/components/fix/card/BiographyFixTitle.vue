@@ -4,7 +4,7 @@
       <div v-if="fixer">
         <span>
           Исполнитель:
-          <router-link class="bibliographya-a" :to="_fixerBiographyLink">{{ _fixerFio }}</router-link>
+          <router-link class="bib-a" :to="_fixerBiographyLink">{{ _fixerFio }}</router-link>
         </span>
       </div>
       <div>
@@ -18,7 +18,7 @@
       <div>
         <span>
           Предложил:
-          <router-link class="bibliographya-a" :to="_creatorBiographyLink">{{ _creatorFio }}</router-link>
+          <router-link class="bib-a" :to="_creatorBiographyLink">{{ _creatorFio }}</router-link>
         </span>
       </div>
       <div v-if="fixText">

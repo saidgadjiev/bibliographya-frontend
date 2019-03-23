@@ -40,27 +40,4 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
   }
-
-  .md-content {
-    margin: auto !important;
-    padding-top: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    width: 960px !important;
-  }
-
-  .mobile-container {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-
-  .mobile-container .flex {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-
-  .mobile-container .layout:only-child {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
 </style>

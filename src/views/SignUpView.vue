@@ -59,7 +59,7 @@
               </v-btn>
             </v-flex>
             <v-flex shrink>
-              <router-link class="bibliographya-a" to="/signIn">У меня уже есть аккаунт</router-link>
+              <router-link class="bib-a" to="/signIn">У меня уже есть аккаунт</router-link>
             </v-flex>
           </v-layout>
         </v-card-actions>

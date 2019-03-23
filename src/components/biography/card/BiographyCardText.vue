@@ -22,8 +22,6 @@ import Clamp from './HtmlClamp'
 import Toc from './Toc'
 import { BIOGRAPHY_CARD_MODE } from '../../../config'
 
-let htmlparser = require('htmlparser2')
-
 export default {
   name: 'BiographyCardText',
   inheritAttrs: false,
@@ -36,6 +34,9 @@ export default {
     mode: {
       type: String,
       default: BIOGRAPHY_CARD_MODE.LIST
+    },
+    headers: {
+      type: Array
     },
     biography: {
       type: String,
@@ -55,15 +56,12 @@ export default {
   mounted () {
     if (this.biography) {
       let children = this.$refs.biography.$el.children[0].children
-      let headers = []
 
       if (this.mode === BIOGRAPHY_CARD_MODE.READ) {
-        this.getHeadersForRead(children, headers, this.guid())
+        this.getHeadersForRead(children, this.tocHeaders, this.guid())
       } else {
-        this.getHeadersForList(this.biography, headers, this.guid())
+        this.postHeadersForList(this.headers, this.tocHeaders, this.guid())
       }
-
-      this.tocHeaders = headers
     }
   },
   methods: {
@@ -74,36 +72,20 @@ export default {
         return 'head_' + counter++
       }
     },
-    getHeadersForList (source, headers, guid) {
-      let currentNode = {}
+    postHeadersForList (headers, tocHeaders, guid) {
+      for (let i = 0; i < headers.length; ++i) {
+        let header = headers[i]
 
-      currentNode.title = ''
-
-      let parser = new htmlparser.Parser({
-        onopentag: function (name, attribs) {
-          if (/^h[1-9]$/i.test(name)) {
-            currentNode.level = parseInt(name.replace(/^H/i, ''), 10)
-          }
-        },
-        ontext: function (text) {
-          if (currentNode.level) {
-            currentNode.title += text.trim()
-          }
-        },
-        onclosetag: function (tagname) {
-          if (/^h[1-9]$/i.test(tagname)) {
-            currentNode.id = guid()
-
-            headers.push(currentNode)
-            currentNode = {}
-            currentNode.title = ''
-          }
+        let currentNode = {
+          id: guid(),
+          title: header.text,
+          level: header.level
         }
-      }, { decodeEntities: true })
-      parser.write(source)
-      parser.end()
 
-      return headers
+        tocHeaders.push(currentNode)
+      }
+
+      return tocHeaders
     },
     getHeadersForRead (root, headers, guid) {
       for (let i = 0; i < root.length; ++i) {

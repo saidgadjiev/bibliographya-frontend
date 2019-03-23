@@ -9,13 +9,22 @@ export default {
   userComplete
 }
 
-function getBiographies (limit, offset, query, sort) {
-  return axios.get(getRestUrl('biographies/moderation') + '?' +
-    'limit=' + limit +
-    '&offset=' + offset +
-    (query ? '&q=' + query : '') +
-    (sort ? '&' + sort : '')
-  )
+function getBiographies (limit, offset, biographyClampSize, query, sort) {
+  let parameters = 'limit=' + limit + '&offset=' + offset
+
+  if (query) {
+    parameters += '&q=' + query
+  }
+
+  if (biographyClampSize) {
+    parameters += '&biographyClampSize=' + biographyClampSize
+  }
+
+  if (sort) {
+    parameters += '&' + sort
+  }
+
+  return axios.get(getRestUrl('biographies/moderation') + '?' + parameters)
 }
 
 function assignMe (biographyId, json) {

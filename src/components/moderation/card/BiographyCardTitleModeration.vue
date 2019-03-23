@@ -4,7 +4,7 @@
       <div v-if="_showModerator">
     <span>
       Исполнитель:&nbsp;
-      <router-link class="bibliographya-a word-break-all" :to="_biographyLink">{{ _moderatorName }}</router-link>
+      <router-link class="bib-a word-break-all" :to="_biographyLink">{{ _moderatorName }}</router-link>
     </span>
       </div>
       <div>

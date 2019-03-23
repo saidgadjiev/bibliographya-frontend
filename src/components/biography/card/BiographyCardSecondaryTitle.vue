@@ -1,11 +1,11 @@
 <template>
   <v-card-text v-if="_hasVisibleItems">
     <span v-for="(category, index) in categories" :key="index">
-      <router-link class="bibliographya-a" :to="'/categories/' + category.id">{{ category.name }}</router-link>&nbsp;&nbsp;
+      <router-link class="bib-a" :to="'/categories/' + category.id">{{ category.name }}</router-link>&nbsp;&nbsp;
     </span>
     <h4 v-if="_showAuthor">
       Автор:
-      <router-link class="bibliographya-a word-break-all" :to="_creatorBiographyLink">{{ _creatorName }}</router-link>
+      <router-link class="bib-a word-break-all" :to="_creatorBiographyLink">{{ _creatorName }}</router-link>
     </h4>
   </v-card-text>
 </template>

@@ -1,15 +1,13 @@
 <template>
   <div>
-    <p class='word-break-word' v-html="_source"></p>
-    <router-link v-if="clamp" :to="clampLink" class="bibliographya-a h4 font-weight-bold subheading">
+    <p class='word-break-word' v-html="source"></p>
+    <router-link v-if="clamp" :to="clampLink" class="bib-a h4 font-weight-bold subheading">
       {{ clampLinkLabel }}
     </router-link>
   </div>
 </template>
 
 <script>
-import h2t from 'html-truncate'
-
 export default {
   name: 'HtmlClamp',
   inheritAttrs: false,
@@ -33,15 +31,6 @@ export default {
     },
     clampLinkLabel: {
       type: String
-    }
-  },
-  computed: {
-    _source () {
-      if (this.clamp) {
-        return h2t(this.source, this.clampSize, undefined)
-      }
-
-      return this.source
     }
   }
 }

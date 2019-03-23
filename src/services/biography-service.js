@@ -23,14 +23,34 @@ function getBiographyById (id) {
   return axios.get(getRestUrl('biographies/' + id))
 }
 
-function getBiographies (cancelToken, limit, offset, query) {
-  return axios.get(getRestUrl('biographies') + '?limit=' + limit + '&offset=' + offset + (query ? '&' + query : ''), {
+function getBiographies (cancelToken, limit, offset, biographyClampSize, query, sort) {
+  let parameters = 'limit=' + limit + '&offset=' + offset
+
+  if (query) {
+    parameters += '&' + query
+  }
+
+  if (biographyClampSize) {
+    parameters += '&biographyClampSize=' + biographyClampSize
+  }
+
+  if (sort) {
+    parameters += '&' + sort
+  }
+
+  return axios.get(getRestUrl('biographies') + '?' + parameters, {
     cancelToken: cancelToken
   })
 }
 
-function getMyBiographies (limit, offset) {
-  return axios.get(getRestUrl('biographies/my') + '?limit=' + limit + '&offset=' + offset)
+function getMyBiographies (limit, offset, biographyClampSize) {
+  let parameters = 'limit=' + limit + '&offset=' + offset
+
+  if (biographyClampSize) {
+    parameters += '&biographyClampSize=' + biographyClampSize
+  }
+
+  return axios.get(getRestUrl('biographies/my') + '?' + parameters)
 }
 
 function update (biography) {

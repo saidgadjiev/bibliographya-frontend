@@ -20,7 +20,7 @@
               label="Старый пароль"
             ></v-text-field>
             <div class="error--text word-break-all" v-if="_isError(HttpStatus.BAD_REQUEST)">
-              Старый пароль введен неверно.&nbsp;<router-link class="bibliographya-a" to="/restore">Забыли пароль?
+              Старый пароль введен неверно.&nbsp;<router-link class="bib-a" to="/restore">Забыли пароль?
             </router-link>
             </div>
             <v-text-field
@@ -51,7 +51,7 @@
           <div class="error--text word-break-all" v-if="!settings.emailVerified">
             Кто то другой привязал вашу почту к своей странице. Подтвердите пожалуйста почту или вход на страницу будет
             утерян.
-            <router-link to="/settings/email" class="bibliographya-a">
+            <router-link to="/settings/email" class="bib-a">
               <strong>Подтвердить</strong>
             </router-link>
           </div>

@@ -193,7 +193,7 @@ export default {
         if (that.mode === BIOGRAPHY_CARD_MODE.READ) {
           peek.children.push(createElement('a', {
             class: {
-              'bibliographya-a': true
+              'bib-a': true
             },
             on: {
               click (e) {
@@ -204,7 +204,7 @@ export default {
         } else {
           peek.children.push(createElement('router-link', {
             class: {
-              'bibliographya-a': true
+              'bib-a': true
             },
             attrs: {
               to: '/biographies/' + that.id + '#' + id

@@ -9,8 +9,18 @@ export default {
   complete
 }
 
-function getFixes (limit, offset, query) {
-  return axios.get(getRestUrl('fixes') + '?limit=' + limit + '&offset=' + offset + (query ? '&q=' + query : ''))
+function getFixes (limit, offset, biographyClampSize, query) {
+  let parameters = 'limit=' + limit + '&offset=' + offset
+
+  if (query) {
+    parameters += '&q=' + query
+  }
+
+  if (biographyClampSize) {
+    parameters += '&biographyClampSize=' + biographyClampSize
+  }
+
+  return axios.get(getRestUrl('fixes') + '?' + parameters)
 }
 
 function suggest (biographyId, fixText) {

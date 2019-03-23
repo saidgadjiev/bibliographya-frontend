@@ -41,7 +41,7 @@ import biographyFixService from '../services/biography-fix-service'
 import List from '../components/list/List'
 import SideList from '../components/fix/sidebar/SideList'
 
-import { FIX_STATUS } from '../config'
+import { FIX_STATUS, BIOGRAPHY_CLAMP_SIZE } from '../config'
 import { mapGetters } from 'vuex'
 import BiographyFixCard from '../components/fix/card/BiographyFixCard'
 
@@ -84,7 +84,7 @@ export default {
       this.resetList()
     },
     infiniteLoad (limit, offset) {
-      return biographyFixService.getFixes(limit, offset, this.filter)
+      return biographyFixService.getFixes(limit, offset, BIOGRAPHY_CLAMP_SIZE, this.filter)
     }
   },
   components: {

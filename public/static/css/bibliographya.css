@@ -25,14 +25,38 @@
   left: unset !important;
 }
 
-.bibliographya-a {
+.bib-a {
   color: #007bff !important;
   text-decoration: none !important;
   background-color: transparent !important;
   -webkit-text-decoration-skip: objects !important;
 }
 
-.bibliographya-a:hover {
+
+.bib-container {
+  margin: auto !important;
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  width: 960px !important;
+}
+
+.bib-mobile-container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.bib-mobile-container .flex {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.bib-mobile-container .layout:only-child {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.bib-a:hover {
   color: #0056b3 !important;
   text-decoration: underline !important;
   background-color: transparent !important;

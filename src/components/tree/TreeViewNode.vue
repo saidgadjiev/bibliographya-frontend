@@ -1,6 +1,6 @@
 <template>
   <li>
-    <a v-if="items.id" :href="'#' + items.id" class="bibliographya-a">{{ items.name }}</a>
+    <a v-if="items.id" :href="'#' + items.id" class="bib-a">{{ items.name }}</a>
     <span v-else>{{ items.name }}</span>
     <ol>
       <tree-view-node

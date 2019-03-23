@@ -65,7 +65,7 @@ export default {
       resetId: +new Date(),
       deleteId: +new Date(),
       deleteIndex: -1,
-      query: 'sort=created_at,desc',
+      sort: 'sort=created_at,desc',
       autobiographies: undefined,
       category: undefined
     }
@@ -102,11 +102,11 @@ export default {
     },
     applyNewFilter () {
       ++this.resetId
-      this.query = 'sort=created_at,desc'
+      this.sort = 'sort=created_at,desc'
     },
     applyLastUpdateFilter () {
       ++this.resetId
-      this.query = 'sort=updated_at,desc&sort=created_at,desc'
+      this.sort = 'sort=updated_at,desc&sort=created_at,desc'
     },
     applyAutobiographiesFilter (val) {
       if (val) {
@@ -117,14 +117,16 @@ export default {
       ++this.resetId
     },
     infiniteLoad (limit, offset, cancelToken) {
-      let query = this.query
+      let sort = this.sort
+      let query
 
       if (this.autobiographies) {
+        query = ''
         query += '&autobiographies=true'
       }
 
       if (this.categoryId) {
-        return biographyCategoryService.getBiographies(cancelToken, this.categoryId, limit, offset, query)
+        return biographyCategoryService.getBiographies(cancelToken, this.categoryId, limit, offset, BIOGRAPHY_CLAMP_SIZE, query, sort)
           .then(
             response => {
               if (response.status === 200) {
@@ -137,7 +139,7 @@ export default {
             }
           )
       } else {
-        return biographyService.getBiographies(cancelToken, limit, offset, query)
+        return biographyService.getBiographies(cancelToken, limit, offset, BIOGRAPHY_CLAMP_SIZE, query, sort)
           .then(
             response => {
               if (response.status === 200) {

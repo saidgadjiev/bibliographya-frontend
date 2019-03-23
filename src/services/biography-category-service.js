@@ -19,8 +19,22 @@ function getCategories (limit, offset) {
   return axios.get(getRestUrl('categories') + '?limit=' + limit + '&offset=' + offset)
 }
 
-function getBiographies (cancelToken, categoryId, limit, offset, query) {
-  return axios.get(getRestUrl('categories/' + categoryId + '/biographies') + '?limit=' + limit + '&offset=' + offset + (query ? '&' + query : ''), {
+function getBiographies (cancelToken, categoryId, limit, offset, biographyClampSize, query, sort) {
+  let parameters = 'limit=' + limit + '&offset=' + offset
+
+  if (query) {
+    parameters += '&' + query
+  }
+
+  if (biographyClampSize) {
+    parameters += '&biographyClampSize=' + biographyClampSize
+  }
+
+  if (sort) {
+    parameters += '&' + sort
+  }
+
+  return axios.get(getRestUrl('categories/' + categoryId + '/biographies') + '?' + parameters, {
     cancelToken: cancelToken
   })
 }

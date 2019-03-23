@@ -54,7 +54,7 @@
           </v-btn>
         </v-flex>
         <v-flex shrink>
-           <router-link class="bibliographya-a" to="/restore">Забыли пароль?</router-link>
+           <router-link class="bib-a" to="/restore">Забыли пароль?</router-link>
         </v-flex>
       </v-layout>
     </v-card-actions>

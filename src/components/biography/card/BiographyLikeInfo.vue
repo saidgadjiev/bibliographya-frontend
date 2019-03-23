@@ -1,7 +1,7 @@
 <template>
   <v-card-text class="pt-0">
     <small class="font-weight-bold">
-      <a class="bibliographya-a" style="color: #37474F !important;" @click="showLikes">Понравилось {{ likesCount }} людям</a>
+      <a class="bib-a" style="color: #37474F !important;" @click="showLikes">Понравилось {{ likesCount }} людям</a>
     </small>
     <likes v-bind="_attrs" v-on="$listeners" :visible.sync="likesDialogVisible"/>
   </v-card-text>
