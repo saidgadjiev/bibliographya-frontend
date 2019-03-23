@@ -19,6 +19,7 @@
 import biographyService from '../services/biography-service'
 import BiographyCard from '../components/biography/card/BiographyCard'
 import ProgressCircular from '../components/progress/ProgressCircular'
+import { SET_PULL_TO_REFRESH_METHOD } from '../store/mutation-types'
 
 export default {
   name: 'BiographyDetails',
@@ -35,6 +36,9 @@ export default {
     }
   },
   mounted () {
+    this.$store.commit(SET_PULL_TO_REFRESH_METHOD, function (loaded) {
+      loaded('done')
+    })
     this.loadBiography()
   },
   methods: {

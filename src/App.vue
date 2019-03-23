@@ -5,7 +5,7 @@
         <progress-circular/>
       </v-flex>
     </v-layout>
-      <layout></layout>
+    <layout v-else></layout>
   </v-app>
 </template>
 
@@ -47,13 +47,5 @@ export default {
     padding-left: 0 !important;
     padding-right: 0 !important;
     width: 960px !important;
-  }
-
-  .sm-content {
-    padding: 0 !important;
-  }
-
-  .sm-content .flex {
-    padding: 0 !important;
   }
 </style>

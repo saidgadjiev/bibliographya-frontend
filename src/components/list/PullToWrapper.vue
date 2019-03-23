@@ -1,30 +1,35 @@
 <template>
   <vue-pull-to
-    :bottom-load-method="loadMore"
-    @bottom-state-change="stateChange"
+    :top-load-method="pullToRefreshMethod"
+    :bottom-load-method="pullToLoadMoreMethod"
   >
+    <template #top-block>
+      <div class="text-xs-center">
+      <progress-circular :size="32"/>
+      </div>
+    </template>
     <slot></slot>
-    <template slot="bottom-block">
-      <div class="bottom-load-wrapper">
-        Pull to
+    <template #bottom-block>
+      <div class="text-xs-center pt-3">
+      <progress-circular :size="32"/>
       </div>
     </template>
   </vue-pull-to>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import VuePullTo from 'vue-pull-to/src/vue-pull-to'
+import ProgressCircular from '../progress/ProgressCircular'
 
 export default {
   name: 'PullToWrapper',
-  components: { VuePullTo },
-  methods: {
-    loadMore (loaded) {
-      loaded('done')
-    },
-    stateChange (state) {
-      console.log(state)
-    }
+  components: { ProgressCircular, VuePullTo },
+  computed: {
+    ...mapGetters([
+      'pullToLoadMoreMethod',
+      'pullToRefreshMethod'
+    ])
   }
 }
 </script>
