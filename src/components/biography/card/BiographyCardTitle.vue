@@ -41,12 +41,12 @@ export default {
     _fullNameClasses () {
       if (this.$vuetify.breakpoint.mdAndUp) {
         return {
-          'headline': true
+          'title': true
         }
       }
 
       return {
-        'title': true
+        'subheading': true
       }
     },
     _isMarked () {
