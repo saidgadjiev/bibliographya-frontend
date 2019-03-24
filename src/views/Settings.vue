@@ -1,8 +1,6 @@
 <template>
   <v-layout row fill-height justify-center>
-    <v-flex shrink v-if="settingsLoading">
-      <progress-circular/>
-    </v-flex>
+      <progress-circular v-if="settingsLoading"/>
     <v-flex xs12 v-else>
       <alert-message :types="alertTypes"/>
       <v-card>

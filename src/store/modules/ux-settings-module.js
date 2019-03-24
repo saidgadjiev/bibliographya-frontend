@@ -1,4 +1,10 @@
-import { SET_DRAWER, SET_PULL_TO_REFRESH_METHOD, SET_PULL_TO_LOAD_MORE_METHOD } from '../mutation-types'
+import {
+  SET_DRAWER,
+  SET_PULL_TO_REFRESH_METHOD,
+  SET_PULL_TO_LOAD_MORE_METHOD,
+  REMOVE_PULL_TO_LOAD_MORE_METHOD,
+  REMOVE_PULL_TO_REFRESH_METHOD
+} from '../mutation-types'
 
 const state = {
   drawer: false,
@@ -15,6 +21,12 @@ const mutations = {
   },
   [SET_PULL_TO_LOAD_MORE_METHOD] (state, method) {
     state.pullToLoadMoreMethod = method
+  },
+  [REMOVE_PULL_TO_LOAD_MORE_METHOD] (state) {
+    state.pullToLoadMoreMethod = null
+  },
+  [REMOVE_PULL_TO_REFRESH_METHOD] (state) {
+    state.pullToRefreshMethod = null
   }
 }
 

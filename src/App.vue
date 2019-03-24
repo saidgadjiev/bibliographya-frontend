@@ -1,9 +1,7 @@
 <template>
   <v-app class="background">
     <v-layout align-center justify-center row v-if="_isRequest(Request.GET_ACCOUNT)">
-      <v-flex shrink>
-        <progress-circular/>
-      </v-flex>
+      <progress-circular/>
     </v-layout>
     <layout v-else></layout>
   </v-app>

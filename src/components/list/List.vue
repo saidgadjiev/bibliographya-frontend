@@ -56,10 +56,11 @@
 import { CancelToken } from '../../axios/axios'
 import ErrorCard from '../error/ErrorCard'
 import ProgressCircular from '../progress/ProgressCircular'
-import { SET_PULL_TO_LOAD_MORE_METHOD } from '../../store/mutation-types'
+import pullToLoadMore from '../../mixins/pullToLoadMore'
 
 export default {
   name: 'List',
+  mixins: [pullToLoadMore],
   components: { ProgressCircular, ErrorCard },
   inheritAttrs: false,
   data () {
@@ -102,10 +103,8 @@ export default {
       type: Function
     }
   },
-  mounted () {
-    let that = this
-
-    this.$store.commit(SET_PULL_TO_LOAD_MORE_METHOD, function (loaded) {
+  methods: {
+    pullToLoadMore (loaded) {
       let state = {
         loaded: function () {
           loaded('done')
@@ -118,10 +117,8 @@ export default {
         }
       }
 
-      that.load(state)
-    })
-  },
-  methods: {
+      this.load(state)
+    },
     itemFlex (item) {
       return item.flex ? item.flex : 12
     },

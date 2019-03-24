@@ -8,55 +8,6 @@
 // Import TinyMCE
 import tinymce from 'tinymce/tinymce'
 
-import 'tinymce/themes/silver/theme'
-import 'tinymce/themes/mobile/theme'
-
-// Any plugins you want to use has to be imported
-import 'tinymce/plugins/advlist'
-import 'tinymce/plugins/wordcount'
-import 'tinymce/plugins/autolink'
-import 'tinymce/plugins/autosave'
-import 'tinymce/plugins/charmap'
-import 'tinymce/plugins/codesample'
-import 'tinymce/plugins/fullscreen'
-import 'tinymce/plugins/hr'
-import 'tinymce/plugins/imagetools'
-import 'tinymce/plugins/insertdatetime'
-import 'tinymce/plugins/link'
-import 'tinymce/plugins/media'
-import 'tinymce/plugins/noneditable'
-import 'tinymce/plugins/paste'
-import 'tinymce/plugins/print'
-import 'tinymce/plugins/searchreplace'
-import 'tinymce/plugins/tabfocus'
-import 'tinymce/plugins/template'
-import 'tinymce/plugins/textpattern'
-import 'tinymce/plugins/visualblocks'
-import 'tinymce/plugins/anchor'
-import 'tinymce/plugins/autoresize'
-import 'tinymce/plugins/bbcode'
-import 'tinymce/plugins/code'
-import 'tinymce/plugins/directionality'
-import 'tinymce/plugins/fullpage'
-import 'tinymce/plugins/help'
-import 'tinymce/plugins/image'
-import 'tinymce/plugins/importcss'
-import 'tinymce/plugins/legacyoutput'
-import 'tinymce/plugins/lists'
-import 'tinymce/plugins/nonbreaking'
-import 'tinymce/plugins/pagebreak'
-import 'tinymce/plugins/preview'
-import 'tinymce/plugins/save'
-import 'tinymce/plugins/spellchecker'
-import 'tinymce/plugins/table'
-import 'tinymce/plugins/toc'
-import 'tinymce/plugins/visualchars'
-
-import 'tinymce/skins/ui/oxide/skin.min.css'
-import 'tinymce/skins/ui/oxide/content.min.css'
-import 'tinymce/skins/ui/oxide//skin.mobile.min.css'
-import 'tinymce/skins/ui/oxide//content.mobile.min.css'
-
 export default {
   name: 'TinyEditor',
   props: {
@@ -108,15 +59,12 @@ export default {
   methods: {
     init () {
       let options = {
-        theme: 'silver',
         mobile: {
-          theme: 'mobile',
           plugins: [ 'autosave', 'lists', 'autolink' ],
           toolbar: [ 'undo', 'bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist', 'fontsizeselect',
             'forecolor', 'styleselect', 'styleselect' ]
         },
         selector: '#' + this.id,
-        skin: false,
         min_height: 500,
         language: 'ru',
         branding: false,
@@ -132,7 +80,8 @@ export default {
         menubar: 'edit view insert format table',
         removed_menuitems: 'code visualblocks visualchars visualaid image media template codesample charmap pagebreak nonbreaking ' +
           'anchor toc codeformat',
-        init_instance_callback: this.initEditor
+        init_instance_callback: this.initEditor,
+        skin: 'oxide'
       }
       tinymce.init(options)
     },

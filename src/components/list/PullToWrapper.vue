@@ -18,18 +18,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import VuePullTo from 'vue-pull-to/src/vue-pull-to'
 import ProgressCircular from '../progress/ProgressCircular'
 
 export default {
   name: 'PullToWrapper',
   components: { ProgressCircular, VuePullTo },
-  computed: {
-    ...mapGetters([
-      'pullToLoadMoreMethod',
-      'pullToRefreshMethod'
-    ])
+  props: {
+    pullToRefreshMethod: [Object, Function],
+    pullToLoadMoreMethod: [Object, Function]
   }
 }
 </script>

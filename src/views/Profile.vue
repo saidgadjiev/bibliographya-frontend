@@ -1,8 +1,6 @@
 <template>
   <v-layout row fill-height justify-center>
-    <v-flex shrink v-if="biographyLoading">
-      <progress-circular/>
-    </v-flex>
+      <progress-circular v-if="biographyLoading"/>
     <v-flex xs12 v-else>
       <alert-message :types="['alert-success']"/>
       <biography-card

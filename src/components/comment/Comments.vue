@@ -50,7 +50,6 @@ import Comment from './Comment'
 import CommentForm from './CommentForm'
 import biographyCommentService from '../../services/biography-comment-service'
 import List from '../list/List'
-import { SET_PULL_TO_LOAD_MORE_METHOD } from '../../store/mutation-types'
 
 export default {
   name: 'Comments',
@@ -87,11 +86,6 @@ export default {
         }
       )
     }
-  },
-  mounted () {
-    this.$store.commit(SET_PULL_TO_LOAD_MORE_METHOD, function (loaded) {
-      loaded('done')
-    })
   },
   methods: {
     commentAdded (comment) {

@@ -14,9 +14,7 @@
 
     <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
       <v-layout row justify-center align-center v-if="_isRequest(Request.LOADING_EMAIL_SETTINGS)">
-        <v-flex shrink>
           <progress-circular/>
-        </v-flex>
       </v-layout>
       <step-one v-else :step.sync="step" :email.sync="saveEmailForm.email" :current-email="currentEmail"/>
     </v-stepper-content>
@@ -38,9 +36,7 @@
     <v-stepper-items v-if="$vuetify.breakpoint.mdAndUp">
       <v-stepper-content step="1">
         <v-layout row justify-center align-center v-if="_isRequest(Request.LOADING_EMAIL_SETTINGS)">
-          <v-flex shrink>
             <progress-circular/>
-          </v-flex>
         </v-layout>
         <step-one v-else :step.sync="step" :email.sync="saveEmailForm.email" :current-email="currentEmail"/>
       </v-stepper-content>

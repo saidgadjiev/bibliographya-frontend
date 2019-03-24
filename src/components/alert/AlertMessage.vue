@@ -52,7 +52,7 @@ export default {
       }
     }
   },
-  mounted () {
+  created () {
     EventBus.$on(PLUGIN_EVENTS.ALERT, this.alert)
   },
   beforeDestroy () {

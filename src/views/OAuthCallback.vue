@@ -1,9 +1,7 @@
 <template>
   <v-layout justify-center row class="ma-0 pa-0">
-    <v-flex shrink>
       <error-card v-if="error" :trigger="gotoSignIn"></error-card>
       <progress-circular v-else/>
-    </v-flex>
   </v-layout>
 </template>
 
@@ -28,7 +26,7 @@ export default {
       required: true
     }
   },
-  mounted () {
+  created () {
     this.signIn()
   },
   methods: {

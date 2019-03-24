@@ -1,8 +1,6 @@
 <template>
-  <v-layout row fill-height justify-center>
-    <v-flex shrink v-if="biographyLoading">
-      <progress-circular/>
-    </v-flex>
+  <v-layout row wrap fill-height justify-center>
+    <progress-circular v-if="biographyLoading"/>
     <v-flex xs12 v-else>
       <biography-card
         live
@@ -19,10 +17,11 @@
 import biographyService from '../services/biography-service'
 import BiographyCard from '../components/biography/card/BiographyCard'
 import ProgressCircular from '../components/progress/ProgressCircular'
-import { SET_PULL_TO_REFRESH_METHOD } from '../store/mutation-types'
+import pullToRefresh from '../mixins/pullToRefresh'
 
 export default {
   name: 'BiographyDetails',
+  mixins: [pullToRefresh],
   data () {
     return {
       biographyLoading: true,
@@ -35,20 +34,35 @@ export default {
       required: true
     }
   },
-  mounted () {
-    this.$store.commit(SET_PULL_TO_REFRESH_METHOD, function (loaded) {
-      loaded('done')
-    })
-    this.loadBiography()
+  created () {
+    let that = this
+
+    that.biographyLoading = true
+
+    let state = {
+      complete: function () {
+        that.biographyLoading = false
+      }
+    }
+
+    this.loadBiography(state)
   },
   methods: {
+    pullToRefresh (loaded) {
+      let state = {
+        complete: function () {
+          loaded('done')
+        }
+      }
+
+      this.loadBiography(state)
+    },
     biographyRemoved () {
       this.$router.push('/')
     },
-    loadBiography () {
+    loadBiography ($state) {
       let that = this
 
-      that.biographyLoading = true
       biographyService.getBiographyById(this.biographyId)
         .then(
           response => {
@@ -57,7 +71,7 @@ export default {
           e => {}
         )
         .finally(() => {
-          that.biographyLoading = false
+          $state.complete()
         })
     }
   },

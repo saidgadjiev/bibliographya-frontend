@@ -1,6 +1,11 @@
 <template>
   <v-dialog v-model="_visible" width="400" :fullscreen="$vuetify.breakpoint.smAndDown">
-    <v-card>
+    <v-card height="100%">
+      <pull-to-wrapper
+        :pull-to-refresh-method="pullToRefresh"
+        :pull-to-load-more-method="pullToLoadMore"
+      >
+        <div>
       <v-card-title class="pb-0">
         <strong style="color: #37474F !important;">Понравилось {{ likesCount }} людям</strong>
         <v-spacer></v-spacer>
@@ -29,6 +34,8 @@
           </infinite-loading>
         </v-list>
       </v-card-text>
+        </div>
+      </pull-to-wrapper>
     </v-card>
   </v-dialog>
 </template>
@@ -37,10 +44,11 @@
 import alert from '../../mixins/alert'
 import biographyLikeService from '../../services/biography-like-service'
 import ProgressCircular from '../progress/ProgressCircular'
+import PullToWrapper from '../list/PullToWrapper'
 
 export default {
   name: 'Likes',
-  components: { ProgressCircular },
+  components: { PullToWrapper, ProgressCircular },
   mixins: [alert],
   data () {
     return {
@@ -66,8 +74,30 @@ export default {
     }
   },
   methods: {
+    pullToLoadMore (load) {
+      let state = {
+        complete: function () {
+          load('done')
+        },
+        loaded: function () {
+          load('done')
+        }
+      }
+
+      this.load(state)
+    },
+    pullToRefresh (loaded) {
+      loaded('done')
+      this.reset()
+    },
     userName (item) {
       return item.lastName + ' ' + item.firstName
+    },
+    reset () {
+      this.items = []
+      this.limit = 40
+      this.offset = 0
+      ++this.infiniteId
     },
     load ($state) {
       let that = this
@@ -90,10 +120,7 @@ export default {
   watch: {
     visible (newVal) {
       if (newVal) {
-        this.items = []
-        this.limit = 40
-        this.offset = 0
-        ++this.infiniteId
+        this.reset()
       }
     }
   }

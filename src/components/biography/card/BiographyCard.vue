@@ -79,7 +79,7 @@ export default {
       default: false
     }
   },
-  mounted () {
+  created () {
     let that = this
 
     if (this.$route.hash) {
