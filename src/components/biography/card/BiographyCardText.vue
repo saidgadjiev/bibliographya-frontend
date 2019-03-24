@@ -10,7 +10,6 @@
       ref="biography"
       :source="biography"
       :clamp="biographyClamp"
-      :clamp-size="biographyClampSize"
       :clamp-link="_biographyLink"
       clamp-link-label="Читать дальше..."
     ></clamp>
@@ -45,9 +44,6 @@ export default {
     biographyClamp: {
       type: Boolean,
       default: false
-    },
-    biographyClampSize: {
-      type: Number
     },
     id: {
       type: Number

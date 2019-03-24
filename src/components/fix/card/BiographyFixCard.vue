@@ -3,7 +3,14 @@
     <biography-fix-title class="pb-0" v-bind="$attrs"/>
     <biography-card-title :show-menu="false" v-bind="biography"/>
     <v-divider></v-divider>
-    <biography-card-text v-if="_showBiography" v-bind="biography" class="pb-1"/>
+    <biography-card-text
+      v-if="_showBiography"
+      v-bind="biography"
+      class="pb-1"
+      :biography-clamp="$attrs['biography-clamp']"
+      :tree-clamp="$attrs['tree-clamp']"
+      :tree-clamp-size="$attrs['tree-clamp-size']"
+    />
     <biography-like-info v-bind.sync="biography" class="pb-1"/>
     <v-divider></v-divider>
     <biography-card-actions v-bind.sync="biography"/>

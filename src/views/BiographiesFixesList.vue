@@ -5,7 +5,11 @@
     :reset-id="resetId"
   >
     <template slot="item" slot-scope="{ item }">
-      <biography-fix-card v-bind.sync="item"/>
+      <biography-fix-card v-bind.sync="item"
+                          biography-clamp
+                          tree-clamp
+                          :tree-clamp-size="_treeClampSize"
+      />
     </template>
     <template slot="sidebar">
       <side-bar
@@ -41,7 +45,7 @@ import biographyFixService from '../services/biography-fix-service'
 import List from '../components/list/List'
 import SideList from '../components/fix/sidebar/SideList'
 
-import { FIX_STATUS, BIOGRAPHY_CLAMP_SIZE } from '../config'
+import { FIX_STATUS, BIOGRAPHY_CLAMP_SIZE, TREE_CLAMP_SIZE } from '../config'
 import { mapGetters } from 'vuex'
 import BiographyFixCard from '../components/fix/card/BiographyFixCard'
 
@@ -57,7 +61,10 @@ export default {
   computed: {
     ...mapGetters([
       'getUserId'
-    ])
+    ]),
+    _treeClampSize () {
+      return TREE_CLAMP_SIZE
+    }
   },
   methods: {
     resetList () {

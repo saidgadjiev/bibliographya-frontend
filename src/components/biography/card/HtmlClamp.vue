@@ -23,9 +23,6 @@ export default {
       type: Boolean,
       default: true
     },
-    clampSize: {
-      type: Number
-    },
     clampLink: {
       type: String
     },

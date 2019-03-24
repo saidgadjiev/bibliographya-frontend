@@ -24,7 +24,7 @@
       </v-list-tile>
       <v-list-tile
         v-if="_showSuggest"
-        @click="suggestFix"
+        @click.stop="suggestFix"
       >
         <v-list-tile-title>Предложить исправление</v-list-tile-title>
       </v-list-tile>

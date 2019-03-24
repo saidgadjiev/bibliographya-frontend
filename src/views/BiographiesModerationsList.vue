@@ -13,7 +13,6 @@
         show-moderator
         v-bind.sync="item"
         biography-clamp
-        :biography-clamp-size="_biographyClampSize"
         tree-clamp
         :tree-clamp-size="_treeClampSize"
         @biography-removed="biographyRemoved(index)"
@@ -71,9 +70,6 @@ export default {
     _treeClampSize () {
       return TREE_CLAMP_SIZE
     },
-    _biographyClampSize () {
-      return BIOGRAPHY_CLAMP_SIZE
-    },
     _smSidebar () {
       return this.$vuetify.breakpoint.smAndDown
     },
@@ -110,7 +106,7 @@ export default {
       this.resetList()
     },
     infiniteLoad (limit, offset) {
-      return biographyModerationService.getBiographies(limit, offset, this.filter, 'sort=created_at,desc')
+      return biographyModerationService.getBiographies(limit, offset, BIOGRAPHY_CLAMP_SIZE, this.filter, 'sort=created_at,desc')
     }
   },
   components: {

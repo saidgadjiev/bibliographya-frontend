@@ -14,7 +14,6 @@
       <biography-card2
         v-bind.sync="item"
         biography-clamp
-        :biography-clamp-size="_biographyClampSize"
         tree-clamp
         :tree-clamp-size="_treeClampSize"
         @biography-removed="biographyRemoved(index)"
@@ -154,12 +153,6 @@ export default {
   computed: {
     _treeClampSize () {
       return TREE_CLAMP_SIZE
-    },
-    _biographyClampSize () {
-      return BIOGRAPHY_CLAMP_SIZE
-    },
-    _smSidebar () {
-      return this.$vuetify.breakpoint.smAndDown
     }
   },
   created () {
