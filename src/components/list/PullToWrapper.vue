@@ -18,15 +18,15 @@
 </template>
 
 <script>
-import VuePullTo from 'vue-pull-to/src/vue-pull-to'
+import VuePullTo from '../../components/pullTo/VuePullTo'
 import ProgressCircular from '../progress/ProgressCircular'
 
 export default {
   name: 'PullToWrapper',
   components: { ProgressCircular, VuePullTo },
   props: {
-    pullToRefreshMethod: [Object, Function],
-    pullToLoadMoreMethod: [Object, Function]
+    pullToRefreshMethod: [Function],
+    pullToLoadMoreMethod: [ Function]
   }
 }
 </script>
