@@ -45,10 +45,11 @@ import alert from '../../mixins/alert'
 import biographyLikeService from '../../services/biography-like-service'
 import ProgressCircular from '../progress/ProgressCircular'
 import PullToWrapper from '../list/PullToWrapper'
+import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
   name: 'Likes',
-  components: { PullToWrapper, ProgressCircular },
+  components: { PullToWrapper, ProgressCircular, InfiniteLoading },
   mixins: [alert],
   data () {
     return {

@@ -25,8 +25,8 @@ export default {
   name: 'PullToWrapper',
   components: { ProgressCircular, VuePullTo },
   props: {
-    pullToRefreshMethod: [Function],
-    pullToLoadMoreMethod: [ Function]
+    pullToRefreshMethod: [ Function ],
+    pullToLoadMoreMethod: [ Function ]
   }
 }
 </script>

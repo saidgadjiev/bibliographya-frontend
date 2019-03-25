@@ -6,6 +6,10 @@ html, body {
   height: 100%;
 }
 
+.tox-edit-area__iframe, .tinymce-mobile-editor-socket {
+  height: 100% !important;
+}
+
 .background {
   background: url('/static/img/Bibliographya.jpg') no-repeat center center fixed !important;
   -webkit-background-size: cover !important;

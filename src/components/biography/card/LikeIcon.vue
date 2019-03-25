@@ -67,7 +67,6 @@ export default {
               that.likeLoading = false
             },
             e => {
-              console.log(e)
               that.likeLoading = false
             }
           )
@@ -80,7 +79,6 @@ export default {
               that.likeLoading = false
             },
             e => {
-              console.log(e)
               that.likeLoading = false
             }
           )

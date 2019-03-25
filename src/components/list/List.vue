@@ -57,11 +57,12 @@ import { CancelToken } from '../../axios/axios'
 import ErrorCard from '../error/ErrorCard'
 import ProgressCircular from '../progress/ProgressCircular'
 import pullToLoadMore from '../../mixins/pullToLoadMore'
+import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
   name: 'List',
   mixins: [pullToLoadMore],
-  components: { ProgressCircular, ErrorCard },
+  components: { ProgressCircular, ErrorCard, InfiniteLoading },
   inheritAttrs: false,
   data () {
     return {

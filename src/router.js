@@ -1,29 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import CategoriesList from './views/CategoriesList'
 import BiographiesList from './views/BiographiesList'
-import Profile from './views/Profile'
-import ProfileSettings from './views/Settings'
-import ChangeEmail from './views/ChangeEmail'
-import About from './views/About'
-import SignIn from './views/SignInView'
-import SignUp from './views/SignUpView'
-import ConfirmSignUp from './views/ConfirmSignUp'
-import RestorePassword from './views/RestorePassword'
-import BiographyDetails from './views/BiographyDetails'
-import CategoriesAdmin from './views/CategoriesAdmin'
-import BugTracking from './views/BugTracking'
-import CreateBug from './views/CreateBug'
-import EditCategory from './views/EditCategory'
-import EditBiography from './views/EditBiographyDetails'
-import CreateBiographyDetails from './views/CreateBiographyDetails'
-import CreatedByMeBiographies from './views/CreatedByMeBiographiesList'
-import BiographiesModeration from './views/BiographiesModerationsList'
-import BiographyFixesList from './views/BiographiesFixesList'
-import Privacy from './views/Privacy'
-import Statistics from './views/Statistics'
-import OAuthCallback from './views/OAuthCallback'
-import UsersList from './views/UsersList'
 import store from './store/store'
 import error403 from './views/403'
 import error404 from './views/404'
@@ -31,6 +8,30 @@ import { ROLES } from './config'
 import biographyService from './services/biography-service'
 import { USER_STATE } from './store/modules/user-module'
 import { GET_CONFIRMATION } from './store/action-types'
+
+const RestorePassword = () => import('./views/RestorePassword')
+const BiographyDetails = () => import('./views/BiographyDetails')
+const CategoriesAdmin = () => import('./views/CategoriesAdmin')
+const BugTracking = () => import('./views/BugTracking')
+const CreateBug = () => import('./views/CreateBug')
+const EditCategory = () => import('./views/EditCategory')
+const EditBiography = () => import('./views/EditBiographyDetails')
+const CreateBiographyDetails = () => import('./views/CreateBiographyDetails')
+const CreatedByMeBiographies = () => import('./views/CreatedByMeBiographiesList')
+const BiographiesModeration = () => import('./views/BiographiesModerationsList')
+const BiographyFixesList = () => import('./views/BiographiesFixesList')
+const Privacy = () => import('./views/Privacy')
+const Statistics = () => import('./views/Statistics')
+const OAuthCallback = () => import('./views/OAuthCallback')
+const UsersList = () => import('./views/UsersList')
+const Profile = () => import('./views/Profile')
+const ProfileSettings = () => import('./views/Settings')
+const ChangeEmail = () => import('./views/ChangeEmail')
+const About = () => import('./views/About')
+const CategoriesList = () => import('./views/CategoriesList')
+const SignIn = () => import('./views/SignInView')
+const SignUp = () => import('./views/SignUpView')
+const ConfirmSignUp = () => import('./views/ConfirmSignUp')
 
 Vue.use(Router)
 

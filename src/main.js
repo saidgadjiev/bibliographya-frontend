@@ -2,11 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import Vuex from 'vuex'
-import Vuetify from 'vuetify'
+import Vuetify from 'vuetify/lib'
 import VeeValidate from 'vee-validate'
 import russia from 'vee-validate/dist/locale/ru'
 import axios from 'axios'
-import InfiniteLoading from 'vue-infinite-loading'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueLogger from 'vuejs-logger'
 import VueMoment from 'vue-moment'
@@ -16,8 +15,8 @@ import { METRIKA_ID } from './config'
 
 import store from './store/store'
 
-import 'vuetify/dist/vuetify.min.css'
-import '@mdi/font/css/materialdesignicons.css'
+import 'vuetify/src/stylus/app.styl'
+import '@mdi/font/css/materialdesignicons.min.css'
 import { INTERNET_ERROR, SERVER_ERROR } from './messages'
 
 moment.tz.setDefault('Europe/Moscow')
@@ -32,8 +31,6 @@ Vue.use(Vuetify, {
   iconfont: 'fa'
 })
 Vue.use(VueSweetalert2)
-
-Vue.component('infinite-loading', InfiniteLoading)
 
 const isProduction = process.env.NODE_ENV === 'production'
 

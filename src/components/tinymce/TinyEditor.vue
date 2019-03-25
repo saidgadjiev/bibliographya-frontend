@@ -8,6 +8,59 @@
 // Import TinyMCE
 import tinymce from 'tinymce/tinymce'
 
+// A theme is also required
+import 'tinymce/themes/modern/theme'
+import 'tinymce/themes/mobile/theme'
+
+// Any plugins you want to use has to be imported
+import 'tinymce/plugins/advlist'
+import 'tinymce/plugins/wordcount'
+import 'tinymce/plugins/autolink'
+import 'tinymce/plugins/autosave'
+import 'tinymce/plugins/charmap'
+import 'tinymce/plugins/codesample'
+import 'tinymce/plugins/contextmenu'
+import 'tinymce/plugins/emoticons'
+import 'tinymce/plugins/fullscreen'
+import 'tinymce/plugins/hr'
+import 'tinymce/plugins/imagetools'
+import 'tinymce/plugins/insertdatetime'
+import 'tinymce/plugins/link'
+import 'tinymce/plugins/media'
+import 'tinymce/plugins/noneditable'
+import 'tinymce/plugins/paste'
+import 'tinymce/plugins/print'
+import 'tinymce/plugins/searchreplace'
+import 'tinymce/plugins/tabfocus'
+import 'tinymce/plugins/template'
+import 'tinymce/plugins/textpattern'
+import 'tinymce/plugins/visualblocks'
+import 'tinymce/plugins/anchor'
+import 'tinymce/plugins/autoresize'
+import 'tinymce/plugins/bbcode'
+import 'tinymce/plugins/code'
+import 'tinymce/plugins/colorpicker'
+import 'tinymce/plugins/directionality'
+import 'tinymce/plugins/fullpage'
+import 'tinymce/plugins/help'
+import 'tinymce/plugins/image'
+import 'tinymce/plugins/importcss'
+import 'tinymce/plugins/legacyoutput'
+import 'tinymce/plugins/lists'
+import 'tinymce/plugins/nonbreaking'
+import 'tinymce/plugins/pagebreak'
+import 'tinymce/plugins/preview'
+import 'tinymce/plugins/save'
+import 'tinymce/plugins/spellchecker'
+import 'tinymce/plugins/table'
+import 'tinymce/plugins/textcolor'
+import 'tinymce/plugins/toc'
+import 'tinymce/plugins/visualchars'
+
+import 'tinymce/skins/lightgray/skin.min.css'
+import 'tinymce/skins/lightgray/content.mobile.min.css'
+import 'tinymce/skins/lightgray/skin.mobile.min.css'
+
 export default {
   name: 'TinyEditor',
   props: {
@@ -58,32 +111,32 @@ export default {
   },
   methods: {
     init () {
-      tinymce.baseURL = 'http://localhost:8081/static/tinymce'
-
       let options = {
+        theme: 'modern',
         mobile: {
+          theme: 'mobile',
           plugins: [ 'autosave', 'lists', 'autolink' ],
           toolbar: [ 'undo', 'bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist', 'fontsizeselect',
             'forecolor', 'styleselect', 'styleselect' ]
         },
         selector: '#' + this.id,
-        min_height: 500,
-        language: 'ru',
+        skin: false,
+        height: 300,
+        language_url: '/static/tinymce/langs/ru.js',
         branding: false,
         readonly: this.readonly ? 1 : 0,
         toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor ' +
-          '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
-          '| removeformat fontname fontsize', // this.$el.childNodes[0].setAttribute('test', 't')
-        plugins: ['advlist autoresize autolink lists link image charmap print preview hr anchor pagebreak',
+            '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
+            '| removeformat fontname fontsize', // this.$el.childNodes[0].setAttribute('test', 't')
+        plugins: ['advlist autolink lists link image charmap print preview hr anchor pagebreak',
           'searchreplace wordcount visualblocks visualchars code fullscreen',
-          'insertdatetime media nonbreaking save table directionality',
-          'template paste textpattern imagetools toc help hr codesample'
+          'insertdatetime media nonbreaking save table contextmenu directionality',
+          'template paste textcolor colorpicker textpattern imagetools toc help emoticons hr codesample'
         ],
-        menubar: 'edit view insert format table',
+        menubar: 'edit view insert format tables',
         removed_menuitems: 'code visualblocks visualchars visualaid image media template codesample charmap pagebreak nonbreaking ' +
-          'anchor toc codeformat',
-        init_instance_callback: this.initEditor,
-        skin: 'oxide'
+            'anchor toc codeformat',
+        init_instance_callback: this.initEditor
       }
       tinymce.init(options)
     },

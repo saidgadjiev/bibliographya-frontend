@@ -100,7 +100,6 @@ export default {
 
     },
     contextmenu (e, reason) {
-      console.log('Context menu ' + reason)
     }
   },
   components: {
