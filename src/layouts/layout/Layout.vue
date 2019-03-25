@@ -8,7 +8,7 @@
     >
       <v-container
         :grid-list-lg="$vuetify.breakpoint.mdAndUp"
-        :grid-list-sm="$vuetify.breakpoint.smAndDown"
+        :grid-list-md="$vuetify.breakpoint.smAndDown"
         fill-height
         :class="[ $vuetify.breakpoint.mdAndUp ? 'bib-container' : 'bib-mobile-container' ]"
       >

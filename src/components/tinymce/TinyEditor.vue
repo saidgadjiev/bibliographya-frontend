@@ -58,6 +58,8 @@ export default {
   },
   methods: {
     init () {
+      tinymce.baseURL = 'http://localhost:8081/static/tinymce'
+
       let options = {
         mobile: {
           plugins: [ 'autosave', 'lists', 'autolink' ],

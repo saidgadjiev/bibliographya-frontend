@@ -6,6 +6,7 @@
     app
     fixed
     dense
+    :height="50"
   >
     <v-toolbar-title class="ml-0">
       <div v-if="$vuetify.breakpoint.smAndDown">
