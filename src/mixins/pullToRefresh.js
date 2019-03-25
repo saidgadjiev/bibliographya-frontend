@@ -13,7 +13,7 @@ export default {
       'pullToRefreshMethod'
     ])
   },
-  created () {
+  mounted () {
     this.setPullToRefresh(this.pullToRefresh)
   },
   beforeDestroy () {

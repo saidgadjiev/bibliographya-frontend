@@ -15,7 +15,7 @@
       <v-card-text class="pt-0 pl-0">
         <v-list dense>
           <template v-for="(item, index) in items">
-            <v-list-tile :key="index">
+            <v-list-tile :key="'user' + item.id">
               <v-list-tile-content>
                 <router-link :to="'/biographies/' + item.id" class="bib-a">
                   <h3>{{ userName(item) }}</h3>

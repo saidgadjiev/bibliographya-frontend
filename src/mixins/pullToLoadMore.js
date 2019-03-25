@@ -13,7 +13,7 @@ export default {
       'pullToLoadMoreMethod'
     ])
   },
-  created () {
+  mounted () {
     this.setPullToLoadMore(this.pullToLoadMore)
   },
   beforeDestroy () {

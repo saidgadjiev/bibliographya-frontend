@@ -1,30 +1,33 @@
 <template>
-  <div class="vue-pull-to-wrapper">
+  <div class="vue-pull-to-wrapper"
+       :style="{ height: wrapperHeight, transform: `translate3d(0, ${diff}px, 0)` }">
     <div v-if="topLoadMethod">
       <div :style="{ height: `${topBlockHeight}px`, marginTop: `${-topBlockHeight}px` }" class="action-block">
-      <slot name="top-block"
-            :state="state"
-            :state-text="topText"
-            :trigger-distance="_topConfig.triggerDistance"
-            :diff="diff">
-        <p class="default-text">{{ topText }}</p>
-      </slot>
-    </div>
-    <div class="scroll-container">
-      <slot></slot>
-    </div>
-    <div v-if="bottomLoadMethod">
-      <div
-        :style="{ height: `${bottomBlockHeight}px`, marginBottom: `${-bottomBlockHeight}px` }"
-        class="action-block">
-        <slot name="bottom-block"
+        <slot name="top-block"
               :state="state"
-              :state-text="bottomText"
-              :trigger-distance="_bottomConfig.triggerDistance"
+              :state-text="topText"
+              :trigger-distance="_topConfig.triggerDistance"
               :diff="diff">
-          <p class="default-text">{{ bottomText }}</p>
+          <p class="default-text">{{ topText }}</p>
         </slot>
+      </div>
     </div>
+      <div class="scroll-container">
+        <slot></slot>
+      </div>
+      <div v-if="bottomLoadMethod">
+        <div
+          :style="{ height: `${bottomBlockHeight}px`, marginBottom: `${-bottomBlockHeight}px` }"
+          class="action-block">
+          <slot name="bottom-block"
+                :state="state"
+                :state-text="bottomText"
+                :trigger-distance="_bottomConfig.triggerDistance"
+                :diff="diff">
+            <p class="default-text">{{ bottomText }}</p>
+          </slot>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -160,15 +163,15 @@ export default {
       let loadedStayTime
       if (this.direction === 'down') {
         this.topText =
-          loadState === 'done'
-            ? this._topConfig.doneText
-            : this._topConfig.failText
+            loadState === 'done'
+              ? this._topConfig.doneText
+              : this._topConfig.failText
         loadedStayTime = this._topConfig.loadedStayTime
       } else {
         this.bottomText =
-          loadState === 'done'
-            ? this._bottomConfig.doneText
-            : this._bottomConfig.failText
+            loadState === 'done'
+              ? this._bottomConfig.doneText
+              : this._bottomConfig.failText
         loadedStayTime = this._bottomConfig.loadedStayTime
       }
       setTimeout(() => {
@@ -191,7 +194,7 @@ export default {
     checkBottomReached () {
       return (
         this.scrollEl.scrollTop + this.scrollEl.offsetHeight + 1 >=
-        this.scrollEl.scrollHeight
+          this.scrollEl.scrollHeight
       )
     },
 
@@ -207,19 +210,21 @@ export default {
       this.currentY = event.touches[0].clientY
       this.currentX = event.touches[0].clientX
       this.distance =
-        (this.currentY - this.startY) / this.distanceIndex + this.beforeDiff
+          (this.currentY - this.startY) / this.distanceIndex + this.beforeDiff
       // judge pan gesture direction, if not vertival just return
       // make sure that if some components embeded can handle horizontal pan gesture in here
       if (
         Math.abs(this.currentY - this.startY) <
-        Math.abs(this.currentX - this.startX)
-      ) { return }
+          Math.abs(this.currentX - this.startX)
+      ) {
+        return
+      }
       this.direction = this.distance > 0 ? 'down' : 'up'
 
       if (
         this.startScrollTop === 0 &&
-        this.direction === 'down' &&
-        this.isTopBounce
+          this.direction === 'down' &&
+          this.isTopBounce
       ) {
         event.preventDefault()
         event.stopPropagation()
@@ -232,21 +237,21 @@ export default {
 
         if (
           this.distance < this._topConfig.triggerDistance &&
-          this.state !== 'pull' &&
-          this.state !== 'loading'
+            this.state !== 'pull' &&
+            this.state !== 'loading'
         ) {
           this.actionPull()
         } else if (
           this.distance >= this._topConfig.triggerDistance &&
-          this.state !== 'trigger' &&
-          this.state !== 'loading'
+            this.state !== 'trigger' &&
+            this.state !== 'loading'
         ) {
           this.actionTrigger()
         }
       } else if (
         this.bottomReached &&
-        this.direction === 'up' &&
-        this.isBottomBounce
+          this.direction === 'up' &&
+          this.isBottomBounce
       ) {
         event.preventDefault()
         event.stopPropagation()
@@ -259,14 +264,14 @@ export default {
 
         if (
           Math.abs(this.distance) < this._bottomConfig.triggerDistance &&
-          this.state !== 'pull' &&
-          this.state !== 'loading'
+            this.state !== 'pull' &&
+            this.state !== 'loading'
         ) {
           this.actionPull()
         } else if (
           Math.abs(this.distance) >= this._bottomConfig.triggerDistance &&
-          this.state !== 'trigger' &&
-          this.state !== 'loading'
+            this.state !== 'trigger' &&
+            this.state !== 'loading'
         ) {
           this.actionTrigger()
         }
@@ -326,35 +331,34 @@ export default {
       this.bindEvents()
     }
   },
-  created () {
-    console.log('VuePullTo.vue created')
+  mounted () {
     this.init()
   }
 }
 </script>
 
 <style scoped>
-.vue-pull-to-wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
+  .vue-pull-to-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 
-.scroll-container {
-  flex: 1;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-}
+  .scroll-container {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
 
-.vue-pull-to-wrapper .action-block {
-  position: relative;
-  width: 100%;
-}
+  .vue-pull-to-wrapper .action-block {
+    position: relative;
+    width: 100%;
+  }
 
-.default-text {
-  height: 100%;
-  line-height: 50px;
-  text-align: center;
-}
+  .default-text {
+    height: 100%;
+    line-height: 50px;
+    text-align: center;
+  }
 </style>
