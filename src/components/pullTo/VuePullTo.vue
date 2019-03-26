@@ -12,7 +12,7 @@
         </slot>
       </div>
     </div>
-      <div class="scroll-container">
+      <div class="scroll-container" :class="[root ? 'root-scroll' : '']">
         <slot></slot>
       </div>
       <div v-if="bottomLoadMethod">
@@ -41,6 +41,10 @@ export default {
     distanceIndex: {
       type: Number,
       default: 2
+    },
+    root: {
+      type: Boolean,
+      default: false
     },
     topBlockHeight: {
       type: Number,
