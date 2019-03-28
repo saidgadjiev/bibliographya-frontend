@@ -1,364 +1,221 @@
 <template>
-  <div class="vue-pull-to-wrapper"
-       :style="{ height: wrapperHeight, transform: `translate3d(0, ${diff}px, 0)` }">
-    <div v-if="topLoadMethod">
-      <div :style="{ height: `${topBlockHeight}px`, marginTop: `${-topBlockHeight}px` }" class="action-block">
-        <slot name="top-block"
-              :state="state"
-              :state-text="topText"
-              :trigger-distance="_topConfig.triggerDistance"
-              :diff="diff">
-          <p class="default-text">{{ topText }}</p>
-        </slot>
+  <div :id="eleId" class="pull-container">
+    <div class="scroller">
+      <div class="pulldown"
+           :class="[pulldownChangeStyle,{'hide':!displaypullDownDiv}]"
+           :style="{'margin-top':'-'+pullDownDiff+'px'}">
+        <div class="pulldown-icon"></div>
+        <div class="pulldown-label">{{pullDownTip}}</div>
+      </div>
+      <slot></slot>
+      <div class="pullup"
+           :class="[pullupChangeStyle,{'hide':!displaypullUpDiv}]">
+        <div class="pullup-icon"></div>
+        <div class="pullup-label">{{pullUpTip}}</div>
       </div>
     </div>
-      <div class="scroll-container">
-        <slot></slot>
-      </div>
-      <div v-if="bottomLoadMethod">
-        <div
-          :style="{ height: `${bottomBlockHeight}px`, marginBottom: `${-bottomBlockHeight}px` }"
-          class="action-block">
-          <slot name="bottom-block"
-                :state="state"
-                :state-text="bottomText"
-                :trigger-distance="_bottomConfig.triggerDistance"
-                :diff="diff">
-            <p class="default-text">{{ bottomText }}</p>
-          </slot>
-        </div>
-      </div>
   </div>
 </template>
 
 <script>
-import { throttle } from '../../assets/js/pullto/utils'
-import { TOP_DEFAULT_CONFIG, BOTTOM_DEFAULT_CONFIG } from '../../assets/js/pullto/config'
-
+import Scroll from './myScroll'
+const PULL_DOWN_NORMAL = '下拉刷新'
+const PULL_DOWN_RELEASE = '释放加载'
+const PULL_DOWN_LOADING = '加载中，请稍后'
+const PULL_UP_NORMAL = '上拉刷新'
+const PULL_UP_RELEASE = '释放加载'
+const PULL_UP_LOADING = '加载中，请稍后'
+// 加载状态-1默认，0显示提示下拉信息，1显示释放刷新信息，2执行加载数据，只有当为-1时才能再次加载
+const STATE_DEFAULT = -1
+const STATE_PULL_NORMAL = 0
+const STATE_PULL_RELEASE = 1
+const STATE_PULL_LOADING = 2
+const STYLE_RELEASE = 'release'
+const STYLE_REFRESH = 'refresh'
+// 不写到vue data中，优化内存
+var timeoutHandler = 0
+var timeout = 30000; var // timeout of reset refreshing state if u donnot call the finshCallback
+  pullDownHeight = 50; var // pull down element height
+  pullUpHeight = 50
 export default {
-  name: 'vue-pull-to',
+  name: 'VuePullTo',
   props: {
-    distanceIndex: {
-      type: Number,
-      default: 2
-    },
-    topBlockHeight: {
-      type: Number,
-      default: 50
-    },
-    bottomBlockHeight: {
-      type: Number,
-      default: 50
-    },
-    wrapperHeight: {
-      type: String,
-      default: '100%'
-    },
-    topLoadMethod: {
-      type: Function
-    },
-    bottomLoadMethod: {
-      type: Function
-    },
-    isThrottleTopPull: {
+    disablePulldown: {
       type: Boolean,
-      default: true
+      default: false
     },
-    isThrottleBottomPull: {
+    disablePullup: {
       type: Boolean,
-      default: true
-    },
-    isThrottleScroll: {
-      type: Boolean,
-      default: true
-    },
-    isTopBounce: {
-      type: Boolean,
-      default: true
-    },
-    isBottomBounce: {
-      type: Boolean,
-      default: true
-    },
-    topConfig: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    },
-    bottomConfig: {
-      type: Object,
-      default: () => {
-        return {}
-      }
+      default: false
     }
   },
   data () {
     return {
-      scrollEl: null,
-      startScrollTop: 0,
-      startY: 0,
-      startX: 0,
-      currentY: 0,
-      currentX: 0,
-      distance: 0,
-      direction: 0,
-      diff: 0,
-      beforeDiff: 0,
-      topText: '',
-      bottomText: '',
-      state: '',
-      bottomReached: false,
-      throttleEmitTopPull: null,
-      throttleEmitBottomPull: null,
-      throttleEmitScroll: null,
-      throttleOnInfiniteScroll: null
-    }
-  },
-  computed: {
-    _topConfig: function () {
-      return Object.assign({}, TOP_DEFAULT_CONFIG, this.topConfig)
-    },
-    _bottomConfig: function () {
-      return Object.assign({}, BOTTOM_DEFAULT_CONFIG, this.bottomConfig)
-    }
-  },
-  watch: {
-    state (val) {
-      if (this.direction === 'down') {
-        this.$emit('top-state-change', val)
-      } else {
-        this.$emit('bottom-state-change', val)
-      }
-    }
-  },
-  methods: {
-    actionPull () {
-      this.state = 'pull'
-      this.direction === 'down'
-        ? (this.topText = this._topConfig.pullText)
-        : (this.bottomText = this._bottomConfig.pullText)
-    },
-    actionTrigger () {
-      this.state = 'trigger'
-      this.direction === 'down'
-        ? (this.topText = this._topConfig.triggerText)
-        : (this.bottomText = this._bottomConfig.triggerText)
-    },
-    actionLoading () {
-      this.state = 'loading'
-      if (this.direction === 'down') {
-        this.topText = this._topConfig.loadingText
-        /* eslint-disable no-useless-call */
-        this.topLoadMethod.call(this, this.actionLoaded)
-        this.scrollTo(this._topConfig.stayDistance)
-      } else {
-        this.bottomText = this._bottomConfig.loadingText
-        this.bottomLoadMethod.call(this, this.actionLoaded)
-        this.scrollTo(-this._bottomConfig.stayDistance)
-      }
-    },
-    actionLoaded (loadState = 'done') {
-      this.state = `loaded-${loadState}`
-      let loadedStayTime
-      if (this.direction === 'down') {
-        this.topText =
-            loadState === 'done'
-              ? this._topConfig.doneText
-              : this._topConfig.failText
-        loadedStayTime = this._topConfig.loadedStayTime
-      } else {
-        this.bottomText =
-            loadState === 'done'
-              ? this._bottomConfig.doneText
-              : this._bottomConfig.failText
-        loadedStayTime = this._bottomConfig.loadedStayTime
-      }
-      setTimeout(() => {
-        this.scrollTo(0)
-
-        // reset state
-        setTimeout(() => {
-          this.state = ''
-        }, 200)
-      }, loadedStayTime)
-    },
-    scrollTo (y, duration = 200) {
-      this.$el.style.transition = `${duration}ms`
-      this.diff = y
-      setTimeout(() => {
-        this.$el.style.transition = ''
-      }, duration)
-    },
-
-    checkBottomReached () {
-      return (
-        this.scrollEl.scrollTop + this.scrollEl.offsetHeight + 1 >=
-          this.scrollEl.scrollHeight
-      )
-    },
-
-    handleTouchStart (event) {
-      this.startY = event.touches[0].clientY
-      this.startX = event.touches[0].clientX
-      this.beforeDiff = this.diff
-      this.startScrollTop = this.scrollEl.scrollTop
-      this.bottomReached = this.checkBottomReached()
-    },
-
-    handleTouchMove (event) {
-      this.currentY = event.touches[0].clientY
-      this.currentX = event.touches[0].clientX
-      this.distance =
-          (this.currentY - this.startY) / this.distanceIndex + this.beforeDiff
-      // judge pan gesture direction, if not vertival just return
-      // make sure that if some components embeded can handle horizontal pan gesture in here
-      if (
-        Math.abs(this.currentY - this.startY) <
-          Math.abs(this.currentX - this.startX)
-      ) {
-        return
-      }
-      this.direction = this.distance > 0 ? 'down' : 'up'
-
-      if (
-        this.startScrollTop === 0 &&
-          this.direction === 'down' &&
-          this.isTopBounce
-      ) {
-        event.preventDefault()
-        event.stopPropagation()
-        this.diff = this.distance
-        this.isThrottleTopPull
-          ? this.throttleEmitTopPull(this.diff)
-          : this.$emit('top-pull', this.diff)
-
-        if (typeof this.topLoadMethod !== 'function') return
-
-        if (
-          this.distance < this._topConfig.triggerDistance &&
-            this.state !== 'pull' &&
-            this.state !== 'loading'
-        ) {
-          this.actionPull()
-        } else if (
-          this.distance >= this._topConfig.triggerDistance &&
-            this.state !== 'trigger' &&
-            this.state !== 'loading'
-        ) {
-          this.actionTrigger()
-        }
-      } else if (
-        this.bottomReached &&
-          this.direction === 'up' &&
-          this.isBottomBounce
-      ) {
-        event.preventDefault()
-        event.stopPropagation()
-        this.diff = this.distance
-        this.isThrottleBottomPull
-          ? this.throttleEmitBottomPull(this.diff)
-          : this.$emit('bottom-pull', this.diff)
-
-        if (typeof this.bottomLoadMethod !== 'function') return
-
-        if (
-          Math.abs(this.distance) < this._bottomConfig.triggerDistance &&
-            this.state !== 'pull' &&
-            this.state !== 'loading'
-        ) {
-          this.actionPull()
-        } else if (
-          Math.abs(this.distance) >= this._bottomConfig.triggerDistance &&
-            this.state !== 'trigger' &&
-            this.state !== 'loading'
-        ) {
-          this.actionTrigger()
-        }
-      }
-    },
-
-    handleTouchEnd () {
-      if (this.diff === 0) return
-      if (this.state === 'trigger') {
-        this.actionLoading()
-        return
-      }
-      // pull cancel
-      this.scrollTo(0)
-    },
-
-    handleScroll (event) {
-      this.isThrottleScroll
-        ? this.throttleEmitScroll(event)
-        : this.$emit('scroll', event)
-      this.throttleOnInfiniteScroll()
-    },
-
-    onInfiniteScroll () {
-      if (this.checkBottomReached()) {
-        this.$emit('infinite-scroll')
-      }
-    },
-
-    throttleEmit (delay, mustRunDelay = 0, eventName) {
-      const throttleMethod = function () {
-        const args = [...arguments]
-        args.unshift(eventName)
-        this.$emit.apply(this, args)
-      }
-
-      return throttle(throttleMethod, delay, mustRunDelay)
-    },
-
-    bindEvents () {
-      this.scrollEl.addEventListener('touchstart', this.handleTouchStart)
-      this.scrollEl.addEventListener('touchmove', this.handleTouchMove)
-      this.scrollEl.addEventListener('touchend', this.handleTouchEnd)
-      this.scrollEl.addEventListener('scroll', this.handleScroll)
-    },
-
-    createThrottleMethods () {
-      this.throttleEmitTopPull = this.throttleEmit(200, 300, 'top-pull')
-      this.throttleEmitBottomPull = this.throttleEmit(200, 300, 'bottom-pull')
-      this.throttleEmitScroll = this.throttleEmit(100, 150, 'scroll')
-      this.throttleOnInfiniteScroll = throttle(this.onInfiniteScroll, 400)
-    },
-
-    init () {
-      this.createThrottleMethods()
-      this.scrollEl = this.$el.querySelector('.scroll-container')
-      this.bindEvents()
+      displaypullDownDiv: false,
+      displaypullUpDiv: false,
+      pullUpTip: PULL_UP_NORMAL,
+      pullDownTip: PULL_DOWN_NORMAL,
+      refreshStep: STATE_DEFAULT,
+      eleId: 'bajianscroll',
+      pulldownChangeStyle: '',
+      pullupChangeStyle: '',
+      pullDownDiff: 0
     }
   },
   mounted () {
-    this.init()
+    this.$nextTick(function () {
+      this.eleId = 'bajian' + Math.round(Math.random() * 1000)
+      setTimeout(() => {
+        this.registerDrag()
+      }, 50)
+    })
+  },
+  methods: {
+    registerDrag () {
+      this.myscroll = new Scroll('#' + this.eleId)
+      this.myscroll.on('scroll', this._onTouchMove)
+      this.myscroll.on('scrollEnd', this._onTouchEnd)
+    },
+    _onTouchMove () {
+      if (this.refreshStep == STATE_PULL_LOADING) { return }
+      if (!this.disablePulldown && this.myscroll.y > 5 && this.myscroll.y < pullDownHeight / 2) {
+        this.pullDownDiff = pullDownHeight - this.myscroll.y
+        if (this.refreshStep === STATE_PULL_NORMAL) return
+        this.displaypullDownDiv = true
+        this.displaypullUpDiv = false
+        this.pulldownChangeStyle = ''
+        this.pullDownTip = PULL_DOWN_NORMAL
+        this.refreshStep = STATE_PULL_NORMAL
+      } else if (!this.disablePulldown && this.myscroll.y >= pullDownHeight) {
+        this.pulldownChangeStyle = STYLE_RELEASE
+        this.pullDownTip = PULL_DOWN_RELEASE
+        this.refreshStep = STATE_PULL_RELEASE
+      } else if (!this.disablePullup && this.myscroll.y < -5 && -this.myscroll.y >= pullUpHeight - this.myscroll.maxScrollY) {
+        this.pullupChangeStyle = STYLE_RELEASE
+        this.pullUpTip = PULL_UP_RELEASE
+        this.refreshStep = STATE_PULL_RELEASE
+      } else if (!this.disablePullup && this.myscroll.y < -5 && this.myscroll.y < this.myscroll.maxScrollY && this.myscroll.y > -pullUpHeight + this.myscroll.maxScrollY) {
+        if (this.refreshStep === STATE_PULL_NORMAL) return
+        this.displaypullUpDiv = true
+        this.displaypullDownDiv = false
+        this.pullupChangeStyle = ''
+        this.pullUpTip = PULL_UP_NORMAL
+        this.refreshStep = STATE_PULL_NORMAL
+      }
+    },
+    reset () {
+      if (this.refreshStep != STATE_DEFAULT) {
+        this.refreshStep = STATE_DEFAULT
+        if (!this.disablePulldown) {
+          this.displaypullDownDiv = false
+          this.pulldownChangeStyle = ''
+        }
+        if (!this.disablePullup) {
+          this.displaypullUpDiv = false
+          this.pullupChangeStyle = ''
+        }
+        setTimeout(() => {
+          this.myscroll.refresh()
+        }, 0)
+        clearTimeout(timeoutHandler)
+      }
+    },
+    _onTouchEnd () {
+      this.pullDownDiff = 0
+      if (this.refreshStep == STATE_PULL_RELEASE) {
+        if (!this.disablePullup && this.pullupChangeStyle == STYLE_RELEASE) {
+          this.myscroll.maxScrollY < -10 && this.myscroll.scrollTo(0, this.myscroll.maxScrollY - pullUpHeight)
+          this.pullupChangeStyle = STYLE_REFRESH
+          this.pullUpTip = PULL_UP_LOADING
+          this.refreshStep = STATE_PULL_LOADING
+          this.$emit('on-pullup', this.reset)
+        } else if (!this.disablePulldown && this.pulldownChangeStyle == STYLE_RELEASE) {
+          this.pulldownChangeStyle = STYLE_REFRESH
+          this.pullDownTip = PULL_DOWN_LOADING
+          this.refreshStep = STATE_PULL_LOADING
+          this.$emit('on-pulldown', this.reset)
+        }
+        timeoutHandler = window.setTimeout(() => {
+          if (this.refreshStep == STATE_PULL_LOADING) { this.reset() }
+        }, timeout)
+      } else if (this.refreshStep != STATE_PULL_LOADING) {
+        this.reset()
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
-  .vue-pull-to-wrapper {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  .scroller {
+    min-height: 101%; /*修正内容高度不够无法scroll*/
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
-
-  .scroll-container {
-    flex: 1;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
+  .pulldown, .pullup {
+    transition: all 0.2s linear;
   }
-
-  .vue-pull-to-wrapper .action-block {
-    position: relative;
-    width: 100%;
+  .hide {
+    display: none;
   }
-
-  .default-text {
-    height: 100%;
+  .pull-container {
+    overflow: hidden;
+    transform: translateZ(0);
+    user-select: none;
+    text-size-adjust: none;
+  }
+  /*refresh start*/
+  .pulldown, .pullup {
+    height: 50px;
     line-height: 50px;
+    padding: 5px 15px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #888;
     text-align: center;
   }
+  .pulldown .pulldown-icon, .pullup .pullup-icon {
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: url(./pull-icon@2x.png) 0 0 no-repeat;
+    -webkit-background-size: 40px 80px;
+    background-size: 40px 80px;
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 250ms;
+  }
+  .pulldown .pulldown-label, .pullup .pullup-label {
+    position: relative;
+    top: -40px;
+  }
+  .pulldown .pulldown-icon {
+    -webkit-transform: rotate(0deg) translateZ(0);
+  }
+  .pullup .pullup-icon {
+    -webkit-transform: rotate(-180deg) translateZ(0);
+  }
+  .pulldown.release .pulldown-icon {
+    -webkit-transform: rotate(-180deg) translateZ(0);
+  }
+  .pullup.release .pullup-icon {
+    -webkit-transform: rotate(0deg) translateZ(0);
+  }
+  .pulldown.refresh .pulldown-icon, .pullup.refresh .pullup-icon {
+    background-position: 0 100%;
+    -webkit-transition-duration: 0ms;
+    -webkit-animation: spinner 3s infinite linear;
+    animation: spinner 3s infinite linear;
+  }
+  /*通用转动动画*/
+  @-webkit-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    50% {
+      -webkit-transform: rotate(180deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  /*refresh end*/
 </style>
