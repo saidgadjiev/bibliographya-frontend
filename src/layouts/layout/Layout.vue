@@ -3,6 +3,7 @@
     <nav-bar v-if="$vuetify.breakpoint.smAndDown"></nav-bar>
     <tool-bar></tool-bar>
     <pull-to-wrapper
+      root
       :pull-to-load-more-method="pullToLoadMoreMethod"
       :pull-to-refresh-method="pullToRefreshMethod"
     >
