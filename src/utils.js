@@ -49,8 +49,7 @@ function scrollIt (destination, duration = 200, easing = 'linear', callback) {
     document.body.offsetHeight,
     document.documentElement.clientHeight,
     document.documentElement.scrollHeight,
-    document.documentElement.offsetHeight,
-    document.getElementsByClassName('root-scroll')[0].scrollHeight
+    document.documentElement.offsetHeight
   )
   const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight
   const destinationOffset = typeof destination === 'number' ? destination : destination.offsetTop

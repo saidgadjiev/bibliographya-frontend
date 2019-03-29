@@ -12,22 +12,22 @@
         </slot>
       </div>
     </div>
-      <div class="scroll-container" :class="[root ? 'root-scroll' : '']">
-        <slot></slot>
+    <div class="scroll-container" :class="[root ? 'root-scroll' : '']">
+      <slot></slot>
+    </div>
+    <div v-if="bottomLoadMethod">
+      <div
+        :style="{ height: `${bottomBlockHeight}px`, marginBottom: `${-bottomBlockHeight}px` }"
+        class="action-block">
+        <slot name="bottom-block"
+              :state="state"
+              :state-text="bottomText"
+              :trigger-distance="_bottomConfig.triggerDistance"
+              :diff="diff">
+          <p class="default-text">{{ bottomText }}</p>
+        </slot>
       </div>
-      <div v-if="bottomLoadMethod">
-        <div
-          :style="{ height: `${bottomBlockHeight}px`, marginBottom: `${-bottomBlockHeight}px` }"
-          class="action-block">
-          <slot name="bottom-block"
-                :state="state"
-                :state-text="bottomText"
-                :trigger-distance="_bottomConfig.triggerDistance"
-                :diff="diff">
-            <p class="default-text">{{ bottomText }}</p>
-          </slot>
-        </div>
-      </div>
+    </div>
   </div>
 </template>
 
@@ -38,6 +38,10 @@ import { TOP_DEFAULT_CONFIG, BOTTOM_DEFAULT_CONFIG } from '../../assets/js/pullt
 export default {
   name: 'vue-pull-to',
   props: {
+    mode: {
+      type: String,
+      default: 'window-scroll'
+    },
     distanceIndex: {
       type: Number,
       default: 2
@@ -99,6 +103,7 @@ export default {
   },
   data () {
     return {
+      passiveSettings: undefined,
       scrollEl: null,
       startScrollTop: 0,
       startY: 0,
@@ -196,17 +201,24 @@ export default {
     },
 
     checkBottomReached () {
-      return (
-        this.scrollEl.scrollTop + this.scrollEl.offsetHeight + 1 >=
-          this.scrollEl.scrollHeight
-      )
+      if (this.mode === 'element-scroll') {
+        return (this.scrollEl.scrollTop + this.scrollEl.offsetHeight + 1 >=
+            this.scrollEl.scrollHeight
+        )
+      }
+      return window.scrollY + window.innerHeight >= this.scrollEl.offsetHeight
     },
 
     handleTouchStart (event) {
       this.startY = event.touches[0].clientY
       this.startX = event.touches[0].clientX
       this.beforeDiff = this.diff
-      this.startScrollTop = this.scrollEl.scrollTop
+
+      if (this.mode === 'element-scroll') {
+        this.startScrollTop = this.scrollEl.scrollTop
+      } else {
+        this.startScrollTop = window.scrollY
+      }
       this.bottomReached = this.checkBottomReached()
     },
 
@@ -314,10 +326,9 @@ export default {
 
       return throttle(throttleMethod, delay, mustRunDelay)
     },
-
     bindEvents () {
       this.scrollEl.addEventListener('touchstart', this.handleTouchStart)
-      this.scrollEl.addEventListener('touchmove', this.handleTouchMove)
+      this.scrollEl.addEventListener('touchmove', this.handleTouchMove, { passive: false })
       this.scrollEl.addEventListener('touchend', this.handleTouchEnd)
       this.scrollEl.addEventListener('scroll', this.handleScroll)
     },
@@ -337,6 +348,12 @@ export default {
   },
   mounted () {
     this.init()
+  },
+  beforeDestroy () {
+    this.scrollEl.removeEventListener('touchstart', this.handleTouchStart)
+    this.scrollEl.removeEventListener('touchend', this.handleTouchEnd)
+    this.scrollEl.removeEventListener('touchmove', this.handleTouchMove, { passive: false })
+    this.scrollEl.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>

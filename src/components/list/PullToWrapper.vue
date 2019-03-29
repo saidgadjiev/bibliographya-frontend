@@ -1,8 +1,8 @@
 <template>
   <vue-pull-to
-    :root="root"
     :top-load-method="pullToRefreshMethod"
     :bottom-load-method="pullToLoadMoreMethod"
+    :mode="mode"
   >
     <template #top-block>
       <div class="text-xs-center">
@@ -26,7 +26,7 @@ export default {
   name: 'PullToWrapper',
   components: { ProgressCircular, VuePullTo },
   props: {
-    root: Boolean,
+    mode: String,
     pullToRefreshMethod: [ Function ],
     pullToLoadMoreMethod: [ Function ]
   }

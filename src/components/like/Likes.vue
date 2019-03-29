@@ -2,6 +2,7 @@
   <v-dialog v-model="_visible" width="400" :fullscreen="$vuetify.breakpoint.smAndDown">
     <v-card height="100%">
       <pull-to-wrapper
+        mode="element-scroll"
         :pull-to-refresh-method="pullToRefresh"
         :pull-to-load-more-method="pullToLoadMore"
       >

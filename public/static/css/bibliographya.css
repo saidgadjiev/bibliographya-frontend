@@ -1,13 +1,5 @@
-html, body {
+.tox-edit-area__iframe {
   height: 100%;
-}
-
-.v-content {
-  height: 100%;
-}
-
-.tox-edit-area__iframe, .tinymce-mobile-editor-socket {
-  height: 100% !important;
 }
 
 .background {
