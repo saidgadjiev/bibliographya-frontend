@@ -101,6 +101,9 @@ export default {
   },
   methods: {
     socialSignUp (provider) {
+      if (process.env.CORDOVA_PLATFORM) {
+        device.cordova.InAppBrowser.open(
+      }
       authService.getOauthUrl(provider, getRedirectUri(provider))
         .then(
           response => {
