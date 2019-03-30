@@ -1,19 +1,20 @@
 <template>
-  <v-layout justify-center row class="ma-0 pa-0">
-      <error-card v-if="error" :trigger="gotoSignIn"></error-card>
-      <progress-circular v-else/>
+  <v-layout row wrap justify-center>
+    <error-card v-if="error" :trigger="gotoSignUp"></error-card>
+    <progress-circular v-if="_isRequest(Request.SIGN_UP)"/>
   </v-layout>
 </template>
 
 <script>
-import { WELCOME, WELCOME_TITLE } from '../messages'
-import { getRedirectUri } from '../config'
+import request from '../mixins/request'
+import { getRedirectUri } from '../social'
 import ErrorCard from '../components/error/ErrorCard'
 import ProgressCircular from '../components/progress/ProgressCircular'
 import { SOCIAL_SIGN_UP, ERROR_SOCIAL_SIGN_UP } from '../store/action-types'
 
 export default {
   name: 'OAuthCallback',
+  mixins: [request],
   data () {
     return {
       error: false
@@ -27,13 +28,13 @@ export default {
     }
   },
   created () {
-    this.signIn()
+    this.signUp()
   },
   methods: {
-    gotoSignIn () {
+    gotoSignUp () {
       this.$router.push('/signUp')
     },
-    signIn () {
+    signUp () {
       this.error = false
       let that = this
 
@@ -44,16 +45,8 @@ export default {
           redirectUri: getRedirectUri(this.providerId)
         })
           .then(
-            user => {
+            () => {
               that.$router.push('/signUp/confirm')
-              if (user.isNew) {
-                that.$swal.fire({
-                  title: WELCOME_TITLE,
-                  text: WELCOME,
-                  type: 'info',
-                  showCloseButton: true
-                })
-              }
             },
             e => {
               that.error = true

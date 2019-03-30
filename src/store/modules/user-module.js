@@ -1,5 +1,5 @@
 import authService from '../../services/auth-service'
-import { REQUEST } from '../../config'
+import { REQUEST, TOKEN_NAME, isMobilePlatform } from '../../config'
 import { SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, SET_CONFIRMATION, REMOVE_CONFIRMATION } from '../mutation-types'
 import {
   CANCEL_SIGN_UP,
@@ -29,15 +29,17 @@ const state = { status: USER_STATE.NONE, user: {}, confirmation: false, roles: [
 const mutations = {
   [SIGN_IN_SUCCESS] (state, payload) {
     state.status = USER_STATE.SIGNED_ID
-    state.user = payload
-    state.roles = payload.authorities.map(function (authority) {
+    state.user = payload.user
+    state.roles = payload.user.authorities.map(function (authority) {
       return authority.authority
     })
+    localStorage.setItem(TOKEN_NAME, payload.token)
   },
   [SIGN_OUT_SUCCESS] (state) {
     state.status = USER_STATE.ANONYMOUS
     state.user = {}
     state.roles = {}
+    localStorage.removeItem(TOKEN_NAME)
   },
   [SET_CONFIRMATION] (state) {
     state.confirmation = true
@@ -55,7 +57,23 @@ const actions = {
       authService.signIn(signInForm)
         .then(
           signInResponse => {
-            commit(SIGN_IN_SUCCESS, signInResponse.data)
+            if (isMobilePlatform()) {
+              let token = signInResponse.headers[TOKEN_NAME]
+
+              if (token) {
+                commit(SIGN_IN_SUCCESS, {
+                  user: signInResponse.data,
+                  token: token
+                })
+              } else {
+                reject(new Error('Token is not present'))
+              }
+            } else {
+              commit(SIGN_IN_SUCCESS, {
+                user: signInResponse.data
+              })
+            }
+
             resolve()
           },
           e => {
@@ -107,7 +125,23 @@ const actions = {
       authService.confirmSignUpFinish(confirmSignUp)
         .then(
           response => {
-            commit(SIGN_IN_SUCCESS, response.data)
+            if (isMobilePlatform()) {
+              let token = response.headers[TOKEN_NAME]
+
+              if (token) {
+                commit(SIGN_IN_SUCCESS, {
+                  user: response.data,
+                  token: token
+                })
+              } else {
+                reject(new Error('Token is not present'))
+              }
+            } else {
+              commit(SIGN_IN_SUCCESS, {
+                user: response.data
+              })
+            }
+
             resolve(response.data)
           },
           e => {
@@ -176,13 +210,24 @@ const actions = {
         dispatch('request/' + CLEAR)
       })
   },
-  [GET_ACCOUNT] ({ dispatch, commit }) {
+  [GET_ACCOUNT] ({ dispatch, commit, getters }) {
     dispatch('request/' + SET_REQUEST, REQUEST.GET_ACCOUNT)
 
     authService.getAccount()
       .then(
         accountResponse => {
-          commit(SIGN_IN_SUCCESS, accountResponse.data)
+          if (isMobilePlatform()) {
+            let token = getters.getToken
+
+            commit(SIGN_IN_SUCCESS, {
+              user: accountResponse.data,
+              token: token
+            })
+          } else {
+            commit(SIGN_IN_SUCCESS, {
+              user: accountResponse.data
+            })
+          }
         },
         e => {
           commit(SIGN_OUT_SUCCESS)
@@ -199,6 +244,9 @@ const getters = {
     return function () {
       return state.status
     }
+  },
+  getToken: () => {
+    return localStorage.getItem(TOKEN_NAME)
   },
   isConfirmation: state => {
     return state.confirmation

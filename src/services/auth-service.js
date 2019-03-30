@@ -32,8 +32,8 @@ function getAccount () {
   return axios.get(getRestUrl('auth/account'))
 }
 
-function getOauthUrl (provider, redirectUri) {
-  return axios.post(getRestUrl('auth/oauth/' + provider) + '?redirectUri=' + redirectUri)
+function getOauthUrl (provider, responseType, redirectUri) {
+  return axios.post(getRestUrl('auth/oauth/' + provider) + '?redirectUri=' + redirectUri + '&responseType=' + responseType)
 }
 
 function socialSignUp (provider, redirectUri, code) {

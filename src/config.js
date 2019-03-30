@@ -89,14 +89,12 @@ export const BIOGRAPHY_CARD_MODE = {
   LIST: 'list'
 }
 
-export const PROVIDERS = {
-  VK: 'Вконтакте',
-  FACEBOOK: 'Фейсбук',
-  USERNAME_PASSWORD: 'Логин и пароль'
-}
-
 export default {
   ROLES
 }
 
 export const METRIKA_ID = 52534486
+
+export const TOKEN_NAME = 'x-token'
+
+export const isMobilePlatform = () => !!process.env.CORDOVA_PLATFORM

@@ -48,7 +48,8 @@
     "vuetify-loader": "^1.2.1",
     "stylus-loader": "^3.0.2",
     "css-loader": "^2.1.1",
-    "stylus": "^0.54.5"
+    "stylus": "^0.54.5",
+    "url-parse": "^1.4.4"
   },
   "eslintConfig": {
     "root": true,

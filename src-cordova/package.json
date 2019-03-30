@@ -18,8 +18,8 @@
     "cordova": {
         "plugins": {
             "cordova-plugin-whitelist": {},
-            "cordova-plugin-inappbrowser": {},
-            "cordova-plugin-device": {}
+            "cordova-plugin-device": {},
+            "cordova-plugin-inappbrowser": {}
         },
         "platforms": [
             "android"

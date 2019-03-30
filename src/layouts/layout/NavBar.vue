@@ -175,12 +175,13 @@ import { ROLES } from '../../config'
 import { SIGN_OUT } from '../../store/action-types'
 import ProgressCircular from '../../components/progress/ProgressCircular'
 import request from '../../mixins/request'
+import alert from '../../mixins/alert'
 import { SET_DRAWER } from '../../store/mutation-types'
 
 export default {
   name: 'NavBar',
   components: { ProgressCircular },
-  mixins: [request],
+  mixins: [request, alert],
   computed: {
     ...mapGetters([
       'getUserId',
@@ -213,12 +214,18 @@ export default {
   },
   methods: {
     signOut () {
+      let that = this
+
       this.$store.dispatch(SIGN_OUT)
         .then(
           () => {
             this.$router.push('/signIn')
           },
-          e => {}
+          e => {
+            if (e.response.status === that.HttpStatus.UNAUTHORIZED) {
+              this.$router.push('/signIn')
+            }
+          }
         )
     }
   }
