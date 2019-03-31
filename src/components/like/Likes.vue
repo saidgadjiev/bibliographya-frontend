@@ -1,10 +1,10 @@
 <template>
   <v-dialog v-model="_visible" width="400" :fullscreen="$vuetify.breakpoint.smAndDown">
     <v-card height="100%">
-      <pull-to-wrapper
+      <vue-pull-to
         mode="element-scroll"
-        :pull-to-refresh-method="pullToRefresh"
-        :pull-to-load-more-method="pullToLoadMore"
+        :top-load-method="pullToRefresh"
+        :bottom-load-method="pullToLoadMore"
       >
         <div>
       <v-card-title class="pb-0">
@@ -36,7 +36,7 @@
         </v-list>
       </v-card-text>
         </div>
-      </pull-to-wrapper>
+      </vue-pull-to>
     </v-card>
   </v-dialog>
 </template>
@@ -45,12 +45,12 @@
 import alert from '../../mixins/alert'
 import biographyLikeService from '../../services/biography-like-service'
 import ProgressCircular from '../progress/ProgressCircular'
-import PullToWrapper from '../list/PullToWrapper'
 import InfiniteLoading from 'vue-infinite-loading'
+import VuePullTo from '../pullTo/VuePullTo'
 
 export default {
   name: 'Likes',
-  components: { PullToWrapper, ProgressCircular, InfiniteLoading },
+  components: { VuePullTo, ProgressCircular, InfiniteLoading },
   mixins: [alert],
   data () {
     return {

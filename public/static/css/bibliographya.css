@@ -27,6 +27,8 @@
   z-index: inherit;
   width: 230px !important;
   left: unset !important;
+  position: fixed;
+  background-color: transparent !important;
 }
 
 .bib-a {

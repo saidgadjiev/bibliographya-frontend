@@ -3,7 +3,7 @@
     <v-flex xs12>
       <alert-message :types="['alert-success']"/>
       <v-card>
-        <v-card-title class="red darken-3 white--text" style="line-height: 1.5rem">
+        <v-card-title class="red lighten-2 white--text" style="line-height: 1.5rem">
           <div class="pa-3">
             <h2>Чем подробнее вы опишете действия для воспроизведения ошибки тем раньше мы сможем ее устронить. Спасибо за то, что помогаете сделать сервис лучше!</h2>
             <h3 class="pt-3">Опишите шаги воспроизведения в следующем виде:</h3>

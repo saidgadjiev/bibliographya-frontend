@@ -238,6 +238,7 @@ export default {
   }
 
   .md-drawer {
+    transform: none !important;
     height: auto !important;
     z-index: inherit;
     width: 240px !important;

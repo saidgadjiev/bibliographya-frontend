@@ -4,9 +4,9 @@ const TOP_DEFAULT_CONFIG = {
   loadingText: '加载中...',
   doneText: '加载完成',
   failText: '加载失败',
-  loadedStayTime: 400,
-  stayDistance: 50,
-  triggerDistance: 70
+  loadedStayTime: 1000,
+  stayDistance: 40,
+  triggerDistance: 50
 }
 
 const BOTTOM_DEFAULT_CONFIG = {
@@ -15,9 +15,9 @@ const BOTTOM_DEFAULT_CONFIG = {
   loadingText: '加载中...',
   doneText: '加载完成',
   failText: '加载失败',
-  loadedStayTime: 400,
-  stayDistance: 50,
-  triggerDistance: 70
+  loadedStayTime: 1000,
+  stayDistance: 60,
+  triggerDistance: 50
 }
 
 export { TOP_DEFAULT_CONFIG, BOTTOM_DEFAULT_CONFIG }

@@ -1,10 +1,7 @@
 <template>
-  <v-navigation-drawer
-    class="sidebar"
-    fixed
-  >
+  <div class="sidebar">
     <side-card v-on="$listeners" v-bind="$attrs"></side-card>
-  </v-navigation-drawer>
+  </div>
 </template>
 
 <script>

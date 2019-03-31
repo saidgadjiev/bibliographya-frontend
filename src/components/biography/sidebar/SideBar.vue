@@ -1,10 +1,7 @@
 <template>
-  <v-navigation-drawer
-    class="sidebar transparent"
-    fixed
-  >
+  <div class="sidebar transparent">
     <side-list v-on="$listeners"/>
-  </v-navigation-drawer>
+  </div>
 </template>
 
 <script>
@@ -17,8 +14,4 @@ export default {
 </script>
 
 <style scoped>
-
-  .transparent {
-    background-color: transparent !important;
-  }
 </style>

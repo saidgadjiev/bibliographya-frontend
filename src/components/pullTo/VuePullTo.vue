@@ -1,31 +1,32 @@
 <template>
-  <div class="vue-pull-to-wrapper"
-       :style="{ height: wrapperHeight, transform: `translate3d(0, ${diff}px, 0)` }">
+  <div class="vue-pull-to-wrapper">
     <div v-if="topLoadMethod">
-      <div :style="{ height: `${topBlockHeight}px`, marginTop: `${-topBlockHeight}px` }" class="action-block">
-        <slot name="top-block"
-              :state="state"
-              :state-text="topText"
-              :trigger-distance="_topConfig.triggerDistance"
-              :diff="diff">
-          <p class="default-text">{{ topText }}</p>
-        </slot>
+      <div :style="{'min-height': direction === 'down' ? `${diff}px` : 0}" class="action-block">
+        <div class="text-xs-center">
+          <v-icon
+            v-if="state === 'trigger' || state === 'pull'"
+            :class="{'icon-arrow': state === 'trigger'}"
+            color="light-blue darken-1"
+            small
+          >fas fa-arrow-down</v-icon>
+          <progress-circular v-else :size="26" color="light-blue darken-1"></progress-circular>
+        </div>
       </div>
     </div>
-    <div class="scroll-container" :class="[root ? 'root-scroll' : '']">
+    <div class="scroll-container">
       <slot></slot>
     </div>
     <div v-if="bottomLoadMethod">
-      <div
-        :style="{ height: `${bottomBlockHeight}px`, marginBottom: `${-bottomBlockHeight}px` }"
-        class="action-block">
-        <slot name="bottom-block"
-              :state="state"
-              :state-text="bottomText"
-              :trigger-distance="_bottomConfig.triggerDistance"
-              :diff="diff">
-          <p class="default-text">{{ bottomText }}</p>
-        </slot>
+      <div style="position: fixed !important; bottom: 0;" :style="{'min-height': direction === 'up' ? `${Math.abs(diff)}px` : 0}" class="action-block">
+        <div class="text-xs-center">
+          <v-icon
+            v-if="state === 'trigger' || state === 'pull'"
+            :class="{'icon-arrow': state === 'trigger'}"
+            color="light-blue darken-1"
+            small
+          >fas fa-arrow-up</v-icon>
+          <progress-circular v-else :size="26" color="light-blue darken-1"></progress-circular>
+        </div>
       </div>
     </div>
   </div>
@@ -34,9 +35,11 @@
 <script>
 import { throttle } from '../../assets/js/pullto/utils'
 import { TOP_DEFAULT_CONFIG, BOTTOM_DEFAULT_CONFIG } from '../../assets/js/pullto/config'
+import ProgressCircular from '../progress/ProgressCircular'
 
 export default {
   name: 'vue-pull-to',
+  components: { ProgressCircular },
   props: {
     mode: {
       type: String,
@@ -45,22 +48,6 @@ export default {
     distanceIndex: {
       type: Number,
       default: 2
-    },
-    root: {
-      type: Boolean,
-      default: false
-    },
-    topBlockHeight: {
-      type: Number,
-      default: 50
-    },
-    bottomBlockHeight: {
-      type: Number,
-      default: 50
-    },
-    wrapperHeight: {
-      type: String,
-      default: '100%'
     },
     topLoadMethod: {
       type: Function
@@ -368,18 +355,19 @@ export default {
   .scroll-container {
     flex: 1;
     overflow-x: hidden;
-    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
   }
 
   .vue-pull-to-wrapper .action-block {
     position: relative;
+    overflow: hidden;
+    height: 0;
     width: 100%;
+    line-height: 50px;
   }
 
-  .default-text {
-    height: 100%;
-    line-height: 50px;
-    text-align: center;
+  .icon-arrow {
+    transition: .2s;
+    transform: rotate(180deg);
   }
 </style>

@@ -2,10 +2,9 @@
   <v-content>
     <nav-bar v-if="$vuetify.breakpoint.smAndDown"></nav-bar>
     <tool-bar></tool-bar>
-    <pull-to-wrapper
-      root
-      :pull-to-load-more-method="pullToLoadMoreMethod"
-      :pull-to-refresh-method="pullToRefreshMethod"
+    <vue-pull-to
+      :top-load-method="pullToRefreshMethod"
+      :bottom-load-method="pullToLoadMoreMethod"
     >
       <v-container
         :grid-list-lg="$vuetify.breakpoint.mdAndUp"
@@ -22,7 +21,7 @@
           </v-flex>
         </v-layout>
       </v-container>
-    </pull-to-wrapper>
+    </vue-pull-to>
   </v-content>
 </template>
 
@@ -30,13 +29,13 @@
 import NavBar from './NavBar.vue'
 import ToolBar from './ToolBar.vue'
 import { SET_DRAWER } from '../../store/mutation-types'
-import PullToWrapper from '../../components/list/PullToWrapper'
 import { mapGetters } from 'vuex'
+import VuePullTo from '../../components/pullTo/VuePullTo'
 
 export default {
   name: 'Layout',
   components: {
-    PullToWrapper,
+    VuePullTo,
     NavBar,
     ToolBar
   },

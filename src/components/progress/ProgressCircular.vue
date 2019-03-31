@@ -1,7 +1,7 @@
 <template>
   <v-progress-circular
     :size="size"
-    color="primary"
+    :color="color"
     indeterminate
   ></v-progress-circular>
 </template>
@@ -13,6 +13,10 @@ export default {
     size: {
       type: Number,
       default: 50
+    },
+    color: {
+      type: String,
+      default: 'primary'
     }
   }
 }
