@@ -193,7 +193,7 @@ export default {
             this.scrollEl.scrollHeight
         )
       }
-      return window.scrollY + window.innerHeight >= this.scrollEl.offsetHeight
+      return window.scrollY + window.innerHeight >= document.scrollingElement.scrollHeight
     },
 
     handleTouchStart (event) {
