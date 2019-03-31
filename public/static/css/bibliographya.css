@@ -1,7 +1,3 @@
-.tox-edit-area__iframe {
-  height: 100%;
-}
-
 .background {
   background: url('/static/img/Bibliographya.jpg') no-repeat center center fixed !important;
   -webkit-background-size: cover !important;
