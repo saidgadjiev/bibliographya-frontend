@@ -7,7 +7,7 @@
 
 <script>
 import request from '../mixins/request'
-import { getRedirectUri } from '../social'
+import { socialAutheticator } from '../auth/auth'
 import ErrorCard from '../components/error/ErrorCard'
 import ProgressCircular from '../components/progress/ProgressCircular'
 import { SOCIAL_SIGN_UP, ERROR_SOCIAL_SIGN_UP } from '../store/action-types'
@@ -42,7 +42,7 @@ export default {
         this.$store.dispatch(SOCIAL_SIGN_UP, {
           provider: this.providerId,
           code: this.$route.query.code,
-          redirectUri: getRedirectUri(this.providerId)
+          redirectUri: socialAutheticator.getRedirectUri(this.providerId)
         })
           .then(
             () => {

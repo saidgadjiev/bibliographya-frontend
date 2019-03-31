@@ -11,7 +11,8 @@ import VueLogger from 'vuejs-logger'
 import VueMoment from 'vue-moment'
 import moment from 'moment-timezone'
 import VueYandexMetrika from 'vue-yandex-metrika'
-import { METRIKA_ID, TOKEN_NAME, isMobilePlatform } from './config'
+import { METRIKA_ID } from './config'
+import { socialAutheticator } from './auth/auth'
 
 import store from './store/store'
 
@@ -70,9 +71,7 @@ Vue.config.productionTip = false
 axios.defaults.withCredentials = true
 
 axios.interceptors.request.use(function (request) {
-  if (isMobilePlatform()) {
-    request.headers.common[TOKEN_NAME] = store.getters.getToken
-  }
+  socialAutheticator.processRequest(request)
 
   return request
 }, function (err) {

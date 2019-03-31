@@ -72,10 +72,7 @@
 import alert from '../mixins/alert'
 import request from '../mixins/request'
 import { SIGN_UP } from '../store/action-types'
-import { getRedirectUri, RESPONSE_TYPE } from '../social'
-import authService from '../services/auth-service'
-
-const Url = require('url-parse')
+import { socialAutheticator } from '../auth/auth'
 
 export default {
   name: 'SignUpView',
@@ -103,40 +100,7 @@ export default {
   },
   methods: {
     socialSignUp (provider) {
-      let that = this
-      let responseType = RESPONSE_TYPE.AUTHORIZATION_CODE
-      let redirectUri = getRedirectUri(provider)
-
-      authService.getOauthUrl(provider, responseType, redirectUri)
-        .then(
-          response => {
-            if (process.env.CORDOVA_PLATFORM) {
-              let browser = window.cordova.InAppBrowser.open(response.data, '_blank', 'location=yes')
-
-              browser.addEventListener('loadstart', function (evt) {
-                if (evt.url.indexOf(redirectUri) === 0) {
-                  let redirectUrl = new Url(evt.url)
-                  let hash = redirectUrl.hash
-                  let codeIndexOf = hash.indexOf('code=')
-                  let code = hash.substring(codeIndexOf + 5)
-                  let oauthCallback = '/' + provider + '/callback?code=' + code
-
-                  console.log(oauthCallback)
-
-                  browser.close()
-                  that.$router.push(oauthCallback)
-                }
-              })
-
-              browser.addEventListener('loaderror', function (err) {
-                console.log('error ' + err)
-                // TODO: handle this of course!
-              })
-            } else {
-              window.location.href = response.data
-            }
-          }
-        )
+      socialAutheticator.auth(provider)
     },
     signUp () {
       let that = this

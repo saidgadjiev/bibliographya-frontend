@@ -66,6 +66,11 @@
           </v-list-tile>
         </v-list>
       </v-menu>
+      <v-list-tile v-else-if="_isConfirmation" @click="cancelSignUp">
+        <v-list-tile-content>
+          <v-list-tile-title>Выйти</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
       <v-list-tile v-else to="/signIn" active-class="">
         <v-list-tile-content>
           <v-list-tile-title>Войти</v-list-tile-title>
@@ -77,7 +82,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { SIGN_OUT } from '../../store/action-types'
+import { SIGN_OUT, CANCEL_SIGN_UP } from '../../store/action-types'
 import { SET_DRAWER } from '../../store/mutation-types'
 
 export default {
@@ -90,9 +95,16 @@ export default {
     ]),
     _firstName () {
       return this.getFirstName
+    },
+    _isConfirmation () {
+      return this.$route.name === 'signUpConfirm'
     }
   },
   methods: {
+    cancelSignUp () {
+      this.$store.dispatch(CANCEL_SIGN_UP)
+      this.$router.push('/')
+    },
     doDrawer () {
       this.$store.commit(SET_DRAWER, !this.drawer)
     },

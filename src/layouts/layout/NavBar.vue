@@ -146,7 +146,15 @@
         </v-list-tile-content>
       </v-list-tile>
       <template v-else>
-        <v-list-tile to="/signIn">
+        <v-list-tile v-if="_isConfirmation" @click="cancelSignUp">
+          <v-list-tile-action>
+            <v-icon>fas fa-sign-out-alt</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Выход</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile to="/signIn" v-else>
           <v-list-tile-action>
             <v-icon>fas fa-sign-in-alt</v-icon>
           </v-list-tile-action>
@@ -172,7 +180,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { ROLES } from '../../config'
-import { SIGN_OUT } from '../../store/action-types'
+import { SIGN_OUT, CANCEL_SIGN_UP } from '../../store/action-types'
 import ProgressCircular from '../../components/progress/ProgressCircular'
 import request from '../../mixins/request'
 import alert from '../../mixins/alert'
@@ -203,6 +211,9 @@ export default {
     _showAdminBlock () {
       return this.isAuthorized([ROLES.ROLE_ADMIN])
     },
+    _isConfirmation () {
+      return this.$route.name === 'signUpConfirm'
+    },
     _drawer: {
       get () {
         return this.drawer
@@ -213,6 +224,10 @@ export default {
     }
   },
   methods: {
+    cancelSignUp () {
+      this.$store.dispatch(CANCEL_SIGN_UP)
+      this.$router.push('/')
+    },
     signOut () {
       let that = this
 
