@@ -2,34 +2,35 @@
   <v-speed-dial
     class="ml-4"
     v-model="shares"
-    :direction="direction"
+    direction="right"
     open-on-hover
-    :transition="transition"
+    transition="'slide-y-reverse-transition'"
   >
     <template #activator>
       <v-btn icon flat color="blue darken-1" @click="shares = !shares">
         <v-icon color="blue darken-1">mdi-share-outline</v-icon>
       </v-btn>
     </template>
-    <v-btn
-      fab
-      dark
-      small
-      color="primary"
-    >
-      <v-icon dark>fab fa-vk</v-icon>
-    </v-btn>
+    <share-vkontakte :page-url="pageUrl"/>
+    <share-whats-app :page-url="pageUrl"/>
   </v-speed-dial>
 </template>
 
 <script>
+import ShareVkontakte from '../../share/providers/Vkontakte'
+import ShareWhatsApp from '../../share/providers/WhatsApp'
 export default {
   name: 'ShareIcon',
+  components: { ShareWhatsApp, ShareVkontakte },
   data: () => ({
-    direction: 'top',
-    shares: false,
-    transition: 'slide-y-reverse-transition'
-  })
+    shares: false
+  }),
+  props: {
+    pageUrl: {
+      type: String,
+      required: true
+    }
+  }
 }
 </script>
 
