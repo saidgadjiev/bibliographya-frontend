@@ -13,7 +13,6 @@
 <script>
 import { clickEvent } from '../helpers/events'
 import { documentHref } from '../helpers/href'
-import { documentTitle } from '../helpers/title'
 import { sliceThousandInt } from '../helpers/count_number'
 import { getRandomInt } from '../helpers/random_int'
 import { openShareUrl } from '../helpers/new_window'
@@ -24,10 +23,6 @@ export default {
     pageUrl: {
       type: String,
       default: documentHref
-    },
-    pageTitle: {
-      type: String,
-      default: documentTitle
     }
   },
   data () {
@@ -39,9 +34,7 @@ export default {
     showShareWindow: function () {
       const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(
         this.$props.pageUrl
-      )}&title=${encodeURIComponent(
-        this.$props.pageTitle
-      )}&noparse=true`
+      )}`
 
       clickEvent(this, 'vkontakte')
 

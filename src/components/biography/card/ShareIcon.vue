@@ -13,15 +13,17 @@
     </template>
     <share-vkontakte :page-url="pageUrl"/>
     <share-whats-app :page-url="pageUrl"/>
+    <share-telegram :page-url="pageUrl"/>
   </v-speed-dial>
 </template>
 
 <script>
 import ShareVkontakte from '../../share/providers/Vkontakte'
 import ShareWhatsApp from '../../share/providers/WhatsApp'
+import ShareTelegram from '../../share/providers/Telegram'
 export default {
   name: 'ShareIcon',
-  components: { ShareWhatsApp, ShareVkontakte },
+  components: { ShareTelegram, ShareWhatsApp, ShareVkontakte },
   data: () => ({
     shares: false
   }),
