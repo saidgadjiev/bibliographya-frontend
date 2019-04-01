@@ -13,7 +13,7 @@
     </template>
     <share-vkontakte :page-url="pageUrl"/>
     <share-whats-app :page-url="pageUrl" :page-description="pageDescription"/>
-    <share-telegram :page-url="pageUrl"/>
+    <share-telegram :page-url="pageUrl" :page-description="pageDescription"/>
   </v-speed-dial>
 </template>
 

@@ -21,6 +21,10 @@ export default {
     pageUrl: {
       type: String,
       default: documentHrefWithoutHash
+    },
+    pageDescription: {
+      type: String,
+      default: ''
     }
   },
   methods: {
@@ -31,9 +35,11 @@ export default {
      */
     showShareWindow: function () {
       // Variables
+      let pageDescription = this.pageDescription.replace('@bold', '**').replace('@/bold', '**')
+
       const shareUrl = `https://telegram.me/share/url?url=${encodeURIComponent(
         this.$props.pageUrl
-      )}`
+      )}&text=${pageDescription}`
 
       // onClick event
       clickEvent(this, 'telegram')

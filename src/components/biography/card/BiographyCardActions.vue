@@ -46,10 +46,10 @@ export default {
       )
     },
     _biographyLink () {
-      return window.location.origin + '/biographies/' + this.id
+      return 'https://bibliographya.com/biographies/' + this.id
     },
     _biographyDescription () {
-      return getShareDescription()
+      return getShareDescription(this.firstName, this.lastName, this.middleName)
     }
   },
   methods: {

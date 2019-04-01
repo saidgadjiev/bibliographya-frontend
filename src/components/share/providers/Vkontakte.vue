@@ -32,9 +32,7 @@ export default {
   },
   methods: {
     showShareWindow: function () {
-      const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(
-        this.$props.pageUrl
-      )}`
+      const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(this.$props.pageUrl)}`
 
       clickEvent(this, 'vkontakte')
 

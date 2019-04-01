@@ -30,7 +30,13 @@ export const EMAIL_CHANGE_SUCCESS = 'Почта успешно изменена'
 export const EMAIL_VERIFY_SUCCESS = 'Почта успешно подтверждена'
 
 export function getShareDescription (firstName, lastName, middleName) {
+  let gender = 'androgynous'
+
+  if (middleName) {
+    gender = petrovich.detect_gender(middleName)
+  }
   let petrovichObject = {
+    gender: gender,
     first: firstName,
     middle: middleName,
     last: lastName
@@ -38,11 +44,13 @@ export function getShareDescription (firstName, lastName, middleName) {
 
   petrovichObject = petrovich(petrovichObject, 'genitive')
 
-  let message = 'Читайте про ' + petrovichObject.last + ' ' + petrovichObject.first
+  let message = ' Перейди и прочитай про @bold' + petrovichObject.last + ' ' + petrovichObject.first
 
   if (middleName) {
     message += ' ' + petrovichObject.middle
   }
 
-  return 'Читайте про ' + message + ' на '
+  message += '@/bold.'
+
+  return message
 }
