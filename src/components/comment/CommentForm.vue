@@ -6,8 +6,9 @@
     </div>
     <div style="position: relative; padding-right:40px">
       <v-textarea
+        v-on:keydown.enter.exact.prevent="enterPressed"
         auto-grow
-        rows="1"
+        :rows="rows"
         placeholder="Комментарий..."
         v-model="content"
         class="pt-0 mt-0"
@@ -36,6 +37,7 @@ export default {
   inheritAttrs: false,
   data () {
     return {
+      rows: 1,
       content: '',
       submitting: false,
       options: {
@@ -79,6 +81,9 @@ export default {
       setTimeout(function () {
         el.classList.remove('blue-grey', 'lighten-3')
       }, 2000)
+    },
+    enterPressed () {
+      this.submit()
     },
     submit () {
       if (!this.isAuthenticated) {

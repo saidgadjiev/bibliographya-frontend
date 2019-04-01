@@ -1,6 +1,7 @@
 <template>
   <v-hover>
     <v-card
+      v-on:dblclick="reply"
       slot-scope="{ hover }"
       flat
       :id="'_c' + id"
@@ -37,7 +38,7 @@
           <span v-if="parentId">
             <router-link class="bib-a" :to="_repliedBiographyLink">{{ _repliedFirstName }}</router-link>{{ ', ' + content }}
           </span>
-          <span v-else>{{ content }}</span>
+          <span style="white-space: pre-wrap;" v-else>{{ content }}</span>
         </div>
         <h4>{{ _getTimeDiff + ',' }}&nbsp;<a class="font-weight-regular" @click="reply">Ответить</a></h4>
       </v-card-text>
