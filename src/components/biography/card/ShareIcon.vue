@@ -7,7 +7,7 @@
     transition="'slide-y-reverse-transition'"
   >
     <template #activator>
-      <v-btn icon flat color="blue darken-1" @click="shares = !shares">
+      <v-btn icon flat color="blue darken-1" v-model="shares">
         <v-icon color="blue darken-1">mdi-share-outline</v-icon>
       </v-btn>
     </template>
