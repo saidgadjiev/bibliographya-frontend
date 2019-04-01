@@ -1,3 +1,5 @@
+let petrovich = require('petrovich')
+
 export const CANT_PUBLISH = 'Вы не можете опубликовать пустую биографию. ' +
   'Расскажите нам о себе что нибудь чтобы мы могли ее опубликовать.'
 
@@ -26,3 +28,21 @@ export const PASSWORD_CHANGE_SUCCESS = 'Пароль успешно измене
 export const EMAIL_CHANGE_SUCCESS = 'Почта успешно изменена'
 
 export const EMAIL_VERIFY_SUCCESS = 'Почта успешно подтверждена'
+
+export function getShareDescription (firstName, lastName, middleName) {
+  let petrovichObject = {
+    first: firstName,
+    middle: middleName,
+    last: lastName
+  }
+
+  petrovichObject = petrovich(petrovichObject, 'genitive')
+
+  let message = 'Читайте про ' + petrovichObject.last + ' ' + petrovichObject.first
+
+  if (middleName) {
+    message += ' ' + petrovichObject.middle
+  }
+
+  return 'Читайте про ' + message + ' на '
+}

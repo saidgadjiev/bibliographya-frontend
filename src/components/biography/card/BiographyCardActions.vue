@@ -1,15 +1,14 @@
 <template>
   <v-card-actions>
     <like
-      v-bind="$attrs"
-      :id="id"
+      v-bind="_attrs"
       v-on="$listeners"
       :like="like"
       :unlike="unlike"
       class="ml-1"
     />
-    <comment-icon v-bind="$attrs" :id="id"/>
-    <share-icon :page-url="_biographyLink"/>
+    <comment-icon v-bind="_attrs"/>
+    <share-icon :page-url="_biographyLink" :page-description="_biographyDescription"/>
   </v-card-actions>
 </template>
 
@@ -18,6 +17,7 @@ import Like from './LikeIcon.vue'
 import CommentIcon from './CommentIcon.vue'
 import likeService from '../../../services/like-service'
 import ShareIcon from './ShareIcon'
+import { getShareDescription } from '../../../messages'
 
 export default {
   name: 'BiographyCardActions',
@@ -28,11 +28,28 @@ export default {
     CommentIcon
   },
   props: {
-    id: Number
+    id: Number,
+    firstName: String,
+    lastName: String,
+    middleName: String
   },
   computed: {
+    _attrs () {
+      return Object.assign({},
+        this.$attrs,
+        {
+          id: this.id,
+          firstName: this.firstName,
+          lastName: this.lastName,
+          middleName: this.middleName
+        }
+      )
+    },
     _biographyLink () {
       return window.location.origin + '/biographies/' + this.id
+    },
+    _biographyDescription () {
+      return getShareDescription()
     }
   },
   methods: {

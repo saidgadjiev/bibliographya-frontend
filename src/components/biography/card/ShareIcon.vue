@@ -12,7 +12,7 @@
       </v-btn>
     </template>
     <share-vkontakte :page-url="pageUrl"/>
-    <share-whats-app :page-url="pageUrl"/>
+    <share-whats-app :page-url="pageUrl" :page-description="pageDescription"/>
     <share-telegram :page-url="pageUrl"/>
   </v-speed-dial>
 </template>
@@ -31,6 +31,10 @@ export default {
     pageUrl: {
       type: String,
       required: true
+    },
+    pageDescription: {
+      type: String,
+      default: ''
     }
   }
 }

@@ -21,6 +21,10 @@ export default {
     pageUrl: {
       type: String,
       default: documentHref
+    },
+    pageDescription: {
+      type: String,
+      default: ''
     }
   },
   methods: {
@@ -31,7 +35,7 @@ export default {
      */
     showShareWindow: function () {
       const shareUrl = `https://wa.me/?text=${encodeURIComponent(
-        this.$props.pageUrl
+        this.pageDescription + ' ' + this.$props.pageUrl
       )}`
 
       // onClick event

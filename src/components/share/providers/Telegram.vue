@@ -13,7 +13,7 @@
 <script>
 import { clickEvent } from '../helpers/events'
 import { documentHrefWithoutHash } from '../helpers/href'
-import { openPopUpWindow } from '../helpers/popup_window'
+import { openShareUrl } from '../helpers/new_window'
 
 export default {
   name: 'ShareTelegram',
@@ -31,8 +31,6 @@ export default {
      */
     showShareWindow: function () {
       // Variables
-      const width = 640
-      const height = 480
       const shareUrl = `https://telegram.me/share/url?url=${encodeURIComponent(
         this.$props.pageUrl
       )}`
@@ -40,7 +38,7 @@ export default {
       // onClick event
       clickEvent(this, 'telegram')
 
-      return openPopUpWindow(shareUrl, width, height)
+      return openShareUrl(shareUrl)
     }
   }
 }
