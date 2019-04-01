@@ -44,7 +44,7 @@ export function getShareDescription (firstName, lastName, middleName) {
 
   petrovichObject = petrovich(petrovichObject, 'genitive')
 
-  let message = ' Перейди и прочитай про @bold' + petrovichObject.last + ' ' + petrovichObject.first
+  let message = ' Перейдите и прочитайте про @bold' + petrovichObject.last + ' ' + petrovichObject.first
 
   if (middleName) {
     message += ' ' + petrovichObject.middle

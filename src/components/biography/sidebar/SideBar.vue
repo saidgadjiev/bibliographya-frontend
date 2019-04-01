@@ -1,7 +1,7 @@
 <template>
-  <div class="sidebar transparent">
+  <aside class="sidebar transparent">
     <side-list v-on="$listeners"/>
-  </div>
+  </aside>
 </template>
 
 <script>

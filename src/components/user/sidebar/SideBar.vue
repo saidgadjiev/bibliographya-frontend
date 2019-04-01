@@ -1,7 +1,7 @@
 <template>
-  <div class="sidebar">
+  <aside class="sidebar">
     <side-card v-on="$listeners" v-bind="$attrs"></side-card>
-  </div>
+  </aside>
 </template>
 
 <script>
