@@ -13,7 +13,7 @@
 <script>
 import { clickEvent } from '../helpers/events'
 import { documentHref } from '../helpers/href'
-import { openPopUpWindow } from '../helpers/popup_window'
+import { openShareUrl } from '../helpers/new_window'
 
 export default {
   name: 'ShareWhatsApp',
@@ -30,9 +30,6 @@ export default {
      * @return {object} a pop-up window
      */
     showShareWindow: function () {
-      // Variables
-      const width = 640
-      const height = 480
       const shareUrl = `https://wa.me/?text=${encodeURIComponent(
         this.$props.pageUrl
       )}`
@@ -40,7 +37,7 @@ export default {
       // onClick event
       clickEvent(this, 'whatsapp')
 
-      return openPopUpWindow(shareUrl, width, height)
+      return openShareUrl(shareUrl)
     }
   }
 }

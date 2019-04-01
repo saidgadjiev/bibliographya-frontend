@@ -14,10 +14,9 @@
 import { clickEvent } from '../helpers/events'
 import { documentHref } from '../helpers/href'
 import { documentTitle } from '../helpers/title'
-import { metaDescription } from '../helpers/description'
 import { sliceThousandInt } from '../helpers/count_number'
 import { getRandomInt } from '../helpers/random_int'
-import { openPopUpWindow } from '../helpers/popup_window'
+import { openShareUrl } from '../helpers/new_window'
 
 export default {
   name: 'ShareVkontakte',
@@ -29,10 +28,6 @@ export default {
     pageTitle: {
       type: String,
       default: documentTitle
-    },
-    pageDescription: {
-      type: String,
-      default: metaDescription
     }
   },
   data () {
@@ -42,19 +37,15 @@ export default {
   },
   methods: {
     showShareWindow: function () {
-      const width = 640
-      const height = 480
       const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(
         this.$props.pageUrl
       )}&title=${encodeURIComponent(
         this.$props.pageTitle
-      )}&description=${encodeURIComponent(
-        this.$props.pageDescription
       )}&noparse=true`
 
       clickEvent(this, 'vkontakte')
 
-      return openPopUpWindow(shareUrl, width, height)
+      return openShareUrl(shareUrl)
     },
 
     handleUpdateCount (count) {
@@ -74,7 +65,7 @@ export default {
       script.src = `https://vk.com/share.php?act=count&index=${getRandomInt(
         1,
         2345
-      )}&url=${encodeURIComponent(this.$props.page_url)}`
+      )}&url=${encodeURIComponent(this.$props.pageUrl)}`
 
       document.body.appendChild(script)
 
