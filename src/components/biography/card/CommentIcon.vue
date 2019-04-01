@@ -1,5 +1,5 @@
 <template>
-  <div class="ml-2 d-flex align-center">
+  <div class="ml-4 d-flex align-center">
     <v-icon color="blue darken-1" @click="gotoComments">mdi-comment-outline</v-icon>
     <span style="font-size: 18px;color: #007bff" class="pl-1">{{ commentsCount }}</span>
   </div>
