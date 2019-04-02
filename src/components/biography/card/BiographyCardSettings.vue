@@ -38,7 +38,7 @@ import alert from '../../../mixins/alert'
 import request from '../../../mixins/request'
 
 export default {
-  name: 'BiographyCardPublishTitle',
+  name: 'BiographyCardSettings',
   inheritAttrs: false,
   mixins: [alert, request],
   data () {

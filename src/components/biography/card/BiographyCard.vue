@@ -1,8 +1,8 @@
 <template>
   <v-card tile>
     <biography-card-title-moderation v-if="showModerationBlock" class="pb-0" v-bind="$attrs"/>
-    <biography-card-publish-title
-      v-if="showPublishBlock"
+    <biography-card-settings
+      v-if="showSettings"
       v-bind="_attrs"
       class="pb-0"
       v-on="$listeners"/>
@@ -26,7 +26,7 @@
 import BiographyCardActions from './BiographyCardActions'
 import BiographyCardTitle from './BiographyCardTitle'
 import BiographyCardText from './BiographyCardText'
-import BiographyCardPublishTitle from './BiographyCardPublishTitle'
+import BiographyCardSettings from './BiographyCardSettings'
 import BiographyCardTitleModeration from '../../moderation/card/BiographyCardTitleModeration'
 import BiographyModerationCardActions from '../../moderation/card/BiographyModerationCardActions'
 import BiographyCardSecondaryTitle from './BiographyCardSecondaryTitle'
@@ -74,7 +74,7 @@ export default {
       type: Boolean,
       default: false
     },
-    showPublishBlock: {
+    showSettings: {
       type: Boolean,
       default: false
     }
@@ -122,7 +122,7 @@ export default {
     BiographyCardSecondaryTitle,
     BiographyModerationCardActions,
     BiographyCardTitleModeration,
-    BiographyCardPublishTitle,
+    BiographyCardSettings,
     BiographyCardActions,
     BiographyCardTitle,
     BiographyCardText
