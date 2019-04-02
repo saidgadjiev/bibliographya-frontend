@@ -12,7 +12,6 @@
         show-user-actions
         :show-publish-block="showPublishBlock(item)"
         biography-clamp
-        :biography-clamp-size="_biographyClampSize"
         tree-clamp
         :show-moderation-actions="item.actions.length > 0"
         :tree-clamp-size="_treeClampSize"
@@ -59,15 +58,12 @@ export default {
       ++this.deleteId
     },
     infiniteLoad (limit, offset) {
-      return biographyService.getMyBiographies(limit, offset)
+      return biographyService.getMyBiographies(limit, offset, BIOGRAPHY_CLAMP_SIZE)
     }
   },
   computed: {
     _treeClampSize () {
       return TREE_CLAMP_SIZE
-    },
-    _biographyClampSize () {
-      return BIOGRAPHY_CLAMP_SIZE
     }
   },
   components: {
