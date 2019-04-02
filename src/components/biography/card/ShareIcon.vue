@@ -1,6 +1,7 @@
 <template>
   <v-speed-dial
     class="ml-4"
+    style="z-index: 1000;"
     v-model="shares"
     direction="right"
     open-on-hover
