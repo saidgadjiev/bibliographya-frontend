@@ -21,9 +21,6 @@
       Снять с публикации
     </v-btn>
     <div v-if="_showAdditinalSettings">
-      <v-switch v-model="_onlyInCategory" label="Отображать только в категориях"
-                :loading="_isRequest(Request.SET_ONLY_IN_CATEGORY)">
-      </v-switch>
       <v-switch v-model="_anonymousCreator" label="Анонимно" :loading="_isRequest(Request.ANONYMOUS_CREATOR)">
       </v-switch>
     </div>
@@ -54,9 +51,6 @@ export default {
     publishStatus: {
       type: Number
     },
-    onlyInCategory: {
-      type: Boolean
-    },
     anonymousCreator: {
       type: Boolean
     },
@@ -68,25 +62,6 @@ export default {
     },
     _showUnPublish () {
       return this.publishStatus === PUBLISH_STATUS.PUBLISHED
-    },
-    _onlyInCategory: {
-      get () {
-        return this.onlyInCategory
-      },
-      set (val) {
-        let that = this
-
-        that.setRequest(REQUEST.SET_ONLY_IN_CATEGORY)
-        biographyService.setOnlyInCategory(this.id, val)
-          .then(
-            () => {
-              this.$emit('update:onlyInCategory', val)
-            }
-          )
-          .finally(() => {
-            that.clearRequest()
-          })
-      }
     },
     _anonymousCreator: {
       get () {

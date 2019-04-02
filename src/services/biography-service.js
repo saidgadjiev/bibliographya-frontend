@@ -13,7 +13,6 @@ export default {
   unpublish,
   deleteBiography,
   canEdit,
-  setOnlyInCategory,
   disableComments,
   anonymousCreator
 }
@@ -78,14 +77,6 @@ function deleteBiography (biographyId) {
 
 function canEdit (biographyId) {
   return axios.head(getRestUrl('biographies/' + biographyId))
-}
-
-function setOnlyInCategory (id, onlyInCategory) {
-  let json = {
-    'onlyInCategory': onlyInCategory
-  }
-
-  return axios.patch(getRestUrl(id), json)
 }
 
 function disableComments (id, disableComments) {
