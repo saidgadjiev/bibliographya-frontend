@@ -18,7 +18,7 @@
         @comment-deleted="commentDeleted(item, index)"
       ></comment>
     </template>
-    <template slot="footer">
+    <template v-if="!disableComments" slot="footer">
       <comment-form
         class="pl-2"
         :reply-to-comment="replyToComment"
@@ -74,7 +74,8 @@ export default {
     },
     commentsCount: {
       type: Number
-    }
+    },
+    disableComments: Boolean
   },
   computed: {
     _attrs () {

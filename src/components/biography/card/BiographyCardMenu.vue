@@ -28,6 +28,12 @@
       >
         <v-list-tile-title>Предложить исправление</v-list-tile-title>
       </v-list-tile>
+      <v-list-tile
+        v-if="_showEdit"
+        @click.stop="doDisableComments"
+      >
+        <v-list-tile-title>{{ _disableCommentsTitle }}</v-list-tile-title>
+      </v-list-tile>
     </v-list>
     <create-fix-suggest-dialog
       :biography-id="id"
@@ -41,6 +47,7 @@ import { mapGetters } from 'vuex'
 import { ROLES } from '../../../config'
 import biographyService from '../../../services/biography-service'
 import CreateFixSuggestDialog from '../../fix/dialog/CreateFixSuggestDialog.vue'
+import { ENABLE_COMMENTS, DISABLE_COMMENTS } from '../../../messages'
 
 export default {
   name: 'BiographyCardMenu',
@@ -61,6 +68,15 @@ export default {
     },
     userId: {
       type: Number
+    },
+    onlyInCategory: {
+      type: Boolean
+    },
+    disableComments: {
+      type: Boolean
+    },
+    anonymousCreator: {
+      type: Boolean
     }
   },
   computed: {
@@ -111,9 +127,20 @@ export default {
       }
 
       return 'fas fa-ellipsis-h'
+    },
+    _disableCommentsTitle () {
+      return this.disableComments ? ENABLE_COMMENTS : DISABLE_COMMENTS
     }
   },
   methods: {
+    doDisableComments () {
+      biographyService.disableComments(this.id, !this.disableComments)
+        .then(
+          () => {
+            this.$emit('update:disableComments', !this.disableComments)
+          }
+        )
+    },
     suggestFix () {
       if (!this.isAuthenticated) {
         this.$router.push('/signIn')

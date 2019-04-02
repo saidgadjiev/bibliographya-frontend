@@ -20,19 +20,27 @@
     >
       Снять с публикации
     </v-btn>
+    <div v-if="_showAdditinalSettings">
+      <v-switch v-model="_onlyInCategory" label="Отображать только в категориях"
+                :loading="_isRequest(Request.SET_ONLY_IN_CATEGORY)">
+      </v-switch>
+      <v-switch v-model="_anonymousCreator" label="Анонимно" :loading="_isRequest(Request.ANONYMOUS_CREATOR)">
+      </v-switch>
+    </div>
   </v-card-actions>
 </template>
 
 <script>
 import { PUBLISHED, UNPUBLISHED, CANT_PUBLISH } from '../../../messages'
-import { PUBLISH_STATUS } from '../../../config'
+import { PUBLISH_STATUS, REQUEST } from '../../../config'
 import biographyService from '../../../services/biography-service'
 import alert from '../../../mixins/alert'
+import request from '../../../mixins/request'
 
 export default {
   name: 'BiographyCardPublishTitle',
   inheritAttrs: false,
-  mixins: [alert],
+  mixins: [alert, request],
   data () {
     return {
       publishLoading: false,
@@ -45,7 +53,14 @@ export default {
     },
     publishStatus: {
       type: Number
-    }
+    },
+    onlyInCategory: {
+      type: Boolean
+    },
+    anonymousCreator: {
+      type: Boolean
+    },
+    userId: Number
   },
   computed: {
     _showPublish () {
@@ -53,6 +68,47 @@ export default {
     },
     _showUnPublish () {
       return this.publishStatus === PUBLISH_STATUS.PUBLISHED
+    },
+    _onlyInCategory: {
+      get () {
+        return this.onlyInCategory
+      },
+      set (val) {
+        let that = this
+
+        that.setRequest(REQUEST.SET_ONLY_IN_CATEGORY)
+        biographyService.setOnlyInCategory(this.id, val)
+          .then(
+            () => {
+              this.$emit('update:onlyInCategory', val)
+            }
+          )
+          .finally(() => {
+            that.clearRequest()
+          })
+      }
+    },
+    _anonymousCreator: {
+      get () {
+        return this.anonymousCreator
+      },
+      set (val) {
+        let that = this
+
+        that.setRequest(REQUEST.ANONYMOUS_CREATOR)
+        biographyService.anonymousCreator(this.id, val)
+          .then(
+            () => {
+              this.$emit('update:anonymousCreator', val)
+            }
+          )
+          .finally(() => {
+            that.clearRequest()
+          })
+      }
+    },
+    _showAdditinalSettings () {
+      return !this.userId
     }
   },
   methods: {

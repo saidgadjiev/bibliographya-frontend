@@ -12,7 +12,10 @@ export default {
   publish,
   unpublish,
   deleteBiography,
-  canEdit
+  canEdit,
+  setOnlyInCategory,
+  disableComments,
+  anonymousCreator
 }
 
 function getBiography (username, filter) {
@@ -75,4 +78,28 @@ function deleteBiography (biographyId) {
 
 function canEdit (biographyId) {
   return axios.head(getRestUrl('biographies/' + biographyId))
+}
+
+function setOnlyInCategory (id, onlyInCategory) {
+  let json = {
+    'onlyInCategory': onlyInCategory
+  }
+
+  return axios.patch(getRestUrl(id), json)
+}
+
+function disableComments (id, disableComments) {
+  let json = {
+    'disableComments': disableComments
+  }
+
+  return axios.patch(getRestUrl(id), json)
+}
+
+function anonymousCreator (id, anonymousCreator) {
+  let json = {
+    'anonymousCreator': anonymousCreator
+  }
+
+  return axios.patch(getRestUrl(id), json)
 }

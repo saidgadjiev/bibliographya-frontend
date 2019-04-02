@@ -54,3 +54,7 @@ export function getShareDescription (firstName, lastName, middleName) {
 
   return message
 }
+
+export const ENABLE_COMMENTS = 'Включить комментарии'
+
+export const DISABLE_COMMENTS = 'Выключить комментарии'

@@ -29,7 +29,8 @@ export default {
     },
     creator: {
       type: Object
-    }
+    },
+    anonymousCreator: Boolean
   },
   computed: {
     _creatorBiographyLink () {
@@ -43,10 +44,10 @@ export default {
       return this.creator.firstName + ' ' + this.creator.lastName
     },
     _showAuthor () {
-      return !this.userId
+      return !this.userId && !this.anonymousCreator
     },
     _hasVisibleItems () {
-      return (this.categories && this.categories.length > 0) || this._isNotAutobiography
+      return (this.categories && this.categories.length > 0) || this._showAuthor
     }
   }
 }

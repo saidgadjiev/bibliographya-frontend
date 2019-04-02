@@ -7,7 +7,7 @@
       :unlike="unlike"
       class="ml-1"
     />
-    <comment-icon v-bind="_attrs"/>
+    <comment-icon v-if="!disableComments" v-bind="_attrs"/>
     <share-icon :page-url="_biographyLink" :page-description="_biographyDescription"/>
   </v-card-actions>
 </template>
@@ -31,7 +31,8 @@ export default {
     id: Number,
     firstName: String,
     lastName: String,
-    middleName: String
+    middleName: String,
+    disableComments: Boolean
   },
   computed: {
     _attrs () {
