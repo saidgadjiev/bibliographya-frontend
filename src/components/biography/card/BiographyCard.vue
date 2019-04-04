@@ -1,19 +1,10 @@
 <template>
   <v-card tile>
-    <biography-card-title-moderation v-if="showModerationBlock" class="pb-0" v-bind="$attrs"/>
-    <biography-card-settings
-      v-if="showSettings"
-      v-bind="_attrs"
-      class="pb-0"
-      v-on="$listeners"/>
-    <biography-card-secondary-title v-bind="_attrs" v-on="$listeners" class="pb-0"/>
     <biography-card-title v-bind="_attrs" v-on="$listeners" class="pr-5"/>
     <v-divider></v-divider>
     <biography-card-text v-if="_showBiography" v-bind="_attrs" class="pb-1"/>
-    <biography-like-info v-bind="_attrs" v-on="$listeners" class="pb-1"/>
     <v-divider></v-divider>
     <biography-card-actions v-bind="_attrs" v-on="$listeners"/>
-    <biography-moderation-card-actions v-if="showModerationActions" v-bind="$attrs" v-on="$listeners"/>
     <biography-comments
       v-if="showComments"
       v-bind="_attrs"
@@ -26,12 +17,7 @@
 import BiographyCardActions from './BiographyCardActions'
 import BiographyCardTitle from './BiographyCardTitle'
 import BiographyCardText from './BiographyCardText'
-import BiographyCardSettings from './BiographyCardSettings'
-import BiographyCardTitleModeration from '../../moderation/card/BiographyCardTitleModeration'
-import BiographyModerationCardActions from '../../moderation/card/BiographyModerationCardActions'
-import BiographyCardSecondaryTitle from './BiographyCardSecondaryTitle'
 import BiographyComments from './BiographyComments'
-import BiographyLikeInfo from './BiographyLikeInfo'
 
 export default {
   name: 'BiographyCard',
@@ -58,23 +44,7 @@ export default {
     commentsCount: {
       type: Number
     },
-    showModerationActions: {
-      type: Boolean,
-      default: false
-    },
-    showUserActions: {
-      type: Boolean,
-      default: false
-    },
     showComments: {
-      type: Boolean,
-      default: false
-    },
-    showModerationBlock: {
-      type: Boolean,
-      default: false
-    },
-    showSettings: {
       type: Boolean,
       default: false
     }
@@ -117,12 +87,7 @@ export default {
     }
   },
   components: {
-    BiographyLikeInfo,
     BiographyComments,
-    BiographyCardSecondaryTitle,
-    BiographyModerationCardActions,
-    BiographyCardTitleModeration,
-    BiographyCardSettings,
     BiographyCardActions,
     BiographyCardTitle,
     BiographyCardText

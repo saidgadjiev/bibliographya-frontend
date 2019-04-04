@@ -9,7 +9,16 @@
     >
       <v-icon :small="$vuetify.breakpoint.smAndDown" color="blue darken-3">{{ _icon }}</v-icon>
     </v-btn>
-    <v-list >
+    <v-list dense>
+      <v-list-tile
+        :disabled="_isRequest(Request.PUBLISH)"
+        v-if="_showPublish"
+        @click="_isPublished ? publish : unPublish"
+      >
+        <v-list-tile-title>
+          {{ _publishTitle }}
+        </v-list-tile-title>
+      </v-list-tile>
       <v-list-tile
         v-if="_showDelete"
         @click="remove"
@@ -29,6 +38,16 @@
         <v-list-tile-title>Предложить исправление</v-list-tile-title>
       </v-list-tile>
       <v-list-tile
+        :disabled="_isRequest(Request.ANONYMOUS_CREATOR)"
+        v-if="_isIAuthor"
+        @click="setAnonymousCreator"
+      >
+        <v-list-tile-title>
+          {{ _anonymousCreatorTitle }}
+        </v-list-tile-title>
+      </v-list-tile>
+      <v-list-tile
+        :disabled="_isRequest(Request.DISABLE_COMMENTS)"
         v-if="_showEdit"
         @click.stop="doDisableComments"
       >
@@ -44,14 +63,17 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { ROLES } from '../../../config'
+import { ROLES, PUBLISH_STATUS, MODERATION_STATUS, REQUEST } from '../../../config'
 import biographyService from '../../../services/biography-service'
 import CreateFixSuggestDialog from '../../fix/dialog/CreateFixSuggestDialog.vue'
-import { ENABLE_COMMENTS, DISABLE_COMMENTS } from '../../../messages'
+import { ENABLE_COMMENTS, DISABLE_COMMENTS, PUBLISHED, UNPUBLISHED, CANT_PUBLISH } from '../../../messages'
+import alert from '../../../mixins/alert'
+import request from '../../../mixins/request'
 
 export default {
   name: 'BiographyCardMenu',
   inheritAttrs: false,
+  mixins: [alert, request],
   data () {
     return {
       fixDialogVisible: false,
@@ -77,6 +99,12 @@ export default {
     },
     anonymousCreator: {
       type: Boolean
+    },
+    publishStatus: {
+      type: Number
+    },
+    moderationStatus: {
+      type: Number
     }
   },
   computed: {
@@ -85,6 +113,13 @@ export default {
       'isAuthenticated',
       'isAuthorized'
     ]),
+    _isIAuthor () {
+      if (!this.isAuthenticated) {
+        return false
+      }
+
+      return this.creatorId === this.getUserId
+    },
     _showDelete () {
       if (this.userId) {
         return false
@@ -130,16 +165,79 @@ export default {
     },
     _disableCommentsTitle () {
       return this.disableComments ? ENABLE_COMMENTS : DISABLE_COMMENTS
+    },
+    _showPublish () {
+      return this.moderationStatus === MODERATION_STATUS.APPROVED && this._isIAuthor
+    },
+    _publishTitle () {
+      return this.publishStatus === PUBLISH_STATUS.PUBLISHED ? 'Снять с публикации' : 'Опубликовать'
+    },
+    _anonymousCreatorTitle () {
+      return this.anonymousCreator ? 'Показать автора' : 'Скрыть автора'
+    },
+    _isPublished () {
+      return this.publishStatus === PUBLISH_STATUS.PUBLISHED
     }
   },
   methods: {
+    setAnonymousCreator () {
+      biographyService.anonymousCreator(this.id, !this.anonymousCreator)
+        .then(
+          () => {
+            this.$emit('update:anonymousCreator', !this.anonymousCreator)
+          }
+        )
+    },
+    publish () {
+      let that = this
+
+      that.setRequest(REQUEST.PUBLISH)
+      biographyService.publish(this.id)
+        .then(
+          () => {
+            that.$emit('update:publishStatus', PUBLISH_STATUS.PUBLISHED)
+            that.setAlertSuccess(PUBLISHED)
+          },
+          e => {
+            if (e.response.status === 400) {
+              that.$swal.fire({
+                text: CANT_PUBLISH,
+                type: 'error',
+                showCloseButton: true
+              })
+            }
+          }
+        )
+        .finally(() => {
+          that.clearRequest()
+        })
+    },
+    unPublish () {
+      let that = this
+
+      that.setRequest(REQUEST.PUBLISH)
+      biographyService.unPublish(this.id)
+        .then(
+          () => {
+            that.$emit('update:publishStatus', PUBLISH_STATUS.NOT_PUBLISHED)
+            that.setAlertSuccess(UNPUBLISHED)
+          }
+        ).finally(() => {
+          that.clearRequest()
+        })
+    },
     doDisableComments () {
+      let that = this
+
+      that.setRequest(REQUEST.DISABLE_COMMENTS)
       biographyService.disableComments(this.id, !this.disableComments)
         .then(
           () => {
             this.$emit('update:disableComments', !this.disableComments)
           }
-        )
+        ).finally(() => {
+          that.clearRequest()
+        })
     },
     suggestFix () {
       if (!this.isAuthenticated) {

@@ -10,7 +10,7 @@ export default {
   update,
   create,
   publish,
-  unpublish,
+  unPublish,
   deleteBiography,
   canEdit,
   disableComments,
@@ -67,7 +67,7 @@ function publish (biographyId) {
   return axios.post(getRestUrl('biographies/' + biographyId + '/publish'))
 }
 
-function unpublish (biographyId) {
+function unPublish (biographyId) {
   return axios.post(getRestUrl('biographies/' + biographyId + '/unpublish'))
 }
 
@@ -84,7 +84,7 @@ function disableComments (id, disableComments) {
     'disableComments': disableComments
   }
 
-  return axios.patch(getRestUrl(id), json)
+  return axios.patch(getRestUrl('biographies/' + id), json)
 }
 
 function anonymousCreator (id, anonymousCreator) {
@@ -92,5 +92,5 @@ function anonymousCreator (id, anonymousCreator) {
     'anonymousCreator': anonymousCreator
   }
 
-  return axios.patch(getRestUrl(id), json)
+  return axios.patch(getRestUrl('biographies/' + id), json)
 }

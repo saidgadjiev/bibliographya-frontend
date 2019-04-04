@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { BIOGRAPHY_CARD_MODE } from '../../../config'
+import { BIOGRAPHY_CARD_MODE } from '../../../../config'
 
 export default {
   name: 'CommentIcon',

@@ -13,6 +13,10 @@
       :clamp-link="_biographyLink"
       clamp-link-label="Читать дальше..."
     ></clamp>
+    <small class="font-weight-bold">
+      <a class="bib-a" style="color: #37474F !important;" @click="showLikes">Понравилось {{ likesCount }} людям</a>
+    </small>
+    <likes v-bind="_attrs" v-on="$listeners" :visible.sync="likesDialogVisible"/>
   </v-card-text>
 </template>
 
@@ -20,16 +24,19 @@
 import Clamp from './HtmlClamp'
 import Toc from './Toc'
 import { BIOGRAPHY_CARD_MODE } from '../../../config'
+import Likes from '../../like/Likes'
 
 export default {
   name: 'BiographyCardText',
   inheritAttrs: false,
   data () {
     return {
-      tocHeaders: []
+      tocHeaders: [],
+      likesDialogVisible: false
     }
   },
   props: {
+    likesCount: Number,
     mode: {
       type: String,
       default: BIOGRAPHY_CARD_MODE.LIST
@@ -61,6 +68,11 @@ export default {
     }
   },
   methods: {
+    showLikes () {
+      if (this.likesCount > 0) {
+        this.likesDialogVisible = true
+      }
+    },
     guid () {
       let counter = 0
 
@@ -128,6 +140,7 @@ export default {
     }
   },
   components: {
+    Likes,
     Toc,
     Clamp
   }

@@ -9,20 +9,32 @@
     />
     <comment-icon v-if="!disableComments" v-bind="_attrs"/>
     <share-icon :page-url="_biographyLink" :page-description="_biographyDescription"/>
+    <v-layout row wrap>
+      <v-flex xs12 v-for="(action, index) in actions" :key="index">
+        <moderation-button
+          v-bind="$attrs"
+          v-on="$listeners"
+          :key="action.name"
+          :action="action"
+        />
+      </v-flex>
+    </v-layout>
   </v-card-actions>
 </template>
 
 <script>
-import Like from './LikeIcon.vue'
-import CommentIcon from './CommentIcon.vue'
+import Like from './action/LikeIcon.vue'
+import CommentIcon from './action/CommentIcon.vue'
 import likeService from '../../../services/like-service'
-import ShareIcon from './ShareIcon'
+import ShareIcon from './action/ShareIcon'
 import { getShareDescription } from '../../../messages'
+import ModerationButton from '../../moderation/card/ModerationButton'
 
 export default {
   name: 'BiographyCardActions',
   inheritAttrs: false,
   components: {
+    ModerationButton,
     ShareIcon,
     Like,
     CommentIcon
@@ -32,7 +44,16 @@ export default {
     firstName: String,
     lastName: String,
     middleName: String,
-    disableComments: Boolean
+    disableComments: Boolean,
+    moderatorId: {
+      type: Number
+    },
+    actions: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    }
   },
   computed: {
     _attrs () {

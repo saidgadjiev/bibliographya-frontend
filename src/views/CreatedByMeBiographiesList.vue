@@ -10,7 +10,9 @@
         @biography-removed="biographyRemoved(index)"
         show-moderation-block
         show-user-actions
-        :show-publish-block="showSettings(item)"
+        :show-settings="showPublish(item)"
+        show-publish
+        show-anonymous-switch
         biography-clamp
         tree-clamp
         :show-moderation-actions="item.actions.length > 0"
@@ -47,7 +49,7 @@ export default {
     }
   },
   methods: {
-    showSettings (item) {
+    showPublish (item) {
       return item.moderationStatus === MODERATION_STATUS.APPROVED
     },
     createBiography () {

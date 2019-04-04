@@ -1,7 +1,6 @@
 <template>
   <v-speed-dial
     class="ml-4"
-    style="z-index: 1000;"
     v-model="shares"
     direction="right"
     open-on-hover
@@ -19,9 +18,9 @@
 </template>
 
 <script>
-import ShareVkontakte from '../../share/providers/Vkontakte'
-import ShareWhatsApp from '../../share/providers/WhatsApp'
-import ShareTelegram from '../../share/providers/Telegram'
+import ShareVkontakte from '../../../share/providers/Vkontakte'
+import ShareWhatsApp from '../../../share/providers/WhatsApp'
+import ShareTelegram from '../../../share/providers/Telegram'
 export default {
   name: 'ShareIcon',
   components: { ShareTelegram, ShareWhatsApp, ShareVkontakte },

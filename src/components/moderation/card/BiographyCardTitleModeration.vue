@@ -1,24 +1,22 @@
 <template>
-  <v-card-text>
-    <div>
-      <div v-if="_showModerator">
+  <div>
+    <div v-if="_showModerator">
     <span>
       Исполнитель:&nbsp;
       <router-link class="bib-a word-break-all" :to="_biographyLink">{{ _moderatorName }}</router-link>
     </span>
-      </div>
-      <div>
+    </div>
+    <div>
     <span>
       Статус:&nbsp;
       <strong>{{ _moderationStatus }}</strong>
     </span>
-      </div>
-      <div v-if="moderationInfo">
-        <span style="color: red" class="font-weight-bold">Причина отклонения:</span>
-        {{ moderationInfo }}
-      </div>
     </div>
-  </v-card-text>
+    <div v-if="moderationInfo">
+      <span style="color: red" class="font-weight-bold">Причина отклонения:</span>
+      {{ moderationInfo }}
+    </div>
+  </div>
 </template>
 
 <script>
