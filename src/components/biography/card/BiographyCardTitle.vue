@@ -1,9 +1,9 @@
 <template>
   <v-card-title>
     <div>
-      <biography-card-title-moderation v-bind="$attrs"/>
-      <div>
-        Публикация: {{ _publishTitle }}
+      <biography-card-title-moderation v-if="showModerationBlock" v-bind="$attrs"/>
+      <div v-if="showPublish">
+        Публикация: <strong>{{ _publishTitle }}</strong>
       </div>
       <div>
         <span v-for="(category, index) in categories" :key="index">
@@ -64,6 +64,10 @@ export default {
       type: Object
     },
     showPublish: {
+      type: Boolean,
+      default: false
+    },
+    showModerationBlock: {
       type: Boolean,
       default: false
     },

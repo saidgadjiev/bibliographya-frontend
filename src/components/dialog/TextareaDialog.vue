@@ -4,6 +4,10 @@
             :fullscreen="$vuetify.breakpoint.smAndDown"
   >
     <v-card>
+      <v-card-title>
+        <v-spacer></v-spacer>
+        <v-icon small @click="$emit('update:visible', false)">fas fa-times</v-icon>
+      </v-card-title>
       <v-card-text class="pb-0">
         <v-form>
           <v-textarea

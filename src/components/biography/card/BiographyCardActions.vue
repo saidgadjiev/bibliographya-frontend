@@ -9,7 +9,7 @@
     />
     <comment-icon v-if="!disableComments" v-bind="_attrs"/>
     <share-icon :page-url="_biographyLink" :page-description="_biographyDescription"/>
-    <v-layout row wrap>
+    <v-layout row wrap v-if="showModerationActions">
       <v-flex xs12 v-for="(action, index) in actions" :key="index">
         <moderation-button
           v-bind="$attrs"
@@ -47,6 +47,10 @@ export default {
     disableComments: Boolean,
     moderatorId: {
       type: Number
+    },
+    showModerationActions: {
+      type: Boolean,
+      default: false
     },
     actions: {
       type: Array,

@@ -1,14 +1,16 @@
 <template>
-  <v-menu left>
+  <v-menu left close-on-content-click v-model="menuVisible">
+    <template #activator="{ on }">
     <v-btn
-      slot="activator"
       class="absolute-activator"
       absolute
       right
       icon
+      v-on="on"
     >
       <v-icon :small="$vuetify.breakpoint.smAndDown" color="blue darken-3">{{ _icon }}</v-icon>
     </v-btn>
+    </template>
     <v-list dense>
       <v-list-tile
         :disabled="_isRequest(Request.PUBLISH)"
@@ -49,7 +51,7 @@
       <v-list-tile
         :disabled="_isRequest(Request.DISABLE_COMMENTS)"
         v-if="_showEdit"
-        @click.stop="doDisableComments"
+        @click="doDisableComments"
       >
         <v-list-tile-title>{{ _disableCommentsTitle }}</v-list-tile-title>
       </v-list-tile>
@@ -76,6 +78,7 @@ export default {
   mixins: [alert, request],
   data () {
     return {
+      menuVisible: false,
       fixDialogVisible: false,
       reportDialogVisible: false
     }
@@ -180,17 +183,26 @@ export default {
     }
   },
   methods: {
+    test () {
+    },
     setAnonymousCreator () {
+      let that = this
+
+      that.menuVisible = false
+      that.setRequest(REQUEST.ANONYMOUS_CREATOR)
       biographyService.anonymousCreator(this.id, !this.anonymousCreator)
         .then(
           () => {
             this.$emit('update:anonymousCreator', !this.anonymousCreator)
           }
-        )
+        ).finally(() => {
+          that.clearRequest()
+        })
     },
     publish () {
       let that = this
 
+      that.menuVisible = false
       that.setRequest(REQUEST.PUBLISH)
       biographyService.publish(this.id)
         .then(
@@ -215,6 +227,7 @@ export default {
     unPublish () {
       let that = this
 
+      that.menuVisible = false
       that.setRequest(REQUEST.PUBLISH)
       biographyService.unPublish(this.id)
         .then(
@@ -229,6 +242,7 @@ export default {
     doDisableComments () {
       let that = this
 
+      that.menuVisible = false
       that.setRequest(REQUEST.DISABLE_COMMENTS)
       biographyService.disableComments(this.id, !this.disableComments)
         .then(
@@ -240,6 +254,7 @@ export default {
         })
     },
     suggestFix () {
+      this.menuVisible = false
       if (!this.isAuthenticated) {
         this.$router.push('/signIn')
       }
@@ -249,6 +264,7 @@ export default {
     remove () {
       let that = this
 
+      that.menuVisible = false
       biographyService.deleteBiography(this.id)
         .then(
           () => {
