@@ -9,10 +9,7 @@
         v-bind.sync="item"
         @biography-removed="biographyRemoved(index)"
         show-moderation-block
-        show-user-actions
-        :show-settings="showPublish(item)"
-        show-publish
-        show-anonymous-switch
+        :show-publish="showPublish(item)"
         biography-clamp
         tree-clamp
         :show-moderation-actions="item.actions.length > 0"

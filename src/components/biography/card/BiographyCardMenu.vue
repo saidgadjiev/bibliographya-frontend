@@ -192,8 +192,12 @@ export default {
       that.setRequest(REQUEST.ANONYMOUS_CREATOR)
       biographyService.anonymousCreator(this.id, !this.anonymousCreator)
         .then(
-          () => {
-            this.$emit('update:anonymousCreator', !this.anonymousCreator)
+          response => {
+            if (!that.anonymousCreator) {
+              that.$emit('update:creator', response.data)
+              that.$emit('update:creatorId', response.data.id)
+            }
+            that.$emit('update:anonymousCreator', !that.anonymousCreator)
           }
         ).finally(() => {
           that.clearRequest()

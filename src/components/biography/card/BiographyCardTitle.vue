@@ -10,11 +10,11 @@
           <router-link class="bib-a" :to="'/categories/' + category.id">{{ category.name }}</router-link>&nbsp;&nbsp;
         </span>
       </div>
-      <h4 v-if="_showAuthor" class="pt-3">
+      <h4 v-if="_showAuthor">
         Автор:
         <router-link class="bib-a word-break-all" :to="_creatorBiographyLink">{{ _creatorName }}</router-link>
       </h4>
-      <div class="pt-3">
+      <div :class="{'pt-3': _showAuthor || showPublish || showModerationBlock}">
         <span :class="_fullNameClasses" class="word-break-word">{{ _fullName }}
           <v-icon v-if="_isMarked" small color="blue darken-3" class="pb-1">mdi-check-decagram</v-icon>
         </span>
@@ -88,7 +88,8 @@ export default {
           publishStatus: this.publishStatus,
           firstName: this.firstName,
           lastName: this.lastName,
-          middleName: this.middleName
+          middleName: this.middleName,
+          anonymousCreator: this.anonymousCreator
         }
       )
     },
