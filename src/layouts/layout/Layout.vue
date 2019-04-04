@@ -14,7 +14,7 @@
       >
         <v-layout row fill-height justify-center class="mt-0 mb-0">
           <v-flex md3 v-if="$vuetify.breakpoint.mdAndUp">
-            <nav-bar></nav-bar>
+            <sidebar/>
           </v-flex>
           <v-flex xs12 md9>
             <router-view></router-view>
@@ -31,10 +31,12 @@ import ToolBar from './ToolBar.vue'
 import { SET_DRAWER } from '../../store/mutation-types'
 import { mapGetters } from 'vuex'
 import VuePullTo from '../../components/pullTo/VuePullTo'
+import Sidebar from './Sidebar'
 
 export default {
   name: 'Layout',
   components: {
+    Sidebar,
     VuePullTo,
     NavBar,
     ToolBar
