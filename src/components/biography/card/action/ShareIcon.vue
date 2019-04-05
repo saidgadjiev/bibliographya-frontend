@@ -5,6 +5,7 @@
     direction="right"
     open-on-hover
     transition="'slide-y-reverse-transition'"
+    style="z-index: 5;"
   >
     <template #activator>
       <v-btn icon flat color="blue darken-1" v-model="shares">
