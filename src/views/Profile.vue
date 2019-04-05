@@ -6,7 +6,7 @@
       <biography-card
         v-bind.sync="biography"
         mode="read"
-        show-publish-block
+        show-publish
         show-comments
       ></biography-card>
     </v-flex>

@@ -6,9 +6,9 @@
       v-bind="_attrs"
     ></toc>
     <clamp
-      v-if="biography"
+      v-if="bio"
       ref="biography"
-      :source="biography"
+      :source="bio"
       :clamp="biographyClamp"
       :clamp-link="_biographyLink"
       clamp-link-label="Читать дальше..."
@@ -44,7 +44,7 @@ export default {
     headers: {
       type: Array
     },
-    biography: {
+    bio: {
       type: String,
       default: ''
     },
@@ -57,7 +57,7 @@ export default {
     }
   },
   mounted () {
-    if (this.biography) {
+    if (this.bio) {
       let children = this.$refs.biography.$el.children[0].children
 
       if (this.mode === BIOGRAPHY_CARD_MODE.READ) {

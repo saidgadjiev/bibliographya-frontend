@@ -10,10 +10,16 @@
           <router-link class="bib-a" :to="'/categories/' + category.id">{{ category.name }}</router-link>&nbsp;&nbsp;
         </span>
       </div>
-      <h4 v-if="_showAuthor">
+      <div v-if="_showAuthor">
         Автор:
-        <router-link class="bib-a word-break-all" :to="_creatorBiographyLink">{{ _creatorName }}</router-link>
-      </h4>
+        <router-link class="bib-a word-break-all" :to="_creatorBiographyLink"><strong>{{ _creatorName }}</strong></router-link>
+      </div>
+      <small v-if="_isUpdated">
+        Создано <strong>{{ format(createdAt) }}</strong>, обновлено <strong>{{ format(updatedAt, true) }}</strong>
+      </small>
+      <small v-else>
+        Создано <strong>{{ format(createdAt) }}</strong>
+      </small>
       <div :class="{'pt-3': _showAuthor || showPublish || showModerationBlock}">
         <span :class="_fullNameClasses" class="word-break-word">{{ _fullName }}
           <v-icon v-if="_isMarked" small color="blue darken-3" class="pb-1">mdi-check-decagram</v-icon>
@@ -25,7 +31,7 @@
 </template>
 
 <script>
-import { PUBLISH_STATUS } from '../../../config'
+import { PUBLISH_STATUS, DATE_FORMAT } from '../../../config'
 import BiographyCardMenu from '../card/BiographyCardMenu'
 import BiographyCardTitleModeration from '../../moderation/card/BiographyCardTitleModeration'
 
@@ -74,6 +80,14 @@ export default {
     anonymousCreator: {
       type: Boolean,
       default: false
+    },
+    createdAt: {
+      type: String,
+      required: true
+    },
+    updatedAt: {
+      type: String,
+      required: true
     }
   },
   computed: {
@@ -130,6 +144,21 @@ export default {
     },
     _publishTitle () {
       return this.publishStatus === PUBLISH_STATUS.PUBLISHED ? 'Опубликовано' : 'Снято с публикации'
+    },
+    _isUpdated () {
+      let momentUpdated = this.$moment(this.updatedAt, DATE_FORMAT)
+      let momentCreated = this.$moment(this.createdAt, DATE_FORMAT)
+
+      return momentUpdated > momentCreated
+    }
+  },
+  methods: {
+    format (time, withTime) {
+      if (withTime) {
+        return this.$moment(time, DATE_FORMAT).format('DD MMMM YYYY h:mm')
+      }
+
+      return this.$moment(time, DATE_FORMAT).format('DD MMMM YYYY')
     }
   },
   components: {

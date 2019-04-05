@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <biography-fix-title class="pb-0" v-bind="$attrs"/>
-    <biography-card-title v-bind="biography"/>
+    <biography-card-title v-bind.sync="biography"/>
     <v-divider></v-divider>
     <biography-card-text
       v-if="_showBiography"
@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     _showBiography () {
-      return !!this.biography.biography
+      return !!this.biography.bio
     }
   }
 }

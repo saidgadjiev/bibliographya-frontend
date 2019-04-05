@@ -65,7 +65,7 @@
             <span>Биография:</span>
             <tiny-editor
               id="biography_editor"
-              :value.sync="biographyForm.biography"
+              :value.sync="biographyForm.bio"
             ></tiny-editor>
           </v-flex>
           <v-flex xs12 v-if="conflict && biographyConflict">
@@ -75,7 +75,7 @@
             <tiny-editor
               id="biography_conflict_editor"
               readonly
-              :value="myBiographyVersion.biography"
+              :value="myBiographyVersion.bio"
             ></tiny-editor>
           </v-flex>
           <v-flex xs12>
@@ -138,7 +138,7 @@ export default {
         firstName: '',
         lastName: '',
         middleName: '',
-        biography: '',
+        bio: '',
         updatedAt: undefined,
         categories: []
       },
@@ -146,7 +146,7 @@ export default {
         firstName: '',
         lastName: '',
         middleName: '',
-        biography: '',
+        bio: '',
         categories: []
       },
       conflict: false
@@ -205,8 +205,8 @@ export default {
       return this.cleanUp(d)
     },
     biographyDiff () {
-      let b1 = he.escape(this.myBiographyVersion.biography || '').replace(/\n/g, '<br>')
-      let b2 = he.escape(this.biographyForm.biography || '').replace(/\n/g, '<br>')
+      let b1 = he.escape(this.myBiographyVersion.bio || '').replace(/\n/g, '<br>')
+      let b2 = he.escape(this.biographyForm.bio || '').replace(/\n/g, '<br>')
 
       return this.cleanUp(diff.diffWords(b1, b2))
     },
@@ -239,7 +239,7 @@ export default {
         firstName: '',
         lastName: '',
         middleName: '',
-        biography: '',
+        bio: '',
         updatedAt: undefined,
         categories: []
       })
@@ -248,7 +248,7 @@ export default {
       this.$emit('update:firstName', data.firstName)
       this.$emit('update:lastName', data.lastName)
       this.$emit('update:middleName', data.middleName)
-      this.$emit('update:biography', data.biography)
+      this.$emit('update:bio', data.bio)
       this.$emit('update:updatedAt', data.updatedAt)
       this.$emit('update:categories', data.categories)
     },
@@ -276,7 +276,7 @@ export default {
               firstName: that.biographyForm.firstName,
               lastName: that.biographyForm.lastName,
               middleName: that.biographyForm.middleName,
-              biography: that.biographyForm.biography,
+              bio: that.biographyForm.bio,
               addCategories: added,
               deleteCategories: deleted,
               updatedAt: that.biographyForm.updatedAt
@@ -294,7 +294,7 @@ export default {
                 e => {
                   if (e.response.status === 409) {
                     that.$swal.fire({
-                      text: 'Произошел конфликт. Пожалуйста перенесите свои изменения в соответствии с текущей версией',
+                      text: 'Произошел конфликт или кто то обновил биографию пока вы работали с ней. Пожалуйста перенесите свои изменения в соответствии с текущей версией и попробуйте сохранить еще раз.',
                       type: 'error',
                       showCloseButton: true
                     })
@@ -316,7 +316,7 @@ export default {
               firstName: that.biographyForm.firstName,
               lastName: that.biographyForm.lastName,
               middleName: that.biographyForm.middleName,
-              biography: that.biographyForm.biography,
+              bio: that.biographyForm.bio,
               addCategories: that.biographyForm.categories
             })
               .then(

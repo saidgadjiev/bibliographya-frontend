@@ -70,11 +70,8 @@ export default {
     _treeClampSize () {
       return TREE_CLAMP_SIZE
     },
-    _smSidebar () {
-      return this.$vuetify.breakpoint.smAndDown
-    },
     ...mapGetters([
-      'getUser'
+      'getUserId'
     ])
   },
   methods: {

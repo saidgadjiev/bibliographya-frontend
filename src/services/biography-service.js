@@ -87,9 +87,13 @@ function disableComments (id, disableComments) {
   return axios.patch(getRestUrl('biographies/' + id), json)
 }
 
-function anonymousCreator (id, anonymousCreator) {
+function anonymousCreator (id, anonymousCreator, returnFields) {
   let json = {
     'anonymousCreator': anonymousCreator
+  }
+
+  if (returnFields) {
+    json.returnFields = returnFields
   }
 
   return axios.patch(getRestUrl('biographies/' + id), json)

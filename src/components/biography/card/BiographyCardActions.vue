@@ -1,25 +1,29 @@
 <template>
-  <v-card-actions>
-    <like
-      v-bind="_attrs"
-      v-on="$listeners"
-      :like="like"
-      :unlike="unlike"
-      class="ml-1"
-    />
-    <comment-icon v-if="!disableComments" v-bind="_attrs"/>
-    <share-icon :page-url="_biographyLink" :page-description="_biographyDescription"/>
+  <div>
+    <v-card-actions>
+      <like
+        v-bind="_attrs"
+        v-on="$listeners"
+        :like="like"
+        :unlike="unlike"
+        class="ml-1"
+      />
+      <comment-icon v-if="!disableComments" v-bind="_attrs"/>
+      <share-icon :page-url="_biographyLink" :page-description="_biographyDescription"/>
+    </v-card-actions>
+    <v-card-actions>
     <v-layout row wrap v-if="showModerationActions">
       <v-flex xs12 v-for="(action, index) in actions" :key="index">
         <moderation-button
-          v-bind="$attrs"
+          v-bind="_attrs"
           v-on="$listeners"
           :key="action.name"
           :action="action"
         />
       </v-flex>
     </v-layout>
-  </v-card-actions>
+    </v-card-actions>
+  </div>
 </template>
 
 <script>

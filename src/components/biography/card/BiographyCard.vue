@@ -37,7 +37,7 @@ export default {
       type: Boolean,
       default: false
     },
-    biography: String,
+    bio: String,
     likesCount: {
       type: Number
     },
@@ -60,7 +60,7 @@ export default {
   },
   computed: {
     _showBiography () {
-      return !!this.biography
+      return !!this.bio
     },
     _attrs () {
       return Object.assign({},
@@ -69,7 +69,7 @@ export default {
           commentsCount: this.commentsCount,
           likesCount: this.likesCount,
           availableMore: this.availableMore,
-          biography: this.biography
+          bio: this.bio
         }
       )
     },

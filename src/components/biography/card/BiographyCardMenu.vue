@@ -15,7 +15,7 @@
       <v-list-tile
         :disabled="_isRequest(Request.PUBLISH)"
         v-if="_showPublish"
-        @click="_isPublished ? publish : unPublish"
+        @click="doPublish"
       >
         <v-list-tile-title>
           {{ _publishTitle }}
@@ -50,7 +50,7 @@
       </v-list-tile>
       <v-list-tile
         :disabled="_isRequest(Request.DISABLE_COMMENTS)"
-        v-if="_showEdit"
+        v-if="_showDeleteComments"
         @click="doDisableComments"
       >
         <v-list-tile-title>{{ _disableCommentsTitle }}</v-list-tile-title>
@@ -172,6 +172,9 @@ export default {
     _disableCommentsTitle () {
       return this.disableComments ? ENABLE_COMMENTS : DISABLE_COMMENTS
     },
+    _showDeleteComments () {
+      return this._isIAuthor
+    },
     _showPublish () {
       return this.moderationStatus === MODERATION_STATUS.APPROVED && this._isIAuthor
     },
@@ -186,25 +189,37 @@ export default {
     }
   },
   methods: {
-    test () {
-    },
     setAnonymousCreator () {
       let that = this
 
       that.menuVisible = false
       that.setRequest(REQUEST.ANONYMOUS_CREATOR)
-      biographyService.anonymousCreator(this.id, !this.anonymousCreator)
+      let returnFields
+
+      if (this.anonymousCreator) {
+        returnFields = ['creatorId']
+      }
+
+      biographyService.anonymousCreator(this.id, !this.anonymousCreator, returnFields)
         .then(
           response => {
-            if (!that.anonymousCreator) {
-              that.$emit('update:creator', response.data)
-              that.$emit('update:creatorId', response.data.id)
+            if (that.anonymousCreator) {
+              that.$emit('update:creator', response.data.creator)
+            } else {
+              that.$emit('update:creator', null)
             }
             that.$emit('update:anonymousCreator', !that.anonymousCreator)
           }
         ).finally(() => {
           that.clearRequest()
         })
+    },
+    doPublish () {
+      if (this._isPublished) {
+        this.unPublish()
+      } else {
+        this.publish()
+      }
     },
     publish () {
       let that = this
@@ -254,7 +269,7 @@ export default {
       biographyService.disableComments(this.id, !this.disableComments)
         .then(
           () => {
-            this.$emit('update:disableComments', !this.disableComments)
+            this.$emit('update:disableComments', !that.disableComments)
           }
         ).finally(() => {
           that.clearRequest()
