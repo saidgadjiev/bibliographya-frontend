@@ -113,8 +113,7 @@ export default {
         .then(
           () => {
             this.$router.push('/signIn')
-          },
-          e => {}
+          }
         )
     }
   }

@@ -126,7 +126,7 @@ export default {
       return this.creator.firstName + ' ' + this.creator.lastName
     },
     _showAuthor () {
-      return !this.userId && !this.anonymousCreator
+      return !this.anonymousCreator
     },
     _publishTitle () {
       return this.publishStatus === PUBLISH_STATUS.PUBLISHED ? 'Опубликовано' : 'Снято с публикации'

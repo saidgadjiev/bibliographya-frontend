@@ -201,14 +201,25 @@ const actions = {
   [SIGN_OUT] ({ dispatch, commit }) {
     dispatch('request/' + SET_REQUEST, REQUEST.SIGN_OUT)
 
-    return authService.signOut()
-      .then(
-        () => {
-          commit(SIGN_OUT_SUCCESS)
-        }
-      ).finally(() => {
-        dispatch('request/' + CLEAR)
-      })
+    return new Promise((resolve, reject) => {
+      authService.signOut()
+        .then(
+          () => {
+            commit(SIGN_OUT_SUCCESS)
+            resolve()
+          },
+          e => {
+            if (e.response.status === HttpStatus.UNAUTHORIZED) {
+              commit(SIGN_OUT_SUCCESS)
+              resolve()
+            }
+
+            reject(e)
+          }
+        ).finally(() => {
+          dispatch('request/' + CLEAR)
+        })
+    })
   },
   [GET_ACCOUNT] ({ dispatch, commit, getters }) {
     dispatch('request/' + SET_REQUEST, REQUEST.GET_ACCOUNT)

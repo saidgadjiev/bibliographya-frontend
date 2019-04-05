@@ -41,7 +41,7 @@
       </v-list-tile>
       <v-list-tile
         :disabled="_isRequest(Request.ANONYMOUS_CREATOR)"
-        v-if="_isIAuthor"
+        v-if="_showAnonymousCreator"
         @click="setAnonymousCreator"
       >
         <v-list-tile-title>
@@ -116,6 +116,9 @@ export default {
       'isAuthenticated',
       'isAuthorized'
     ]),
+    _showAnonymousCreator () {
+      return this._isIAuthor && !this.userId
+    },
     _isIAuthor () {
       if (!this.isAuthenticated) {
         return false
