@@ -142,9 +142,6 @@ export default {
             editor.setContent(that.content)
             that.$emit('input', that.content)
           })
-        },
-        formats: {
-          blockquote: { block: 'blockquote', classes: 'blockquote' }
         }
       }
       tinymce.init(options)

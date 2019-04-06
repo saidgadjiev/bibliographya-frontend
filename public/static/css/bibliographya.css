@@ -1,3 +1,9 @@
+blockquote {
+  padding: 16px 0 16px 24px !important;
+  font-size: 18px !important;
+  font-weight: 300 !important;
+}
+
 .background {
   background: url('/static/img/Bibliographya.jpg') no-repeat center center fixed !important;
   -webkit-background-size: cover !important;
