@@ -65,7 +65,7 @@
             <span>Биография:</span>
             <tiny-editor
               id="biography_editor"
-              :value.sync="biographyForm.bio"
+              v-model="biographyForm.bio"
             ></tiny-editor>
           </v-flex>
           <v-flex xs12 v-if="conflict && biographyConflict">

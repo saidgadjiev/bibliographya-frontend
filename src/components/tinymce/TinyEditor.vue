@@ -75,7 +75,6 @@ export default {
     return {
       content: '',
       editor: null,
-      cTinyMce: null,
       checkerTimeout: null,
       isTyping: false
     }
@@ -86,7 +85,9 @@ export default {
     this.init()
   },
   beforeDestroy () {
-    tinymce.execCommand('mceRemoveControl', true, this.id)
+    if (this.editor) {
+      tinymce.remove(this.editor)
+    }
   },
   watch: {
     value: function (newValue) {
@@ -108,6 +109,8 @@ export default {
   },
   methods: {
     init () {
+      let that = this
+
       let options = {
         mobile: {
           toolbar: [ 'undo', 'bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist', 'fontsizeselect',
@@ -134,6 +137,12 @@ export default {
         removed_menuitems: 'code visualblocks visualchars visualaid image media template codesample charmap pagebreak nonbreaking ' +
             'anchor toc codeformat',
         init_instance_callback: this.initEditor,
+        setup: function (editor) {
+          editor.on('init', function (e) {
+            editor.setContent(that.content)
+            that.$emit('input', that.content)
+          })
+        },
         formats: {
           blockquote: { block: 'blockquote', classes: 'blockquote' }
         }
@@ -142,18 +151,16 @@ export default {
     },
     initEditor (editor) {
       this.editor = editor
+      let that = this
+
       editor.on('KeyUp', (e) => {
-        this.submitNewContent()
+        that.submitNewContent()
       })
       editor.on('Change', (e) => {
-        if (this.editor.getContent() !== this.value) {
-          this.submitNewContent()
+        if (that.editor.getContent() !== that.value) {
+          that.submitNewContent()
         }
-        this.$emit('editorChange', e)
-      })
-      editor.on('init', (e) => {
-        editor.setContent(this.content)
-        this.$emit('input', this.content)
+        that.$emit('editorChange', e)
       })
       if (this.readonly) {
         this.editor.setMode('readonly')
@@ -162,16 +169,16 @@ export default {
       }
 
       this.$emit('editorInit', editor)
-      this.editor.setContent(this.content)
     },
     submitNewContent () {
       this.isTyping = true
+      let that = this
       if (this.checkerTimeout !== null) { clearTimeout(this.checkerTimeout) }
       this.checkerTimeout = setTimeout(() => {
-        this.isTyping = false
+        that.isTyping = false
       }, 300)
 
-      this.$emit('update:value', this.editor.getContent())
+      this.$emit('input', this.editor.getContent())
     }
   }
 }
