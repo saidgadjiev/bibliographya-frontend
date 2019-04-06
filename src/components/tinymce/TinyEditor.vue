@@ -110,7 +110,6 @@ export default {
     init () {
       let options = {
         mobile: {
-          content_style: 'div {margin: 10px; border: 5px solid red; padding: 3px}',
           toolbar: [ 'undo', 'bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist', 'fontsizeselect',
             'forecolor', 'styleselect', 'styleselect' ]
         },
@@ -134,7 +133,10 @@ export default {
         menubar: 'edit view insert format table',
         removed_menuitems: 'code visualblocks visualchars visualaid image media template codesample charmap pagebreak nonbreaking ' +
             'anchor toc codeformat',
-        init_instance_callback: this.initEditor
+        init_instance_callback: this.initEditor,
+        formats: {
+          blockquote: { block: 'blockquote', classes: 'blockquote' }
+        }
       }
       tinymce.init(options)
     },
