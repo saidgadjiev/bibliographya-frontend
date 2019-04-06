@@ -91,20 +91,6 @@
               multiple
             ></v-select>
           </v-flex>
-          <v-flex xs12 v-if="conflict && categoriesConflict">
-            <strong class="subheading">Конфликт:</strong>
-            <p v-html="categoriesConflict" class="title font-weight-light"
-               style="height: 250px; overflow-y: scroll"></p>
-            <strong class="subheading">Ваша версия:</strong>
-            <v-select
-              v-model="myBiographyVersion.categories"
-              item-text="name"
-              item-value="id"
-              readonly
-              label="Категории"
-              chips
-            ></v-select>
-          </v-flex>
         </v-layout>
       </v-form>
     </v-card-text>
@@ -146,8 +132,7 @@ export default {
         firstName: '',
         lastName: '',
         middleName: '',
-        bio: '',
-        categories: []
+        bio: ''
       },
       conflict: false
     }
@@ -209,9 +194,6 @@ export default {
       let b2 = he.escape(this.biographyForm.bio || '').replace(/\n/g, '<br>')
 
       return this.cleanUp(diff.diffWords(b1, b2))
-    },
-    categoriesDiff () {
-      return this.cleanUp(diff.diffArrays(this.myBiographyVersion.categories, this.biographyForm.categories))
     },
     cleanUp (d) {
       let diffCounts = 0
@@ -304,7 +286,6 @@ export default {
                     that.conflict = true
                     that.fioConflict = that.fioDiff()
                     that.biographyConflict = that.biographyDiff()
-                    that.categoriesConflict = that.categoriesDiff()
                   }
                 }
               )
