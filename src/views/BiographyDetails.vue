@@ -18,10 +18,11 @@ import biographyService from '../services/biography-service'
 import BiographyCard from '../components/biography/card/BiographyCard'
 import ProgressCircular from '../components/progress/ProgressCircular'
 import pullToRefresh from '../mixins/pullToRefresh'
+import title from '../mixins/title'
 
 export default {
   name: 'BiographyDetails',
-  mixins: [pullToRefresh],
+  mixins: [pullToRefresh, title],
   data () {
     return {
       biographyLoading: true,
@@ -67,6 +68,7 @@ export default {
         .then(
           response => {
             that.biography = response.data
+            that.setTitle(that.biography.lastName + ' ' + that.biography.firstName)
           },
           e => {}
         )

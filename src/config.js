@@ -27,6 +27,8 @@ export const REQUEST = {
   PUBLISH: 16
 }
 
+export const TITLE = 'Библиография'
+
 export const DATE_FORMAT = 'DD-MM-YYYY HH:mm:ss.SSSSSS'
 
 export const BUG_STATUS = {
