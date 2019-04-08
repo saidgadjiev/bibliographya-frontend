@@ -12,7 +12,7 @@
         <v-icon color="blue darken-1">mdi-share-outline</v-icon>
       </v-btn>
     </template>
-    <share-vkontakte :page-url="pageUrl"/>
+    <share-vkontakte :page-url="pageUrl" :page-title="pageTitle"/>
     <share-whats-app :page-url="pageUrl" :page-description="pageDescription"/>
     <share-telegram :page-url="pageUrl" :page-description="pageDescription"/>
   </v-speed-dial>
@@ -29,6 +29,9 @@ export default {
     shares: false
   }),
   props: {
+    pageTitle: {
+      type: String
+    },
     pageUrl: {
       type: String,
       required: true

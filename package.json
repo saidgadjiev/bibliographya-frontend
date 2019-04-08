@@ -34,7 +34,8 @@
     "moment-timezone": "^0.5.23",
     "http-status-codes": "^1.3.0",
     "vue-yandex-metrika": "^1.7.3",
-    "petrovich": "^0.2.1"
+    "petrovich": "^0.2.1",
+    "vue-meta": "^1.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.1",

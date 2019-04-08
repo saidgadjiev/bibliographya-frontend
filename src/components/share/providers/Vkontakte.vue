@@ -16,10 +16,15 @@ import { documentHref } from '../helpers/href'
 import { sliceThousandInt } from '../helpers/count_number'
 import { getRandomInt } from '../helpers/random_int'
 import { openShareUrl } from '../helpers/new_window'
+import { TITLE } from '../../../config'
 
 export default {
   name: 'ShareVkontakte',
   props: {
+    pageTitle: {
+      type: String,
+      default: TITLE
+    },
     pageUrl: {
       type: String,
       default: documentHref
@@ -32,7 +37,7 @@ export default {
   },
   methods: {
     showShareWindow: function () {
-      const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(this.$props.pageUrl)}`
+      const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(this.$props.pageUrl)}&title=${this.$props.pageTitle}`
 
       clickEvent(this, 'vkontakte')
 

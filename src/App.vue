@@ -12,6 +12,7 @@ import Layout from './layouts/layout/Layout.vue'
 import { GET_ACCOUNT } from './store/action-types'
 import request from './mixins/request'
 import ProgressCircular from './components/progress/ProgressCircular'
+import { TITLE } from './config'
 
 export default {
   name: 'App',
@@ -20,6 +21,10 @@ export default {
     return {
       drawer: false
     }
+  },
+  metaInfo: {
+    title: TITLE,
+    titleTemplate: null
   },
   created () {
     this.$store.dispatch(GET_ACCOUNT)
