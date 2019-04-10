@@ -30,7 +30,7 @@
               </g>
             </g>
           </svg>
-        <router-link to="/" class="title pl-2 white--text font-weight-light">Библиография</router-link>
+        <router-link to="/" class="title pl-2 white--text font-weight-regular">Библиография</router-link>
       </div>
     </v-toolbar-title>
     <v-spacer></v-spacer>
