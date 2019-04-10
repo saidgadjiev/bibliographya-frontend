@@ -86,7 +86,7 @@
                 </v-btn>
               </template>
               <v-list dense>
-                <v-list-tile color="light-blue lighten-2">
+                <v-list-tile>
                   <v-list-tile-title>
                     Опубликовать
                   </v-list-tile-title>
@@ -247,5 +247,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .absolute-activator {
+    top: 10px;
+  }
 </style>
