@@ -11,8 +11,8 @@
       <comment-icon v-if="!disableComments" v-bind="_attrs"/>
       <share-icon :page-url="_biographyLink" :page-description="_biographyDescription" :page-title="_biographyTitle"/>
     </v-card-actions>
-    <v-card-actions>
-    <v-layout row wrap v-if="showModerationActions">
+    <v-card-actions v-if="showModerationActions">
+    <v-layout row wrap>
       <v-flex xs12 v-for="(action, index) in actions" :key="index">
         <moderation-button
           v-bind="_attrs"

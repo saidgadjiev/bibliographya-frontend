@@ -1,13 +1,14 @@
 <template>
   <v-navigation-drawer
+    style="z-index: 10;"
     class="grey lighten-4"
     fixed
     app
     v-model="_drawer"
   >
-    <v-toolbar flat class="transparent pt-3 pb-3" v-if="isAuthenticated">
+    <v-toolbar flat class="transparent pt-3 pb-3" v-if="isAuthenticated" @click="$router.push('/profile/' + getUserId)">
       <div>
-        <span class="font-weight-light headline user-name">{{ _fullName }}</span>
+        <span class="font-weight-regular headline user-name">{{ _fullName }}</span>
       </div>
     </v-toolbar>
     <nav-list/>
@@ -35,7 +36,7 @@ export default {
       'drawer'
     ]),
     _fullName () {
-      return this.getFirstName + ' ' + this.getLastName
+      return this.getLastName + ' ' + this.getFirstName
     },
     _drawer: {
       get () {

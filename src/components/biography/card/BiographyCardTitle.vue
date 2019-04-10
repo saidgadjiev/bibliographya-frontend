@@ -10,11 +10,11 @@
           <router-link class="bib-a" :to="'/categories/' + category.id">{{ category.name }}</router-link>&nbsp;&nbsp;
         </span>
       </div>
-      <div v-if="_showAuthor">
+      <small class="d-block" v-if="_showAuthor" style="color: #757575">
         Автор:
         <router-link class="bib-a word-break-all" :to="_creatorBiographyLink"><strong>{{ _creatorName }}</strong></router-link>
-      </div>
-      <small v-if="_isUpdated">
+      </small>
+      <small v-if="_isUpdated"  style="color: #757575">
         Создано <strong>{{ format(createdAt) }}</strong>, обновлено <strong>{{ format(updatedAt, true) }}</strong>
       </small>
       <small v-else>
@@ -108,14 +108,8 @@ export default {
       )
     },
     _fullNameClasses () {
-      if (this.$vuetify.breakpoint.mdAndUp) {
-        return {
-          'title': true
-        }
-      }
-
       return {
-        'subheading': true
+        'title': true
       }
     },
     _isMarked () {

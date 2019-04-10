@@ -37,6 +37,7 @@
     </v-flex>
     <v-menu content-class="fab-menu" v-if="smSidebar" :close-on-content-click="false">
       <v-btn
+        style="z-index: 3;"
         slot="activator"
         color="red darken-2"
         dark

@@ -1,5 +1,6 @@
 <template>
   <v-toolbar
+    style="z-index: 9"
     color="blue darken-3"
     :class="{ 'md-toolbar': $vuetify.breakpoint.mdAndUp }"
     dark
@@ -11,7 +12,7 @@
     <v-toolbar-title class="ml-0">
       <div v-if="$vuetify.breakpoint.smAndDown">
         <v-toolbar-side-icon @click.stop="doDrawer"></v-toolbar-side-icon>
-        <router-link to="/" class="title pl-2 white--text">Библиография</router-link>
+        <router-link to="/" class="title pl-2 white--text font-weight-light">Библиография</router-link>
       </div>
       <div class="d-flex align-center" v-else>
           <svg
@@ -29,7 +30,7 @@
               </g>
             </g>
           </svg>
-        <router-link to="/" class="title pl-2 white--text">Библиография</router-link>
+        <router-link to="/" class="title pl-2 white--text font-weight-light">Библиография</router-link>
       </div>
     </v-toolbar-title>
     <v-spacer></v-spacer>
