@@ -36,9 +36,10 @@
         </edit-comment>
         <div v-else>
           <span v-if="parentId">
-            <router-link class="bib-a" :to="_repliedBiographyLink">{{ _repliedFirstName }}</router-link>{{ ', ' + content }}
+            <router-link class="bib-a" :to="_repliedBiographyLink">{{ _repliedFirstName }}</router-link>
+            <span v-html="', ' + _content"></span>
           </span>
-          <span style="white-space: pre-wrap;" v-else>{{ content }}</span>
+          <span style="white-space: pre-wrap;" v-else v-html="_content"></span>
         </div>
         <h4>{{ _getTimeDiff + ',' }}&nbsp;<a class="font-weight-regular" @click="reply">Ответить</a></h4>
       </v-card-text>
@@ -51,6 +52,7 @@ import { ROLES, DATE_FORMAT } from '../../config'
 import biographyCommentService from '../../services/biography-comment-service'
 import EditComment from './EditComment'
 import { mapGetters } from 'vuex'
+import twemoji from 'twemoji'
 
 export default {
   name: 'Comment',
@@ -144,6 +146,9 @@ export default {
     },
     _getTimeDiff () {
       return this.$moment(this.createdAt, DATE_FORMAT).fromNow()
+    },
+    _content () {
+      return twemoji.parse(this.content)
     }
   },
   methods: {
@@ -194,5 +199,12 @@ export default {
 
   .highlight {
     background-color: #B3E5FC !important;
+  }
+
+  .comment-wrapper >>> img.emoji {
+    height: 1em !important;
+    width: 1em !important;
+    margin: 0 .05em 0 .1em !important;
+    vertical-align: -0.1em !important;
   }
 </style>
