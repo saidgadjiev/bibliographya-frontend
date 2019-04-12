@@ -39,7 +39,7 @@ export default {
 
       const shareUrl = `https://telegram.me/share/url?url=${encodeURIComponent(
         this.$props.pageUrl
-      )}&text=${pageDescription}`
+      )}&text=${encodeURIComponent(pageDescription)}`
 
       // onClick event
       clickEvent(this, 'telegram')

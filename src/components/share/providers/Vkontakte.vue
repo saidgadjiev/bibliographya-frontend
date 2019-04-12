@@ -53,7 +53,9 @@ export default {
           response => {
             let imagePath = fileService.getShareResourceUrl(response.data.path)
 
-            const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(this.$props.pageUrl)}&title=${this.$props.pageTitle}&image=${imagePath}`
+            const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(this.$props.pageUrl)}
+            &title=${encodeURIComponent(this.$props.pageTitle)}
+            &image=${encodeURIComponent(imagePath)}`
 
             openShareUrl(shareUrl)
           }

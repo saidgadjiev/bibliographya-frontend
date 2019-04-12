@@ -36,7 +36,7 @@ export default {
     showShareWindow: function () {
       let pageDescription = this.pageDescription.replace('@bold', '*').replace('@/bold', '*')
 
-      const shareUrl = `https://wa.me/?text=${encodeURIComponent(this.$props.pageUrl) + pageDescription}`
+      const shareUrl = `https://wa.me/?text=${encodeURIComponent(this.$props.pageUrl + pageDescription)}`
 
       // onClick event
       clickEvent(this, 'whatsapp')
