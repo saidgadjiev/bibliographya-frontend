@@ -8,12 +8,12 @@
       class="comment-wrapper pa-2">
       <v-card-title primary-title class="pa-0">
         <div v-if="parentId">
-          <router-link class="bib-a" :to="_authorBiographyLink">{{ _authorName }}</router-link>
+          <router-link class="bib-a" :to="_authorAccountLink">{{ _authorName }}</router-link>
           <small class="grey--text">&nbsp;ответил&nbsp;</small>
           <a @click="gotoReply()"><strong class="grey--text">{{ _repliedFirstName }}</strong></a>
         </div>
         <div v-else>
-          <router-link  class="bib-a" :to="_authorBiographyLink">{{ _authorName }}</router-link>
+          <router-link  class="bib-a" :to="_authorAccountLink">{{ _authorName }}</router-link>
         </div>
         <v-spacer></v-spacer>
         <div v-if="hover || _showCommentButtons">
@@ -112,11 +112,11 @@ export default {
     _authorName () {
       return this.user.lastName + ' ' + this.user.firstName
     },
-    _authorBiographyLink () {
-      return '/biographies/' + this.biographyId
+    _authorAccountLink () {
+      return '/profile/' + this.userId
     },
     _repliedBiographyLink () {
-      return '/biographies/' + this.parentUser.id
+      return '/profile/' + this.parentUser.userId
     },
     _showCommentButtons () {
       return this.$vuetify.breakpoint.smAndDown

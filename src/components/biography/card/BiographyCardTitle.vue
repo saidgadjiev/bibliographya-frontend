@@ -12,7 +12,7 @@
       </div>
       <small class="d-block" v-if="_showAuthor" style="color: #757575">
         Автор:
-        <router-link class="bib-a word-break-all" :to="_creatorBiographyLink"><strong>{{ _creatorName }}</strong></router-link>
+        <router-link class="bib-a word-break-all" :to="_creatorAccountLink"><strong>{{ _creatorName }}</strong></router-link>
       </small>
       <small v-if="_isUpdated"  style="color: #757575">
         Создано <strong>{{ format(createdAt) }}</strong>, обновлено <strong>{{ format(updatedAt, true) }}</strong>
@@ -123,9 +123,9 @@ export default {
 
       return full
     },
-    _creatorBiographyLink () {
+    _creatorAccountLink () {
       if (this.creator) {
-        return '/biographies/' + this.creator.id
+        return '/profile/' + this.creator.userId
       }
 
       return ''

@@ -4,7 +4,7 @@
       <div v-if="fixer">
         <span>
           Исполнитель:
-          <router-link class="bib-a" :to="_fixerBiographyLink">{{ _fixerFio }}</router-link>
+          <router-link class="bib-a" :to="_fixerAccountLink">{{ _fixerFio }}</router-link>
         </span>
       </div>
       <div>
@@ -51,8 +51,8 @@ export default {
     _fixerFio () {
       return this.fixer.lastName + ' ' + this.fixer.firstName
     },
-    _fixerBiographyLink () {
-      return '/biographies/' + this.fixer.id
+    _fixerAccountLink () {
+      return '/profile/' + this.fixer.userId
     }
   }
 }

@@ -91,7 +91,7 @@ export default {
               that.updateModeratorInfo(e.response.data)
 
               let currentModerator = that.moderator
-              let message = '<a href="\'/biographies/' + currentModerator.id + '">' +
+              let message = '<a href="\'/profile/' + currentModerator.userId + '">' +
                   currentModerator.firstName + ' ' + currentModerator.lastName + '</a>,&nbsp;уже взял биографию на модерацию.'
 
               that.$swal.fire({

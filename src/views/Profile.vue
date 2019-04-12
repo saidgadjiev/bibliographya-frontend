@@ -6,7 +6,7 @@
       <biography-card
         v-bind.sync="biography"
         mode="read"
-        show-publish
+        :show-publish="_showPublish"
         show-comments
       ></biography-card>
     </v-flex>
@@ -17,7 +17,7 @@
 import { mapGetters } from 'vuex'
 import alert from '../mixins/alert'
 import BiographyCard from '../components/biography/card/BiographyCard'
-import biographyService from '../services/biography-service'
+import userAccountService from '../services/user-account-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import ProgressCircular from '../components/progress/ProgressCircular'
 
@@ -30,29 +30,54 @@ export default {
       biography: undefined
     }
   },
+  props: {
+    profileId: {
+      type: Number,
+      required: true
+    }
+  },
   computed: {
     ...mapGetters([
-      'getBiographyId'
-    ])
+      'getUserId'
+    ]),
+    _showPublish () {
+      return this.getUserId === this.profileId
+    }
   },
   created () {
-    let that = this
+    this.loadAccount()
+  },
+  methods: {
+    loadAccount () {
+      let that = this
 
-    biographyService.getBiographyById(this.getBiographyId)
-      .then(
-        response => {
-          that.biography = response.data
-        },
-        e => {}
-      )
-      .finally(() => {
-        that.biographyLoading = false
-      })
+      userAccountService.getAccount(this.profileId)
+        .then(
+          response => {
+            that.biography = response.data.biography
+          },
+          e => {
+            if (e.response.status === that.HttpStatus.NOT_FOUND) {
+              that.$router.push('/404')
+            }
+          }
+        )
+        .finally(() => {
+          that.biographyLoading = false
+        })
+    }
   },
   components: {
     ProgressCircular,
     AlertMessage,
     BiographyCard
+  },
+  watch: {
+    '$route' (to, from) {
+      this.biographyLoading = true
+      this.biography = undefined
+      this.loadAccount()
+    }
   }
 }
 </script>

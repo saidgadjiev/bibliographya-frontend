@@ -199,9 +199,14 @@ let router = new Router({
       path: '/biographies/:id',
       name: 'biography',
       component: BiographyDetails,
-      props: (route) => ({
-        biographyId: parseInt(route.params.id)
-      })
+      props: (route) => {
+        const biographyId = Number.parseInt(route.params.id, 10)
+
+        if (Number.isNaN(biographyId)) {
+          return 0
+        }
+        return { biographyId }
+      }
     },
     {
       path: '/create/biography',
@@ -255,7 +260,14 @@ let router = new Router({
       path: '/edit/biographies/:id',
       name: 'editBiography',
       component: EditBiography,
-      props: (route) => ({ biographyId: parseInt(route.params.id) }),
+      props: (route) => {
+        const biographyId = Number.parseInt(route.params.id, 10)
+
+        if (Number.isNaN(biographyId)) {
+          return 0
+        }
+        return { biographyId }
+      },
       beforeEnter: requireAuth,
       meta: {
         loginRequired: true,
@@ -274,8 +286,13 @@ let router = new Router({
       name: 'profile',
       component: Profile,
       beforeEnter: requireAuth,
-      meta: {
-        loginRequired: true
+      props: (route) => {
+        const profileId = Number.parseInt(route.params.id, 10)
+
+        if (Number.isNaN(profileId)) {
+          return { profileId: 0 }
+        }
+        return { profileId: profileId }
       }
     },
     {
