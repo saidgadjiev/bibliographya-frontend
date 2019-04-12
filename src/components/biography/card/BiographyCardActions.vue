@@ -9,7 +9,7 @@
         class="ml-1"
       />
       <comment-icon v-if="!disableComments" v-bind="_attrs"/>
-      <share-icon :page-url="_biographyLink" :page-description="_biographyDescription" :page-title="_biographyTitle"/>
+      <share-icon :page-url="_biographyLink" :page-description="_biographyDescription" :page-title="_biographyTitle" :magick-text="_magickText"/>
     </v-card-actions>
     <v-card-actions v-if="showModerationActions">
     <v-layout row wrap>
@@ -83,6 +83,9 @@ export default {
     },
     _biographyTitle () {
       return this.lastName + ' ' + this.firstName
+    },
+    _magickText () {
+      return this.firstName + '\n' + this.lastName
     }
   },
   methods: {

@@ -12,7 +12,7 @@
         <v-icon color="blue darken-1">mdi-share-outline</v-icon>
       </v-btn>
     </template>
-    <share-vkontakte :page-url="pageUrl" :page-title="pageTitle"/>
+    <share-vkontakte :page-url="pageUrl" :page-title="pageTitle" :magick-text="magickText"/>
     <share-whats-app :page-url="pageUrl" :page-description="pageDescription"/>
     <share-telegram :page-url="pageUrl" :page-description="pageDescription"/>
   </v-speed-dial>
@@ -39,6 +39,9 @@ export default {
     pageDescription: {
       type: String,
       default: ''
+    },
+    magickText: {
+      type: String
     }
   }
 }

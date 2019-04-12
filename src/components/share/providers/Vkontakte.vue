@@ -6,6 +6,9 @@
     color="primary"
     @click.prevent="showShareWindow"
   >
+    <template #loader>
+      <progress-circular :size="20" :width="3"/>
+    </template>
     <v-icon dark style="font-size: 24px;">fab fa-vk</v-icon>
   </v-btn>
 </template>
@@ -17,9 +20,13 @@ import { sliceThousandInt } from '../helpers/count_number'
 import { getRandomInt } from '../helpers/random_int'
 import { openShareUrl } from '../helpers/new_window'
 import { TITLE } from '../../../config'
+import magickService from '../../../services/magick-service'
+import fileService from '../../../services/file-service'
+import ProgressCircular from '../../progress/ProgressCircular'
 
 export default {
   name: 'ShareVkontakte',
+  components: { ProgressCircular },
   props: {
     pageTitle: {
       type: String,
@@ -28,6 +35,10 @@ export default {
     pageUrl: {
       type: String,
       default: documentHref
+    },
+    magickText: {
+      type: String,
+      default: TITLE
     }
   },
   data () {
@@ -37,11 +48,18 @@ export default {
   },
   methods: {
     showShareWindow: function () {
-      const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(this.$props.pageUrl)}&title=${this.$props.pageTitle}`
+      magickService.getMagick(this.magickText)
+        .then(
+          response => {
+            let imagePath = fileService.getShareResourceUrl(response.data.path)
+
+            const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(this.$props.pageUrl)}&title=${this.$props.pageTitle}&image=${imagePath}`
+
+            openShareUrl(shareUrl)
+          }
+        )
 
       clickEvent(this, 'vkontakte')
-
-      return openShareUrl(shareUrl)
     },
 
     handleUpdateCount (count) {
@@ -51,8 +69,8 @@ export default {
     getShareCounter: function () {
       if (
         window.VK &&
-        window.VK.Share &&
-        typeof window.VK.Share.count === 'function'
+          window.VK.Share &&
+          typeof window.VK.Share.count === 'function'
       ) {
         return
       }
