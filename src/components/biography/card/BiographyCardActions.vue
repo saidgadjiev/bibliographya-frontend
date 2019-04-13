@@ -82,7 +82,7 @@ export default {
       return getShareDescription(this.firstName, this.lastName, this.middleName)
     },
     _biographyTitle () {
-      return this.lastName + ' ' + this.firstName
+      return this.firstName + ' ' + this.lastName
     },
     _magickText () {
       return this.firstName + '\n' + this.lastName

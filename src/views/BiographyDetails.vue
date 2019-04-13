@@ -80,7 +80,7 @@ export default {
         .then(
           response => {
             that.biography = response.data
-            that.title = that.biography.lastName + ' ' + that.biography.firstName
+            that.title = that.biography.firstName + ' ' + that.biography.lastName
           },
           e => {}
         )
