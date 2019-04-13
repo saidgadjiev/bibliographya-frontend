@@ -23,6 +23,7 @@ import { TITLE } from '../../../config'
 import magickService from '../../../services/magick-service'
 import fileService from '../../../services/file-service'
 import ProgressCircular from '../../progress/ProgressCircular'
+import { PROVIDERS } from '../../../auth/social/social'
 
 export default {
   name: 'ShareVkontakte',
@@ -48,7 +49,7 @@ export default {
   },
   methods: {
     showShareWindow: function () {
-      magickService.getMagick(this.magickText)
+      magickService.getMagick(PROVIDERS.VK, this.magickText, 50)
         .then(
           response => {
             let imagePath = fileService.getShareResourceUrl(response.data.path)
