@@ -10,5 +10,5 @@ function getCategoryResourceUrl (path) {
 }
 
 function getShareResourceUrl (path) {
-  return getUploadUrl('upload/share/') + path
+  return window.location.origin + '/upload/share/' + path
 }
