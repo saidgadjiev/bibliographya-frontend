@@ -6,6 +6,6 @@ export default {
   getMagick
 }
 
-function getMagick (magickText) {
-  return axios.get(getRestUrl('magick') + '?magickText=' + encodeURIComponent(magickText))
+function getMagick (providerId, magickText, magickPointSize) {
+  return axios.get(getRestUrl('magick/' + providerId) + '?magickText=' + encodeURIComponent(magickText) + '&magickPointSize=' + magickPointSize)
 }
