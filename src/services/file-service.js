@@ -1,12 +1,10 @@
-import { getUploadUrl } from '../rest'
-
 export default {
   getCategoryResourceUrl,
   getShareResourceUrl
 }
 
 function getCategoryResourceUrl (path) {
-  return getUploadUrl('upload/category/') + path
+  return window.location.origin + '/upload/category/' + path
 }
 
 function getShareResourceUrl (path) {
