@@ -66,6 +66,10 @@
             <tiny-editor
               id="biography_editor"
               v-model="biographyForm.bio"
+              :media-url="_mediaUrl"
+              :media-base-path="_mediaBasePath"
+              @upload="upload"
+              @init="initEditor"
             ></tiny-editor>
           </v-flex>
           <v-flex xs12 v-if="conflict && biographyConflict">
@@ -105,15 +109,19 @@ import biographyService from '../../../services/biography-service'
 import biographyCategoryService from '../../../services/biography-category-service'
 import TinyEditor from '../../tinymce/TinyEditor'
 import alert from '../../../mixins/alert'
+import { BIOGRAPHIES_MEDIA_URL } from '../../../services/file-service'
 
 const diff = require('diff')
 const he = require('he')
 
 export default {
   name: 'EditBiographyCard',
+  inheritAttrs: false,
   mixins: [alert],
   data () {
     return {
+      editor: null,
+      allUploads: [],
       saveLoading: false,
       categoriesLoading: false,
       categories: [],
@@ -144,6 +152,14 @@ export default {
     },
     inBiography: Object,
     default: {}
+  },
+  computed: {
+    _mediaUrl () {
+      return BIOGRAPHIES_MEDIA_URL
+    },
+    _mediaBasePath () {
+      return BIOGRAPHIES_MEDIA_URL
+    }
   },
   created () {
     let that = this
@@ -179,6 +195,12 @@ export default {
     }
   },
   methods: {
+    initEditor (e) {
+      this.editor = e
+    },
+    upload (file) {
+      this.allUploads.push(file)
+    },
     fioDiff () {
       let d = diff.diffChars(this.myBiographyVersion.lastName, this.biographyForm.lastName)
 
@@ -233,6 +255,11 @@ export default {
       this.$emit('update:bio', data.bio)
       this.$emit('update:updatedAt', data.updatedAt)
       this.$emit('update:categories', data.categories)
+    },
+    beforeSave () {
+      let imgs = this.editor.body().getElementsByTagName('img')
+
+      console.log(imgs)
     },
     doSave () {
       let that = this

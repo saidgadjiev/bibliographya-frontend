@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-btn @click="uploadImages">Test</v-btn>
     <textarea :id="id"></textarea>
   </div>
 </template>
@@ -58,6 +59,8 @@ import 'tinymce/skins/ui/oxide/skin.css'
 import 'tinymce/skins/ui/oxide/content.mobile.min.css'
 import 'tinymce/skins/ui/oxide/skin.mobile.min.css'
 
+const axios = require('axios')
+
 export default {
   name: 'TinyEditor',
   props: {
@@ -68,6 +71,14 @@ export default {
     readonly: {
       type: Boolean,
       default: false
+    },
+    mediaUrl: {
+      type: String,
+      default: ''
+    },
+    mediaBasePath: {
+      type: String,
+      default: ''
     },
     value: { default: '' }
   },
@@ -108,6 +119,11 @@ export default {
     }
   },
   methods: {
+    uploadImages () {
+      let imgs = this.editor.body().getElementsByTagName('img')
+
+      console.log(imgs)
+    },
     init () {
       let that = this
 
@@ -125,7 +141,7 @@ export default {
         language_url: '/static/tinymce/langs/ru.js',
         branding: false,
         readonly: this.readonly ? 1 : 0,
-        toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor ' +
+        toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor image ' +
             '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
             '| removeformat fontname fontsize', // this.$el.childNodes[0].setAttribute('test', 't')
         plugins: ['advlist autoresize autolink lists link image charmap print preview hr anchor pagebreak',
@@ -134,14 +150,33 @@ export default {
           'template paste textpattern imagetools toc help hr codesample'
         ],
         menubar: 'edit view insert format table',
-        removed_menuitems: 'code visualblocks visualchars visualaid image media template codesample charmap pagebreak nonbreaking ' +
+        removed_menuitems: 'code visualblocks visualchars visualaid template codesample charmap pagebreak nonbreaking ' +
             'anchor toc codeformat',
         init_instance_callback: this.initEditor,
         setup: function (editor) {
           editor.on('init', function (e) {
             editor.setContent(that.content)
             that.$emit('input', that.content)
+            that.$emit('init', editor)
           })
+        },
+        images_upload_handler: function (blobInfo, success, failure) {
+          let formData = new FormData()
+
+          formData.append('file', blobInfo.blob(), blobInfo.filename())
+
+          axios.put(this.mediaUrl, formData)
+            .then(
+              response => {
+                success(that.mediaBasePath + '/' + response.data.location)
+                that.$emit('upload', response.data.location)
+              },
+              e => {
+                if (e.response) {
+                  failure('Image upload failed due to a XHR Transport error. Code: ' + e.response.status)
+                }
+              }
+            )
         }
       }
       tinymce.init(options)
