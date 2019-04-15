@@ -100,6 +100,7 @@
     </v-card-text>
     <v-card-actions style="justify-content: center">
       <v-btn @click="doSave" :loading="saveLoading" :disabled="saveLoading" color="primary">Сохранить</v-btn>
+      <v-btn @click="getDeleteUploads" color="primary">Тест</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -121,7 +122,7 @@ export default {
   data () {
     return {
       editor: null,
-      allUploads: [],
+      oldUploads: [],
       saveLoading: false,
       categoriesLoading: false,
       categories: [],
@@ -197,9 +198,23 @@ export default {
   methods: {
     initEditor (e) {
       this.editor = e
+      this.oldUploads.push(...this.getUploads())
     },
     upload (file) {
-      this.allUploads.push(file)
+      this.oldUploads.push(file)
+    },
+    getUploads () {
+      let currentImgs = this.editor.getBody().getElementsByTagName('img')
+      let currentImgPaths = []
+
+      for (let i = 0; i < currentImgs.length; ++i) {
+        let img = currentImgs[i]
+        let src = img.src
+
+        currentImgPaths.push(src.substring(src.lastIndexOf('/') + 1))
+      }
+
+      return currentImgPaths
     },
     fioDiff () {
       let d = diff.diffChars(this.myBiographyVersion.lastName, this.biographyForm.lastName)
@@ -256,10 +271,19 @@ export default {
       this.$emit('update:updatedAt', data.updatedAt)
       this.$emit('update:categories', data.categories)
     },
-    beforeSave () {
-      let imgs = this.editor.body().getElementsByTagName('img')
+    getDeleteUploads () {
+      let currentUploads = this.getUploads()
 
-      console.log(imgs)
+      let imgDiff = diff.diffArrays(currentUploads, this.oldUploads)
+      let deleteUploads = []
+
+      imgDiff.forEach(e => {
+        if (e.removed) {
+          deleteUploads.push(...e.value)
+        }
+      })
+
+      console.log(deleteUploads)
     },
     doSave () {
       let that = this

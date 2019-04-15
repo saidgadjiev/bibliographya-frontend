@@ -1,6 +1,5 @@
 <template>
   <div>
-    <v-btn @click="uploadImages">Test</v-btn>
     <textarea :id="id"></textarea>
   </div>
 </template>
@@ -84,6 +83,7 @@ export default {
   },
   data () {
     return {
+      currentUploads: [],
       content: '',
       editor: null,
       checkerTimeout: null,
@@ -119,11 +119,6 @@ export default {
     }
   },
   methods: {
-    uploadImages () {
-      let imgs = this.editor.body().getElementsByTagName('img')
-
-      console.log(imgs)
-    },
     init () {
       let that = this
 
@@ -144,7 +139,7 @@ export default {
         toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor image ' +
             '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
             '| removeformat fontname fontsize', // this.$el.childNodes[0].setAttribute('test', 't')
-        plugins: ['advlist autoresize autolink lists link image charmap print preview hr anchor pagebreak',
+        plugins: ['advlist autoresize autolink lists link image imagetools charmap print preview hr anchor pagebreak',
           'searchreplace wordcount visualblocks visualchars code fullscreen',
           'insertdatetime media nonbreaking save table directionality',
           'template paste textpattern imagetools toc help hr codesample'
@@ -165,11 +160,12 @@ export default {
 
           formData.append('file', blobInfo.blob(), blobInfo.filename())
 
-          axios.put(this.mediaUrl, formData)
+          axios.put(that.mediaUrl, formData)
             .then(
               response => {
                 success(that.mediaBasePath + '/' + response.data.location)
                 that.$emit('upload', response.data.location)
+                that.currentUploads.push(response.data.location)
               },
               e => {
                 if (e.response) {
