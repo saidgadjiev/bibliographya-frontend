@@ -83,7 +83,6 @@ export default {
   },
   data () {
     return {
-      currentUploads: [],
       content: '',
       editor: null,
       checkerTimeout: null,
@@ -163,9 +162,8 @@ export default {
           axios.put(that.mediaUrl, formData)
             .then(
               response => {
-                success(that.mediaBasePath + '/' + response.data.location)
-                that.$emit('upload', response.data.location)
-                that.currentUploads.push(response.data.location)
+                success(that.mediaBasePath + '?filePath=' + response.data.location.replace('\\', '/'))
+                that.$emit('upload', response.data.location.replace('\\', '/'))
               },
               e => {
                 if (e.response) {

@@ -100,7 +100,6 @@
     </v-card-text>
     <v-card-actions style="justify-content: center">
       <v-btn @click="doSave" :loading="saveLoading" :disabled="saveLoading" color="primary">Сохранить</v-btn>
-      <v-btn @click="getDeleteUploads" color="primary">Тест</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -110,10 +109,11 @@ import biographyService from '../../../services/biography-service'
 import biographyCategoryService from '../../../services/biography-category-service'
 import TinyEditor from '../../tinymce/TinyEditor'
 import alert from '../../../mixins/alert'
-import { BIOGRAPHIES_MEDIA_URL } from '../../../services/file-service'
+import { BIOGRAPHIES_UPLOAD_URL } from '../../../services/file-service'
 
 const diff = require('diff')
 const he = require('he')
+const Url = require('url-parse')
 
 export default {
   name: 'EditBiographyCard',
@@ -123,6 +123,7 @@ export default {
     return {
       editor: null,
       oldUploads: [],
+      currentUserUploads: [],
       saveLoading: false,
       categoriesLoading: false,
       categories: [],
@@ -156,10 +157,10 @@ export default {
   },
   computed: {
     _mediaUrl () {
-      return BIOGRAPHIES_MEDIA_URL
+      return BIOGRAPHIES_UPLOAD_URL
     },
     _mediaBasePath () {
-      return BIOGRAPHIES_MEDIA_URL
+      return BIOGRAPHIES_UPLOAD_URL
     }
   },
   created () {
@@ -201,7 +202,7 @@ export default {
       this.oldUploads.push(...this.getUploads())
     },
     upload (file) {
-      this.oldUploads.push(file)
+      this.currentUserUploads.push(file)
     },
     getUploads () {
       let currentImgs = this.editor.getBody().getElementsByTagName('img')
@@ -209,9 +210,9 @@ export default {
 
       for (let i = 0; i < currentImgs.length; ++i) {
         let img = currentImgs[i]
-        let src = img.src
+        let srcUrl = new Url(img.src)
 
-        currentImgPaths.push(src.substring(src.lastIndexOf('/') + 1))
+        currentImgPaths.push(srcUrl.query.substring(srcUrl.query.indexOf('?filePath=') + 10))
       }
 
       return currentImgPaths
@@ -273,8 +274,12 @@ export default {
     },
     getDeleteUploads () {
       let currentUploads = this.getUploads()
+      let uploads = []
 
-      let imgDiff = diff.diffArrays(currentUploads, this.oldUploads)
+      uploads.push(...this.oldUploads)
+      uploads.push(...this.currentUserUploads)
+
+      let imgDiff = diff.diffArrays(uploads, currentUploads)
       let deleteUploads = []
 
       imgDiff.forEach(e => {
@@ -284,6 +289,8 @@ export default {
       })
 
       console.log(deleteUploads)
+
+      return deleteUploads
     },
     doSave () {
       let that = this
@@ -312,7 +319,8 @@ export default {
               bio: that.biographyForm.bio,
               addCategories: added,
               deleteCategories: deleted,
-              updatedAt: that.biographyForm.updatedAt
+              updatedAt: that.biographyForm.updatedAt,
+              deleteUploads: that.getDeleteUploads()
             })
               .then(
                 response => {
@@ -322,6 +330,8 @@ export default {
                   that.setAlertSuccess('Изменения сохранены.')
 
                   that.conflict = false
+                  that.currentUserUploads = []
+                  that.oldUploads = that.getUploads()
                   that.myBiographyVersion = {}
                 },
                 e => {
@@ -337,6 +347,7 @@ export default {
                     that.conflict = true
                     that.fioConflict = that.fioDiff()
                     that.biographyConflict = that.biographyDiff()
+                    that.oldUploads = that.getUploads()
                   }
                 }
               )
@@ -349,7 +360,8 @@ export default {
               lastName: that.biographyForm.lastName,
               middleName: that.biographyForm.middleName,
               bio: that.biographyForm.bio,
-              addCategories: that.biographyForm.categories
+              addCategories: that.biographyForm.categories,
+              deleteUploads: that.getDeleteUploads()
             })
               .then(
                 () => {
@@ -357,6 +369,7 @@ export default {
                   that.setAlertSuccess('Биография создана. Вы можете увидеть ее в разделе Созданные мной.')
                   that.saveLoading = false
                   that.$validator.reset()
+                  that.currentUserUploads = []
                 },
                 e => {
                   that.saveLoading = false
