@@ -155,6 +155,7 @@ export default {
           toolbar: [ 'undo', 'bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist', 'fontsizeselect', 'image',
             'forecolor', 'styleselect', 'styleselect' ]
         },
+        image_caption: true,
         selector: '#' + this.id,
         skin: false,
         content_css: [
