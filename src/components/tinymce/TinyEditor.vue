@@ -162,8 +162,8 @@ export default {
           axios.put(that.mediaUrl, formData)
             .then(
               response => {
-                success(that.mediaBasePath + '?filePath=' + response.data.location.replace('\\', '/'))
-                that.$emit('upload', response.data.location.replace('\\', '/'))
+                success(that.mediaBasePath + '/' + response.data.location)
+                that.$emit('upload', response.data.location)
               },
               e => {
                 if (e.response) {
