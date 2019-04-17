@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { ROLES } from '../../config'
 // Import TinyMCE
 import tinymce from 'tinymce/tinymce'
 
@@ -26,7 +28,6 @@ import 'tinymce/plugins/insertdatetime'
 import 'tinymce/plugins/link'
 import 'tinymce/plugins/media'
 import 'tinymce/plugins/noneditable'
-import 'tinymce/plugins/paste'
 import 'tinymce/plugins/print'
 import 'tinymce/plugins/searchreplace'
 import 'tinymce/plugins/tabfocus'
@@ -50,7 +51,6 @@ import 'tinymce/plugins/preview'
 import 'tinymce/plugins/save'
 import 'tinymce/plugins/spellchecker'
 import 'tinymce/plugins/table'
-import 'tinymce/plugins/toc'
 import 'tinymce/plugins/visualchars'
 
 import 'tinymce/skins/ui/oxide/content.css'
@@ -80,6 +80,11 @@ export default {
       default: ''
     },
     value: { default: '' }
+  },
+  computed: {
+    ...mapGetters([
+      'isAuthorized'
+    ])
   },
   data () {
     return {
@@ -121,9 +126,33 @@ export default {
     init () {
       let that = this
 
+      let plugins, toolbar, removeMenuItems
+
+      if (this.isAuthorized([ROLES.ROLE_ADMIN, ROLES.ROLE_MODERATOR])) {
+        plugins = ['advlist autoresize autolink lists link image imagetools charmap print preview hr anchor pagebreak',
+          'searchreplace wordcount visualblocks visualchars code fullscreen',
+          'insertdatetime nonbreaking save table directionality',
+          'template textpattern help hr codesample'
+        ]
+        toolbar = 'formatselect | bold italic  strikethrough  forecolor backcolor image ' +
+          '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
+          '| removeformat fontname fontsize'
+        removeMenuItems = 'code visualblocks visualchars visualaid template media codesample charmap pagebreak nonbreaking anchor toc codeformat'
+      } else {
+        plugins = ['advlist autoresize autolink lists link charmap print preview hr anchor pagebreak',
+          'searchreplace wordcount visualblocks visualchars code fullscreen',
+          'insertdatetime media nonbreaking save table directionality',
+          'template textpattern help hr codesample'
+        ]
+        toolbar = 'formatselect | bold italic  strikethrough  forecolor backcolor ' +
+          '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
+          '| removeformat fontname fontsize'
+        removeMenuItems = 'code visualblocks visualchars visualaid image media template codesample charmap pagebreak nonbreaking anchor toc codeformat'
+      }
+
       let options = {
         mobile: {
-          toolbar: [ 'undo', 'bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist', 'fontsizeselect',
+          toolbar: [ 'undo', 'bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist', 'fontsizeselect', 'image',
             'forecolor', 'styleselect', 'styleselect' ]
         },
         selector: '#' + this.id,
@@ -137,17 +166,10 @@ export default {
         language_url: '/static/tinymce/langs/ru.js',
         branding: false,
         readonly: this.readonly ? 1 : 0,
-        toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor image ' +
-            '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
-            '| removeformat fontname fontsize', // this.$el.childNodes[0].setAttribute('test', 't')
-        plugins: ['advlist autoresize autolink lists link image imagetools charmap print preview hr anchor pagebreak',
-          'searchreplace wordcount visualblocks visualchars code fullscreen',
-          'insertdatetime media nonbreaking save table directionality',
-          'template paste textpattern imagetools toc help hr codesample'
-        ],
+        toolbar1: toolbar, // this.$el.childNodes[0].setAttribute('test', 't')
+        plugins: plugins,
         menubar: 'edit view insert format table',
-        removed_menuitems: 'code visualblocks visualchars visualaid template codesample charmap pagebreak nonbreaking ' +
-            'anchor toc codeformat',
+        removed_menuitems: removeMenuItems,
         init_instance_callback: this.initEditor,
         setup: function (editor) {
           editor.on('init', function (e) {
