@@ -128,7 +128,9 @@ export default {
         },
         selector: '#' + this.id,
         skin: false,
-        content_css: false,
+        content_css: [
+          '/static/css/tinyMCE.css'
+        ],
         min_height: 400,
         max_height: 700,
         language: 'ru',
