@@ -9,7 +9,7 @@ img {
 }
 
 .biography-content {
-  font-family: 'Verdana';
+  font-family: 'Verdana' !important;
 }
 
 .background {
