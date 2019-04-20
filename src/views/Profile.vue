@@ -18,6 +18,7 @@ import { mapGetters } from 'vuex'
 import alert from '../mixins/alert'
 import BiographyCard from '../components/biography/card/BiographyCard'
 import userAccountService from '../services/user-account-service'
+import viewCounterService from '../services/view-counter-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import ProgressCircular from '../components/progress/ProgressCircular'
 
@@ -55,6 +56,7 @@ export default {
         .then(
           response => {
             that.biography = response.data.biography
+            viewCounterService.hit(that.biography.id)
           },
           e => {
             if (e.response.status === that.HttpStatus.NOT_FOUND) {
