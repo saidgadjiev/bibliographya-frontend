@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="word-break-word" style="font-size: 15px" v-html="source"></p>
+    <p class="word-break-word biography-content" style="font-size: 15px" v-html="source"></p>
     <router-link v-if="clamp" :to="clampLink" class="bib-a h4 font-weight-bold subheading">
       {{ clampLinkLabel }}
     </router-link>
