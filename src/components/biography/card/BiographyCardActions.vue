@@ -10,6 +10,8 @@
       />
       <comment-icon v-if="!disableComments" v-bind="_attrs"/>
       <share-icon :page-url="_biographyLink" :page-description="_biographyDescription" :page-title="_biographyTitle" :magick-text="_magickText"/>
+      <v-spacer></v-spacer>
+      <views-count-icon v-bind="_attrs"/>
     </v-card-actions>
     <v-card-actions v-if="showModerationActions">
     <v-layout row wrap>
@@ -33,11 +35,13 @@ import likeService from '../../../services/like-service'
 import ShareIcon from './action/ShareIcon'
 import { getShareDescription } from '../../../messages'
 import ModerationButton from '../../moderation/card/ModerationButton'
+import ViewsCountIcon from './action/ViewsCountIcon'
 
 export default {
   name: 'BiographyCardActions',
   inheritAttrs: false,
   components: {
+    ViewsCountIcon,
     ModerationButton,
     ShareIcon,
     Like,

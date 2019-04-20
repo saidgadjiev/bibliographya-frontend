@@ -18,10 +18,12 @@ import biographyService from '../services/biography-service'
 import BiographyCard from '../components/biography/card/BiographyCard'
 import ProgressCircular from '../components/progress/ProgressCircular'
 import pullToRefresh from '../mixins/pullToRefresh'
+import viewCounterService from '../services/view-counter-service'
+import alert from '../mixins/alert'
 
 export default {
   name: 'BiographyDetails',
-  mixins: [pullToRefresh],
+  mixins: [pullToRefresh, alert],
   data () {
     return {
       biographyLoading: true,
@@ -81,6 +83,8 @@ export default {
           response => {
             that.biography = response.data
             that.title = that.biography.firstName + ' ' + that.biography.lastName
+
+            viewCounterService.hit(that.biography.id)
           },
           e => {}
         )
