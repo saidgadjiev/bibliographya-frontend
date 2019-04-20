@@ -12,7 +12,7 @@ function getCategoryResourceUrl (path) {
 }
 
 function getShareResourceUrl (path) {
-  return window.location.origin + '/upload/temp/' + path
+  return window.location.origin + '/upload/' + path
 }
 
 function getMediaResourceUrl () {
