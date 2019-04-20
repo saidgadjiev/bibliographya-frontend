@@ -57,7 +57,9 @@ export default {
       ++this.deleteId
     },
     infiniteLoad (limit, offset) {
-      return biographyService.getMyBiographies(limit, offset, BIOGRAPHY_CLAMP_SIZE)
+      let sort = 'sort=created_at,desc'
+
+      return biographyService.getMyBiographies(limit, offset, BIOGRAPHY_CLAMP_SIZE, sort)
     }
   },
   computed: {

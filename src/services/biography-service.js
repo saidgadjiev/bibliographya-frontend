@@ -45,11 +45,15 @@ function getBiographies (cancelToken, limit, offset, biographyClampSize, query, 
   })
 }
 
-function getMyBiographies (limit, offset, biographyClampSize) {
+function getMyBiographies (limit, offset, biographyClampSize, sort) {
   let parameters = 'limit=' + limit + '&offset=' + offset
 
   if (biographyClampSize) {
     parameters += '&biographyClampSize=' + biographyClampSize
+  }
+
+  if (sort) {
+    parameters += '&' + sort
   }
 
   return axios.get(getRestUrl('biographies/my') + '?' + parameters)
