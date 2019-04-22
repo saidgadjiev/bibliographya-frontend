@@ -2,6 +2,7 @@ blockquote {
   padding: 16px 0 16px 24px !important;
   font-size: 18px !important;
   font-weight: 300 !important;
+  font-family: Roboto, sans-serif !important;
 }
 
 img {
