@@ -16,7 +16,7 @@ function getShareResourceUrl (path) {
 }
 
 function getMediaResourceUrl () {
-  return window.location.origin + '/upload'
+  return getUploadUrl('upload')
 }
 
 function getMediaUploadUrl () {

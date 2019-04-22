@@ -167,8 +167,8 @@ export default {
         language_url: '/static/tinymce/langs/ru.js',
         branding: false,
         readonly: this.readonly ? 1 : 0,
-        relative_urls: false,
-        convert_urls: false,
+        // relative_urls: false,
+        // convert_urls: false,
         toolbar1: toolbar, // this.$el.childNodes[0].setAttribute('test', 't')
         plugins: plugins,
         menubar: 'edit view insert format table',
