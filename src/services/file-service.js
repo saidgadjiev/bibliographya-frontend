@@ -1,4 +1,4 @@
-import { getUploadUrl, getRestUrl } from '../rest'
+import { getRestUrl } from '../rest'
 
 export default {
   getCategoryResourceUrl,
