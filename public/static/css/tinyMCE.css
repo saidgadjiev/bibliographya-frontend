@@ -5,6 +5,10 @@ blockquote {
   font-family: Roboto, sans-serif !important;
 }
 
+figure {
+  margin: 0;
+}
+
 img {
   max-width: 100% !important;
 }
