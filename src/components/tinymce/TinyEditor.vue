@@ -168,6 +168,7 @@ export default {
         branding: false,
         readonly: this.readonly ? 1 : 0,
         relative_urls: false,
+        convert_urls: false,
         toolbar1: toolbar, // this.$el.childNodes[0].setAttribute('test', 't')
         plugins: plugins,
         menubar: 'edit view insert format table',
