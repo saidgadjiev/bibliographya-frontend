@@ -159,6 +159,7 @@ export default {
         selector: '#' + this.id,
         skin: false,
         content_css: [
+          '/static/fonts/roboto.css',
           '/static/css/tinyMCE.css'
         ],
         min_height: 400,
