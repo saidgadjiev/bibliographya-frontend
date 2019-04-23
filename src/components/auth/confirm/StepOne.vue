@@ -26,6 +26,10 @@
       >
         Получить код
       </v-btn>
+      <countdown
+        v-if="showTimer"
+        :end-time="new Date().getTime() + timer"
+      ></countdown>
     </v-card-actions>
   </v-card>
 </template>
@@ -36,12 +40,20 @@ import request from '../../../mixins/request'
 import { REQUEST } from '../../../config'
 import authService from '../../../services/auth-service'
 
+const jwt = require('jwt-simple')
+
 export default {
   name: 'StepOne',
   mixins: [alert, request],
   props: {
     step: Number,
     email: String
+  },
+  data () {
+    return {
+      showTimer: false,
+      timer: 0
+    }
   },
   created () {
     this.$validator.localize('ru', {
@@ -63,7 +75,13 @@ export default {
 
           authService.confirmSignUpStart(that.email)
             .then(
-              () => {
+              response => {
+                let token = response.data.tjwt
+                let payload = jwt.decode(token, null, true)
+
+                that.showTimer = true
+                that.timer = payload.timer
+
                 that.$emit('update:step', 2)
               },
               e => {

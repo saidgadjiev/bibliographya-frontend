@@ -14,6 +14,7 @@ import VueYandexMetrika from 'vue-yandex-metrika'
 import { METRIKA_ID } from './config'
 import { socialAutheticator } from './auth/auth'
 import Meta from 'vue-meta'
+import Vac from 'vue-awesome-countdown'
 
 import store from './store/store'
 
@@ -27,6 +28,8 @@ require('moment/locale/ru')
 Vue.use(VueMoment, {
   moment
 })
+
+Vue.use(Vac)
 
 Vue.use(Meta, {
   keyName: 'metaInfo', // the component option name that vue-meta looks for meta info on.
