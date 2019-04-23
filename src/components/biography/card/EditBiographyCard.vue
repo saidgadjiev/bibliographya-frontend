@@ -68,8 +68,6 @@
               v-model="biographyForm.bio"
               :media-url="_mediaUrl"
               :media-base-path="_mediaBasePath"
-              @upload="upload"
-              @init="initEditor"
             ></tiny-editor>
           </v-flex>
           <v-flex xs12 v-if="conflict && biographyConflict">
@@ -109,7 +107,7 @@ import biographyService from '../../../services/biography-service'
 import biographyCategoryService from '../../../services/biography-category-service'
 import TinyEditor from '../../tinymce/TinyEditor'
 import alert from '../../../mixins/alert'
-import { BIOGRAPHIES_UPLOAD_URL } from '../../../services/file-service'
+import fileService from '../../../services/file-service'
 
 const diff = require('diff')
 const he = require('he')
@@ -121,9 +119,6 @@ export default {
   mixins: [alert],
   data () {
     return {
-      editor: null,
-      oldUploads: [],
-      currentUserUploads: [],
       saveLoading: false,
       categoriesLoading: false,
       categories: [],
@@ -157,10 +152,10 @@ export default {
   },
   computed: {
     _mediaUrl () {
-      return BIOGRAPHIES_UPLOAD_URL
+      return fileService.getMediaUploadUrl()
     },
     _mediaBasePath () {
-      return BIOGRAPHIES_UPLOAD_URL
+      return fileService.getMediaResourceUrl()
     }
   },
   created () {
@@ -197,13 +192,6 @@ export default {
     }
   },
   methods: {
-    initEditor (e) {
-      this.editor = e
-      this.oldUploads.push(...this.getUploads())
-    },
-    upload (file) {
-      this.currentUserUploads.push(file)
-    },
     getUploads () {
       let currentImgs = this.editor.getBody().getElementsByTagName('img')
       let currentImgPaths = []
@@ -272,26 +260,6 @@ export default {
       this.$emit('update:updatedAt', data.updatedAt)
       this.$emit('update:categories', data.categories)
     },
-    getDeleteUploads () {
-      let currentUploads = this.getUploads()
-      let uploads = []
-
-      uploads.push(...this.oldUploads)
-      uploads.push(...this.currentUserUploads)
-
-      let imgDiff = diff.diffArrays(uploads, currentUploads)
-      let deleteUploads = []
-
-      imgDiff.forEach(e => {
-        if (e.removed) {
-          deleteUploads.push(...e.value)
-        }
-      })
-
-      console.log(deleteUploads)
-
-      return deleteUploads
-    },
     doSave () {
       let that = this
       this.$validator.validateAll().then(result => {
@@ -319,19 +287,17 @@ export default {
               bio: that.biographyForm.bio,
               addCategories: added,
               deleteCategories: deleted,
-              updatedAt: that.biographyForm.updatedAt,
-              deleteUploads: that.getDeleteUploads()
+              updatedAt: that.biographyForm.updatedAt
             })
               .then(
                 response => {
+                  that.biographyForm.bio = response.data.bio
                   that.biographyForm.updatedAt = response.data.updatedAt
                   that.updateParent(that.biographyForm)
 
                   that.setAlertSuccess('Изменения сохранены.')
 
                   that.conflict = false
-                  that.currentUserUploads = []
-                  that.oldUploads = that.getUploads()
                   that.myBiographyVersion = {}
                 },
                 e => {
@@ -347,7 +313,6 @@ export default {
                     that.conflict = true
                     that.fioConflict = that.fioDiff()
                     that.biographyConflict = that.biographyDiff()
-                    that.oldUploads = that.getUploads()
                   }
                 }
               )
@@ -360,8 +325,7 @@ export default {
               lastName: that.biographyForm.lastName,
               middleName: that.biographyForm.middleName,
               bio: that.biographyForm.bio,
-              addCategories: that.biographyForm.categories,
-              deleteUploads: that.getDeleteUploads()
+              addCategories: that.biographyForm.categories
             })
               .then(
                 () => {

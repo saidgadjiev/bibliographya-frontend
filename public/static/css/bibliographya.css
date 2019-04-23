@@ -4,6 +4,14 @@ blockquote {
   font-weight: 300 !important;
 }
 
+img {
+  max-width: 100% !important;
+}
+
+.biography-content {
+  font-family: 'Verdana' !important;
+}
+
 .background {
   background: url('/static/img/Bibliographya.jpg') no-repeat center center fixed !important;
   -webkit-background-size: cover !important;

@@ -47,6 +47,11 @@ export default {
 </script>
 
 <style>
+
+  @font-face {/* Гарнитура шрифта */
+    src: url(/static/fonts/Verdana.ttf); /* Путь к файлу со шрифтом */
+  }
+
   #app {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

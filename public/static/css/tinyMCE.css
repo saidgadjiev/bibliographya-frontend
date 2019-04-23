@@ -1,0 +1,11 @@
+blockquote {
+  padding: 16px 0 16px 24px !important;
+  font-size: 18px !important;
+  font-weight: 300 !important;
+}
+
+img {
+  max-width: 100% !important;
+  height: auto !important;
+  width: auto !important;
+}
