@@ -82,6 +82,10 @@ function scrollIt (destination, duration = 200, easing = 'linear', callback) {
   scroll()
 }
 
+function isValidEmail (email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
 function cleanPhone (phone) {
   let cleaned = phone
 
@@ -228,5 +232,6 @@ export default {
   isEquivalent,
   createToc,
   cleanPhone,
+  isValidEmail,
   scrollIt
 }

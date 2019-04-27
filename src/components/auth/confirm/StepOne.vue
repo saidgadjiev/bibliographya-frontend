@@ -45,9 +45,6 @@
           label="Код подтверждения"
           data-vv-name="code"
         ></v-text-field>
-      <div class="error--text" v-if="_isError(HttpStatus.PRECONDITION_FAILED)">
-        Неверный код
-      </div>
     </v-card-text>
     <v-card-actions style="justify-content: center; padding-left: 16px; padding-right: 16px">
       <v-layout row justify-center wrap>
@@ -100,7 +97,7 @@ export default {
     step: Number,
     phone: String,
     countryCode: String,
-    code: Number
+    code: [Number, String]
   },
   data () {
     return {
@@ -168,7 +165,10 @@ export default {
               },
               e => {
                 if (e.response.status === that.HttpStatus.PRECONDITION_FAILED) {
-                  that.setAlertError(e)
+                  that.errors.add({
+                    field: 'code',
+                    msg: 'Неверный код'
+                  })
                 }
               }
             ).finally(() => {

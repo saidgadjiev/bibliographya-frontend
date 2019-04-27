@@ -6,7 +6,7 @@
           <h3>Пожалуйста не покидайте эту страницу, иначе придется проходить процедуру регистрации заново.</h3>
         </div>
         <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
-          <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Подтверждение телефона</v-stepper-step>
+          <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Подтверждение номера телефона</v-stepper-step>
 
           <v-divider></v-divider>
 
@@ -14,7 +14,7 @@
         </v-stepper-header>
 
         <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">
-          Подтверждение телефона
+          Подтверждение номера телефона
         </v-stepper-step>
         <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
           <step-one :step.sync="step" :code.sync="confirmForm.code" :phone.sync="confirmForm.phone"/>
@@ -46,8 +46,6 @@
 import request from '../mixins/request'
 import alert from '../mixins/alert'
 import StepOne from '../components/auth/confirm/StepOne'
-import { REQUEST } from '../config'
-import emailService from '../services/verification-service'
 import StepThree from '../components/auth/confirm/StepThreeConfirmSignUp'
 
 export default {
@@ -61,27 +59,6 @@ export default {
         phone: '',
         code: ''
       }
-    }
-  },
-  methods: {
-    verify () {
-      let that = this
-
-      that.setRequest(REQUEST.VERIFY)
-
-      emailService.verify(this.confirmForm.phone, null, this.confirmForm.code)
-        .then(
-          () => {
-            that.step = 3
-          },
-          e => {
-            if (e.response.status === that.HttpStatus.PRECONDITION_FAILED) {
-              that.setAlertError(e)
-            }
-          }
-        ).finally(() => {
-          that.clearRequest()
-        })
     }
   }
 }

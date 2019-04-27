@@ -43,8 +43,6 @@ export default {
     return {
       showPassword: false,
       confirmForm: {
-        phone: '',
-        code: '',
         password: ''
       }
     }
@@ -69,7 +67,7 @@ export default {
 
       that.$validator.validate('password').then(result => {
         if (result) {
-          that.confirmForm.phone = that.phone
+          that.confirmForm.verificationKey = that.phone
           that.confirmForm.code = that.code
           this.$store.dispatch(CONFIRM_SIGN_UP, this.confirmForm)
             .then(
@@ -82,6 +80,7 @@ export default {
                     showCloseButton: true
                   })
                 }
+                that.$router.push('/')
               },
               e => {
                 if (e.response.status === this.HttpStatus.BAD_REQUEST) {
@@ -92,9 +91,7 @@ export default {
                   })
                 }
               }
-            ).finally(() => {
-              that.$router.push('/')
-            })
+            )
         }
       })
     }

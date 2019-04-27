@@ -3,19 +3,31 @@
     <v-card-title primary-title style="justify-content: center" v-if="mode === 'auth'">
       <h3 class="headline font-weight-bold mb-0">Вход</h3>
     </v-card-title>
-    <v-card-text v-if="_isError(HttpStatus.UNAUTHORIZED)">
-      <strong class="error--text">
-        Не удается войти. Пожалуйста, проверьте провильность введенных данных.
+    <v-card-text
+      v-if="_isError(HttpStatus.UNAUTHORIZED) || _isError(HttpStatus.BAD_REQUEST)"
+      style="background-color: #FFCDD2"
+      class="font-weight-regular"
+    >
+      <strong class="d-block">
+        Не удается войти.
       </strong>
+      <span class="d-block">
+        Пожалуйста, проверьте правильность написания <strong>логина</strong> и <strong>пароля</strong>.
+      </span>
+      <ul>
+        <li>
+          Введите номер телефона в следующем формате: <strong>79030000007</strong>.
+        </li>
+      </ul>
     </v-card-text>
     <v-card-text>
       <v-form>
         <v-text-field
           v-validate="'required'"
-          :error-messages="errors.collect('email')"
-          v-model="signInForm.email"
-          name="email"
-          label="Email"
+          :error-messages="errors.collect('login')"
+          v-model="signInForm.verificationKey"
+          name="login"
+          label="Email или телефон"
           type="text"
         ></v-text-field>
         <v-text-field
@@ -70,11 +82,14 @@ import { SIGN_IN } from '../../store/action-types'
 export default {
   name: 'SignIn',
   mixins: [alert, request],
+  $_veeValidate: {
+    validator: 'new'
+  },
   data () {
     return {
       showPassword: false,
       signInForm: {
-        email: '',
+        verificationKey: '',
         password: ''
       }
     }
@@ -93,8 +108,8 @@ export default {
   created () {
     this.$validator.localize('ru', {
       custom: {
-        username: {
-          required: () => 'Введите почту'
+        login: {
+          required: () => 'Введите email или телефон'
         },
         password: {
           required: () => 'Введите пароль'
