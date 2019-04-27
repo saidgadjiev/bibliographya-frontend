@@ -3,13 +3,6 @@
     <v-card-text>
       <v-form>
         <v-text-field
-          v-model="email"
-          disabled
-          label="Почта"
-          type="text"
-          name="email"
-        ></v-text-field>
-        <v-text-field
           v-validate="'required|min:6'"
           :error-messages="errors.collect('password')"
           :append-icon="showPassword ? 'mdi-lock-open-outline' : 'mdi-lock-outline'"
@@ -50,14 +43,14 @@ export default {
     return {
       showPassword: false,
       confirmForm: {
-        email: '',
+        phone: '',
         code: '',
         password: ''
       }
     }
   },
   props: {
-    email: String,
+    phone: String,
     code: String
   },
   created () {
@@ -76,7 +69,7 @@ export default {
 
       that.$validator.validate('password').then(result => {
         if (result) {
-          that.confirmForm.email = that.email
+          that.confirmForm.phone = that.phone
           that.confirmForm.code = that.code
           this.$store.dispatch(CONFIRM_SIGN_UP, this.confirmForm)
             .then(

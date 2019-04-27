@@ -22,7 +22,7 @@
         color="primary"
         :loading="_isRequest(Request.RESTORE_PASSWORD)"
         :disabled="_isRequest(Request.RESTORE_PASSWORD)"
-        @click="restorePassword"
+        @click="restorePasswordStart"
       >
         Получить код
       </v-btn>
@@ -54,14 +54,14 @@ export default {
     })
   },
   methods: {
-    restorePassword: function () {
+    restorePasswordStart: function () {
       let that = this
 
       this.$validator.validate('email').then(result => {
         if (result) {
           that.setRequest(REQUEST.RESTORE_PASSWORD)
 
-          settingsService.restorePassword(that.email)
+          settingsService.restorePasswordStart(that.email)
             .then(
               () => {
                 that.$emit('update:step', 2)

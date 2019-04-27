@@ -59,7 +59,7 @@
 import alert from '../../mixins/alert'
 import request from '../../mixins/request'
 import { REQUEST } from '../../config'
-import emailService from '../../services/email-service'
+import emailService from '../../services/verification-service'
 
 export default {
   name: 'ConfirmCode',

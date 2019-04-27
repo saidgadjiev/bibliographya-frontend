@@ -21,7 +21,7 @@
         class="white--text"
         :loading="_isRequest(Request.CHANGE_EMAIL)"
         :disabled="_isRequest(Request.CHANGE_EMAIL)"
-        @click="changeEmail"
+        @click="saveEmailStart"
       >
         Изменить
       </v-btn>
@@ -62,14 +62,14 @@ export default {
     })
   },
   methods: {
-    changeEmail () {
+    saveEmailStart () {
       let that = this
 
       this.$validator.validate('email').then(result => {
         if (result) {
           that.setRequest(this.Request.CHANGE_EMAIL)
 
-          settingsService.changeEmail(this.email)
+          settingsService.saveEmailStart(this.email)
             .then(
               () => {
                 that.$emit('update:step', 2)

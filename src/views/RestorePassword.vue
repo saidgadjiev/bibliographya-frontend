@@ -62,7 +62,7 @@
 import alert from '../mixins/alert'
 import request from '../mixins/request'
 import { REQUEST } from '../config'
-import emailService from '../services/email-service'
+import emailService from '../services/verification-service'
 import ConfirmCode from '../components/auth/ConfirmCode'
 import StepOne from '../components/auth/restore/password/StepOne'
 import StepThree from '../components/auth/restore/password/StepThree'

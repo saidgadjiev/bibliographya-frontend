@@ -46,7 +46,7 @@
           :code.sync="saveEmailForm.code"
           :request="Request.SAVE_EMAIL"
           label="Код подтверждения отправлен вам на почту."
-          :confirm="saveEmail"
+          :confirm="saveEmailFinish"
         ></confirm-code>
       </v-stepper-content>
     </v-stepper-items>
@@ -100,11 +100,11 @@ export default {
       this.saveEmailForm.email = ''
       this.saveEmailForm.code = ''
     },
-    saveEmail () {
+    saveEmailFinish () {
       let that = this
 
       that.setRequest(this.Request.SAVE_EMAIL)
-      settingsService.saveEmail(that.saveEmailForm)
+      settingsService.saveEmailFinish(that.saveEmailForm)
         .then(
           () => {
             that.$swal.fire({

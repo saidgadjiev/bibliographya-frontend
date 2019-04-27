@@ -82,6 +82,18 @@ function scrollIt (destination, duration = 200, easing = 'linear', callback) {
   scroll()
 }
 
+function cleanPhone (phone) {
+  let cleaned = phone
+
+  if (cleaned.startsWith('+')) {
+    cleaned = cleaned.substring(1)
+  }
+
+  cleaned = cleaned.split(' ').join('')
+
+  return cleaned
+}
+
 function getNTreeLevels (tree, n) {
   let result = []
   let level = 0
@@ -215,5 +227,6 @@ export default {
   arrDiff,
   isEquivalent,
   createToc,
+  cleanPhone,
   scrollIt
 }

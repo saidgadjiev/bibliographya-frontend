@@ -29,7 +29,7 @@
         class="white--text"
         :loading="_isRequest(Request.CHANGE_PASSWORD)"
         :disabled="_isRequest(Request.CHANGE_PASSWORD)"
-        @click="changePassword"
+        @click="restorePasswordFinish"
       >
         Сохранить
       </v-btn>
@@ -72,7 +72,7 @@ export default {
     })
   },
   methods: {
-    changePassword () {
+    restorePasswordFinish () {
       let that = this
 
       this.$validator.validate('password').then(result => {
@@ -81,7 +81,7 @@ export default {
 
           that.restoreForm.email = that.email
           that.restoreForm.code = that.code
-          settingsService.changePassword(that.restoreForm)
+          settingsService.restorePasswordFinish(that.restoreForm)
             .then(
               () => {
                 that.$swal.fire({

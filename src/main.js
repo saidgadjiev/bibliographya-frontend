@@ -14,12 +14,13 @@ import VueYandexMetrika from 'vue-yandex-metrika'
 import { METRIKA_ID } from './config'
 import { socialAutheticator } from './auth/auth'
 import Meta from 'vue-meta'
-import Vac from 'vue-awesome-countdown'
+import VueCountdown from '@chenfengyuan/vue-countdown'
 
 import store from './store/store'
 
 import 'vuetify/src/stylus/app.styl'
 import '@mdi/font/css/materialdesignicons.min.css'
+import 'vue-tel-input/dist/vue-tel-input.css'
 import { INTERNET_ERROR, SERVER_ERROR } from './messages'
 
 moment.tz.setDefault('Europe/Moscow')
@@ -29,7 +30,7 @@ Vue.use(VueMoment, {
   moment
 })
 
-Vue.use(Vac)
+Vue.component(VueCountdown.name, VueCountdown)
 
 Vue.use(Meta, {
   keyName: 'metaInfo', // the component option name that vue-meta looks for meta info on.

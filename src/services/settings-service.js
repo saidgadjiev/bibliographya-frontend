@@ -5,11 +5,11 @@ const axios = require('axios')
 export default {
   getEmailSettings,
   getGeneralSettings,
-  restorePassword,
+  restorePasswordStart,
   savePassword,
-  changeEmail,
-  saveEmail,
-  changePassword
+  saveEmailStart,
+  saveEmailFinish,
+  restorePasswordFinish
 }
 
 function getEmailSettings () {
@@ -20,22 +20,38 @@ function getGeneralSettings () {
   return axios.get(getRestUrl('settings/general'))
 }
 
-function restorePassword (email) {
-  return axios.post(getRestUrl('settings/restore-password/start') + '?email=' + email)
+function restorePasswordStart (phone, email) {
+  let query = '?'
+
+  if (phone) {
+    query += 'verificationKey=' + phone
+  } else {
+    query += 'verificationKey=' + email
+  }
+
+  return axios.post(getRestUrl('settings/restore-password/start') + query)
+}
+
+function restorePasswordFinish (restoreForm) {
+  return axios.post(getRestUrl('settings/restore-password/finish'), restoreForm)
 }
 
 function savePassword (passwordForm) {
   return axios.post(getRestUrl('settings/save-password'), passwordForm)
 }
 
-function changeEmail (email) {
-  return axios.post(getRestUrl('settings/save-email/start') + '?email=' + email)
+function saveEmailStart (phone, email) {
+  let query = '?'
+
+  if (phone) {
+    query += 'verificationKey=' + phone
+  } else {
+    query += 'verificationKey=' + email
+  }
+
+  return axios.post(getRestUrl('settings/save-email/start') + query)
 }
 
-function saveEmail (emailForm) {
+function saveEmailFinish (emailForm) {
   return axios.post(getRestUrl('settings/save-email/finish'), emailForm)
-}
-
-function changePassword (restoreForm) {
-  return axios.post(getRestUrl('settings/restore-password/finish'), restoreForm)
 }
