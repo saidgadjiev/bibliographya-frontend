@@ -27,7 +27,7 @@
           :error-messages="errors.collect('login')"
           v-model="signInForm.verificationKey"
           name="login"
-          label="Email или телефон"
+          label="Email или номер телефона"
           type="text"
         ></v-text-field>
         <v-text-field
