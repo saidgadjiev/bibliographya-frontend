@@ -47,7 +47,11 @@ function auth (provider) {
 }
 
 function processRequest (request) {
-  request.headers.common[TOKEN_NAME] = store.getters.getToken
+  let token = store.getters.getToken
+
+  if (token) {
+    request.headers.common[TOKEN_NAME] = store.getters.getToken
+  }
 }
 
 export default {
