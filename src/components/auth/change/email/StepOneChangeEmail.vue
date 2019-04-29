@@ -1,15 +1,15 @@
 <template>
   <v-card>
     <v-card-text>
-      <span>Ваша текущая почта <strong>{{ currentEmail }}</strong>.</span>
+      <span v-if="currentEmail">Ваша текущая почта <strong>{{ currentEmail }}</strong>.</span>
       <v-form>
         <v-text-field
           class="mt-2"
           v-validate="'required|email'"
-          v-model="_email"
+          v-model="email"
           :error-messages="errors.collect('email')"
           name="email"
-          label="Новая почта"
+          label="Электронная почта"
           type="email"
           data-vv-name="email"
         ></v-text-field>
@@ -37,19 +37,13 @@ import settingsService from '../../../../services/settings-service'
 export default {
   name: 'StepOneChangeEmail',
   mixins: [alert, request],
-  props: {
-    email: String,
-    currentEmail: String
-  },
-  computed: {
-    _email: {
-      get () {
-        return this.email
-      },
-      set (val) {
-        this.$emit('update:email', val)
-      }
+  data () {
+    return {
+      email: ''
     }
+  },
+  props: {
+    currentEmail: String
   },
   created () {
     this.$validator.localize('ru', {
@@ -71,7 +65,8 @@ export default {
 
           settingsService.saveEmailStart(this.email)
             .then(
-              () => {
+              response => {
+                that.$emit('save-start', response.data)
                 that.$emit('update:step', 2)
               }
             )

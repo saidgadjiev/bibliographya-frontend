@@ -15,17 +15,18 @@
     <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">Восстановление</v-stepper-step>
 
     <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
-      <step-one :step.sync="step" :email.sync="restoreForm.email"/>
+      <step-one :step.sync="step" :verification-key.sync="restoreForm.verificationKey" :time.sync="time"/>
     </v-stepper-content>
 
     <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">Подтверждение</v-stepper-step>
 
     <v-stepper-content step="2" v-if="$vuetify.breakpoint.smAndDown">
       <confirm-code
-        :email="restoreForm.email"
+        :verification-key="restoreForm.verificationKey"
+        :time="time"
         :request="Request.VERIFY"
         :code.sync="restoreForm.code"
-        label="Код подтверждения отправлен вам на почту."
+        label="Код подтверждения отправлен вам по СМС."
         :confirm="verify"
       />
     </v-stepper-content>
@@ -33,26 +34,27 @@
     <v-stepper-step complete-icon="fas fa-check" step="3" v-if="$vuetify.breakpoint.smAndDown">Новый пароль</v-stepper-step>
 
     <v-stepper-content step="3" v-if="$vuetify.breakpoint.smAndDown">
-      <step-three :email="restoreForm.email" :code="restoreForm.code"/>
+      <step-three :verification-key="restoreForm.verificationKey" :code="restoreForm.code"/>
     </v-stepper-content>
 
     <v-stepper-items v-if="$vuetify.breakpoint.mdAndUp">
       <v-stepper-content step="1">
-        <step-one :step.sync="step" :email.sync="restoreForm.email"/>
+        <step-one :step.sync="step" @restore-start="restoreStart"/>
       </v-stepper-content>
 
       <v-stepper-content step="2">
         <confirm-code
-          :email="restoreForm.email"
           :request="Request.VERIFY"
+          :time="time"
           :code.sync="restoreForm.code"
-          label="Код подтверждения отправлен вам на почту."
+          :label="'Мы отправили вам на телефон <strong>' + authKey + '</strong> СМС с кодом подтверждения. Вся процедура бесплатна.'"
           :confirm="verify"
+          :step="step"
         />
       </v-stepper-content>
 
       <v-stepper-content step="3">
-        <step-three :email="restoreForm.email" :code="restoreForm.code"/>
+        <step-three :code="restoreForm.code"/>
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -74,8 +76,9 @@ export default {
   data () {
     return {
       step: 1,
+      time: 0,
+      authKey: '',
       restoreForm: {
-        email: '',
         code: '',
         password: ''
       }
@@ -85,7 +88,7 @@ export default {
     resetForm () {
       this.step = 1
       this.restoreForm.code = ''
-      this.restoreForm.email = ''
+      this.restoreForm.verificationKey = ''
       this.restoreForm.password = ''
     },
     verify () {
@@ -93,7 +96,7 @@ export default {
 
       that.setRequest(REQUEST.VERIFY)
 
-      emailService.verify(this.restoreForm.email, this.restoreForm.code)
+      emailService.verify(this.restoreForm.code)
         .then(
           () => {
             that.step = 3
@@ -106,11 +109,10 @@ export default {
         ).finally(() => {
           that.clearRequest()
         })
-    }
-  },
-  watch: {
-    'restoreForm.email' (newVal) {
-      this.clearAlert()
+    },
+    restoreStart (e) {
+      this.time = e.timer.time
+      this.authKey = e.authKey
     }
   }
 }

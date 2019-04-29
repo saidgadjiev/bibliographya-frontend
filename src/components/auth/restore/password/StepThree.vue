@@ -3,13 +3,6 @@
     <v-card-text>
       <v-form>
         <v-text-field
-          v-model="email"
-          disabled
-          label="Почта"
-          type="text"
-          name="email"
-        ></v-text-field>
-        <v-text-field
           v-validate="'required|min:6'"
           :error-messages="errors.collect('password')"
           :append-icon="showPassword ? 'mdi-lock-open-outline' : 'mdi-lock-outline'"
@@ -51,14 +44,12 @@ export default {
     return {
       showPassword: false,
       restoreForm: {
-        email: '',
         code: '',
         password: ''
       }
     }
   },
   props: {
-    email: String,
     code: String
   },
   created () {
@@ -79,7 +70,6 @@ export default {
         if (result) {
           that.setRequest(REQUEST.CHANGE_PASSWORD)
 
-          that.restoreForm.email = that.email
           that.restoreForm.code = that.code
           settingsService.restorePasswordFinish(that.restoreForm)
             .then(

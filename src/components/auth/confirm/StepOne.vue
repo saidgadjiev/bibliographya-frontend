@@ -61,11 +61,18 @@
           </v-btn>
         </v-flex>
         <v-flex shrink class=" pt-3">
-          <countdown v-if="counting" :time="time" :transform="transform" @end="handleCountdownEnd">
+          <countdown v-if="counting" :time="time" :transform="transform" @end="counting = false">
             <template slot-scope="props">
               <span class="font-weight-medium" style="color: #78909C;">Выслать код повторно через {{ props.minutes }} : {{ props.seconds }}</span>
             </template>
           </countdown>
+          <a
+            class="bib-a"
+            v-else-if="resendCode"
+            @click="confirmSignUpStart"
+          >
+            Отправить код повторно
+          </a>
           <a
             class="bib-a"
             v-else
@@ -109,6 +116,7 @@ export default {
       blured: false,
       counting: false,
       confirmCode: false,
+      resendCode: false,
       time: 0
     }
   },
@@ -148,9 +156,6 @@ export default {
 
       this.$emit('update:phone', utils.cleanPhone(e.formattedNumber))
     },
-    handleCountdownEnd () {
-      this.counting = false
-    },
     verify () {
       let that = this
 
@@ -158,7 +163,7 @@ export default {
         if (result) {
           that.setRequest(REQUEST.VERIFY)
 
-          verificationService.verify(utils.cleanPhone(this.phone), null, this.code)
+          verificationService.verify(this.code)
             .then(
               () => {
                 that.$emit('update:step', 2)
@@ -181,10 +186,20 @@ export default {
       this.setRequest(REQUEST.RESEND_CODE)
       let that = this
 
-      verificationService.resend(utils.cleanPhone(this.phone))
-        .finally(() => {
+      verificationService.resend()
+        .then(
+          response => {
+            if (response.data.time) {
+              that.startTimer(response.data.time)
+            }
+          }
+        ).finally(() => {
           that.clearRequest()
         })
+    },
+    startTimer (time) {
+      this.counting = true
+      this.time = time * 1000
     },
     confirmSignUpStart: function () {
       let that = this
@@ -197,9 +212,9 @@ export default {
           .then(
             response => {
               if (response.data.time) {
-                that.counting = true
                 that.confirmCode = true
-                that.time = response.data.time * 1000
+                that.resendCode = true
+                that.startTimer(response.data.time)
               }
             },
             e => {
@@ -207,9 +222,8 @@ export default {
                 that.setAlertError(e)
               } else if (e.response.status === that.HttpStatus.BAD_REQUEST) {
                 if (e.response.data.time) {
-                  that.counting = true
                   that.confirmCode = true
-                  that.time = e.response.data.time * 1000
+                  that.startTimer(e.response.data.time)
                 } else {
                   that.$swal.fire({
                     text: SERVER_ERROR,

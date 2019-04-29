@@ -1,5 +1,5 @@
 import authService from '../../services/auth-service'
-import { isMobilePlatform, REQUEST, TOKEN_NAME } from '../../config'
+import { REQUEST, TOKEN_NAME } from '../../config'
 import { REMOVE_CONFIRMATION, SET_CONFIRMATION, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS } from '../mutation-types'
 import {
   CANCEL_SIGN_UP,
@@ -59,22 +59,12 @@ const actions = {
       authService.signIn(signInForm)
         .then(
           signInResponse => {
-            if (isMobilePlatform()) {
-              let token = signInResponse.headers[TOKEN_NAME]
+            let token = signInResponse.headers[TOKEN_NAME]
 
-              if (token) {
-                commit(SIGN_IN_SUCCESS, {
-                  user: signInResponse.data,
-                  token: token
-                })
-              } else {
-                reject(new Error('Token is not present'))
-              }
-            } else {
-              commit(SIGN_IN_SUCCESS, {
-                user: signInResponse.data
-              })
-            }
+            commit(SIGN_IN_SUCCESS, {
+              user: signInResponse.data,
+              token: token
+            })
 
             resolve()
           },

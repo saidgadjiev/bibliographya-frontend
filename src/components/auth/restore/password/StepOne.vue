@@ -3,18 +3,16 @@
     <v-card-text>
       <v-form>
         <v-text-field
-          class="mt-2"
-          v-validate="'required|email'"
-          v-model="_email"
-          :error-messages="errors.collect('email')"
-          name="email"
-          label="Почта"
-          type="email"
-          data-vv-name="email"
+          v-validate="'required'"
+          :error-messages="errors.collect('login')"
+          v-model="login"
+          name="login"
+          label="Телефон или email"
+          type="text"
         ></v-text-field>
       </v-form>
       <div class="error--text word-break-all" v-if="_isError(HttpStatus.NOT_FOUND)">
-        Пользователя с таким email не найдено.
+        Пользователя с таким телефоном или email не найдено или отсуствует привязанный телефон.
       </div>
     </v-card-text>
     <v-card-actions style="justify-content: center">
@@ -24,7 +22,7 @@
         :disabled="_isRequest(Request.RESTORE_PASSWORD)"
         @click="restorePasswordStart"
       >
-        Получить код
+        Далее
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -39,16 +37,19 @@ import settingsService from '../../../../services/settings-service'
 export default {
   name: 'StepOne',
   mixins: [alert, request],
+  data () {
+    return {
+      login: ''
+    }
+  },
   props: {
-    step: Number,
-    email: String
+    step: Number
   },
   created () {
     this.$validator.localize('ru', {
       custom: {
-        email: {
-          required: () => 'Введите почту',
-          email: () => 'Введите корректную почту'
+        login: {
+          required: () => 'Введите телефон или email'
         }
       }
     })
@@ -57,13 +58,14 @@ export default {
     restorePasswordStart: function () {
       let that = this
 
-      this.$validator.validate('email').then(result => {
+      this.$validator.validate('login').then(result => {
         if (result) {
           that.setRequest(REQUEST.RESTORE_PASSWORD)
 
-          settingsService.restorePasswordStart(that.email)
+          settingsService.restorePasswordStart(that.login)
             .then(
-              () => {
+              response => {
+                that.$emit('restore-start', response.data)
                 that.$emit('update:step', 2)
               },
               e => {
@@ -76,16 +78,6 @@ export default {
             })
         }
       })
-    }
-  },
-  computed: {
-    _email: {
-      get () {
-        return this.email
-      },
-      set (val) {
-        this.$emit('update:email', val)
-      }
     }
   }
 }

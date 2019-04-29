@@ -27,7 +27,7 @@
           :error-messages="errors.collect('login')"
           v-model="signInForm.verificationKey"
           name="login"
-          label="Email или номер телефона"
+          label="Телефон или email"
           type="text"
         ></v-text-field>
         <v-text-field
@@ -109,7 +109,7 @@ export default {
     this.$validator.localize('ru', {
       custom: {
         login: {
-          required: () => 'Введите email или телефон'
+          required: () => 'Введите телефона или email'
         },
         password: {
           required: () => 'Введите пароль'

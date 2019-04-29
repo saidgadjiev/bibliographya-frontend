@@ -45,31 +45,17 @@
           </v-btn>
         </v-card-actions>
         <v-divider></v-divider>
-        <v-card-text class="pb-0">
-          <div class="error--text word-break-all" v-if="!settings.emailVerified">
-            Кто то другой привязал вашу почту к своей странице. Подтвердите пожалуйста почту или вход на страницу будет
-            утерян.
-            <router-link to="/settings/email" class="bib-a">
-              <strong>Подтвердить</strong>
-            </router-link>
-          </div>
-          <v-text-field
-            :value="settings.email"
-            disabled
-            label="Почта"
-            type="text"
-            name="email"
-          ></v-text-field>
+        <v-card-text style="display: flex; justify-content: space-between">
+          <span>Электронная почта</span>
+          <span>{{ settings.email }}</span>
+          <router-link class="bib-a" to="/settings/email">Изменить</router-link>
         </v-card-text>
-        <v-card-actions class="pt-0" style="justify-content: center">
-          <v-btn
-            v-if="settings.emailVerified"
-            color="blue darken-3"
-            class="white--text"
-            @click="changeEmail">
-            Изменить
-          </v-btn>
-        </v-card-actions>
+        <v-divider></v-divider>
+          <v-card-text style="display: flex; justify-content: space-between">
+            <span>Номер телефона</span>
+            <span>{{ settings.phone }}</span>
+            <router-link class="bib-a" to="/settings/phone">Изменить</router-link>
+          </v-card-text>
       </v-card>
     </v-flex>
   </v-layout>
@@ -95,8 +81,10 @@ export default {
       showNewPassword: false,
       alertTypes: ['alert-success'],
       settings: {
+        phone: '',
+        phoneVerified: false,
         email: '',
-        emailVerified: true
+        emailVerified: false
       },
       savePasswordForm: {
         oldPassword: '',
@@ -125,8 +113,7 @@ export default {
       settingsService.getGeneralSettings()
         .then(
           response => {
-            that.settings.email = response.data.email
-            that.settings.emailVerified = response.data.emailVerified
+            that.settings = response.data
           }
         ).finally(() => {
           that.settingsLoading = false
@@ -160,9 +147,6 @@ export default {
             })
         }
       })
-    },
-    changeEmail () {
-      this.$router.push('/settings/email')
     }
   },
   watch: {

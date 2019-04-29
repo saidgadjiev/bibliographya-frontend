@@ -7,26 +7,10 @@ export default {
   resend
 }
 
-function verify (phone, email, code) {
-  let query = '?'
-
-  if (phone) {
-    query += 'verificationKey=' + phone
-  } else {
-    query += 'verificationKey=' + email
-  }
-
-  return axios.post(getRestUrl('verifications/verify') + query + '&code=' + code)
+function verify (code) {
+  return axios.post(getRestUrl('verifications/verify') + '?code=' + code)
 }
 
-function resend (phone, email) {
-  let query = '?'
-
-  if (phone) {
-    query += 'verificationKey=' + phone
-  } else {
-    query += 'verificationKey=' + email
-  }
-
-  return axios.post(getRestUrl('verifications/resend') + query)
+function resend () {
+  return axios.post(getRestUrl('verifications/resend'))
 }
