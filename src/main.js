@@ -14,6 +14,7 @@ import VueYandexMetrika from 'vue-yandex-metrika'
 import { METRIKA_ID, TOKEN_NAME } from './config'
 import Meta from 'vue-meta'
 import VueCountdown from '@chenfengyuan/vue-countdown'
+import { getUserToken } from './store/modules/user-module'
 
 import store from './store/store'
 
@@ -82,7 +83,7 @@ Vue.config.productionTip = false
 axios.defaults.withCredentials = true
 
 axios.interceptors.request.use(function (request) {
-  request.headers.common[TOKEN_NAME] = store.getters.getToken
+  request.headers.common[TOKEN_NAME] = getUserToken()
 
   return request
 }, function (err) {

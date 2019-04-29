@@ -25,11 +25,11 @@ export const CATEGORY_CHANGED = 'Категория изменена.'
 
 export const INTERNET_ERROR = 'Проверьте подключение к интернету.'
 
-export const PASSWORD_CHANGE_SUCCESS = 'Пароль успешно измене.'
+export const PASSWORD_CHANGE_SUCCESS = 'Пароль успешно изменен.'
 
 export const EMAIL_CHANGE_SUCCESS = 'Почта успешно изменена.'
 
-export const  PHONE_CHANGE_SUCCESS = 'Телефон успешно изменен.'
+export const PHONE_CHANGE_SUCCESS = 'Телефон успешно изменен.'
 
 export const EMAIL_VERIFY_SUCCESS = 'Почта успешно подтверждена.'
 

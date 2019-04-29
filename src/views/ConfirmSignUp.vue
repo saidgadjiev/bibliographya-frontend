@@ -6,7 +6,7 @@
           <h3>Пожалуйста не покидайте эту страницу, иначе придется проходить процедуру регистрации заново.</h3>
         </div>
         <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
-          <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Подтверждение номера телефона</v-stepper-step>
+          <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Подтверждение телефона</v-stepper-step>
 
           <v-divider></v-divider>
 
@@ -14,7 +14,7 @@
         </v-stepper-header>
 
         <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">
-          Подтверждение номера телефона
+          Подтверждение телефона
         </v-stepper-step>
         <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
           <step-one :step.sync="step" :code.sync="confirmForm.code" :phone.sync="confirmForm.phone"/>

@@ -82,9 +82,7 @@ export default {
       alertTypes: ['alert-success'],
       settings: {
         phone: '',
-        phoneVerified: false,
-        email: '',
-        emailVerified: false
+        email: ''
       },
       savePasswordForm: {
         oldPassword: '',

@@ -1,7 +1,7 @@
 <template>
   <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
     <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
-      <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Восстановление</v-stepper-step>
+      <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Восстановление доступа</v-stepper-step>
 
       <v-divider></v-divider>
 
@@ -12,29 +12,33 @@
       <v-stepper-step complete-icon="fas fa-check" step="3">Новый пароль</v-stepper-step>
     </v-stepper-header>
 
-    <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">Восстановление</v-stepper-step>
+    <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">
+      Восстановление доступа
+    </v-stepper-step>
 
     <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
-      <step-one :step.sync="step" :verification-key.sync="restoreForm.verificationKey" :time.sync="time"/>
+      <step-one :step.sync="step" @restore-start="restoreStart"/>
     </v-stepper-content>
 
-    <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">Подтверждение</v-stepper-step>
+    <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">
+      Подтверждение
+    </v-stepper-step>
 
     <v-stepper-content step="2" v-if="$vuetify.breakpoint.smAndDown">
       <confirm-code
-        :verification-key="restoreForm.verificationKey"
-        :time="time"
         :request="Request.VERIFY"
+        :time="time"
         :code.sync="restoreForm.code"
-        label="Код подтверждения отправлен вам по СМС."
+        :label="'Мы отправили вам на телефон <strong>' + authKey + '</strong> СМС с кодом подтверждения. Вся процедура бесплатна.'"
         :confirm="verify"
+        :step="step"
       />
     </v-stepper-content>
 
     <v-stepper-step complete-icon="fas fa-check" step="3" v-if="$vuetify.breakpoint.smAndDown">Новый пароль</v-stepper-step>
 
     <v-stepper-content step="3" v-if="$vuetify.breakpoint.smAndDown">
-      <step-three :verification-key="restoreForm.verificationKey" :code="restoreForm.code"/>
+      <step-three :code="restoreForm.code"/>
     </v-stepper-content>
 
     <v-stepper-items v-if="$vuetify.breakpoint.mdAndUp">

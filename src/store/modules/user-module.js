@@ -34,7 +34,7 @@ const mutations = {
       return authority.authority
     })
     if (payload.token) {
-      localStorage.setItem(TOKEN_NAME, payload.token)
+      setUserToken(payload.token)
     }
   },
   [SIGN_OUT_SUCCESS] (state) {
@@ -228,9 +228,6 @@ const getters = {
       return state.status
     }
   },
-  getToken: state => {
-    return localStorage.getItem(TOKEN_NAME)
-  },
   isConfirmation: state => {
     return state.confirmation
   },
@@ -283,6 +280,14 @@ const getters = {
 
     return isAuthorized
   }
+}
+
+export const getUserToken = function () {
+  return localStorage.getItem(TOKEN_NAME)
+}
+
+export const setUserToken = function (token) {
+  localStorage.setItem(TOKEN_NAME, token)
 }
 
 export default {
