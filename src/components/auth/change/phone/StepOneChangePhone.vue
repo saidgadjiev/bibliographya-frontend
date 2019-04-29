@@ -3,22 +3,17 @@
     <v-card-text>
       <span v-if="currentPhone">Ваш текущий номер телефона <strong>{{ currentPhone }}</strong>.</span>
       <v-form>
-        <vue-tel-input
+        <v-text-field
           class="mt-2"
-          :only-countries="['RU']"
-          disabled-fetching-country
-          disabled-formatting
-          placeholder=""
-          v-model="phoneResponse.phone"
-          @onValidate="onValidate"
-          @onInput="onValidate"
-          :max-len="10"
-          enabled-country-code
-          @onBlur="blured = true"
-        ></vue-tel-input>
-        <div class="error--text word-break-all" style="font-size: 12px" v-if="!phoneResponse.isValid && blured">
-          Введите корректный номер телефона
-        </div>
+          v-validate="'required'"
+          v-model="phone"
+          :error-messages="errors.collect('phone')"
+          name="phone"
+          label="Номер телефона"
+          placeholder="+79030000007"
+          type="phone"
+          data-vv-name="phone"
+        ></v-text-field>
       </v-form>
     </v-card-text>
     <v-card-actions style="justify-content: center">
@@ -39,12 +34,10 @@
 import alert from '../../../../mixins/alert'
 import request from '../../../../mixins/request'
 import settingsService from '../../../../services/settings-service'
-import VueTelInput from 'vue-tel-input'
 
 export default {
   name: 'StepOneChangeEmail',
   mixins: [alert, request],
-  components: { VueTelInput },
   data () {
     return {
       blured: false,
@@ -59,7 +52,7 @@ export default {
   created () {
     this.$validator.localize('ru', {
       custom: {
-        email: {
+        phone: {
           required: () => 'Введите номер телефона'
         }
       }
@@ -77,7 +70,7 @@ export default {
         if (result) {
           that.setRequest(this.Request.CHANGE_PHONE)
 
-          settingsService.saveEmailStart(this.phone)
+          settingsService.savePhoneStart(this.phone)
             .then(
               response => {
                 that.$emit('save-start', response.data)

@@ -9,6 +9,8 @@ export const UNPUBLISHED = 'Ваша биография снята с публи
 
 export const SERVER_ERROR = 'Произошла ошибка. Попробуйте повторить позже.'
 
+export const TOO_MANY_REQUESTS = 'Вы совершили слишком много одинаковых действий. Повторите попытку позже.'
+
 export const RESOURCE_NOT_FOUND = 'Ресурс не найден.'
 
 export const WELCOME = 'Опубликуйте биографию в разделе Моя биография, чтобы она отображалась в списке биографий.'
@@ -17,17 +19,19 @@ export const WELCOME_TITLE = 'Добро пожаловать!'
 
 export const BUG_CREATED = 'Ошибка создана. Наши разработчики приступят к ее исправлению в самое ближайшее время.'
 
-export const CATEGORY_CREATED = 'Категория создана'
+export const CATEGORY_CREATED = 'Категория создана.'
 
-export const CATEGORY_CHANGED = 'Категория изменена'
+export const CATEGORY_CHANGED = 'Категория изменена.'
 
 export const INTERNET_ERROR = 'Проверьте подключение к интернету.'
 
-export const PASSWORD_CHANGE_SUCCESS = 'Пароль успешно изменен.'
+export const PASSWORD_CHANGE_SUCCESS = 'Пароль успешно измене.'
 
-export const EMAIL_CHANGE_SUCCESS = 'Почта успешно изменена'
+export const EMAIL_CHANGE_SUCCESS = 'Почта успешно изменена.'
 
-export const EMAIL_VERIFY_SUCCESS = 'Почта успешно подтверждена'
+export const  PHONE_CHANGE_SUCCESS = 'Телефон успешно изменен.'
+
+export const EMAIL_VERIFY_SUCCESS = 'Почта успешно подтверждена.'
 
 export function getShareDescription (firstName, lastName, middleName) {
   let gender = 'androgynous'

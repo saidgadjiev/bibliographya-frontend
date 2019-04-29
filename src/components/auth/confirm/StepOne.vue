@@ -25,7 +25,7 @@
         style="font-size: 12px"
         @click="resetPhone"
       >
-      Указать другой номер
+        Указать другой номер
       </a>
       <div class="error--text word-break-all" style="font-size: 12px" v-if="!phoneResponse.isValid && blured">
         Введите корректный номер телефона
@@ -34,54 +34,47 @@
         Такой номер телефона уже занят выберите другой.&nbsp;<router-link class="bib-a" to="/restore">Забыли пароль?
       </router-link>
       </div>
-        <v-text-field
-          v-if="confirmCode"
-          class="pt-4"
-          v-validate="'required|digits:4'"
-          v-model="_code"
-          :error-messages="errors.collect('code')"
-          type="text"
-          name="code"
-          label="Код подтверждения"
-          data-vv-name="code"
-        ></v-text-field>
+      <v-text-field
+        v-if="confirmCode"
+        class="pt-4"
+        v-validate="'required|digits:4'"
+        v-model="_code"
+        :error-messages="errors.collect('code')"
+        type="text"
+        name="code"
+        label="Код подтверждения"
+        data-vv-name="code"
+      ></v-text-field>
     </v-card-text>
-    <v-card-actions style="justify-content: center; padding-left: 16px; padding-right: 16px">
-      <v-layout row justify-center wrap>
-        <v-flex xs12 v-if="confirmCode">
-          <v-btn
-            color="blue darken-3"
-            class="white--text"
-            block
-            small
-            :loading="_isRequest(Request.VERIFY)"
-            :disabled="_isRequest(Request.VERIFY)"
-            @click="verify">
-            Отправить код
-          </v-btn>
-        </v-flex>
-        <v-flex shrink class=" pt-3">
-          <countdown v-if="counting" :time="time" :transform="transform" @end="counting = false">
-            <template slot-scope="props">
-              <span class="font-weight-medium" style="color: #78909C;">Выслать код повторно через {{ props.minutes }} : {{ props.seconds }}</span>
-            </template>
-          </countdown>
-          <a
-            class="bib-a"
-            v-else-if="resendCode"
-            @click="confirmSignUpStart"
-          >
-            Отправить код повторно
-          </a>
-          <a
-            class="bib-a"
-            v-else
-            @click="confirmSignUpStart"
-          >
-            Получить код
-          </a>
-        </v-flex>
-      </v-layout>
+    <v-card-actions style="justify-content: center; flex-direction: column; padding-left: 16px; padding-right: 16px">
+      <v-btn
+        v-if="confirmCode"
+        color="blue darken-3 mb-3"
+        class="white--text"
+        :loading="_isRequest(Request.VERIFY)"
+        :disabled="_isRequest(Request.VERIFY)"
+        @click="verify">
+        Отправить код
+      </v-btn>
+      <countdown v-if="counting" :time="time" :transform="transform" @end="handleCountingEnd">
+        <template slot-scope="props">
+          <span class="font-weight-medium" style="color: #78909C;">Выслать код повторно через {{ props.minutes }} : {{ props.seconds }}</span>
+        </template>
+      </countdown>
+      <a
+        class="bib-a"
+        v-else-if="resendCode"
+        @click="resend"
+      >
+        Отправить код повторно
+      </a>
+      <a
+        class="bib-a"
+        v-else
+        @click="confirmSignUpStart"
+      >
+        Получить код
+      </a>
     </v-card-actions>
   </v-card>
 </template>
@@ -131,6 +124,9 @@ export default {
     })
   },
   methods: {
+    handleCountingEnd () {
+      this.counting = false
+    },
     resetPhone () {
       this.phoneResponse.number = ''
       this.phoneResponse.isValid = false
@@ -189,8 +185,8 @@ export default {
       verificationService.resend()
         .then(
           response => {
-            if (response.data.time) {
-              that.startTimer(response.data.time)
+            if (response.data.timer) {
+              that.startTimer(response.data.timer.time)
             }
           }
         ).finally(() => {
@@ -211,10 +207,10 @@ export default {
         authService.confirmSignUpStart(utils.cleanPhone(that.phone))
           .then(
             response => {
-              if (response.data.time) {
+              if (response.data.timer) {
                 that.confirmCode = true
                 that.resendCode = true
-                that.startTimer(response.data.time)
+                that.startTimer(response.data.timer.time)
               }
             },
             e => {

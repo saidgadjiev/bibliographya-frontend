@@ -19,28 +19,27 @@
         </div>
       </v-form>
     </v-card-text>
-    <v-card-actions  style="justify-content: center; flex-direction: column;">
-          <v-btn
-            color="blue darken-3 mb-3"
-            class="white--text"
-            small
-            :loading="_isRequest(request)"
-            :disabled="_isRequest(request)"
-            @click="doConfirm">
-            Отправить код
-          </v-btn>
-          <countdown v-if="counting" :time="timer" :transform="transform" @end="counting = false">
-            <template slot-scope="props">
-              <span class="font-weight-medium" style="color: #78909C;">Выслать код повторно через {{ props.minutes }} : {{ props.seconds }}</span>
-            </template>
-          </countdown>
-          <a
-            class="bib-a"
-            v-else
-            @click="resend"
-          >
-            Получить код повторно
-          </a>
+    <v-card-actions style="justify-content: center; flex-direction: column;">
+      <v-btn
+        color="blue darken-3 mb-3"
+        class="white--text"
+        :loading="_isRequest(request)"
+        :disabled="_isRequest(request)"
+        @click="doConfirm">
+        Отправить код
+      </v-btn>
+      <countdown v-if="counting" :time="timer" :transform="transform" @end="counting = false">
+        <template slot-scope="props">
+          <span class="font-weight-medium" style="color: #78909C;">Выслать код повторно через {{ props.minutes }} : {{ props.seconds }}</span>
+        </template>
+      </countdown>
+      <a
+        class="bib-a"
+        v-else
+        @click="resend"
+      >
+        Получить код повторно
+      </a>
     </v-card-actions>
   </v-card>
 </template>

@@ -58,7 +58,7 @@
 import alert from '../mixins/alert'
 import request from '../mixins/request'
 import settingsService from '../services/settings-service'
-import { EMAIL_CHANGE_SUCCESS } from '../messages'
+import { PHONE_CHANGE_SUCCESS } from '../messages'
 import ConfirmCode from '../components/auth/ConfirmCode'
 import StepOne from '../components/auth/change/phone/StepOneChangePhone'
 import ProgressCircular from '../components/progress/ProgressCircular'
@@ -112,7 +112,7 @@ export default {
         .then(
           () => {
             that.$swal.fire({
-              text: EMAIL_CHANGE_SUCCESS,
+              text: PHONE_CHANGE_SUCCESS,
               type: 'info',
               showCloseButton: true
             })

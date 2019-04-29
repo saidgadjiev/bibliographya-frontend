@@ -228,7 +228,7 @@ const getters = {
       return state.status
     }
   },
-  getToken: () => {
+  getToken: state => {
     return localStorage.getItem(TOKEN_NAME)
   },
   isConfirmation: state => {
