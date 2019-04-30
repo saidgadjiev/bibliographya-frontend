@@ -17,7 +17,7 @@
               name="oldPassword"
               label="Старый пароль"
             ></v-text-field>
-            <div class="error--text word-break-all" v-if="_isError(HttpStatus.BAD_REQUEST)">
+            <div class="error--text word-break-word" v-if="_isError(HttpStatus.BAD_REQUEST)">
               Старый пароль введен неверно.&nbsp;<router-link class="bib-a" to="/restore">Забыли пароль?
             </router-link>
             </div>
@@ -46,13 +46,13 @@
         </v-card-actions>
         <v-divider></v-divider>
         <v-card-text style="display: flex; justify-content: space-between">
-          <span>Электронная почта</span>
+          <span v-if="$vuetify.breakpoint.mdAndUp">Электронная почта</span>
           <span>{{ settings.email }}</span>
           <router-link class="bib-a" to="/settings/email">Изменить</router-link>
         </v-card-text>
         <v-divider></v-divider>
           <v-card-text style="display: flex; justify-content: space-between">
-            <span>Номер телефона</span>
+            <span v-if="$vuetify.breakpoint.mdAndUp">Номер телефона</span>
             <span>{{ settings.phone }}</span>
             <router-link class="bib-a" to="/settings/phone">Изменить</router-link>
           </v-card-text>

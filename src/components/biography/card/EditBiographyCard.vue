@@ -68,6 +68,7 @@
               v-model="biographyForm.bio"
               :media-url="_mediaUrl"
               :media-base-path="_mediaBasePath"
+              @save="doSave"
             ></tiny-editor>
           </v-flex>
           <v-flex xs12 v-if="conflict && biographyConflict">

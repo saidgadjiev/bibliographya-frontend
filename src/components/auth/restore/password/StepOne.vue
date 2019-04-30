@@ -1,5 +1,24 @@
 <template>
   <v-card>
+    <v-card-text
+      v-if="_isError(HttpStatus.NOT_FOUND) || _isError(HttpStatus.BAD_REQUEST)"
+      style="background-color: #FFCDD2"
+      class="font-weight-regular"
+    >
+      <strong class="d-block" v-if="_isError(HttpStatus.NOT_FOUND)">
+        Пользователя с таким телефоном или email не найдено или отсуствует привязанный телефон.
+      </strong>
+      <template v-else>
+      <span class="d-block">
+        Пожалуйста, проверьте правильность написания <strong>логина</strong>.
+      </span>
+      <ul>
+        <li>
+          Введите номер телефона в следующем формате: <strong>79030000007</strong>.
+        </li>
+      </ul>
+      </template>
+    </v-card-text>
     <v-card-text>
       <v-form>
         <v-text-field
@@ -11,9 +30,6 @@
           type="text"
         ></v-text-field>
       </v-form>
-      <div class="error--text word-break-all" v-if="_isError(HttpStatus.NOT_FOUND)">
-        Пользователя с таким телефоном или email не найдено или отсуствует привязанный телефон.
-      </div>
     </v-card-text>
     <v-card-actions style="justify-content: center">
       <v-btn
@@ -69,7 +85,7 @@ export default {
                 that.$emit('update:step', 2)
               },
               e => {
-                if (e.response.status === that.HttpStatus.NOT_FOUND) {
+                if (e.response.status === that.HttpStatus.NOT_FOUND || e.response.status === that.HttpStatus.BAD_REQUEST) {
                   that.setAlertError(e)
                 }
               }
@@ -78,6 +94,11 @@ export default {
             })
         }
       })
+    }
+  },
+  watch: {
+    'login' (val) {
+      this.clearAlert()
     }
   }
 }

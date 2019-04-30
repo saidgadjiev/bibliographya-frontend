@@ -124,7 +124,8 @@ export default {
       let options = {
         mobile: {
           toolbar: [ 'undo', 'bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist', 'fontsizeselect',
-            'forecolor', 'styleselect', 'styleselect' ]
+            'forecolor', 'styleselect', 'styleselect' ],
+          plugins: ['autosave', 'lists', 'autolink', 'image']
         },
         selector: '#' + this.id,
         skin: false,
@@ -137,7 +138,7 @@ export default {
         language_url: '/static/tinymce/langs/ru.js',
         branding: false,
         readonly: this.readonly ? 1 : 0,
-        toolbar1: 'formatselect | bold italic  strikethrough  forecolor backcolor image ' +
+        toolbar1: 'save | formatselect | bold italic  strikethrough  forecolor backcolor image ' +
             '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
             '| removeformat fontname fontsize', // this.$el.childNodes[0].setAttribute('test', 't')
         plugins: ['advlist autoresize autolink lists link image imagetools charmap print preview hr anchor pagebreak',
@@ -155,6 +156,9 @@ export default {
             that.$emit('input', that.content)
             that.$emit('init', editor)
           })
+        },
+        save_onsavecallback: function () {
+          that.$emit('save')
         },
         images_upload_handler: function (blobInfo, success, failure) {
           let formData = new FormData()

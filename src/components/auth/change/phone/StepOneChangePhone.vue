@@ -24,7 +24,7 @@
         :disabled="_isRequest(Request.CHANGE_PHONE)"
         @click="savePhoneStart"
       >
-        Изменить
+        Сохранить
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -41,9 +41,7 @@ export default {
   data () {
     return {
       blured: false,
-      phoneResponse: {
-        phone: ''
-      }
+      phone: ''
     }
   },
   props: {
@@ -59,10 +57,6 @@ export default {
     })
   },
   methods: {
-    onValidate (e) {
-      this.phoneResponse.country = e.country.dialCode
-      this.phoneResponse.isValid = e.isValid
-    },
     savePhoneStart () {
       let that = this
 

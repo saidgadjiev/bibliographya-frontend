@@ -8,6 +8,10 @@ img {
   max-width: 100% !important;
 }
 
+#biography_editor_ifr {
+  height: 100% !important;
+}
+
 .biography-content {
   font-family: 'Verdana' !important;
 }

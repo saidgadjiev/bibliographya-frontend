@@ -27,10 +27,10 @@
       >
         Указать другой номер
       </a>
-      <div class="error--text word-break-all" style="font-size: 12px" v-if="!phoneResponse.isValid && blured">
+      <div class="error--text word-break-word" style="font-size: 12px" v-if="!phoneResponse.isValid && blured">
         Введите корректный номер телефона
       </div>
-      <div class="error--text word-break-all" v-else-if="_isError(HttpStatus.CONFLICT)">
+      <div class="error--text word-break-word" v-else-if="_isError(HttpStatus.CONFLICT)">
         Такой номер телефона уже занят выберите другой.&nbsp;<router-link class="bib-a" to="/restore">Забыли пароль?
       </router-link>
       </div>

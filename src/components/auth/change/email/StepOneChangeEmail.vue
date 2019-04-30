@@ -23,7 +23,7 @@
         :disabled="_isRequest(Request.CHANGE_EMAIL)"
         @click="saveEmailStart"
       >
-        Изменить
+        Сохранить
       </v-btn>
     </v-card-actions>
   </v-card>
