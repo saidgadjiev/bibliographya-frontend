@@ -4,6 +4,13 @@
     <v-flex xs12 v-else>
       <alert-message :types="alertTypes"/>
       <v-card>
+        <v-card-title v-if="!settings.email && !settings.phone">
+          <h4>Внимание!</h4>
+          <span class="d-block">
+            У вас ни телефон ни электронная почта не привязаны к аккаунту. Вы потеряете доступ к аккаунту.
+            Крайне рекомендуем привязать либо телефон, либо электронную почту, если вы хотите сохранить доступ к аккаунту.
+          </span>
+        </v-card-title>
         <v-card-text class="pb-0">
           <v-form>
             <v-text-field
