@@ -129,11 +129,11 @@ export default {
         plugins = ['advlist autoresize spellchecker autolink lists link image imagetools charmap print preview hr anchor pagebreak',
           'searchreplace wordcount visualblocks visualchars code fullscreen',
           'insertdatetime nonbreaking save table directionality',
-          'template textpattern help hr codesample'
+          'template textpattern help hr codesample autosave'
         ]
         mobileToolbar = [ 'undo', 'redo', 'bold', 'italic', 'underline', 'link', 'unlink', 'image', 'bullist', 'numlist', 'fontsizeselect',
           'forecolor', 'styleselect', 'removeformat' ]
-        toolbar = 'spellchecker | formatselect | bold italic  strikethrough  forecolor backcolor image ' +
+        toolbar = 'save | spellchecker | formatselect | bold italic  strikethrough  forecolor backcolor image ' +
           '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
           '| removeformat fontname fontsize'
         removeMenuItems = 'code visualblocks visualchars visualaid template media codesample charmap pagebreak nonbreaking anchor toc codeformat'
@@ -141,11 +141,11 @@ export default {
         plugins = ['advlist autoresize spellchecker autolink lists link charmap print preview hr anchor pagebreak',
           'searchreplace wordcount visualblocks visualchars code fullscreen',
           'insertdatetime media nonbreaking save table directionality',
-          'template textpattern help hr codesample'
+          'template textpattern help hr codesample autosave'
         ]
         mobileToolbar = [ 'undo', 'redo', 'bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist', 'fontsizeselect',
           'forecolor', 'styleselect', 'removeformat' ]
-        toolbar = 'spellchecker | formatselect | bold italic  strikethrough  forecolor backcolor ' +
+        toolbar = 'save | spellchecker | formatselect | bold italic  strikethrough  forecolor backcolor ' +
           '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
           '| removeformat fontname fontsize'
         removeMenuItems = 'code visualblocks visualchars visualaid image media template codesample charmap pagebreak nonbreaking anchor toc codeformat'
