@@ -30,11 +30,7 @@
       </v-btn>
       <countdown v-if="counting" :time="timer" :transform="transform" @end="counting = false">
         <template slot-scope="props">
-          <span v-if="$vuetify.breakpoint.mdAndUp" class="font-weight-medium" style="color: #78909C;">Выслать код повторно через {{ props.minutes }} : {{ props.seconds }}</span>
-          <v-layout v-else column justify-center align-center>
-            <span class="font-weight-medium" style="color: #78909C;">Выслать код повторно через</span>
-            <span class="font-weight-medium" style="color: #78909C;">{{ props.minutes }} : {{ props.seconds }}</span>
-          </v-layout>
+          <span class="font-weight-medium" style="color: #78909C;">Выслать код повторно через {{ props.minutes }} : {{ props.seconds }}</span>
         </template>
       </countdown>
       <a

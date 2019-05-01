@@ -1,40 +1,18 @@
 <template>
-  <v-stepper v-model="step" :vertical="$vuetify.breakpoint.smAndDown">
-    <v-stepper-header v-if="$vuetify.breakpoint.mdAndUp">
-      <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">Новый телефон</v-stepper-step>
+  <v-stepper v-model="step">
+    <v-stepper-header>
+      <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">
+        <span v-if="$vuetify.breakpoint.mdAndUp">Новый телефон</span>
+      </v-stepper-step>
 
       <v-divider></v-divider>
 
-      <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2">Подтверждение</v-stepper-step>
+      <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2">
+        <span v-if="$vuetify.breakpoint.mdAndUp">Подтверждение</span>
+      </v-stepper-step>
     </v-stepper-header>
 
-    <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1" v-if="$vuetify.breakpoint.smAndDown">
-      Новый телефон
-    </v-stepper-step>
-
-    <v-stepper-content step="1" v-if="$vuetify.breakpoint.smAndDown">
-      <v-layout row justify-center align-center v-if="_isRequest(Request.LOADING_SETTINGS)">
-        <progress-circular/>
-      </v-layout>
-      <step-one v-else :step.sync="step" :current-phone="currentPhone" @save-start="saveStart"/>
-    </v-stepper-content>
-
-    <v-stepper-step complete-icon="fas fa-check" :complete="step > 2" step="2" v-if="$vuetify.breakpoint.smAndDown">
-      Подтверждение
-    </v-stepper-step>
-
-    <v-stepper-content step="2" v-if="$vuetify.breakpoint.smAndDown">
-      <confirm-code
-        :code.sync="savePhoneForm.code"
-        :request="Request.SAVE_PHONE"
-        :label="'Мы отправили вам на телефон <strong>' + authKey + '</strong> СМС с кодом подтверждения. Вся процедура бесплатна.'"
-        :confirm="savePhoneFinish"
-        :time="time"
-        :step="step"
-      ></confirm-code>
-    </v-stepper-content>
-
-    <v-stepper-items v-if="$vuetify.breakpoint.mdAndUp">
+    <v-stepper-items>
       <v-stepper-content step="1">
         <v-layout row justify-center align-center v-if="_isRequest(Request.LOADING_SETTINGS)">
             <progress-circular/>

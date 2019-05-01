@@ -53,13 +53,13 @@
         </v-card-actions>
         <v-divider></v-divider>
         <v-card-text style="display: flex; justify-content: space-between">
-          <span v-if="$vuetify.breakpoint.mdAndUp">Электронная почта</span>
+          <span>Почта</span>
           <span>{{ settings.email }}</span>
           <router-link class="bib-a" to="/settings/email">Изменить</router-link>
         </v-card-text>
         <v-divider></v-divider>
           <v-card-text style="display: flex; justify-content: space-between">
-            <span v-if="$vuetify.breakpoint.mdAndUp">Номер телефона</span>
+            <span>Телефон</span>
             <span>{{ settings.phone }}</span>
             <router-link class="bib-a" to="/settings/phone">Изменить</router-link>
           </v-card-text>

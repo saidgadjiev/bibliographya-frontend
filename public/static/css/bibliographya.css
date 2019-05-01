@@ -8,6 +8,21 @@ img {
   max-width: 100% !important;
 }
 
+.v-stepper__content .v-card__text {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.v-stepper__content .v-card__actions {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.v-stepper__content .v-card__title {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
 #biography_editor_ifr {
   height: 100% !important;
 }
