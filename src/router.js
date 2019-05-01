@@ -27,6 +27,7 @@ const UsersList = () => import('./views/UsersList')
 const Profile = () => import('./views/Profile')
 const ProfileSettings = () => import('./views/Settings')
 const ChangeEmail = () => import('./views/ChangeEmail')
+const ChangePhone = () => import('./views/ChangePhone')
 const About = () => import('./views/About')
 const CategoriesList = () => import('./views/CategoriesList')
 const SignIn = () => import('./views/SignInView')
@@ -118,6 +119,16 @@ let router = new Router({
       path: '/settings/email',
       name: 'changeEmail',
       component: ChangeEmail,
+      beforeEnter: requireAuth,
+      meta: {
+        loginRequired: true,
+        roles: [ROLES.ROLE_USER]
+      }
+    },
+    {
+      path: '/settings/phone',
+      name: 'changePhone',
+      component: ChangePhone,
       beforeEnter: requireAuth,
       meta: {
         loginRequired: true,

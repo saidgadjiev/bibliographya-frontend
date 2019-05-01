@@ -3,13 +3,6 @@
     <v-card-text>
       <v-form>
         <v-text-field
-          v-model="email"
-          disabled
-          label="Почта"
-          type="text"
-          name="email"
-        ></v-text-field>
-        <v-text-field
           v-validate="'required|min:6'"
           :error-messages="errors.collect('password')"
           :append-icon="showPassword ? 'mdi-lock-open-outline' : 'mdi-lock-outline'"
@@ -29,7 +22,7 @@
         class="white--text"
         :loading="_isRequest(Request.CHANGE_PASSWORD)"
         :disabled="_isRequest(Request.CHANGE_PASSWORD)"
-        @click="changePassword"
+        @click="restorePasswordFinish"
       >
         Сохранить
       </v-btn>
@@ -51,14 +44,12 @@ export default {
     return {
       showPassword: false,
       restoreForm: {
-        email: '',
         code: '',
         password: ''
       }
     }
   },
   props: {
-    email: String,
     code: String
   },
   created () {
@@ -72,16 +63,15 @@ export default {
     })
   },
   methods: {
-    changePassword () {
+    restorePasswordFinish () {
       let that = this
 
       this.$validator.validate('password').then(result => {
         if (result) {
           that.setRequest(REQUEST.CHANGE_PASSWORD)
 
-          that.restoreForm.email = that.email
           that.restoreForm.code = that.code
-          settingsService.changePassword(that.restoreForm)
+          settingsService.restorePasswordFinish(that.restoreForm)
             .then(
               () => {
                 that.$swal.fire({

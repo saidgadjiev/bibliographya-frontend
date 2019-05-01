@@ -1,19 +1,19 @@
 import authService from '../../services/auth-service'
-import { REQUEST, TOKEN_NAME, isMobilePlatform } from '../../config'
-import { SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, SET_CONFIRMATION, REMOVE_CONFIRMATION } from '../mutation-types'
+import { REQUEST, TOKEN_NAME } from '../../config'
+import { REMOVE_CONFIRMATION, SET_CONFIRMATION, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS } from '../mutation-types'
 import {
   CANCEL_SIGN_UP,
+  CLEAR,
   CONFIRM_SIGN_UP,
   ERROR_SOCIAL_SIGN_UP,
   GET_ACCOUNT,
   GET_CONFIRMATION,
+  SET_ERROR,
+  SET_REQUEST,
   SIGN_IN,
   SIGN_OUT,
   SIGN_UP,
-  SOCIAL_SIGN_UP,
-  SET_REQUEST,
-  CLEAR,
-  SET_ERROR
+  SOCIAL_SIGN_UP
 } from '../action-types'
 
 const HttpStatus = require('http-status-codes')
@@ -33,7 +33,9 @@ const mutations = {
     state.roles = payload.user.authorities.map(function (authority) {
       return authority.authority
     })
-    localStorage.setItem(TOKEN_NAME, payload.token)
+    if (payload.token) {
+      setUserToken(payload.token)
+    }
   },
   [SIGN_OUT_SUCCESS] (state) {
     state.status = USER_STATE.ANONYMOUS
@@ -57,22 +59,12 @@ const actions = {
       authService.signIn(signInForm)
         .then(
           signInResponse => {
-            if (isMobilePlatform()) {
-              let token = signInResponse.headers[TOKEN_NAME]
+            let token = signInResponse.headers[TOKEN_NAME]
 
-              if (token) {
-                commit(SIGN_IN_SUCCESS, {
-                  user: signInResponse.data,
-                  token: token
-                })
-              } else {
-                reject(new Error('Token is not present'))
-              }
-            } else {
-              commit(SIGN_IN_SUCCESS, {
-                user: signInResponse.data
-              })
-            }
+            commit(SIGN_IN_SUCCESS, {
+              user: signInResponse.data,
+              token: token
+            })
 
             resolve()
           },
@@ -125,23 +117,12 @@ const actions = {
       authService.confirmSignUpFinish(confirmSignUp)
         .then(
           response => {
-            if (isMobilePlatform()) {
-              let token = response.headers[TOKEN_NAME]
+            let token = response.headers[TOKEN_NAME]
 
-              if (token) {
-                commit(SIGN_IN_SUCCESS, {
-                  user: response.data,
-                  token: token
-                })
-              } else {
-                reject(new Error('Token is not present'))
-              }
-            } else {
-              commit(SIGN_IN_SUCCESS, {
-                user: response.data
-              })
-            }
-
+            commit(SIGN_IN_SUCCESS, {
+              user: response.data,
+              token: token
+            })
             resolve(response.data)
           },
           e => {
@@ -221,24 +202,15 @@ const actions = {
         })
     })
   },
-  [GET_ACCOUNT] ({ dispatch, commit, getters }) {
+  [GET_ACCOUNT] ({ dispatch, commit }) {
     dispatch('request/' + SET_REQUEST, REQUEST.GET_ACCOUNT)
 
     authService.getAccount()
       .then(
         accountResponse => {
-          if (isMobilePlatform()) {
-            let token = getters.getToken
-
-            commit(SIGN_IN_SUCCESS, {
-              user: accountResponse.data,
-              token: token
-            })
-          } else {
-            commit(SIGN_IN_SUCCESS, {
-              user: accountResponse.data
-            })
-          }
+          commit(SIGN_IN_SUCCESS, {
+            user: accountResponse.data
+          })
         },
         e => {
           commit(SIGN_OUT_SUCCESS)
@@ -255,9 +227,6 @@ const getters = {
     return function () {
       return state.status
     }
-  },
-  getToken: () => {
-    return localStorage.getItem(TOKEN_NAME)
   },
   isConfirmation: state => {
     return state.confirmation
@@ -311,6 +280,14 @@ const getters = {
 
     return isAuthorized
   }
+}
+
+export const getUserToken = function () {
+  return localStorage.getItem(TOKEN_NAME)
+}
+
+export const setUserToken = function (token) {
+  localStorage.setItem(TOKEN_NAME, token)
 }
 
 export default {

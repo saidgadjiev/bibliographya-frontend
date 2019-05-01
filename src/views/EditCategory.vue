@@ -40,7 +40,7 @@
                    v-on:change="handleFileUpload()"/>
             <v-btn block @click="selectFile" class="primary">Загрузить картинку</v-btn>
             <v-btn v-if="file" block color="red darken-3" @click="resetFile" class="white--text">Сбросить</v-btn>
-            <div class="error--text word-break-all" v-if="!_isEdit && !file">
+            <div class="error--text word-break-word" v-if="!_isEdit && !file">
               Выберите картинку
             </div>
           </v-form>

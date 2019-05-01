@@ -2,7 +2,7 @@
   <v-stepper v-model="step">
     <v-stepper-header>
       <v-stepper-step complete-icon="fas fa-check" :complete="step > 1" step="1">
-        <span v-if="$vuetify.breakpoint.mdAndUp">Новая почта</span>
+        <span v-if="$vuetify.breakpoint.mdAndUp">Новый телефон</span>
       </v-stepper-step>
 
       <v-divider></v-divider>
@@ -17,14 +17,14 @@
         <v-layout row justify-center align-center v-if="_isRequest(Request.LOADING_SETTINGS)">
             <progress-circular/>
         </v-layout>
-        <step-one v-else :step.sync="step" :current-email="currentEmail" @save-start="saveStart"/>
+        <step-one v-else :step.sync="step" :current-phone="currentPhone" @save-start="saveStart"/>
       </v-stepper-content>
       <v-stepper-content step="2">
         <confirm-code
-          :code.sync="saveEmailForm.code"
-          :request="Request.SAVE_EMAIL"
-          :label="'Код подтверждения отправлен вам на почту <strong>' + authKey + '</strong>.'"
-          :confirm="saveEmailFinish"
+          :code.sync="savePhoneForm.code"
+          :request="Request.SAVE_PHONE"
+          :label="'Мы отправили вам на телефон <strong>' + authKey + '</strong> СМС с кодом подтверждения. Вся процедура бесплатна.'"
+          :confirm="savePhoneFinish"
           :time="time"
           :step="step"
         ></confirm-code>
@@ -37,9 +37,9 @@
 import alert from '../mixins/alert'
 import request from '../mixins/request'
 import settingsService from '../services/settings-service'
-import { EMAIL_CHANGE_SUCCESS } from '../messages'
+import { PHONE_CHANGE_SUCCESS } from '../messages'
 import ConfirmCode from '../components/auth/ConfirmCode'
-import StepOne from '../components/auth/change/email/StepOneChangeEmail'
+import StepOne from '../components/auth/change/phone/StepOneChangePhone'
 import ProgressCircular from '../components/progress/ProgressCircular'
 
 export default {
@@ -51,8 +51,8 @@ export default {
       step: 0,
       time: 0,
       authKey: '',
-      currentEmail: '',
-      saveEmailForm: {
+      currentPhone: '',
+      savePhoneForm: {
         code: ''
       }
     }
@@ -63,6 +63,7 @@ export default {
   methods: {
     saveStart (e) {
       this.authKey = e.authKey
+      this.time = e.timer.time
     },
     loadEmailSettings () {
       let that = this
@@ -71,7 +72,7 @@ export default {
       settingsService.getEmailSettings()
         .then(
           response => {
-            that.currentEmail = response.data.email
+            that.currentPhone = response.data.phone
           }
         )
         .finally(() => {
@@ -80,17 +81,17 @@ export default {
     },
     resetForm () {
       this.step = 1
-      this.saveEmailForm.code = ''
+      this.savePhoneForm.code = ''
     },
-    saveEmailFinish () {
+    savePhoneFinish () {
       let that = this
 
       that.setRequest(this.Request.SAVE_EMAIL)
-      settingsService.saveEmailFinish(that.saveEmailForm)
+      settingsService.savePhoneFinish(that.savePhoneForm)
         .then(
           () => {
             that.$swal.fire({
-              text: EMAIL_CHANGE_SUCCESS,
+              text: PHONE_CHANGE_SUCCESS,
               type: 'info',
               showCloseButton: true
             })

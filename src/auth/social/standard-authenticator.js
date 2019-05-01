@@ -17,10 +17,7 @@ function auth (provider) {
     )
 }
 
-function processRequest (request) {}
-
 export default {
   auth,
-  processRequest,
   getRedirectUri
 }

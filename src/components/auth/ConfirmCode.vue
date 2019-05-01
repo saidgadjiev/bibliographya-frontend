@@ -1,17 +1,10 @@
 <template>
   <v-card>
     <v-card-title>
-      <h4>{{ label }}</h4>
+      <span v-html="label"></span>
     </v-card-title>
-    <v-card-text>
+    <v-card-text class="pt-0 pb-0">
       <v-form>
-        <v-text-field
-          v-model="email"
-          disabled
-          label="Почта"
-          type="text"
-          name="email"
-        ></v-text-field>
         <v-text-field
           v-validate="'required|digits:4'"
           v-model="_code"
@@ -26,31 +19,27 @@
         </div>
       </v-form>
     </v-card-text>
-    <v-card-actions>
-      <v-layout row wrap>
-        <v-flex xs12 md4>
-          <v-btn
-            color="blue darken-3"
-            class="white--text"
-            block
-            :loading="_isRequest(request)"
-            :disabled="_isRequest(request)"
-            @click="doConfirm">
-            Подтвердить
-          </v-btn>
-        </v-flex>
-        <v-flex xs12 md8>
-          <v-btn
-            color="blue darken-3"
-            class="white--text"
-            block
-            :loading="_isRequest(Request.RESEND_CODE)"
-            :disabled="_isRequest(Request.RESEND_CODE)"
-            @click="resend">
-            Отправить повторно
-          </v-btn>
-        </v-flex>
-      </v-layout>
+    <v-card-actions style="justify-content: center; flex-direction: column;">
+      <v-btn
+        color="blue darken-3 mb-3"
+        class="white--text"
+        :loading="_isRequest(request)"
+        :disabled="_isRequest(request)"
+        @click="doConfirm">
+        Отправить код
+      </v-btn>
+      <countdown v-if="counting" :time="timer" :transform="transform" @end="counting = false">
+        <template slot-scope="props">
+          <span class="font-weight-medium" style="color: #78909C;">Выслать код повторно через {{ props.minutes }} : {{ props.seconds }}</span>
+        </template>
+      </countdown>
+      <a
+        class="bib-a"
+        v-else
+        @click="resend"
+      >
+        Получить код повторно
+      </a>
     </v-card-actions>
   </v-card>
 </template>
@@ -59,17 +48,24 @@
 import alert from '../../mixins/alert'
 import request from '../../mixins/request'
 import { REQUEST } from '../../config'
-import emailService from '../../services/email-service'
+import verificationService from '../../services/verification-service'
 
 export default {
   name: 'ConfirmCode',
   mixins: [alert, request],
+  data () {
+    return {
+      counting: false,
+      timer: 0
+    }
+  },
   props: {
     request: Number,
     code: [Number, String],
-    email: String,
     label: String,
-    confirm: Function
+    confirm: Function,
+    time: Number,
+    step: [Number, String]
   },
   methods: {
     doConfirm () {
@@ -81,12 +77,30 @@ export default {
         }
       })
     },
+    transform (props) {
+      Object.entries(props).forEach(([key, value]) => {
+        // Adds leading zero
+        const digits = value < 10 ? `0${value}` : value
+
+        props[key] = `${digits}`
+      })
+
+      return props
+    },
+    startTimer (time) {
+      this.counting = true
+      this.timer = time * 1000
+    },
     resend () {
       this.setRequest(REQUEST.RESEND_CODE)
       let that = this
 
-      emailService.resend(this.email)
-        .finally(() => {
+      verificationService.resend()
+        .then(
+          response => {
+            that.startTimer(response.data.timer.time)
+          }
+        ).finally(() => {
           that.clearRequest()
         })
     }
@@ -114,6 +128,11 @@ export default {
   watch: {
     'code' (newVal) {
       this.clearAlert()
+    },
+    'step' (newVal) {
+      if (newVal === 2) {
+        this.startTimer(this.time)
+      }
     }
   }
 }

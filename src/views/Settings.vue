@@ -4,6 +4,13 @@
     <v-flex xs12 v-else>
       <alert-message :types="alertTypes"/>
       <v-card>
+        <v-card-title v-if="!settings.email && !settings.phone">
+          <h4>Внимание!</h4>
+          <span class="d-block">
+            У вас ни телефон ни электронная почта не привязаны к аккаунту. Вы потеряете доступ к аккаунту.
+            Крайне рекомендуем привязать либо телефон, либо электронную почту, если вы хотите сохранить доступ к аккаунту.
+          </span>
+        </v-card-title>
         <v-card-text class="pb-0">
           <v-form>
             <v-text-field
@@ -17,7 +24,7 @@
               name="oldPassword"
               label="Старый пароль"
             ></v-text-field>
-            <div class="error--text word-break-all" v-if="_isError(HttpStatus.BAD_REQUEST)">
+            <div class="error--text word-break-word" v-if="_isError(HttpStatus.BAD_REQUEST)">
               Старый пароль введен неверно.&nbsp;<router-link class="bib-a" to="/restore">Забыли пароль?
             </router-link>
             </div>
@@ -45,31 +52,17 @@
           </v-btn>
         </v-card-actions>
         <v-divider></v-divider>
-        <v-card-text class="pb-0">
-          <div class="error--text word-break-all" v-if="!settings.emailVerified">
-            Кто то другой привязал вашу почту к своей странице. Подтвердите пожалуйста почту или вход на страницу будет
-            утерян.
-            <router-link to="/settings/email" class="bib-a">
-              <strong>Подтвердить</strong>
-            </router-link>
-          </div>
-          <v-text-field
-            :value="settings.email"
-            disabled
-            label="Почта"
-            type="text"
-            name="email"
-          ></v-text-field>
+        <v-card-text style="display: flex; justify-content: space-between">
+          <span>Почта</span>
+          <span>{{ settings.email }}</span>
+          <router-link class="bib-a" to="/settings/email">Изменить</router-link>
         </v-card-text>
-        <v-card-actions class="pt-0" style="justify-content: center">
-          <v-btn
-            v-if="settings.emailVerified"
-            color="blue darken-3"
-            class="white--text"
-            @click="changeEmail">
-            Изменить
-          </v-btn>
-        </v-card-actions>
+        <v-divider></v-divider>
+          <v-card-text style="display: flex; justify-content: space-between">
+            <span>Телефон</span>
+            <span>{{ settings.phone }}</span>
+            <router-link class="bib-a" to="/settings/phone">Изменить</router-link>
+          </v-card-text>
       </v-card>
     </v-flex>
   </v-layout>
@@ -95,8 +88,8 @@ export default {
       showNewPassword: false,
       alertTypes: ['alert-success'],
       settings: {
-        email: '',
-        emailVerified: true
+        phone: '',
+        email: ''
       },
       savePasswordForm: {
         oldPassword: '',
@@ -125,8 +118,7 @@ export default {
       settingsService.getGeneralSettings()
         .then(
           response => {
-            that.settings.email = response.data.email
-            that.settings.emailVerified = response.data.emailVerified
+            that.settings = response.data
           }
         ).finally(() => {
           that.settingsLoading = false
@@ -160,9 +152,6 @@ export default {
             })
         }
       })
-    },
-    changeEmail () {
-      this.$router.push('/settings/email')
     }
   },
   watch: {

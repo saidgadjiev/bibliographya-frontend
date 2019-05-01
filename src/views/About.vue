@@ -218,6 +218,11 @@
                 <v-icon dark style="font-size: 24px;">fab fa-telegram</v-icon>
               </v-btn>
             </v-speed-dial>
+            <v-spacer></v-spacer>
+            <div class="ml-4 d-flex align-center">
+              <v-icon style="font-size: 14px" color="blue darken-1">fas fa-eye</v-icon>
+              <span style="font-size: 14px;color: #007bff" class="pl-1">100K</span>
+            </div>
           </v-card-actions>
         </v-card>
       </v-card>

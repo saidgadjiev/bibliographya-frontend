@@ -1,7 +1,6 @@
 import authService from '../../services/auth-service'
-import { RESPONSE_TYPE, VK_BLANK_REFDIRECT_URI, PROVIDERS } from './social'
-import { TOKEN_NAME } from '../../config'
-import store from '../../store/store'
+import { PROVIDERS, RESPONSE_TYPE, VK_BLANK_REFDIRECT_URI } from './social'
+
 const Url = require('url-parse')
 
 function getRedirectUri (providerId) {
@@ -46,12 +45,7 @@ function auth (provider) {
     )
 }
 
-function processRequest (request) {
-  request.headers.common[TOKEN_NAME] = store.getters.getToken
-}
-
 export default {
   auth,
-  processRequest,
   getRedirectUri
 }

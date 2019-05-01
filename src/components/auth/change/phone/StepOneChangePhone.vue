@@ -1,17 +1,18 @@
 <template>
   <v-card>
     <v-card-text>
-      <span v-if="currentEmail">Ваша текущая почта <strong>{{ currentEmail }}</strong>.</span>
+      <span v-if="currentPhone">Ваш текущий номер телефона <strong>{{ currentPhone }}</strong>.</span>
       <v-form>
         <v-text-field
           class="mt-2"
-          v-validate="'required|email'"
-          v-model="email"
-          :error-messages="errors.collect('email')"
-          name="email"
-          label="Электронная почта"
-          type="email"
-          data-vv-name="email"
+          v-validate="'required'"
+          v-model="phone"
+          :error-messages="errors.collect('phone')"
+          name="phone"
+          label="Номер телефона"
+          placeholder="+79030000007"
+          type="phone"
+          data-vv-name="phone"
         ></v-text-field>
       </v-form>
     </v-card-text>
@@ -19,9 +20,9 @@
       <v-btn
         color="blue darken-3"
         class="white--text"
-        :loading="_isRequest(Request.CHANGE_EMAIL)"
-        :disabled="_isRequest(Request.CHANGE_EMAIL)"
-        @click="saveEmailStart"
+        :loading="_isRequest(Request.CHANGE_PHONE)"
+        :disabled="_isRequest(Request.CHANGE_PHONE)"
+        @click="savePhoneStart"
       >
         Сохранить
       </v-btn>
@@ -39,31 +40,31 @@ export default {
   mixins: [alert, request],
   data () {
     return {
-      email: ''
+      blured: false,
+      phone: ''
     }
   },
   props: {
-    currentEmail: String
+    currentPhone: String
   },
   created () {
     this.$validator.localize('ru', {
       custom: {
-        email: {
-          required: () => 'Введите почту',
-          email: () => 'Введите корректную почту'
+        phone: {
+          required: () => 'Введите номер телефона'
         }
       }
     })
   },
   methods: {
-    saveEmailStart () {
+    savePhoneStart () {
       let that = this
 
-      this.$validator.validate('email').then(result => {
+      this.$validator.validate('phone').then(result => {
         if (result) {
-          that.setRequest(this.Request.CHANGE_EMAIL)
+          that.setRequest(this.Request.CHANGE_PHONE)
 
-          settingsService.saveEmailStart(this.email)
+          settingsService.savePhoneStart(this.phone)
             .then(
               response => {
                 that.$emit('save-start', response.data)
@@ -78,7 +79,7 @@ export default {
     }
   },
   watch: {
-    'email' (newVal) {
+    'phone' (newVal) {
       this.clearAlert()
     }
   }

@@ -11,15 +11,17 @@ import VueLogger from 'vuejs-logger'
 import VueMoment from 'vue-moment'
 import moment from 'moment-timezone'
 import VueYandexMetrika from 'vue-yandex-metrika'
-import { METRIKA_ID } from './config'
-import { socialAutheticator } from './auth/auth'
+import { METRIKA_ID, TOKEN_NAME } from './config'
 import Meta from 'vue-meta'
+import VueCountdown from '@chenfengyuan/vue-countdown'
+import { getUserToken } from './store/modules/user-module'
 
 import store from './store/store'
 
 import 'vuetify/src/stylus/app.styl'
 import '@mdi/font/css/materialdesignicons.min.css'
-import { INTERNET_ERROR, SERVER_ERROR } from './messages'
+import 'vue-tel-input/dist/vue-tel-input.css'
+import { INTERNET_ERROR, SERVER_ERROR, TOO_MANY_REQUESTS } from './messages'
 
 moment.tz.setDefault('Europe/Moscow')
 require('moment/locale/ru')
@@ -27,6 +29,8 @@ require('moment/locale/ru')
 Vue.use(VueMoment, {
   moment
 })
+
+Vue.component(VueCountdown.name, VueCountdown)
 
 Vue.use(Meta, {
   keyName: 'metaInfo', // the component option name that vue-meta looks for meta info on.
@@ -79,7 +83,7 @@ Vue.config.productionTip = false
 axios.defaults.withCredentials = true
 
 axios.interceptors.request.use(function (request) {
-  socialAutheticator.processRequest(request)
+  request.headers.common[TOKEN_NAME] = getUserToken()
 
   return request
 }, function (err) {
@@ -100,6 +104,13 @@ axios.interceptors.response.use(function (response) {
     switch (err.response.status) {
       case 401:
         router.push('/signIn')
+        break
+      case 429:
+        Vue.swal.fire({
+          text: TOO_MANY_REQUESTS,
+          type: 'error',
+          showCloseButton: true
+        })
         break
       case 403:
         router.push('/403')
