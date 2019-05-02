@@ -6,7 +6,9 @@
       v-bind="_attrs"
     ></toc>
     <clamp
+      class="pt-2"
       v-if="bio"
+      :mode="mode"
       ref="biography"
       :source="bio"
       :clamp="biographyClamp"

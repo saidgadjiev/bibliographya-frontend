@@ -83,8 +83,8 @@ export default {
           div.children.push(createElement('div', {}, [
             createElement('a', {
               class: {
-                'subheading': true,
-                'font-weight-bold': true
+                'body-2': true,
+                'font-weight-medium': true
               },
               on: {
                 click (e) {
@@ -97,8 +97,8 @@ export default {
           div.children.push(createElement('div', {}, [
             createElement('a', {
               class: {
-                'subheading': true,
-                'font-weight-bold': true
+                'body-2': true,
+                'font-weight-medium': true
               },
               on: {
                 click (e) {
@@ -232,6 +232,10 @@ export default {
 </script>
 
 <style scoped>
+  .toc {
+    font-size: 15px;
+  }
+
   .toc >>> ol:first-child {
     padding-left: 0 !important;
   }

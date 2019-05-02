@@ -87,7 +87,7 @@ export const FIX_BUTTONS = {
   IGNORE: 'Ignore'
 }
 
-export const BIOGRAPHY_CLAMP_SIZE = 150
+export const BIOGRAPHY_CLAMP_SIZE = 500
 
 export const TREE_CLAMP_SIZE = 4
 
