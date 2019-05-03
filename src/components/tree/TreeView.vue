@@ -20,7 +20,7 @@
 
 <script>
 import TreeViewNode from './TreeViewNode.vue'
-import utils from '../../utils'
+import utils from '../../assets/js/utils'
 
 export default {
   name: 'TreeView',

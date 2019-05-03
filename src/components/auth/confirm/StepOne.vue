@@ -87,7 +87,7 @@ import { SERVER_ERROR } from '../../../messages'
 import authService from '../../../services/auth-service'
 import VueTelInput from 'vue-tel-input'
 import verificationService from '../../../services/verification-service'
-import utils from '../../../utils'
+import utils from '../../../assets/js/utils'
 
 export default {
   name: 'StepOne',

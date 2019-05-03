@@ -1,6 +1,6 @@
 <script>
 import { BIOGRAPHY_CARD_MODE } from '../../../config'
-import utils from '../../../utils'
+import utils from '../../../assets/js/utils'
 
 export default {
   name: 'Toc',
