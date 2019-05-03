@@ -54,10 +54,11 @@ import SideBar from '../components/biography/sidebar/SideBar'
 import SideList from '../components/biography/sidebar/SideList'
 import { TREE_CLAMP_SIZE, BIOGRAPHY_CLAMP_SIZE } from '../config'
 import pullToRefresh from '../mixins/pullToRefresh'
+import search from '../mixins/search'
 
 export default {
   name: 'BiographiesList',
-  mixins: [pullToRefresh],
+  mixins: [pullToRefresh, search],
   data () {
     return {
       biographyChannel: undefined,
@@ -67,7 +68,8 @@ export default {
       deleteIndex: -1,
       sort: 'sort=created_at,desc',
       autobiographies: undefined,
-      category: undefined
+      category: undefined,
+      searchQuery: undefined
     }
   },
   props: {
@@ -76,6 +78,10 @@ export default {
     }
   },
   methods: {
+    doSearch (query) {
+      this.searchQuery = query
+      ++this.resetId
+    },
     pullToRefresh (loaded) {
       loaded('done')
       ++this.resetId
@@ -113,16 +119,16 @@ export default {
       ++this.resetId
     },
     infiniteLoad (limit, offset, cancelToken) {
-      let sort = this.sort
-      let query
-
-      if (this.autobiographies) {
-        query = ''
-        query += '&autobiographies=true'
-      }
-
       if (this.categoryId) {
-        return biographyCategoryService.getBiographies(cancelToken, this.categoryId, limit, offset, BIOGRAPHY_CLAMP_SIZE, query, sort)
+        return biographyCategoryService.getBiographies(cancelToken,
+          this.categoryId,
+          limit,
+          offset,
+          this.autobiographies,
+          BIOGRAPHY_CLAMP_SIZE,
+          this.searchQuery,
+          this.sort
+        )
           .then(
             response => {
               if (response.status === 200) {
@@ -135,7 +141,7 @@ export default {
             }
           )
       } else {
-        return biographyService.getBiographies(cancelToken, limit, offset, BIOGRAPHY_CLAMP_SIZE, query, sort)
+        return biographyService.getBiographies(cancelToken, limit, offset, this.autobiographies, BIOGRAPHY_CLAMP_SIZE, this.searchQuery, this.sort)
           .then(
             response => {
               if (response.status === 200) {

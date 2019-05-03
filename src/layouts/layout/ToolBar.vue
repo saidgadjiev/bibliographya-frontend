@@ -14,7 +14,8 @@
         <v-toolbar-side-icon @click.stop="doDrawer"></v-toolbar-side-icon>
         <router-link to="/" class="title pl-2 white--text font-weight-light">Библиография</router-link>
       </div>
-      <div class="d-flex align-center" v-else>
+      <div style="height: 50px; width: 240px" v-else>
+        <div class="d-inline-flex align-center" style="height: 100%">
           <svg
             xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
             width="36" height="36"
@@ -32,7 +33,25 @@
           </svg>
         <router-link to="/" class="title pl-2 white--text font-weight-regular">Библиография</router-link>
       </div>
+      </div>
     </v-toolbar-title>
+    <v-text-field
+      v-if="$vuetify.breakpoint.mdAndUp && isShowSearch"
+      hide-details
+      solo
+      flat
+      light
+      placeholder="Поиск"
+      single-line
+      height="30"
+      class="search-field"
+      v-model="searchQuery"
+      @change="search"
+    >
+      <template #prepend-inner>
+        <v-icon small>fas fa-search</v-icon>
+      </template>
+    </v-text-field>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
       <v-menu
@@ -85,14 +104,21 @@
 import { mapGetters } from 'vuex'
 import { SIGN_OUT, CANCEL_SIGN_UP } from '../../store/action-types'
 import { SET_DRAWER } from '../../store/mutation-types'
+import EventBus, { SEARCH } from '../../eventbus/eventbus'
 
 export default {
   name: 'ToolBar',
+  data () {
+    return {
+      searchQuery: ''
+    }
+  },
   computed: {
     ...mapGetters([
       'getFirstName',
       'isAuthenticated',
-      'drawer'
+      'drawer',
+      'isShowSearch'
     ]),
     _firstName () {
       return this.getFirstName
@@ -102,6 +128,9 @@ export default {
     }
   },
   methods: {
+    search () {
+      EventBus.$emit(SEARCH, this.searchQuery)
+    },
     cancelSignUp () {
       this.$store.dispatch(CANCEL_SIGN_UP)
       this.$router.push('/')
@@ -122,6 +151,15 @@ export default {
 </script>
 
 <style>
+  .search-field .v-input__control {
+    min-height: unset !important;
+  }
+
+  .search-field .v-input__slot {
+    border-radius: 30px !important;
+    width: 260px;
+  }
+
   .md-toolbar > div {
     width: 960px !important;
     margin: auto !important;

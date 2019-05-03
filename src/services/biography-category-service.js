@@ -19,15 +19,19 @@ function getCategories (limit, offset) {
   return axios.get(getRestUrl('categories') + '?limit=' + limit + '&offset=' + offset)
 }
 
-function getBiographies (cancelToken, categoryId, limit, offset, biographyClampSize, query, sort) {
+function getBiographies (cancelToken, categoryId, limit, offset, autobiographies, biographyClampSize, search, sort) {
   let parameters = 'limit=' + limit + '&offset=' + offset
 
-  if (query) {
-    parameters += '&' + query
+  if (autobiographies) {
+    parameters += '&autobiographies=true'
   }
 
   if (biographyClampSize) {
     parameters += '&biographyClampSize=' + biographyClampSize
+  }
+
+  if (search) {
+    parameters += '&query=' + search
   }
 
   if (sort) {

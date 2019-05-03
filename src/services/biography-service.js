@@ -25,15 +25,20 @@ function getBiographyById (id) {
   return axios.get(getRestUrl('biographies/' + id))
 }
 
-function getBiographies (cancelToken, limit, offset, biographyClampSize, query, sort) {
+function getBiographies (cancelToken, limit, offset, autobiographies, biographyClampSize, search, sort) {
   let parameters = 'limit=' + limit + '&offset=' + offset
 
-  if (query) {
-    parameters += '&' + query
+  if (autobiographies) {
+    parameters += '&autobiographies=true'
   }
 
   if (biographyClampSize) {
     parameters += '&biographyClampSize=' + biographyClampSize
+  }
+
+  if (search) {
+    sort += '&sort=first_name,asc&sort=last_name,asc&sort=middle_name,asc'
+    parameters += '&query=' + search
   }
 
   if (sort) {

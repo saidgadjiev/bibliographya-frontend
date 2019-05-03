@@ -1,6 +1,7 @@
 import {
   SET_DRAWER,
   SET_PULL_TO_REFRESH_METHOD,
+  SET_SHOW_SEARCH,
   SET_PULL_TO_LOAD_MORE_METHOD,
   REMOVE_PULL_TO_LOAD_MORE_METHOD,
   REMOVE_PULL_TO_REFRESH_METHOD
@@ -9,7 +10,8 @@ import {
 const state = {
   drawer: false,
   pullToRefreshMethod: null,
-  pullToLoadMoreMethod: null
+  pullToLoadMoreMethod: null,
+  showSearch: false
 }
 
 const mutations = {
@@ -18,6 +20,9 @@ const mutations = {
   },
   [SET_PULL_TO_REFRESH_METHOD] (state, method) {
     state.pullToRefreshMethod = method
+  },
+  [SET_SHOW_SEARCH] (state, payload) {
+    state.showSearch = payload
   },
   [SET_PULL_TO_LOAD_MORE_METHOD] (state, method) {
     state.pullToLoadMoreMethod = method
@@ -39,6 +44,9 @@ const getters = {
   },
   pullToLoadMoreMethod: state => {
     return state.pullToLoadMoreMethod
+  },
+  isShowSearch: state => {
+    return state.showSearch
   }
 }
 
