@@ -226,6 +226,18 @@ function createToc (tocArray) {
   return tocTree
 }
 
+function throttle (callback, time) {
+  let timer = null
+
+  return function () {
+    clearTimeout(timer)
+
+    timer = setTimeout(function () {
+      callback.call()
+    }, time)
+  }
+}
+
 export default {
   getNTreeLevels,
   arrDiff,
@@ -233,5 +245,6 @@ export default {
   createToc,
   cleanPhone,
   isValidEmail,
+  throttle,
   scrollIt
 }

@@ -46,10 +46,10 @@
       height="30"
       class="search-field"
       v-model="searchQuery"
-      @change="search"
+      @input="_throttleSearch"
     >
       <template #prepend-inner>
-        <v-icon small>fas fa-search</v-icon>
+        <v-icon small color="blue darken-3">fas fa-search</v-icon>
       </template>
     </v-text-field>
     <v-spacer></v-spacer>
@@ -105,12 +105,14 @@ import { mapGetters } from 'vuex'
 import { SIGN_OUT, CANCEL_SIGN_UP } from '../../store/action-types'
 import { SET_DRAWER } from '../../store/mutation-types'
 import EventBus, { SEARCH } from '../../eventbus/eventbus'
+import utils from '../../assets/js/utils'
 
 export default {
   name: 'ToolBar',
   data () {
     return {
-      searchQuery: ''
+      searchQuery: '',
+      timer: null
     }
   },
   computed: {
@@ -125,6 +127,9 @@ export default {
     },
     _isConfirmation () {
       return this.$route.name === 'signUpConfirm'
+    },
+    _throttleSearch () {
+      return utils.throttle(this.search, 300)
     }
   },
   methods: {
@@ -150,12 +155,12 @@ export default {
 }
 </script>
 
-<style>
-  .search-field .v-input__control {
+<style scoped>
+  .search-field >>> .v-input__control {
     min-height: unset !important;
   }
 
-  .search-field .v-input__slot {
+  .search-field >>> .v-input__slot {
     border-radius: 30px !important;
     width: 260px;
   }

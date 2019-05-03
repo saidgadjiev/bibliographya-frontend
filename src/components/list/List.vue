@@ -5,6 +5,9 @@
     </v-flex>
     <v-flex v-bind="{ [`xs${rootFlex}`]: true }">
       <v-layout row wrap justify-center>
+        <v-flex xs12 v-if="hasListHeaderSlot">
+          <slot name="listHeader"></slot>
+        </v-flex>
         <v-flex v-bind="{ [`xs${itemFlex(item)}`]: true }" v-for="(item, index) in items" :key="item.id">
           <slot name="item" v-bind:item="item" v-bind:index="index">
           </slot>
@@ -169,6 +172,9 @@ export default {
     },
     smSidebar () {
       return this.hasSmSidebarSlot && this.$vuetify.breakpoint.smAndDown
+    },
+    hasListHeaderSlot () {
+      return !!this.$slots.listHeader
     },
     loadMoreStyles () {
       if (this.availableMore) {
