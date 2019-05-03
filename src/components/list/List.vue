@@ -48,8 +48,9 @@
         right
         fixed
         fab
+        small
       >
-        <v-icon large>fas fa-angle-up</v-icon>
+        <v-icon small>fas fa-search</v-icon>
       </v-btn>
       <slot name="smSidebar"></slot>
     </v-menu>
