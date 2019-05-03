@@ -71,15 +71,15 @@ export default {
       ++this.resetId
     },
     applyIgnoredFilter () {
-      this.filter = 'fixer_id==' + this.getUserId + ';status==' + FIX_STATUS.IGNORED
+      this.filter = 'fixerId==' + this.getUserId + ';status==' + FIX_STATUS.IGNORED
       this.resetList()
     },
     applyClosedFilter () {
-      this.filter = 'fixer_id==' + this.getUserId + ';status==' + FIX_STATUS.CLOSED
+      this.filter = 'fixerId==' + this.getUserId + ';status==' + FIX_STATUS.CLOSED
       this.resetList()
     },
     applyNotAssignedFilter () {
-      this.filter = 'fixer_id==null'
+      this.filter = 'fixerId==null'
       this.resetList()
     },
     applyAllFilter () {
@@ -87,7 +87,7 @@ export default {
       this.resetList()
     },
     applyAssignedMeFilter () {
-      this.filter = 'fixer_id==' + this.getUserId
+      this.filter = 'fixerId==' + this.getUserId
       this.resetList()
     },
     infiniteLoad (limit, offset) {
