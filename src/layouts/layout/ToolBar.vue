@@ -151,6 +151,11 @@ export default {
           }
         )
     }
+  },
+  watch: {
+    isShowSearch () {
+      this.searchQuery = undefined
+    }
   }
 }
 </script>
