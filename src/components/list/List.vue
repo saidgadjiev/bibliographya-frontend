@@ -154,14 +154,10 @@ export default {
               that.loading = false
             },
             e => {
-              if (axios.isCancel(e)) {
-                $state.complete()
-                that.activeRequest = undefined
-                that.$emit('update:availableMore', false)
-              } else {
+              if (!axios.isCancel(e)) {
                 $state.error()
+                that.loading = false
               }
-              that.loading = false
             }
           )
       }
