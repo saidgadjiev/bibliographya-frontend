@@ -165,7 +165,7 @@ export default {
     width: 260px;
   }
 
-  .md-toolbar > div {
+  .md-toolbar >>> .v-toolbar__content {
     width: 960px !important;
     margin: auto !important;
     padding: 0 !important;
