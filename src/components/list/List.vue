@@ -223,6 +223,7 @@ export default {
       this.loading = false
       this.items = []
       this.offset = 0
+      window.scrollTo(0, 0)
       this.$emit('update:infiniteId', this.infiniteId + 1)
     }
   }
