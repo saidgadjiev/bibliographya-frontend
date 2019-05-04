@@ -63,6 +63,7 @@ import ErrorCard from '../error/ErrorCard'
 import ProgressCircular from '../progress/ProgressCircular'
 import pullToLoadMore from '../../mixins/pullToLoadMore'
 import InfiniteLoading from 'vue-infinite-loading'
+import axios from 'axios'
 
 export default {
   name: 'List',
@@ -153,7 +154,13 @@ export default {
               that.loading = false
             },
             e => {
-              $state.error()
+              if (axios.isCancel(e)) {
+                $state.complete()
+                that.activeRequest = undefined
+                that.$emit('update:availableMore', false)
+              } else {
+                $state.error()
+              }
               that.loading = false
             }
           )
