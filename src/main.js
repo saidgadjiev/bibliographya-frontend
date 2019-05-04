@@ -94,7 +94,13 @@ axios.interceptors.request.use(function (request) {
 axios.interceptors.response.use(function (response) {
   return response
 }, function (err) {
-  if (!err.response) {
+  if (axios.isCancel(err)) {
+    if (!isProduction) {
+      console.log('request canceled')
+    }
+
+    return Promise.resolve()
+  } else if (!err.response) {
     Vue.swal.fire({
       text: INTERNET_ERROR,
       type: 'error',
