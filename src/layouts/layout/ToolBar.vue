@@ -12,7 +12,7 @@
     <v-toolbar-title class="ml-0">
       <div v-if="$vuetify.breakpoint.smAndDown">
         <v-toolbar-side-icon @click.stop="doDrawer"></v-toolbar-side-icon>
-        <router-link to="/" class="title pl-2 white--text font-weight-light">Библиография</router-link>
+        <router-link to="/" class="title pl-2 white--text font-weight-light">{{ _title }}</router-link>
       </div>
       <div style="height: 50px; width: 240px" v-else>
         <div class="d-inline-flex align-center" style="height: 100%">
@@ -31,7 +31,7 @@
               </g>
             </g>
           </svg>
-        <router-link to="/" class="title pl-2 white--text font-weight-regular">Библиография</router-link>
+        <router-link to="/" class="title pl-2 white--text font-weight-regular">{{ _title }}</router-link>
       </div>
       </div>
     </v-toolbar-title>
@@ -106,6 +106,7 @@ import { SIGN_OUT, CANCEL_SIGN_UP } from '../../store/action-types'
 import { SET_DRAWER } from '../../store/mutation-types'
 import EventBus, { SEARCH } from '../../eventbus/eventbus'
 import utils from '../../assets/js/utils'
+import { TITLE } from '../../config'
 
 export default {
   name: 'ToolBar',
@@ -130,6 +131,9 @@ export default {
     },
     _throttleSearch () {
       return utils.throttle(this.search, 300)
+    },
+    _title () {
+      return TITLE
     }
   },
   methods: {

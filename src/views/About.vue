@@ -3,7 +3,7 @@
     <v-flex xs12>
       <v-card class="blue darken-3" :class="{'pa-5': $vuetify.breakpoint.mdAndUp}">
         <v-card-text>
-          <h3 style="color: #64B5F6">Бибилиография это</h3>
+          <h3 style="color: #64B5F6">Биографии это</h3>
           <h1
             class="font-weight-black white--text"
             style="font-size: 2.20rem;letter-spacing: -.1rem"
@@ -50,7 +50,7 @@
               </div>
             </div>
             <div class="pt-1">
-              <p><strong>Гаджиев Саид&nbsp;</strong>- владелец и разработчик сервиса <strong>Библиография</strong>.</p>
+              <p><strong>Гаджиев Саид&nbsp;</strong>- владелец и разработчик сервиса <strong>Биографии</strong>.</p>
               <h1>Биография</h1>
               <p>Приветствую тебя, уважаемый читатель. Меня зовут Саид. По национальн...</p><a
               class="bib-a h4 font-weight-bold subheading">
@@ -117,7 +117,7 @@
               </div>
             </div>
             <div class="pt-1">
-              <p><strong>Гаджиев Саид&nbsp;</strong>- владелец и разработчик сервиса <strong>Библиография</strong>.</p>
+              <p><strong>Гаджиев Саид&nbsp;</strong>- владелец и разработчик сервиса <strong>Биографии</strong>.</p>
               <h1>Биография</h1>
               <p>Приветствую тебя, уважаемый читатель. Меня зовут Саид. По национальн...</p><a
               class="bib-a h4 font-weight-bold subheading">

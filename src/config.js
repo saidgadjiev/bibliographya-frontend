@@ -29,7 +29,7 @@ export const REQUEST = {
   SAVE_PHONE: 18
 }
 
-export const TITLE = 'Библиография'
+export const TITLE = 'Биографии'
 
 export const DATE_FORMAT = 'DD-MM-YYYY HH:mm:ss.SSSSSS'
 
