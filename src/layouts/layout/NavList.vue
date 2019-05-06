@@ -23,7 +23,7 @@
           <v-icon size="24">mdi-library-books</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>Библиография</v-list-tile-title>
+          <v-list-tile-title>Библиотека</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
       <v-list-tile to="/biographies">
