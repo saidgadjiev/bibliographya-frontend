@@ -62,7 +62,7 @@ import { CancelToken } from '../../axios/axios'
 import ErrorCard from '../error/ErrorCard'
 import ProgressCircular from '../progress/ProgressCircular'
 import pullToLoadMore from '../../mixins/pullToLoadMore'
-import InfiniteLoading from 'vue-infinite-loading'
+import InfiniteLoading from '../infinite/InfiniteLoading'
 import axios from 'axios'
 
 export default {

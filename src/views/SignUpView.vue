@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     socialSignUp (provider) {
-      socialAutheticator.auth(provider)
+      socialAutheticator.signUp(provider)
     },
     signUp () {
       let that = this

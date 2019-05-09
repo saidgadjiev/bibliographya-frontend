@@ -55,7 +55,9 @@
     "stylus-loader": "^3.0.2",
     "css-loader": "^2.1.1",
     "stylus": "^0.54.5",
-    "url-parse": "^1.4.4"
+    "url-parse": "^1.4.4",
+    "less": "^3.9.0",
+    "less-loader": "^5.0.0"
   },
   "eslintConfig": {
     "root": true,

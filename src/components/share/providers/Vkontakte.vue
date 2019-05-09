@@ -23,7 +23,7 @@ import { TITLE } from '../../../config'
 import magickService from '../../../services/magick-service'
 import fileService from '../../../services/file-service'
 import ProgressCircular from '../../progress/ProgressCircular'
-import { PROVIDERS } from '../../../auth/social/social'
+import { PROVIDERS } from '../../../auth/auth'
 
 export default {
   name: 'ShareVkontakte',

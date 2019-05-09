@@ -13,11 +13,21 @@ export default {
   errorSocialSignUp,
   confirmSignUpStart,
   confirmSignUpFinish,
-  getConfirmation
+  getConfirmation,
+  socialSignIn,
+  errorSocialSignIn
 }
 
 function signIn (signInForm) {
-  return axios.post(getRestUrl('auth/signIn'), signInForm)
+  return axios.post(getRestUrl('auth/signIn/simple'), signInForm)
+}
+
+function socialSignIn (provider, redirectUri, code) {
+  return axios.post(getRestUrl('auth/signIn/' + provider) + '?code=' + code + '&redirectUri=' + redirectUri)
+}
+
+function errorSocialSignIn (provider, error, errorDescription) {
+  return axios.post(getRestUrl('auth/signIn/' + provider) + '?error=' + error + (errorDescription ? '&' + errorDescription : ''))
 }
 
 function signUp (signUpForm) {

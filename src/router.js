@@ -22,7 +22,8 @@ const BiographiesModeration = () => import('./views/BiographiesModerationsList')
 const BiographyFixesList = () => import('./views/BiographiesFixesList')
 const Privacy = () => import('./views/Privacy')
 const Statistics = () => import('./views/Statistics')
-const OAuthCallback = () => import('./views/OAuthCallback')
+const OAuthSignUpCallback = () => import('./views/OAuthSignUpCallback')
+const OAuthSignInCallback = () => import('./views/OAuthSignInCallback')
 const UsersList = () => import('./views/UsersList')
 const Profile = () => import('./views/Profile')
 const ProfileSettings = () => import('./views/Settings')
@@ -359,9 +360,15 @@ let router = new Router({
       component: Privacy
     },
     {
-      path: '/:providerId/callback',
-      name: 'oauthcallback',
-      component: OAuthCallback,
+      path: '/signUp/:providerId/callback',
+      name: 'oauthSignUpCallback',
+      component: OAuthSignUpCallback,
+      props: (route) => ({ providerId: route.params.providerId })
+    },
+    {
+      path: '/signIn/:providerId/callback',
+      name: 'oauthSignInCallback',
+      component: OAuthSignInCallback,
       props: (route) => ({ providerId: route.params.providerId })
     },
     {

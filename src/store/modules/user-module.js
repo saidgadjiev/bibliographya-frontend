@@ -13,7 +13,9 @@ import {
   SIGN_IN,
   SIGN_OUT,
   SIGN_UP,
-  SOCIAL_SIGN_UP
+  SOCIAL_SIGN_UP,
+  SOCIAL_SIGN_IN,
+  ERROR_SOCIAL_SIGN_IN
 } from '../action-types'
 
 const HttpStatus = require('http-status-codes')
@@ -76,6 +78,45 @@ const actions = {
         .finally(() => {
           dispatch('request/' + CLEAR)
         })
+    })
+  },
+  [SOCIAL_SIGN_IN] ({ dispatch, commit }, payload) {
+    dispatch('request/' + SET_REQUEST, REQUEST.SIGN_IN)
+
+    return new Promise((resolve, reject) => {
+      authService.socialSignIn(payload.provider, payload.redirectUri, payload.code)
+        .then(
+          signInResponse => {
+            let token = signInResponse.headers[TOKEN_NAME]
+
+            commit(SIGN_IN_SUCCESS, {
+              user: signInResponse.data,
+              token: token
+            })
+
+            resolve(signInResponse.data)
+          },
+          e => {
+            dispatch('alert/' + SET_ERROR, e)
+            reject(e)
+          }
+        )
+        .finally(() => {
+          dispatch('request/' + CLEAR)
+        })
+    })
+  },
+  [ERROR_SOCIAL_SIGN_IN] ({ dispatch, commit }, payload) {
+    return new Promise((resolve, reject) => {
+      authService.errorSocialSignIn(payload.provider, payload.code, payload.errorDescription)
+        .then(
+          response => {
+            resolve(response)
+          },
+          e => {
+            reject(e)
+          }
+        )
     })
   },
   [SOCIAL_SIGN_UP] ({ dispatch, commit }, payload) {

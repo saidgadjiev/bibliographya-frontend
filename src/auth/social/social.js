@@ -4,8 +4,3 @@ export const RESPONSE_TYPE = {
   AUTHORIZATION_CODE: 'code',
   IMPLICIT_GRANT: 'token'
 }
-
-export const PROVIDERS = {
-  VK: 'vk',
-  FACEBOOK: 'facebook'
-}

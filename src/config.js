@@ -26,7 +26,8 @@ export const REQUEST = {
   ANONYMOUS_CREATOR: 15,
   PUBLISH: 16,
   CHANGE_PHONE: 17,
-  SAVE_PHONE: 18
+  SAVE_PHONE: 18,
+  OAUTH_REQUEST: 19
 }
 
 export const TITLE = 'Биографии'

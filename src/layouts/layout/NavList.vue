@@ -10,7 +10,7 @@
           <v-list-tile-title>Моя биография</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile v-if="isAuthenticated" to="/settings">
+      <v-list-tile v-if="isAuthenticated && isAuthorized([Roles.ROLE_USER])" to="/settings">
         <v-list-tile-action>
           <v-icon size="24">fas fa-cog</v-icon>
         </v-list-tile-action>
@@ -170,32 +170,30 @@
 <script>
 import { mapGetters } from 'vuex'
 import ProgressCircular from '../../components/progress/ProgressCircular'
-import { ROLES } from '../../config'
 import request from '../../mixins/request'
 import alert from '../../mixins/alert'
+import authorize from '../../mixins/authorize'
 import { SIGN_OUT, CANCEL_SIGN_UP } from '../../store/action-types'
 
 export default {
   name: 'NavList',
   components: { ProgressCircular },
-  mixins: [request, alert],
+  mixins: [request, alert, authorize],
   computed: {
     ...mapGetters([
       'getUserId',
       'getFirstName',
       'getLastName',
-      'isAuthenticated',
-      'isAuthorized',
       'drawer'
     ]),
     _showDeveloperBlock () {
-      return this.isAuthorized([ROLES.ROLE_DEVELOPER])
+      return this.isAuthorized([this.Roles.ROLE_DEVELOPER])
     },
     _showModeratorBlock () {
-      return this.isAuthorized([ROLES.ROLE_MODERATOR])
+      return this.isAuthorized([this.Roles.ROLE_MODERATOR])
     },
     _showAdminBlock () {
-      return this.isAuthorized([ROLES.ROLE_ADMIN])
+      return this.isAuthorized([this.Roles.ROLE_ADMIN])
     },
     _isConfirmation () {
       return this.$route.name === 'signUpConfirm'

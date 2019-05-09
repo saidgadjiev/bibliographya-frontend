@@ -65,6 +65,23 @@
           >Регистрация
           </v-btn>
         </v-flex>
+        <v-flex xs12>
+          <v-btn
+            class="white--text"
+            block
+            color="light-green darken-2"
+            :loading="_isRequest(Request.OAUTH_REQUEST)"
+            :disabled="_isRequest(Request.OAUTH_REQUEST)"
+            @click="auth('vk')"
+          >
+            <v-icon
+              left
+              color="blue darken-3">
+              fab fa-vk
+            </v-icon>
+            Войти через VK
+          </v-btn>
+        </v-flex>
         <v-flex shrink>
            <router-link class="bib-a" to="/restore">Забыли пароль?</router-link>
         </v-flex>
@@ -78,6 +95,7 @@ import alert from '../../mixins/alert'
 import request from '../../mixins/request'
 import { mapGetters } from 'vuex'
 import { SIGN_IN } from '../../store/action-types'
+import { socialAutheticator } from '../../auth/auth'
 
 export default {
   name: 'SignIn',
@@ -132,6 +150,9 @@ export default {
             )
         }
       })
+    },
+    auth (provider) {
+      socialAutheticator.signIn(provider)
     }
   }
 }

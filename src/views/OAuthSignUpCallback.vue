@@ -1,6 +1,5 @@
 <template>
   <v-layout row wrap justify-center>
-    <error-card v-if="error" :trigger="gotoSignUp"></error-card>
     <progress-circular v-if="_isRequest(Request.SIGN_UP)"/>
   </v-layout>
 </template>
@@ -8,19 +7,13 @@
 <script>
 import request from '../mixins/request'
 import { socialAutheticator } from '../auth/auth'
-import ErrorCard from '../components/error/ErrorCard'
 import ProgressCircular from '../components/progress/ProgressCircular'
 import { SOCIAL_SIGN_UP, ERROR_SOCIAL_SIGN_UP } from '../store/action-types'
 
 export default {
   name: 'OAuthCallback',
   mixins: [request],
-  data () {
-    return {
-      error: false
-    }
-  },
-  components: { ProgressCircular, ErrorCard },
+  components: { ProgressCircular },
   props: {
     providerId: {
       type: String,
@@ -31,9 +24,6 @@ export default {
     this.signUp()
   },
   methods: {
-    gotoSignUp () {
-      this.$router.push('/signUp')
-    },
     signUp () {
       this.error = false
       let that = this
@@ -42,14 +32,14 @@ export default {
         this.$store.dispatch(SOCIAL_SIGN_UP, {
           provider: this.providerId,
           code: this.$route.query.code,
-          redirectUri: socialAutheticator.getRedirectUri(this.providerId)
+          redirectUri: socialAutheticator.getSignUpRedirectUri(this.providerId)
         })
           .then(
             () => {
               that.$router.push('/signUp/confirm')
             },
             e => {
-              that.error = true
+              that.$router.push('/signUp')
             }
           )
       } else {
