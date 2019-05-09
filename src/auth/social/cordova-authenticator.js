@@ -1,6 +1,9 @@
 import authService from '../../services/auth-service'
 import { RESPONSE_TYPE, VK_BLANK_REFDIRECT_URI } from './social'
 import { PROVIDERS } from '../auth'
+import { CLEAR, SET_REQUEST } from '../../store/action-types'
+import { REQUEST } from '../../config'
+import store from '../../store/store'
 
 const Url = require('url-parse')
 
@@ -27,6 +30,7 @@ function signUp (provider) {
   let responseType = RESPONSE_TYPE.AUTHORIZATION_CODE
   let redirectUri = getSignUpRedirectUri(provider)
 
+  store.dispatch('request/' + SET_REQUEST, REQUEST.OAUTH_REQUEST)
   authService.getOauthUrl(provider, responseType, redirectUri)
     .then(
       response => {
@@ -52,7 +56,9 @@ function signUp (provider) {
           // TODO: handle this of course!
         })
       }
-    )
+    ).finally(() => {
+      store.dispatch('request/' + CLEAR)
+    })
 }
 
 function signIn (provider) {
@@ -60,6 +66,7 @@ function signIn (provider) {
   let responseType = RESPONSE_TYPE.AUTHORIZATION_CODE
   let redirectUri = getSignUpRedirectUri(provider)
 
+  store.dispatch('request/' + SET_REQUEST, REQUEST.OAUTH_REQUEST)
   authService.getOauthUrl(provider, responseType, redirectUri)
     .then(
       response => {
@@ -85,7 +92,9 @@ function signIn (provider) {
           // TODO: handle this of course!
         })
       }
-    )
+    ).finally(() => {
+      store.dispatch('request/' + CLEAR)
+    })
 }
 
 export default {

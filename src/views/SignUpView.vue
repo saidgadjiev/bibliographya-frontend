@@ -48,6 +48,8 @@
                 class="white--text"
                 block
                 color="light-green darken-2"
+                :loading="_isRequest(Request.OAUTH_REQUEST)"
+                :disabled="_isRequest(Request.OAUTH_REQUEST)"
                 @click="socialSignUp('vk')"
               >
                 <v-icon
