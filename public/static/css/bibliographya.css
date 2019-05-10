@@ -39,7 +39,7 @@ img {
 .biography-content h5,
 .biography-content h6
 {
-  margin-bottom: 5px;
+  margin-bottom: 5px !important;
 }
 
 .background {
