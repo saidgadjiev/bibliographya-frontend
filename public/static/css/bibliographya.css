@@ -32,6 +32,16 @@ img {
   font-family: Verdana, sans-serif !important;
 }
 
+.biography-content h1,
+.biography-content h2,
+.biography-content h3,
+.biography-content h4,
+.biography-content h5,
+.biography-content h6
+{
+  margin-bottom: 16px;
+}
+
 .background {
   position: fixed;
   top: 0;
