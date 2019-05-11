@@ -1,4 +1,5 @@
-import { getRestUrl } from '../rest'
+import { getRestUrl, getUploadUrl } from '../rest'
+import { isMobilePlatform } from '../config'
 
 export default {
   getCategoryResourceUrl,
@@ -8,6 +9,10 @@ export default {
 }
 
 function getCategoryResourceUrl (path) {
+  if (isMobilePlatform()) {
+    return getUploadUrl('upload/category/' + path)
+  }
+
   return window.location.origin + '/upload/category/' + path
 }
 
@@ -16,6 +21,10 @@ function getShareResourceUrl (path) {
 }
 
 function getMediaResourceUrl () {
+  if (isMobilePlatform()) {
+    getUploadUrl('upload')
+  }
+
   return window.location.origin + '/upload'
 }
 

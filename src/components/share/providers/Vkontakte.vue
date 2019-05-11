@@ -19,7 +19,7 @@ import { documentHref } from '../helpers/href'
 import { sliceThousandInt } from '../helpers/count_number'
 import { getRandomInt } from '../helpers/random_int'
 import { openShareUrl } from '../helpers/new_window'
-import { TITLE } from '../../../config'
+import { TITLE, isMobilePlatform } from '../../../config'
 import magickService from '../../../services/magick-service'
 import fileService from '../../../services/file-service'
 import ProgressCircular from '../../progress/ProgressCircular'
@@ -49,18 +49,25 @@ export default {
   },
   methods: {
     showShareWindow: function () {
-      magickService.getMagick(PROVIDERS.VK, this.magickText, 50)
-        .then(
-          response => {
-            let imagePath = fileService.getShareResourceUrl(response.data.path)
+      if (isMobilePlatform()) {
+        const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(this.$props.pageUrl)}
+              &title=${encodeURIComponent(this.$props.pageTitle)}`
 
-            const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(this.$props.pageUrl)}
-            &title=${encodeURIComponent(this.$props.pageTitle)}
-            &image=${encodeURIComponent(imagePath)}`
+        openShareUrl(shareUrl)
+      } else {
+        magickService.getMagick(PROVIDERS.VK, this.magickText, 50)
+          .then(
+            response => {
+              let imagePath = fileService.getShareResourceUrl(response.data.path)
 
-            openShareUrl(shareUrl)
-          }
-        )
+              const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(this.$props.pageUrl)}
+              &title=${encodeURIComponent(this.$props.pageTitle)}
+              &image=${encodeURIComponent(imagePath)}`
+
+              openShareUrl(shareUrl)
+            }
+          )
+      }
 
       clickEvent(this, 'vkontakte')
     },
