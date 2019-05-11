@@ -4,6 +4,7 @@ import { PROVIDERS } from '../auth'
 import { CLEAR, SET_REQUEST } from '../../store/action-types'
 import { REQUEST } from '../../config'
 import store from '../../store/store'
+import router from '../../router'
 
 const Url = require('url-parse')
 
@@ -26,7 +27,6 @@ function getSignUpRedirectUri (providerId) {
 }
 
 function signUp (provider) {
-  let that = this
   let responseType = RESPONSE_TYPE.AUTHORIZATION_CODE
   let redirectUri = getSignUpRedirectUri(provider)
 
@@ -47,7 +47,7 @@ function signUp (provider) {
             console.log(oauthCallback)
 
             browser.close()
-            that.$router.push(oauthCallback)
+            router.push(oauthCallback)
           }
         })
 
@@ -62,7 +62,6 @@ function signUp (provider) {
 }
 
 function signIn (provider) {
-  let that = this
   let responseType = RESPONSE_TYPE.AUTHORIZATION_CODE
   let redirectUri = getSignUpRedirectUri(provider)
 
@@ -83,7 +82,7 @@ function signIn (provider) {
             console.log(oauthCallback)
 
             browser.close()
-            that.$router.push(oauthCallback)
+            router.push(oauthCallback)
           }
         })
 

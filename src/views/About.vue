@@ -236,7 +236,7 @@ export default {
   data () {
     return {
       shares: true,
-      menuVisible: true
+      menuVisible: false
     }
   },
   computed: {
