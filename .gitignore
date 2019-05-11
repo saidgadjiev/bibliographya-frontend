@@ -25,3 +25,6 @@ yarn-error.log*
 /src-cordova/plugins
 /src-cordova/www
 /public/cordova.js
+/release
+*.apk
+*.keystore
