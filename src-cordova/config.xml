@@ -8,7 +8,6 @@
         Gadjini
     </author>
     <content src="index.html" />
-    <allow-navigation href="http://192.168.34.20:8081" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
