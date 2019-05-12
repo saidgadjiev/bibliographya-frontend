@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.saidgadjiev.bibliographya" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Bibliographya</name>
+<widget id="com.bibliographya.android" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Биографии</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+      Расскажите о себе и станьте известными!
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="bibliographya.help@gmail.com" href="https://bibliographya.com">
+        Gadjini
     </author>
     <content src="index.html" />
     <allow-navigation href="http://192.168.34.20:8081" />
