@@ -2,7 +2,7 @@ const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
 module.exports = {
   productionSourceMap: false,
-  publicPath: process.env.CORDOVA_PLATFORM ? '' : '/',
+  publicPath: '',
   pluginOptions: {
     cordovaPath: 'src-cordova'
   },
