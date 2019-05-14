@@ -34,14 +34,12 @@ export default {
     }
   },
   created () {
+    window.handleOpenURL = function (url) {
+      console.log(url)
+    }
     this.$store.dispatch(GET_ACCOUNT)
     document.addEventListener('deviceready', this.onDeviceReady, false)
     if (utils.isMobileBrowser()) {
-      window.plugins.launcher.launch({ packageName: 'com.bibliographya.android' }, function (data) {
-        console.log('success')
-      }, function (err) {
-        console.log('err ' + err)
-      })
     }
   },
   methods: {

@@ -1,5 +1,8 @@
 <template>
   <v-content>
+    <v-btn @click="openApp">
+      Click
+    </v-btn>
     <nav-bar v-if="$vuetify.breakpoint.smAndDown"></nav-bar>
     <tool-bar></tool-bar>
     <vue-pull-to
@@ -46,6 +49,13 @@ export default {
       'pullToLoadMoreMethod',
       'pullToRefreshMethod'
     ])
+  },
+  methods: {
+    openApp () {
+      let w = window.open('bibliographya://view?id=123')
+
+      console.log(w)
+    }
   },
   created () {
     if (this.$vuetify.breakpoint.mdAndUp) {
