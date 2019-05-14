@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <img src="/static/img/Bibliographya.jpg" class="background">
+    <img :src="_img" class="background">
     <v-layout align-center justify-center row v-if="_isRequest(Request.GET_ACCOUNT)">
       <progress-circular/>
     </v-layout>
@@ -14,6 +14,7 @@ import { GET_ACCOUNT } from './store/action-types'
 import request from './mixins/request'
 import ProgressCircular from './components/progress/ProgressCircular'
 import { TITLE } from './config'
+import utils from './assets/js/utils'
 
 export default {
   name: 'App',
@@ -27,9 +28,21 @@ export default {
     title: TITLE,
     titleTemplate: null
   },
+  computed: {
+    _img () {
+      return process.env.BASE_URL + 'static/img/Bibliographya.jpg'
+    }
+  },
   created () {
     this.$store.dispatch(GET_ACCOUNT)
     document.addEventListener('deviceready', this.onDeviceReady, false)
+    if (utils.isMobileBrowser()) {
+      window.plugins.launcher.launch({ packageName: 'com.bibliographya.android' }, function (data) {
+        console.log('success')
+      }, function (err) {
+        console.log('err ' + err)
+      })
+    }
   },
   methods: {
     onDeviceReady () {
