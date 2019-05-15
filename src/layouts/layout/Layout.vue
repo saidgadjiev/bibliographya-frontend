@@ -1,28 +1,8 @@
 <template>
   <v-content>
     <nav-bar v-if="$vuetify.breakpoint.smAndDown"></nav-bar>
-    <v-card height="100">
-      <v-card-text style="height:100%">
-        <v-layout row fill-height>
-          <v-flex shrink align-self-center>
-            <v-icon large>
-              remove_circle
-            </v-icon>
-          </v-flex>
-          <v-flex shrink align-self-center>
-            <div style="display: flex; align-items:center;">
-              <v-icon large>gavel</v-icon>
-              <strong>Биографии</strong>
-            </div>
-          </v-flex>
-          <v-spacer></v-spacer>
-          <v-flex shrink align-self-center>
-            OPEN
-          </v-flex>
-        </v-layout>
-      </v-card-text>
-    </v-card>
     <tool-bar></tool-bar>
+    <open-native-bar v-if="_isSupportedBrowser"/>
     <vue-pull-to
       :top-load-method="pullToRefreshMethod"
       :bottom-load-method="pullToLoadMoreMethod"
@@ -54,6 +34,7 @@ import { mapGetters } from 'vuex'
 import VuePullTo from '../../components/pullTo/VuePullTo'
 import Sidebar from './Sidebar'
 import utils from '../../assets/js/utils'
+import OpenNativeBar from './OpenNativeBar'
 
 export default {
   name: 'Layout',
@@ -63,6 +44,7 @@ export default {
     }
   },
   components: {
+    OpenNativeBar,
     Sidebar,
     VuePullTo,
     NavBar,
@@ -73,15 +55,8 @@ export default {
       'pullToLoadMoreMethod',
       'pullToRefreshMethod'
     ]),
-    _isMobileBrowser () {
-      return utils.isMobileBrowser()
-    },
-    _bibliographyaPath () {
-      let path = this.$route.fullPath
-
-      path = path.substring(1)
-
-      return 'bibliographya://' + path
+    _isSupportedBrowser () {
+      return utils.isSupportedBrowser()
     }
   },
   created () {
