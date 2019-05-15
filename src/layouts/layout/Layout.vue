@@ -1,9 +1,27 @@
 <template>
   <v-content>
-    <v-btn @click="openApp">
-      Click
-    </v-btn>
     <nav-bar v-if="$vuetify.breakpoint.smAndDown"></nav-bar>
+    <v-card height="100">
+      <v-card-text style="height:100%">
+        <v-layout row fill-height>
+          <v-flex shrink align-self-center>
+            <v-icon large>
+              remove_circle
+            </v-icon>
+          </v-flex>
+          <v-flex shrink align-self-center>
+            <div style="display: flex; align-items:center;">
+              <v-icon large>gavel</v-icon>
+              <strong>Биографии</strong>
+            </div>
+          </v-flex>
+          <v-spacer></v-spacer>
+          <v-flex shrink align-self-center>
+            OPEN
+          </v-flex>
+        </v-layout>
+      </v-card-text>
+    </v-card>
     <tool-bar></tool-bar>
     <vue-pull-to
       :top-load-method="pullToRefreshMethod"
@@ -35,9 +53,15 @@ import { SET_DRAWER } from '../../store/mutation-types'
 import { mapGetters } from 'vuex'
 import VuePullTo from '../../components/pullTo/VuePullTo'
 import Sidebar from './Sidebar'
+import utils from '../../assets/js/utils'
 
 export default {
   name: 'Layout',
+  data () {
+    return {
+      runAppAlert: true
+    }
+  },
   components: {
     Sidebar,
     VuePullTo,
@@ -48,13 +72,16 @@ export default {
     ...mapGetters([
       'pullToLoadMoreMethod',
       'pullToRefreshMethod'
-    ])
-  },
-  methods: {
-    openApp () {
-      let w = window.open('bibliographya://view?id=123')
+    ]),
+    _isMobileBrowser () {
+      return utils.isMobileBrowser()
+    },
+    _bibliographyaPath () {
+      let path = this.$route.fullPath
 
-      console.log(w)
+      path = path.substring(1)
+
+      return 'bibliographya://' + path
     }
   },
   created () {

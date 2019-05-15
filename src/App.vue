@@ -14,7 +14,8 @@ import { GET_ACCOUNT } from './store/action-types'
 import request from './mixins/request'
 import ProgressCircular from './components/progress/ProgressCircular'
 import { TITLE } from './config'
-import utils from './assets/js/utils'
+
+const Url = require('url-parse')
 
 export default {
   name: 'App',
@@ -34,13 +35,12 @@ export default {
     }
   },
   created () {
-    window.handleOpenURL = function (url) {
+    window.handleOpenURL = function (bibliographyaUrl) {
+      let url = new Url(bibliographyaUrl)
       console.log(url)
     }
     this.$store.dispatch(GET_ACCOUNT)
     document.addEventListener('deviceready', this.onDeviceReady, false)
-    if (utils.isMobileBrowser()) {
-    }
   },
   methods: {
     onDeviceReady () {
