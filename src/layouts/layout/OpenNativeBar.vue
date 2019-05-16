@@ -9,7 +9,7 @@
         </v-flex>
         <v-flex shrink align-self-center class="pl-4">
           <div style="display: flex; flex-direction: column; align-items: center">
-            <bibliographya-icon color="#1565C0" size="48"/>
+            <bibliographya-native-icon/>
             <strong>Биографии</strong>
           </div>
         </v-flex>
@@ -25,12 +25,12 @@
 </template>
 
 <script>
-import BibliographyaIcon from '../../components/icon/BibliographyaIcon'
 import utils from '../../assets/js/utils'
+import BibliographyaNativeIcon from '../../components/icon/BibliographyaNativeIcon'
 
 export default {
   name: 'OpenNativeBar',
-  components: { BibliographyaIcon },
+  components: { BibliographyaNativeIcon },
   computed: {
     _bibliographyaPath () {
       let path = this.$route.fullPath
