@@ -3,13 +3,13 @@
     <v-card-text style="height:100%">
       <v-layout row fill-height>
         <v-flex shrink align-self-center>
-          <v-icon large>
+          <v-icon medium @click="closeSuggest">
             fas fa-times
           </v-icon>
         </v-flex>
-        <v-flex shrink align-self-center>
-          <div style="display: flex; align-items:center;">
-            <bibliographya-icon/>
+        <v-flex shrink align-self-center class="pl-4">
+          <div style="display: flex; flex-direction: column; align-items: center">
+            <bibliographya-icon color="#1565C0" size="48"/>
             <strong>Биографии</strong>
           </div>
         </v-flex>
@@ -44,16 +44,18 @@ export default {
     }
   },
   methods: {
+    closeSuggest () {
+      this.$emit('close')
+    },
     openApp () {
       if (this._isAndroidBrowser) {
         let w = window.open(this._bibliographyaPath, '_system')
 
         setTimeout(function () {
           if (!w.closed) {
-            w.close()
-            w.open('appUrl')
+            w.open('market://details?id=com.saidgadjiev.bibliographya', '_system')
           }
-        }, 25)
+        }, 100)
       }
     }
   }

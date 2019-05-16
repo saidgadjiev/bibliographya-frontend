@@ -35,12 +35,16 @@ export default {
     }
   },
   created () {
-    window.handleOpenURL = function (bibliographyaUrl) {
-      let url = new Url(bibliographyaUrl)
-      console.log(url)
-    }
+    let that = this
     this.$store.dispatch(GET_ACCOUNT)
     document.addEventListener('deviceready', this.onDeviceReady, false)
+
+    window.handleOpenURL = function (bibliographyaUrl) {
+      let url = new Url(bibliographyaUrl)
+      let routeUrl = url.host + url.pathname + url.query + url.hash
+
+      that.$router.push(routeUrl)
+    }
   },
   methods: {
     onDeviceReady () {

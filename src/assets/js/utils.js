@@ -1,3 +1,5 @@
+import { isMobilePlatform } from '../../config'
+
 function scrollIt (destination, duration = 200, easing = 'linear', callback) {
   const easings = {
     linear (t) {
@@ -239,7 +241,7 @@ function throttle (callback, time) {
 }
 
 function isSupportedBrowser () {
-  if (navigator.userAgent.match(/Android/i)) {
+  if (navigator.userAgent.match(/Android/i) && !isMobilePlatform()) {
     return true
   } else {
     return false

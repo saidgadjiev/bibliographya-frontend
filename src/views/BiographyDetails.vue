@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap fill-height justify-center>
     <progress-circular v-if="biographyLoading"/>
-    <v-flex xs12 v-else>
+    <v-flex xs12 v-else-if="biography">
       <biography-card
         live
         show-comments

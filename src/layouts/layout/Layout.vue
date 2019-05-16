@@ -2,7 +2,7 @@
   <v-content>
     <nav-bar v-if="$vuetify.breakpoint.smAndDown"></nav-bar>
     <tool-bar></tool-bar>
-    <open-native-bar v-if="_isSupportedBrowser"/>
+    <open-native-bar v-if="_isSupportedBrowser && runAppAlert" @close="runAppAlert = false"/>
     <vue-pull-to
       :top-load-method="pullToRefreshMethod"
       :bottom-load-method="pullToLoadMoreMethod"
