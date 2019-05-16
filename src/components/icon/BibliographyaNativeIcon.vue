@@ -7,8 +7,8 @@
       <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
          stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
          font-size="none" text-anchor="none" style="mix-blend-mode: normal">
-        <path d="" fill="blue"></path>
-        <path d="" fill="blue"></path>
+        <path d="" fill="none"></path>
+        <path d="" fill="none"></path>
         <g fill="#1565C0">
           <path
             d="M96,7.68c-48.77952,0 -88.32,39.54048 -88.32,88.32c0,48.77952 39.54048,88.32 88.32,88.32c48.77952,0 88.32,-39.54048 88.32,-88.32c0,-48.77952 -39.54048,-88.32 -88.32,-88.32z"></path>
