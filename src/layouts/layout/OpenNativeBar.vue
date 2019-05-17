@@ -3,21 +3,22 @@
     <v-card-text style="height:100%">
       <v-layout row fill-height>
         <v-flex shrink align-self-center>
-          <v-icon medium @click="closeSuggest">
+          <v-icon style="font-size: 1.5rem" @click="closeSuggest">
             fas fa-times
           </v-icon>
         </v-flex>
-        <v-flex shrink align-self-center class="pl-4">
-          <div style="display: flex; flex-direction: column; align-items: center">
+        <v-flex shrink align-self-center class="pl-2">
+          <div style="display: flex; flex-direction: row; align-items: center">
             <bibliographya-native-icon/>
-            <strong>Биографии</strong>
+            <div style="display: flex; flex-direction: column; align-items: center" class="pl-1">
+              <span>Приложение</span>
+              <span style="font-size: 1.2rem" class="font-weight-medium">Биографии</span>
+            </div>
           </div>
         </v-flex>
         <v-spacer></v-spacer>
         <v-flex shrink align-self-center>
-          <v-btn small color="primary" flat @click="openApp">
-            Открыть
-          </v-btn>
+          <a :href="_intent" class="bib-a font-weight-medium">ОТКРЫТЬ</a>
         </v-flex>
       </v-layout>
     </v-card-text>
@@ -25,38 +26,16 @@
 </template>
 
 <script>
-import utils from '../../assets/js/utils'
 import BibliographyaNativeIcon from '../../components/icon/BibliographyaNativeIcon'
+import nativeApp from '../../mixins/native-app'
 
 export default {
   name: 'OpenNativeBar',
+  mixins: [nativeApp],
   components: { BibliographyaNativeIcon },
-  computed: {
-    _bibliographyaPath () {
-      let path = this.$route.fullPath
-
-      path = path.substring(1)
-
-      return 'bibliographya://' + path
-    },
-    _isAndroidBrowser () {
-      return utils.isAndroidBrowser()
-    }
-  },
   methods: {
     closeSuggest () {
       this.$emit('close')
-    },
-    openApp () {
-      if (this._isAndroidBrowser) {
-        let w = window.open(this._bibliographyaPath, '_system')
-
-        setTimeout(function () {
-          if (!w.closed) {
-            w.open('market://details?id=com.saidgadjiev.bibliographya', '_system')
-          }
-        }, 100)
-      }
     }
   }
 }

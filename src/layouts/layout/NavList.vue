@@ -163,6 +163,14 @@
         <v-list-tile-title>О нас</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
+    <v-list-tile :href="_intent">
+      <v-list-tile-action>
+        <v-icon>fas fa-external-link-alt</v-icon>
+      </v-list-tile-action>
+      <v-list-tile-content>
+        <v-list-tile-title>Открыть в приложении</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
   </v-list>
   </div>
 </template>
@@ -174,11 +182,12 @@ import request from '../../mixins/request'
 import alert from '../../mixins/alert'
 import authorize from '../../mixins/authorize'
 import { SIGN_OUT, CANCEL_SIGN_UP } from '../../store/action-types'
+import nativeApp from '../../mixins/native-app'
 
 export default {
   name: 'NavList',
   components: { ProgressCircular },
-  mixins: [request, alert, authorize],
+  mixins: [request, alert, authorize, nativeApp],
   computed: {
     ...mapGetters([
       'getUserId',
