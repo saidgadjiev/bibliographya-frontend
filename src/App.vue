@@ -36,7 +36,7 @@ export default {
   },
   created () {
     let that = this
-    this.$store.dispatch(GET_ACCOUNT)
+    this.loadAccount()
     document.addEventListener('deviceready', this.onDeviceReady, false)
 
     window.handleOpenURL = function (bibliographyaUrl) {
@@ -47,12 +47,11 @@ export default {
     }
   },
   methods: {
+    loadAccount () {
+      this.$store.dispatch(GET_ACCOUNT)
+    },
     onDeviceReady () {
-      console.log('Device Model: ' + device.model)
-      console.log('Device Cordova: ' + device.cordova)
-      console.log('Device Platform: ' + device.platform)
-      console.log('Device UUID: ' + device.uuid)
-      console.log('Device Version: ' + device.version)
+      navigator.splashscreen.hide()
     }
   },
   components: {

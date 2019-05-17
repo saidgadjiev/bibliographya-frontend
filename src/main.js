@@ -91,6 +91,8 @@ axios.interceptors.request.use(function (request) {
   return Promise.reject(err)
 })
 
+axios.defaults.timeout = 15000
+
 axios.interceptors.response.use(function (response) {
   return response
 }, function (err) {
