@@ -48,9 +48,11 @@ import SideList from '../components/fix/sidebar/SideList'
 import { FIX_STATUS, BIOGRAPHY_CLAMP_SIZE, TREE_CLAMP_SIZE } from '../config'
 import { mapGetters } from 'vuex'
 import BiographyFixCard from '../components/fix/card/BiographyFixCard'
+import pullToRefresh from '../mixins/pullToRefresh'
 
 export default {
   name: 'BiographiesFixesList',
+  mixins: [pullToRefresh],
   data () {
     return {
       filter: undefined,
@@ -67,6 +69,10 @@ export default {
     }
   },
   methods: {
+    pullToRefresh (loaded) {
+      loaded('done')
+      this.resetList()
+    },
     resetList () {
       ++this.resetId
     },

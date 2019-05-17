@@ -21,10 +21,11 @@ import userAccountService from '../services/user-account-service'
 import viewCounterService from '../services/view-counter-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import ProgressCircular from '../components/progress/ProgressCircular'
+import pullToRefresh from '../mixins/pullToRefresh'
 
 export default {
   name: 'Profile',
-  mixins: [alert],
+  mixins: [alert, pullToRefresh],
   data () {
     return {
       biographyLoading: true,
@@ -49,6 +50,11 @@ export default {
     this.loadAccount()
   },
   methods: {
+    pullToRefresh (loaded) {
+      loaded('done')
+      this.biographyLoading = true
+      this.loadAccount()
+    },
     loadAccount () {
       let that = this
 

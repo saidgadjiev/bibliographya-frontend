@@ -4,6 +4,7 @@
     :infinite-id.sync="infiniteId"
     :delete-id="deleteId"
     :delete-index="deleteIndex"
+    :reset-id="resetId"
     :header-slot="true"
   >
     <template slot="header">
@@ -48,18 +49,25 @@
 import biographyCategoryService from '../services/biography-category-service'
 import List from '../components/list/List'
 import CategoryCard from '../components/category/CategoryCard'
+import pullToRefresh from '../mixins/pullToRefresh'
 
 export default {
   name: 'CategoriesAdmin',
+  mixins: [pullToRefresh],
   data () {
     return {
       removeLoading: false,
       infiniteId: +new Date(),
       deleteId: +new Date(),
+      resetId: +new Date(),
       deleteIndex: -1
     }
   },
   methods: {
+    pullToRefresh (loaded) {
+      loaded('done')
+      ++this.resetId
+    },
     createCategory () {
       this.$router.push('/create/category')
     },

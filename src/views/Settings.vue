@@ -76,10 +76,11 @@ import AlertMessage from '../components/alert/AlertMessage'
 import { PASSWORD_CHANGE_SUCCESS } from '../messages'
 import { REQUEST } from '../config'
 import ProgressCircular from '../components/progress/ProgressCircular'
+import pullToRefresh from '../mixins/pullToRefresh'
 
 export default {
   name: 'Settings',
-  mixins: [alert, request],
+  mixins: [alert, request, pullToRefresh],
   components: { ProgressCircular, AlertMessage },
   data () {
     return {
@@ -112,6 +113,11 @@ export default {
     this.loadSettings()
   },
   methods: {
+    pullToRefresh (loaded) {
+      loaded('done')
+      this.settingsLoading = true
+      this.loadSettings()
+    },
     loadSettings () {
       let that = this
 

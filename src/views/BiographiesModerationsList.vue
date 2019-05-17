@@ -54,8 +54,10 @@ import { mapGetters } from 'vuex'
 import biographyModerationService from '../services/biography-moderation-service'
 import List from '../components/list/List'
 import BiographyCard from '../components/biography/card/BiographyCard'
+import pullToRefresh from '../mixins/pullToRefresh'
 
 export default {
+  mixins: [pullToRefresh],
   data () {
     return {
       fab: false,
@@ -75,6 +77,10 @@ export default {
     ])
   },
   methods: {
+    pullToRefresh (loaded) {
+      loaded('done')
+      this.resetList()
+    },
     biographyRemoved (index) {
       this.deleteIndex = index
       ++this.deleteId

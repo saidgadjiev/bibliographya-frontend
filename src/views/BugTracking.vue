@@ -45,9 +45,11 @@ import bugTrackingService from '../services/bug-tracking-service'
 import SideList from '../components/bug/sidebar/SideList'
 import { BUG_STATUS } from '../config'
 import { mapGetters } from 'vuex'
+import pullToRefresh from '../mixins/pullToRefresh'
 
 export default {
   name: 'BugTracking',
+  mixins: [pullToRefresh],
   data () {
     return {
       query: undefined,
@@ -62,6 +64,10 @@ export default {
     ])
   },
   methods: {
+    pullToRefresh (loaded) {
+      loaded('done')
+      this.resetList()
+    },
     resetList () {
       ++this.resetId
     },

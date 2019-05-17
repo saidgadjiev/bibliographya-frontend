@@ -1,6 +1,7 @@
 <template>
   <list
     :infinite-load="infiniteLoad"
+    :reset-id="resetId"
   >
     <template slot="item" slot-scope="{ item }">
       <category-card
@@ -21,10 +22,21 @@
 import List from '../components/list/List'
 import CategoryCard from '../components/category/CategoryCard'
 import biographyCategoryService from '../services/biography-category-service'
+import pullToRefresh from '../mixins/pullToRefresh'
 
 export default {
   name: 'CategoriesList',
+  mixins: [pullToRefresh],
+  data () {
+    return {
+      resetId: +new Date()
+    }
+  },
   methods: {
+    pullToRefresh (loaded) {
+      loaded('done')
+      ++this.resetId
+    },
     infiniteLoad (limit, offset) {
       let that = this
 
