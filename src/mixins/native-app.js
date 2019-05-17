@@ -21,6 +21,9 @@ export default {
     },
     _isAndroidBrowser () {
       return utils.isAndroidBrowser()
+    },
+    _isSupportedBrowser () {
+      return utils.isSupportedBrowser()
     }
   },
   methods: {
