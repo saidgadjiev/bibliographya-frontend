@@ -4,7 +4,7 @@ import BiographiesList from './views/BiographiesList'
 import store from './store/store'
 import error403 from './views/403'
 import error404 from './views/404'
-import { ROLES } from './config'
+import { ROLES, REQUEST } from './config'
 import biographyService from './services/cache-biography-service'
 import { USER_STATE } from './store/modules/user-module'
 import { GET_CONFIRMATION } from './store/action-types'
@@ -38,7 +38,7 @@ const ConfirmSignUp = () => import('./views/ConfirmSignUp')
 Vue.use(Router)
 
 const waitForAccount = function (callback) {
-  if (store.getters.getStatus === USER_STATE.NONE) {
+  if (store.getters.getStatus === USER_STATE.NONE && store.getters['request/request'] === REQUEST.GET_ACCOUNT) {
     store.watch(store.getters.watchState, function () {
       if (store.getters.getStatus !== USER_STATE.NONE) {
         callback()

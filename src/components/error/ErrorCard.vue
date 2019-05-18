@@ -9,7 +9,7 @@
       </span>
     </v-card-text>
     <v-card-actions style="justify-content: center">
-      <v-btn color="error" @click="trigger">
+      <v-btn block color="error" @click="trigger">
         Попробовать еще раз
       </v-btn>
     </v-card-actions>

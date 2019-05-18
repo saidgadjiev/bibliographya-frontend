@@ -12,7 +12,7 @@
           <slot name="item" v-bind:item="item" v-bind:index="index">
           </slot>
         </v-flex>
-        <v-flex xs12>
+        <v-flex xs12 md6>
           <infinite-loading style="width: 100%;" :identifier="infiniteId" @infinite="load">
             <template slot="spinner">
               <progress-circular/>

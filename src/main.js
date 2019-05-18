@@ -86,15 +86,16 @@ Vue.config.devtools = true
 axios.defaults.withCredentials = true
 
 axios.interceptors.request.use(function (request) {
-  request.headers.common[TOKEN_NAME] = getUserToken()
+  if (navigator.onLine) {
+    request.headers.common[TOKEN_NAME] = getUserToken()
 
-  return request
+    return request
+  }
+
+  return false
 }, function (err) {
-  Vue.$log.error(err)
   return Promise.reject(err)
 })
-
-axios.defaults.timeout = 15000
 
 axios.interceptors.response.use(function (response) {
   return response
