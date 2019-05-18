@@ -6,26 +6,29 @@
     app
     v-model="_drawer"
   >
+    <vue-pull-to
+      :top-load-method="loadAccount"
+    >
     <v-toolbar flat class="transparent pt-3 pb-3" v-if="isAuthenticated" @click="$router.push('/profile/' + getUserId)">
       <div>
         <span class="font-weight-regular headline user-name">{{ _fullName }}</span>
       </div>
     </v-toolbar>
     <nav-list/>
+    </vue-pull-to>
   </v-navigation-drawer>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import request from '../../mixins/request'
-import alert from '../../mixins/alert'
 import { SET_DRAWER } from '../../store/mutation-types'
 import NavList from './NavList'
+import VuePullTo from '../../components/pullTo/VuePullTo'
+import { GET_ACCOUNT } from '../../store/action-types'
 
 export default {
   name: 'NavBar',
-  components: { NavList },
-  mixins: [request, alert],
+  components: { VuePullTo, NavList },
   computed: {
     ...mapGetters([
       'getUserId',
@@ -45,6 +48,14 @@ export default {
       set (val) {
         this.$store.commit(SET_DRAWER, val)
       }
+    }
+  },
+  methods: {
+    loadAccount (load) {
+      this.$store.dispatch(GET_ACCOUNT)
+        .finally(() => {
+          load('done')
+        })
     }
   }
 }

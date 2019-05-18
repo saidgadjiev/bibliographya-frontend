@@ -246,20 +246,29 @@ const actions = {
   [GET_ACCOUNT] ({ dispatch, commit }) {
     dispatch('request/' + SET_REQUEST, REQUEST.GET_ACCOUNT)
 
-    authService.getAccount()
-      .then(
-        accountResponse => {
-          commit(SIGN_IN_SUCCESS, {
-            user: accountResponse.data
-          })
-        },
-        e => {
-          commit(SIGN_OUT_SUCCESS)
-        }
-      )
-      .finally(() => {
-        dispatch('request/' + CLEAR)
-      })
+    return new Promise((resolve, reject) => {
+      authService.getAccount()
+        .then(
+          accountResponse => {
+            commit(SIGN_IN_SUCCESS, {
+              user: accountResponse.data
+            })
+
+            resolve()
+          },
+          e => {
+            if (e.response.status === HttpStatus.UNAUTHORIZED) {
+              resolve()
+              commit(SIGN_OUT_SUCCESS)
+            }
+
+            reject(e)
+          }
+        )
+        .finally(() => {
+          dispatch('request/' + CLEAR)
+        })
+    })
   }
 }
 
@@ -282,22 +291,34 @@ const getters = {
     return state.user
   },
   getUserId: (state, getters) => {
-    return getters.getUser.id
+    let user = getters.getUser || {}
+
+    return user.id
   },
   getBiography: (state, getters) => {
-    return getters.getUser.biography
+    let user = getters.getUser || {}
+
+    return user.biography
   },
   getFirstName: (state, getters) => {
-    return getters.getBiography.firstName
+    let biography = getters.getBiography || {}
+
+    return biography.firstName
   },
   getLastName: (state, getters) => {
-    return getters.getBiography.lastName
+    let biography = getters.getBiography || {}
+
+    return biography.lastName
   },
   getMiddleName: (state, getters) => {
-    return getters.getBiography.middleName
+    let biography = getters.getBiography || {}
+
+    return biography.middleName
   },
   getBiographyId: (state, getters) => {
-    return getters.getBiography.id
+    let biography = getters.getBiography || {}
+
+    return biography.id
   },
   isAuthorized: (state, getters) => roles => {
     if (!getters.isAuthenticated) {

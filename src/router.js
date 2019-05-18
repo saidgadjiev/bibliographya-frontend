@@ -5,7 +5,7 @@ import store from './store/store'
 import error403 from './views/403'
 import error404 from './views/404'
 import { ROLES } from './config'
-import biographyService from './services/biography-service'
+import biographyService from './services/cache-biography-service'
 import { USER_STATE } from './store/modules/user-module'
 import { GET_CONFIRMATION } from './store/action-types'
 

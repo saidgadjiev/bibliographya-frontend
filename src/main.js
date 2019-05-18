@@ -11,10 +11,11 @@ import VueLogger from 'vuejs-logger'
 import VueMoment from 'vue-moment'
 import moment from 'moment-timezone'
 import VueYandexMetrika from 'vue-yandex-metrika'
-import { METRIKA_ID, TOKEN_NAME } from './config'
+import { METRIKA_ID, TOKEN_NAME, REQUEST } from './config'
 import Meta from 'vue-meta'
 import VueCountdown from '@chenfengyuan/vue-countdown'
 import { getUserToken } from './store/modules/user-module'
+import VueOffline from 'vue-offline'
 
 import store from './store/store'
 
@@ -29,6 +30,8 @@ require('moment/locale/ru')
 Vue.use(VueMoment, {
   moment
 })
+
+Vue.use(VueOffline)
 
 Vue.component(VueCountdown.name, VueCountdown)
 
@@ -79,7 +82,7 @@ Vue.use(VueYandexMetrika, {
 Vue.use(VeeValidate, config)
 
 Vue.config.productionTip = false
-
+Vue.config.devtools = true
 axios.defaults.withCredentials = true
 
 axios.interceptors.request.use(function (request) {
@@ -96,6 +99,9 @@ axios.defaults.timeout = 15000
 axios.interceptors.response.use(function (response) {
   return response
 }, function (err) {
+  if (store.getters['request/request'] === REQUEST.GET_ACCOUNT) {
+    return Promise.reject(err)
+  }
   if (axios.isCancel(err)) {
     if (!isProduction) {
       console.log('request canceled')

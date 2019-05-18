@@ -33,7 +33,7 @@
 
 <script>
 import List from '../components/list/List'
-import biographyService from '../services/biography-service'
+import biographyService from '../services/cache-biography-service'
 import { MODERATION_STATUS, TREE_CLAMP_SIZE, BIOGRAPHY_CLAMP_SIZE } from '../config'
 import BiographyCard from '../components/biography/card/BiographyCard'
 

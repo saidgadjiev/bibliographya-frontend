@@ -63,8 +63,8 @@
 
 <script>
 import List from '../components/list/List'
-import biographyService from '../services/biography-service'
-import biographyCategoryService from '../services/biography-category-service'
+import biographyService from '../services/cache-biography-service'
+import biographyCategoryService from '../services/cache-biography-category-service'
 import BiographyCard2 from '../components/biography/card/BiographyCard'
 import CategoryCard from '../components/category/CategoryCard'
 import SideBar from '../components/biography/sidebar/SideBar'
@@ -102,7 +102,10 @@ export default {
     },
     pullToRefresh (loaded) {
       loaded('done')
-      ++this.resetId
+
+      if (this.isOnline) {
+        ++this.resetId
+      }
     },
     biographyRemoved (index) {
       this.deleteIndex = index

@@ -11,7 +11,8 @@ const state = {
   drawer: false,
   pullToRefreshMethod: null,
   pullToLoadMoreMethod: null,
-  showSearch: false
+  showSearch: false,
+  accountLoading: true
 }
 
 const mutations = {

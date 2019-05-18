@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import biographyCategoryService from '../services/biography-category-service'
+import biographyCategoryService from '../services/cache-biography-category-service'
 import List from '../components/list/List'
 import CategoryCard from '../components/category/CategoryCard'
 import pullToRefresh from '../mixins/pullToRefresh'

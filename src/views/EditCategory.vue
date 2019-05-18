@@ -59,7 +59,7 @@
 
 <script>
 import fileService from '../services/file-service'
-import biographyCategoryService from '../services/biography-category-service'
+import biographyCategoryService from '../services/cache-biography-category-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import { CATEGORY_CREATED, CATEGORY_CHANGED } from '../messages'
 import alert from '../mixins/alert'

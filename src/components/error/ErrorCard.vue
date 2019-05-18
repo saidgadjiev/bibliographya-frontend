@@ -1,12 +1,15 @@
 <template>
   <v-card>
     <v-card-text class="text-xs-center">
-      <span class="font-weight-bold">
+      <span v-if="isOnline" class="font-weight-bold">
         Произошла ошибка
       </span>
+      <span v-else class="font-weight-bold">
+        Отсутствует подключение к Интернету
+      </span>
     </v-card-text>
-    <v-card-actions>
-      <v-btn block color="error" @click="trigger">
+    <v-card-actions style="justify-content: center">
+      <v-btn color="error" @click="trigger">
         Попробовать еще раз
       </v-btn>
     </v-card-actions>

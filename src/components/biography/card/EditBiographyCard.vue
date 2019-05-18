@@ -104,8 +104,8 @@
 </template>
 
 <script>
-import biographyService from '../../../services/biography-service'
-import biographyCategoryService from '../../../services/biography-category-service'
+import biographyService from '../../../services/cache-biography-service'
+import biographyCategoryService from '../../../services/cache-biography-category-service'
 import TinyEditor from '../../tinymce/TinyEditor'
 import alert from '../../../mixins/alert'
 import fileService from '../../../services/file-service'

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import biographyService from '../services/biography-service'
+import biographyService from '../services/cache-biography-service'
 import EditBiographyCard from '../components/biography/card/EditBiographyCard.vue'
 import AlertMessage from '../components/alert/AlertMessage'
 import alert from '../mixins/alert'

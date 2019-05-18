@@ -66,7 +66,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { ROLES, PUBLISH_STATUS, MODERATION_STATUS, REQUEST } from '../../../config'
-import biographyService from '../../../services/biography-service'
+import biographyService from '../../../services/cache-biography-service'
 import CreateFixSuggestDialog from '../../fix/dialog/CreateFixSuggestDialog.vue'
 import { ENABLE_COMMENTS, DISABLE_COMMENTS, PUBLISHED, UNPUBLISHED, CANT_PUBLISH } from '../../../messages'
 import alert from '../../../mixins/alert'

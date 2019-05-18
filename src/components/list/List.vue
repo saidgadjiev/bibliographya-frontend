@@ -12,7 +12,7 @@
           <slot name="item" v-bind:item="item" v-bind:index="index">
           </slot>
         </v-flex>
-        <v-flex md6 xs12>
+        <v-flex xs12>
           <infinite-loading style="width: 100%;" :identifier="infiniteId" @infinite="load">
             <template slot="spinner">
               <progress-circular/>
@@ -112,6 +112,11 @@ export default {
   },
   methods: {
     pullToLoadMore (loaded) {
+      if (this.isOffline) {
+        loaded('done')
+
+        return
+      }
       let state = {
         loaded: function () {
           loaded('done')

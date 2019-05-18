@@ -3,7 +3,6 @@ import { getRestUrl } from '../rest'
 const axios = require('axios')
 
 export default {
-  getBiography,
   getBiographyById,
   getBiographies,
   getMyBiographies,
@@ -15,10 +14,6 @@ export default {
   canEdit,
   disableComments,
   anonymousCreator
-}
-
-function getBiography (username, filter) {
-  return axios.get(getRestUrl('biographies/') + (filter ? '?' + filter : ''))
 }
 
 function getBiographyById (id) {

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import biographyService from '../services/biography-service'
+import biographyService from '../services/cache-biography-service'
 import BiographyCard from '../components/biography/card/BiographyCard'
 import ProgressCircular from '../components/progress/ProgressCircular'
 import pullToRefresh from '../mixins/pullToRefresh'
