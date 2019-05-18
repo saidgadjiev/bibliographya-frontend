@@ -4,7 +4,7 @@ import BiographiesList from './views/BiographiesList'
 import store from './store/store'
 import error403 from './views/403'
 import error404 from './views/404'
-import { ROLES, REQUEST } from './config'
+import { REQUEST, ROLES } from './config'
 import biographyService from './services/cache-biography-service'
 import { USER_STATE } from './store/modules/user-module'
 import { GET_CONFIRMATION } from './store/action-types'
@@ -81,21 +81,17 @@ const requireAuth = function (to, from, next) {
 }
 
 const ifNotAuthenticated = function (to, from, next) {
-  function proceed () {
-    if (store.getters.isAuthenticated) {
-      cancelRoute(from, next)
-    } else {
-      let meta = to.meta
+  if (store.getters.isAuthenticated) {
+    cancelRoute(from, next)
+  } else {
+    let meta = to.meta
 
-      if (meta.expression) {
-        meta.expression(to, from, next)
-      } else {
-        next()
-      }
+    if (meta.expression) {
+      meta.expression(to, from, next)
+    } else {
+      next()
     }
   }
-
-  waitForAccount(proceed)
 }
 
 let router = new Router({
