@@ -65,14 +65,4 @@ export default {
   .user-name {
     word-break: break-all !important;
   }
-
-  .md-drawer {
-    transform: none !important;
-    height: auto !important;
-    z-index: inherit;
-    width: 240px !important;
-    left: unset !important;
-    background-color: inherit !important;
-  }
-
 </style>

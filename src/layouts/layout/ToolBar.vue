@@ -14,7 +14,7 @@
         <v-toolbar-side-icon @click.stop="doDrawer"></v-toolbar-side-icon>
         <router-link to="/" class="title pl-2 white--text font-weight-light">{{ _title }}</router-link>
       </div>
-      <div style="height: 50px; width: 240px" v-else>
+      <div style="height: 50px; width: 290px" v-else>
         <div class="d-inline-flex align-center" style="height: 100%">
           <bibliographya-icon/>
         <router-link to="/" class="title pl-2 white--text font-weight-regular">{{ _title }}</router-link>
@@ -163,7 +163,7 @@ export default {
   }
 
   .md-toolbar >>> .v-toolbar__content {
-    width: 960px !important;
+    width: 1160px !important;
     margin: auto !important;
     padding: 0 !important;
   }

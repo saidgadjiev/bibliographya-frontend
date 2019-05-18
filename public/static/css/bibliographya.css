@@ -64,7 +64,7 @@ img {
   height: auto !important;
   top: auto !important;
   z-index: inherit;
-  width: 230px !important;
+  width: 278px !important;
   left: unset !important;
   position: fixed;
   background-color: transparent !important;
@@ -83,7 +83,7 @@ img {
   padding-top: 0 !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
-  width: 960px !important;
+  width: 1160px !important;
 }
 
 .bib-mobile-container {

@@ -257,7 +257,7 @@ const actions = {
             resolve()
           },
           e => {
-            if (e.response.status === HttpStatus.UNAUTHORIZED) {
+            if (e.response && e.response.status === HttpStatus.UNAUTHORIZED) {
               resolve()
               commit(SIGN_OUT_SUCCESS)
             }

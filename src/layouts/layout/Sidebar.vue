@@ -17,7 +17,6 @@ export default {
     transform: none !important;
     height: auto !important;
     z-index: inherit;
-    width: 228px !important;
     left: unset !important;
     background-color: inherit !important;
   }

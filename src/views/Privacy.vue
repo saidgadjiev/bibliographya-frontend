@@ -6,10 +6,10 @@
     <v-card-text>
       <p>Effective date: February 03, 2019</p>
 
-      <p>Bibliographya ("us", "we", or "our") operates the http://bibliographya.com website (the "Service").</p>
+      <p>Biographies ("us", "we", or "our") operates the http://bibliographya.com website (the "Service").</p>
 
       <p>This page informs you of our policies regarding the collection, use, and disclosure of personal data when you
-        use our Service and the choices you have associated with that data. Our Privacy Policy for Bibliographya is
+        use our Service and the choices you have associated with that data. Our Privacy Policy for Biographies is
         created with the help of the <a href="https://www.freeprivacypolicy.com/">Free Privacy Policy website</a>.</p>
 
       <p>We use your data to provide and improve the Service. By using the Service, you agree to the collection and use
@@ -61,7 +61,7 @@
 
       <h2>Use of Data</h2>
 
-      <p>Bibliographya uses the collected data for various purposes:</p>
+      <p>Biographies uses the collected data for various purposes:</p>
       <ul>
         <li>To provide and maintain the Service</li>
         <li>To notify you about changes to our Service</li>
@@ -80,7 +80,7 @@
         transfer the data, including Personal Data, to Russian Federation and process it there.</p>
       <p>Your consent to this Privacy Policy followed by your submission of such information represents your agreement
         to that transfer.</p>
-      <p>Bibliographya will take all steps reasonably necessary to ensure that your data is treated securely and in
+      <p>Biographies will take all steps reasonably necessary to ensure that your data is treated securely and in
         accordance with this Privacy Policy and no transfer of your Personal Data will take place to an organization or
         a country unless there are adequate controls in place including the security of your data and other personal
         information.</p>
@@ -88,10 +88,10 @@
       <h2>Disclosure Of Data</h2>
 
       <h3>Legal Requirements</h3>
-      <p>Bibliographya may disclose your Personal Data in the good faith belief that such action is necessary to:</p>
+      <p>Biographies may disclose your Personal Data in the good faith belief that such action is necessary to:</p>
       <ul>
         <li>To comply with a legal obligation</li>
-        <li>To protect and defend the rights or property of Bibliographya</li>
+        <li>To protect and defend the rights or property of Biographies</li>
         <li>To prevent or investigate possible wrongdoing in connection with the Service</li>
         <li>To protect the personal safety of users of the Service or the public</li>
         <li>To protect against legal liability</li>
@@ -134,7 +134,7 @@
       <h2>Contact Us</h2>
       <p>If you have any questions about this Privacy Policy, please contact us:</p>
       <ul>
-        <li>By email: g.said.alievich@mail.ru</li>
+        <li>By email: bibliographya.help@gmail.com</li>
 
       </ul>
     </v-card-text>
