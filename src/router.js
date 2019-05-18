@@ -35,6 +35,8 @@ const SignIn = () => import('./views/SignInView')
 const SignUp = () => import('./views/SignUpView')
 const ConfirmSignUp = () => import('./views/ConfirmSignUp')
 
+import { getUserToken } from './store/modules/user-module'
+
 Vue.use(Router)
 
 const waitForAccount = function (callback) {
@@ -81,7 +83,7 @@ const requireAuth = function (to, from, next) {
 }
 
 const ifNotAuthenticated = function (to, from, next) {
-  if (store.getters.isAuthenticated) {
+  if (getUserToken()) {
     cancelRoute(from, next)
   } else {
     let meta = to.meta
