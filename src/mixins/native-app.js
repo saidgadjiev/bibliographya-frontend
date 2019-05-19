@@ -14,7 +14,7 @@ export default {
     },
     _intent () {
       if (this._isAndroidBrowser) {
-        return 'intent://' + this._path + '#Intent;package=com.saidgadjiev.bibliographya;scheme=bibliographya;launchFlags=268435456;end;'
+        return 'intent://' + this._path + '#Intent;package=com.bibliographya.android;scheme=bibliographya;launchFlags=268435456;end;'
       }
 
       return '#'
