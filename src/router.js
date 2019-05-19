@@ -6,7 +6,7 @@ import error403 from './views/403'
 import error404 from './views/404'
 import { REQUEST, ROLES } from './config'
 import biographyService from './services/cache-biography-service'
-import { USER_STATE } from './store/modules/user-module'
+import { USER_STATE, getUserToken } from './store/modules/user-module'
 import { GET_CONFIRMATION } from './store/action-types'
 
 const RestorePassword = () => import('./views/RestorePassword')
@@ -34,8 +34,6 @@ const CategoriesList = () => import('./views/CategoriesList')
 const SignIn = () => import('./views/SignInView')
 const SignUp = () => import('./views/SignUpView')
 const ConfirmSignUp = () => import('./views/ConfirmSignUp')
-
-import { getUserToken } from './store/modules/user-module'
 
 Vue.use(Router)
 
