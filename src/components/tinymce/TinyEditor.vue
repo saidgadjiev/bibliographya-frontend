@@ -6,7 +6,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { ROLES } from '../../config'
 // Import TinyMCE
 import tinymce from 'tinymce/tinymce'
 
