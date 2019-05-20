@@ -6,7 +6,7 @@ import error403 from './views/403'
 import error404 from './views/404'
 import { REQUEST, ROLES } from './config'
 import biographyService from './services/cache-biography-service'
-import { USER_STATE } from './store/modules/user-module'
+import { USER_STATE, getUserToken } from './store/modules/user-module'
 import { GET_CONFIRMATION } from './store/action-types'
 
 const RestorePassword = () => import('./views/RestorePassword')
@@ -34,8 +34,6 @@ const CategoriesList = () => import('./views/CategoriesList')
 const SignIn = () => import('./views/SignInView')
 const SignUp = () => import('./views/SignUpView')
 const ConfirmSignUp = () => import('./views/ConfirmSignUp')
-
-import { getUserToken } from './store/modules/user-module'
 
 Vue.use(Router)
 
@@ -102,7 +100,10 @@ let router = new Router({
     {
       path: '/about',
       name: 'about',
-      component: About
+      component: About,
+      meta: {
+        root: true
+      }
     },
     {
       path: '/settings',
@@ -110,6 +111,7 @@ let router = new Router({
       component: ProfileSettings,
       beforeEnter: requireAuth,
       meta: {
+        root: true,
         loginRequired: true,
         roles: [ROLES.ROLE_USER]
       }
@@ -161,6 +163,7 @@ let router = new Router({
       component: CreateBug,
       beforeEnter: requireAuth,
       meta: {
+        root: true,
         loginRequired: true
       }
     },
@@ -170,6 +173,7 @@ let router = new Router({
       component: BugTracking,
       beforeEnter: requireAuth,
       meta: {
+        root: true,
         loginRequired: true,
         roles: [ROLES.ROLE_ADMIN]
       }
@@ -180,6 +184,7 @@ let router = new Router({
       component: CategoriesAdmin,
       beforeEnter: requireAuth,
       meta: {
+        root: true,
         loginRequired: true,
         roles: [ROLES.ROLE_ADMIN]
       }
@@ -187,12 +192,18 @@ let router = new Router({
     {
       path: '/categories',
       name: 'categories',
-      component: CategoriesList
+      component: CategoriesList,
+      meta: {
+        root: true
+      }
     },
     {
       path: '/',
       name: 'main',
-      component: BiographiesList
+      component: BiographiesList,
+      meta: {
+        root: true
+      }
     },
     {
       path: '/categories/:categoryId',
@@ -203,7 +214,10 @@ let router = new Router({
     {
       path: '/biographies',
       name: 'biographies',
-      component: BiographiesList
+      component: BiographiesList,
+      meta: {
+        root: true
+      }
     },
     {
       path: '/biographies/:id',
@@ -224,6 +238,7 @@ let router = new Router({
       component: CreateBiographyDetails,
       beforeEnter: requireAuth,
       meta: {
+        root: true,
         loginRequired: true
       }
     },
@@ -233,6 +248,7 @@ let router = new Router({
       component: CreatedByMeBiographies,
       beforeEnter: requireAuth,
       meta: {
+        root: true,
         loginRequired: true
       }
     },
@@ -242,6 +258,7 @@ let router = new Router({
       component: BiographiesModeration,
       beforeEnter: requireAuth,
       meta: {
+        root: true,
         loginRequired: true,
         roles: [ROLES.ROLE_MODERATOR]
       }
@@ -252,6 +269,7 @@ let router = new Router({
       component: UsersList,
       beforeEnter: requireAuth,
       meta: {
+        root: true,
         loginRequired: true,
         roles: [ROLES.ROLE_ADMIN]
       }
@@ -262,6 +280,7 @@ let router = new Router({
       component: BiographyFixesList,
       beforeEnter: requireAuth,
       meta: {
+        root: true,
         loginRequired: true,
         roles: [ROLES.ROLE_MODERATOR]
       }
@@ -303,6 +322,10 @@ let router = new Router({
           return { profileId: 0 }
         }
         return { profileId: profileId }
+      },
+      meta: {
+        root: true,
+        loginRequired: true
       }
     },
     {
@@ -340,7 +363,10 @@ let router = new Router({
       path: '/signIn',
       name: 'signIn',
       component: SignIn,
-      beforeEnter: ifNotAuthenticated
+      beforeEnter: ifNotAuthenticated,
+      meta: {
+        root: true
+      }
     },
     {
       path: '/statistics',
@@ -348,6 +374,7 @@ let router = new Router({
       component: Statistics,
       beforeEnter: requireAuth,
       meta: {
+        root: true,
         loginRequired: true,
         roles: [ROLES.ROLE_ADMIN]
       }
@@ -355,7 +382,10 @@ let router = new Router({
     {
       path: '/privacy',
       name: 'privacy',
-      component: Privacy
+      component: Privacy,
+      meta: {
+        root: true
+      }
     },
     {
       path: '/signUp/:providerId/callback',

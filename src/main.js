@@ -17,6 +17,7 @@ import VueCountdown from '@chenfengyuan/vue-countdown'
 import { getUserToken } from './store/modules/user-module'
 import VueOffline from 'vue-offline'
 
+import VueRouterBackButton from './plugins/router-back/index'
 import store from './store/store'
 
 import 'vuetify/src/stylus/app.styl'
@@ -26,6 +27,10 @@ import { INTERNET_ERROR, SERVER_ERROR, TOO_MANY_REQUESTS } from './messages'
 
 moment.tz.setDefault('Europe/Moscow')
 require('moment/locale/ru')
+
+let rootRoutes = router.options.routes.filter(route => route.meta && route.meta.root).map(route => route.name)
+
+Vue.use(VueRouterBackButton, { router, rootRoutes: rootRoutes })
 
 Vue.use(VueMoment, {
   moment

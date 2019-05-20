@@ -11,7 +11,17 @@
   >
     <v-toolbar-title class="ml-0">
       <div v-if="$vuetify.breakpoint.smAndDown">
-        <v-toolbar-side-icon @click.stop="doDrawer"></v-toolbar-side-icon>
+        <router-link
+          class="title"
+          v-if="$routerHistory.hasPrevious()"
+          :to="{ path: $routerHistory.previous().path }">
+          <v-btn icon>
+          <v-icon>
+            fas fa-arrow-left
+          </v-icon>
+          </v-btn>
+        </router-link>
+        <v-toolbar-side-icon v-else @click.stop="doDrawer"></v-toolbar-side-icon>
         <router-link to="/" class="title pl-2 white--text font-weight-light">{{ _title }}</router-link>
       </div>
       <div style="height: 50px; width: 290px" v-else>

@@ -4,7 +4,7 @@ import {
   SET_SHOW_SEARCH,
   SET_PULL_TO_LOAD_MORE_METHOD,
   REMOVE_PULL_TO_LOAD_MORE_METHOD,
-  REMOVE_PULL_TO_REFRESH_METHOD
+  REMOVE_PULL_TO_REFRESH_METHOD,
 } from '../mutation-types'
 
 const state = {
@@ -12,7 +12,7 @@ const state = {
   pullToRefreshMethod: null,
   pullToLoadMoreMethod: null,
   showSearch: false,
-  accountLoading: true
+  history: []
 }
 
 const mutations = {
