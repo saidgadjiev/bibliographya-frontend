@@ -176,7 +176,7 @@ export default {
       return this._isIAuthor
     },
     _showPublish () {
-      return this.moderationStatus === MODERATION_STATUS.APPROVED && this._isIAuthor
+      return this.moderationStatus === MODERATION_STATUS.APPROVED && (this._isIAuthor || this.isAuthorized([ROLES.ROLE_MODERATOR]))
     },
     _publishTitle () {
       return this.publishStatus === PUBLISH_STATUS.PUBLISHED ? 'Снять с публикации' : 'Опубликовать'

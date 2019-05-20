@@ -6,7 +6,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { ROLES } from '../../config'
 // Import TinyMCE
 import tinymce from 'tinymce/tinymce'
 
@@ -125,31 +124,18 @@ export default {
 
       let plugins, toolbar, removeMenuItems, mobileToolbar
 
-      if (this.isAuthorized([ROLES.ROLE_ADMIN, ROLES.ROLE_MODERATOR])) {
-        plugins = ['advlist autoresize spellchecker autolink lists link image imagetools charmap print preview hr anchor pagebreak',
-          'searchreplace wordcount visualblocks visualchars code fullscreen',
-          'insertdatetime nonbreaking save table directionality',
-          'template textpattern help hr codesample autosave'
-        ]
-        mobileToolbar = [ 'undo', 'redo', 'bold', 'italic', 'underline', 'link', 'unlink', 'image', 'bullist', 'numlist', 'fontsizeselect',
-          'forecolor', 'styleselect', 'removeformat' ]
-        toolbar = 'save | spellchecker | formatselect | bold italic  strikethrough  forecolor backcolor image ' +
-          '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
-          '| removeformat fontname fontsize'
-        removeMenuItems = 'code visualblocks visualchars visualaid template media codesample charmap pagebreak nonbreaking anchor toc codeformat'
-      } else {
-        plugins = ['advlist autoresize spellchecker autolink lists link charmap print preview hr anchor pagebreak',
-          'searchreplace wordcount visualblocks visualchars code fullscreen',
-          'insertdatetime media nonbreaking save table directionality',
-          'template textpattern help hr codesample autosave'
-        ]
-        mobileToolbar = [ 'undo', 'redo', 'bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist', 'fontsizeselect',
-          'forecolor', 'styleselect', 'removeformat' ]
-        toolbar = 'save | spellchecker | formatselect | bold italic  strikethrough  forecolor backcolor ' +
-          '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
-          '| removeformat fontname fontsize'
-        removeMenuItems = 'code visualblocks visualchars visualaid image media template codesample charmap pagebreak nonbreaking anchor toc codeformat'
-      }
+      plugins = ['advlist autoresize spellchecker autolink lists link image imagetools charmap print preview hr anchor pagebreak',
+        'searchreplace wordcount visualblocks visualchars code fullscreen',
+        'insertdatetime nonbreaking save table directionality',
+        'template textpattern help hr codesample autosave'
+      ]
+
+      mobileToolbar = [ 'undo', 'redo', 'bold', 'italic', 'underline', 'link', 'unlink', 'image', 'bullist', 'numlist', 'fontsizeselect',
+        'forecolor', 'styleselect', 'removeformat' ]
+      toolbar = 'save | spellchecker | formatselect | bold italic  strikethrough  forecolor backcolor image ' +
+        '| link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  ' +
+        '| removeformat fontname fontsize'
+      removeMenuItems = 'code visualblocks visualchars visualaid template media codesample charmap pagebreak nonbreaking anchor toc codeformat'
 
       let options = {
         mobile: {
