@@ -163,6 +163,14 @@
         <v-list-tile-title>О нас</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
+    <v-list-tile :href="_intent" v-if="_isSupportedBrowser">
+      <v-list-tile-action>
+        <v-icon>fas fa-external-link-alt</v-icon>
+      </v-list-tile-action>
+      <v-list-tile-content>
+        <v-list-tile-title>Открыть в приложении</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
   </v-list>
   </div>
 </template>
