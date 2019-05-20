@@ -20,6 +20,8 @@
     <preference name="ShowSplashScreenSpinner" value="false" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <preference name="AndroidLaunchMode" value="singleTop" />
+        <preference name="android-minSdkVersion" value="25" />
         <splash density="land-hdpi" src="res/screen/android/screen-hdpi-land.png" />
         <splash density="land-ldpi" src="res/screen/android/screen-ldpi-land.png" />
         <splash density="land-mdpi" src="res/screen/android/screen-mdpi-land.png" />
@@ -42,6 +44,6 @@
         <variable name="ANDROID_PATHPREFIX" value="/" />
     </plugin>
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
-    <engine name="android" spec="^7.1.4" />
     <engine name="ios" spec="^4.5.5" />
+    <engine name="android" spec="^7.1.4" />
 </widget>
