@@ -12,6 +12,7 @@
     "dependencies": {
         "cordova": "^9.0.0",
         "cordova-android": "^7.1.4",
+        "cordova-ios": "^4.5.5",
         "cordova-plugin-customurlscheme": "^4.4.0",
         "cordova-plugin-device": "^2.0.2",
         "cordova-plugin-inappbrowser": "^3.0.0",
@@ -33,7 +34,8 @@
             "cordova-plugin-splashscreen": {}
         },
         "platforms": [
-            "android"
+            "android",
+            "ios"
         ]
     }
 }
