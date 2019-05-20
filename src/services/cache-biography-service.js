@@ -1,15 +1,8 @@
 import biographyService from './biography-service'
 
-const LRU = require('lru-cache')
-const getBiographiesCache = new LRU({
-  max: 0,
-  maxAge: 1000 * 60 * 60
-})
+const getBiographiesCache = {}
 
-const getBiographyByIdCache = new LRU({
-  max: 0,
-  maxAge: 1000 * 60 * 60
-})
+const getBiographyByIdCache = {}
 
 export default {
   getBiographyById,

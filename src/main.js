@@ -1,3 +1,16 @@
+import '@babel/polyfill'
+import 'es5-shim'
+import 'polyfill-array-includes'
+import 'array-from-polyfill'
+import 'symbol-es6'
+import 'es7-object-polyfill'
+import 'es6-math'
+import 'string.prototype.repeat'
+import './assets/js/polyfill/array.prototype.reduce'
+import './assets/js/polyfill/string.prototype.includes'
+import './assets/js/polyfill/array.prototype.find'
+import './assets/js/polyfill/document.scrollingElement'
+
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -9,7 +22,6 @@ import axios from 'axios'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueLogger from 'vuejs-logger'
 import VueMoment from 'vue-moment'
-import moment from 'moment-timezone'
 import VueYandexMetrika from 'vue-yandex-metrika'
 import { METRIKA_ID, TOKEN_NAME, REQUEST } from './config'
 import Meta from 'vue-meta'
@@ -25,16 +37,13 @@ import '@mdi/font/css/materialdesignicons.min.css'
 import 'vue-tel-input/dist/vue-tel-input.css'
 import { INTERNET_ERROR, SERVER_ERROR, TOO_MANY_REQUESTS } from './messages'
 
-moment.tz.setDefault('Europe/Moscow')
 require('moment/locale/ru')
 
 let rootRoutes = router.options.routes.filter(route => route.meta && route.meta.root).map(route => route.name)
 
 Vue.use(VueRouterBackButton, { router, rootRoutes: rootRoutes })
 
-Vue.use(VueMoment, {
-  moment
-})
+Vue.use(VueMoment)
 
 Vue.use(VueOffline)
 
