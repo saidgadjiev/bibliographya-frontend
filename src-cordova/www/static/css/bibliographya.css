@@ -1,0 +1,157 @@
+blockquote {
+  padding: 16px 0 16px 24px !important;
+  font-size: 18px !important;
+  font-weight: 300 !important;
+  font-family: Roboto, sans-serif !important;
+}
+
+img {
+  max-width: 100% !important;
+}
+
+.v-stepper__content .v-card__text {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.v-stepper__content .v-card__actions {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.v-stepper__content .v-card__title {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+#biography_editor_ifr {
+  height: 100% !important;
+}
+
+.biography-content {
+  font-family: Verdana, sans-serif !important;
+}
+
+.biography-content h1,
+.biography-content h2,
+.biography-content h3,
+.biography-content h4,
+.biography-content h5,
+.biography-content h6
+{
+  margin-bottom: 5px !important;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  min-width: 100%;
+  object-fit: cover;
+}
+
+.fab-menu {
+  min-width: 200px !important;
+  position: fixed !important;
+  bottom: 80px !important;
+  right: 50px !important;
+  top: unset !important;
+  left: unset !important;
+}
+
+.sidebar {
+  height: auto !important;
+  top: auto !important;
+  z-index: inherit;
+  width: 278px !important;
+  left: unset !important;
+  position: fixed;
+  background-color: transparent !important;
+}
+
+.bib-a {
+  color: #007bff !important;
+  text-decoration: none !important;
+  background-color: transparent !important;
+  -webkit-text-decoration-skip: objects !important;
+}
+
+
+.bib-container {
+  margin: auto !important;
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  width: 1160px !important;
+}
+
+.bib-mobile-container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.bib-mobile-container .flex {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.bib-mobile-container .layout:only-child {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.bib-a:hover {
+  color: #0056b3 !important;
+  text-decoration: underline !important;
+  background-color: transparent !important;
+  -webkit-text-decoration-skip: objects !important;
+}
+
+.title {
+  text-decoration: none !important;
+}
+
+.word-break-all {
+  word-break: break-all;
+}
+
+.word-break-word {
+  word-break: break-word;
+}
+
+.biography-card-title {
+  padding-right: 60px;
+}
+
+.list-group {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.list-group-flush .list-group-item {
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+}
+
+.list-group-flush:first-child .list-group-item:first-child {
+  border-top: 0;
+}
+
+.list-group-item:last-child {
+  border-bottom: 0;
+}
+
+.list-group-item {
+  position: relative;
+  display: block;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
