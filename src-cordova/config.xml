@@ -21,7 +21,7 @@
     <platform name="android">
         <allow-intent href="market:*" />
         <preference name="AndroidLaunchMode" value="singleTop" />
-        <preference name="android-minSdkVersion" value="25" />
+        <preference name="android-minSdkVersion" value="19" />
         <splash density="land-hdpi" src="res/screen/android/screen-hdpi-land.png" />
         <splash density="land-ldpi" src="res/screen/android/screen-ldpi-land.png" />
         <splash density="land-mdpi" src="res/screen/android/screen-mdpi-land.png" />

@@ -1,10 +1,20 @@
 import biographyCategoryService from './biography-category-service'
+import LRU from '../assets/js/cache/lru-cache'
 
-const getCategoryCache = {}
+const getCategoryCache = new LRU({
+  max: 0,
+  maxAge: 1000 * 60 * 60
+})
 
-const getCategoriesCache = {}
+const getCategoriesCache = new LRU({
+  max: 0,
+  maxAge: 1000 * 60 * 60
+})
 
-const getBiographiesCache = {}
+const getBiographiesCache = new LRU({
+  max: 0,
+  maxAge: 1000 * 60 * 60
+})
 
 export default {
   getCategories,
