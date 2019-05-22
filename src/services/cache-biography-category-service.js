@@ -1,19 +1,16 @@
 import biographyCategoryService from './biography-category-service'
-import LRU from '../assets/js/cache/lru-cache'
+import Cache from '../assets/js/cache/timed-cache'
 
-const getCategoryCache = new LRU({
-  max: 0,
-  maxAge: 1000 * 60 * 60
+const getCategoryCache = new Cache({
+  defaultTtl: 1000 * 60 * 60
 })
 
-const getCategoriesCache = new LRU({
-  max: 0,
-  maxAge: 1000 * 60 * 60
+const getCategoriesCache = new Cache({
+  defaultTtl: 1000 * 60 * 60
 })
 
-const getBiographiesCache = new LRU({
-  max: 0,
-  maxAge: 1000 * 60 * 60
+const getBiographiesCache = new Cache({
+  defaultTtl: 1000 * 60 * 60
 })
 
 export default {
@@ -36,7 +33,7 @@ function getCategory (categoryId) {
     biographyCategoryService.getCategory(categoryId)
       .then(
         response => {
-          getCategoryCache.set(categoryId, response)
+          getCategoryCache.put(categoryId, response)
           resolve(response)
         },
         e => {
@@ -59,7 +56,7 @@ function getCategories (limit, offset) {
     biographyCategoryService.getCategories(limit, offset)
       .then(
         response => {
-          getCategoriesCache.set(key, response)
+          getCategoriesCache.put(key, response)
           resolve(response)
         },
         e => {
@@ -82,7 +79,7 @@ function getBiographies (cancelToken, categoryId, limit, offset, autobiographies
     biographyCategoryService.getBiographies(cancelToken, categoryId, limit, offset, autobiographies, biographyClampSize, search, sort)
       .then(
         response => {
-          getBiographiesCache.set(key, response)
+          getBiographiesCache.put(key, response)
           resolve(response)
         },
         e => {

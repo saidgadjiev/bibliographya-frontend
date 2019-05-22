@@ -18,7 +18,6 @@ import VeeValidate from 'vee-validate'
 import russia from 'vee-validate/dist/locale/ru'
 import axios from 'axios'
 import VueSweetalert2 from 'vue-sweetalert2'
-import VueLogger from 'vuejs-logger'
 import VueMoment from 'vue-moment'
 import VueYandexMetrika from 'vue-yandex-metrika'
 import { METRIKA_ID, TOKEN_NAME, REQUEST } from './config'
@@ -61,18 +60,6 @@ Vue.use(Vuetify, {
 Vue.use(VueSweetalert2)
 
 const isProduction = process.env.NODE_ENV === 'production'
-
-const options = {
-  isEnabled: true,
-  logLevel: isProduction ? 'error' : 'debug',
-  stringifyArguments: false,
-  showLogLevel: true,
-  showMethodName: true,
-  separator: '|',
-  showConsoleColors: true
-}
-
-Vue.use(VueLogger, options)
 
 const config = {
   locale: 'ru',

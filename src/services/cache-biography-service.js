@@ -1,14 +1,12 @@
 import biographyService from './biography-service'
-import LRU from '../assets/js/cache/lru-cache'
+import Cache from '../assets/js/cache/timed-cache'
 
-const getBiographiesCache = new LRU({
-  max: 0,
-  maxAge: 1000 * 60 * 60
+const getBiographiesCache = new Cache({
+  defaultTtl: 1000 * 60 * 60
 })
 
-const getBiographyByIdCache = new LRU({
-  max: 0,
-  maxAge: 1000 * 60 * 60
+const getBiographyByIdCache = new Cache({
+  defaultTtl: 1000 * 60 * 60
 })
 
 export default {
@@ -36,7 +34,7 @@ function getBiographyById (id) {
     biographyService.getBiographyById(id)
       .then(
         response => {
-          getBiographyByIdCache.set(id, response)
+          getBiographyByIdCache.put(id, response)
           resolve(response)
         },
         e => {
@@ -62,7 +60,7 @@ function getBiographies (cancelToken, limit, offset, autobiographies, biographyC
     biographyService.getBiographies(cancelToken, limit, offset, autobiographies, biographyClampSize, search, sort)
       .then(
         response => {
-          getBiographiesCache.set(key, response)
+          getBiographiesCache.put(key, response)
           resolve(response)
         },
         e => {

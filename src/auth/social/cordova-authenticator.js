@@ -44,8 +44,6 @@ function signUp (provider) {
             let code = hash.substring(codeIndexOf + 5)
             let oauthCallback = '/signUp/' + provider + '/callback?code=' + code
 
-            console.log(oauthCallback)
-
             browser.close()
             router.push(oauthCallback)
           }
@@ -78,8 +76,6 @@ function signIn (provider) {
             let codeIndexOf = hash.indexOf('code=')
             let code = hash.substring(codeIndexOf + 5)
             let oauthCallback = '/signIn/' + provider + '/callback?code=' + code
-
-            console.log(oauthCallback)
 
             browser.close()
             router.push(oauthCallback)
