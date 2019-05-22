@@ -1,103 +1,43 @@
-/**
- * ///////////////////////////////////////
- * //////////// Cache module /////////////
- * ///////////////////////////////////////
- *
- * This module offers object caching mechanisms for
- * third-party modules. It allows to manage the lifecycle
- * of cached objects by associating them with a time-to-live.
- */
+let Cache = function (options) {
+  this.defaultTtl = (options && options.defaultTtl) ?
+    options.defaultTtl : 60 * 1000
+  this.cache = {}
 
-/**
- * Exporting the `Cache` module appropriately given
- * the environment (AMD, Node.js and the browser).
- */
+  let self = this
 
-  /**
-   * We use an object literal ads the
-   * internal storage.
-   */
-  var cache = {};
+  setInterval(function () {
+    self.clear()
+  }, this.defaultTtl)
+}
 
-  /**
-   * Shortcut function for checking if an object has
-   * a given property directly on itself
-   * (in other words, not on a prototype).
-   */
-  var has = function (obj, key) {
-    return (obj !== null && Object.prototype.hasOwnProperty.call(obj, key));
-  };
-
-  /**
-   * Cache constructor.
-   * @param {*} options the `options` object
-   * holder used by the cache implementation.
-   */
-  var Cache = function (options) {
-    // The default cached objects expiration
-    // delay is expressed in milliseconds and
-    // is defined by an internal default value
-    // or a user value if it is passed to the
-    // constructor.
-    this.defaultTtl = (options && options.defaultTtl) ?
-      options.defaultTtl : 60 * 1000;
-    // A prefix used to forbid access to internal properties
-    // of the object storage.
-    this.prefix = '__cache__';
-    var self = this;
-
-    setInterval(function () {
-      self.clear()
-    }, this.defaultTtl)
-  };
-
-  /**
-   * Puts a key/value pair into the cache storage.
-   */
-  Cache.prototype.put = function (key, value, options) {
-    var callback = (options ? options.callback : undefined) || function () {};
-    var key_ = key;
-
-    cache[key_] = { data: value, callback: callback };
-  };
-
-  /**
-   * Returns a cached value associated with the
-   * given key if it exists, returns an undefined
-   * value otherwise.
-   */
-  Cache.prototype.get = function (key) {
-    var value = cache[key];
-    return (value && value.data);
+Cache.prototype.put = function (key, value, options) {
+  let callback = (options ? options.callback : undefined) || function () {
   }
 
-  /**
-   * Clears the cache entry associated
-   * with the given `key`.
-   */
-  Cache.prototype.remove = function (key) {
-    var key_  = key;
-    var value = cache[key_];
+  this.cache[key] = { data: value, callback: callback }
+}
 
-    if (value) {
-      delete cache[key_];
-      value.callback(key, value.data);
-    }
-  };
+Cache.prototype.get = function (key) {
+  let value = this.cache[key]
 
-  /**
-   * Clears the internal cache.
-   */
-  Cache.prototype.clear = function () {
-    cache = {};
-  };
+  return (value && value.data)
+}
 
-  /**
-   * Returns the size of the cache object in
-   * terms of referenced elements.
-   */
-  Cache.prototype.size = function () {
-    return Object.keys(cache).length;
-  };
+Cache.prototype.remove = function (key) {
+  let value = this.cache[key]
 
-  export default Cache
+  if (value) {
+    delete this.cache[key]
+    value.callback(key, value.data)
+  }
+}
+
+Cache.prototype.clear = function () {
+  this.cache = {}
+}
+
+Cache.prototype.size = function () {
+  return Object.keys(this.cache).length
+}
+
+export default Cache
