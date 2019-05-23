@@ -50,7 +50,7 @@
           <v-list-tile-title>Созданные мной</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile to="/create/bug" v-if="isAuthenticated">
+      <v-list-tile to="/create/bug">
         <v-list-tile-action>
           <v-icon size="24">fas fa-bug</v-icon>
         </v-list-tile-action>

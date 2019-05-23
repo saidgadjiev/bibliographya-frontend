@@ -161,10 +161,8 @@ let router = new Router({
       path: '/create/bug',
       name: 'createBug',
       component: CreateBug,
-      beforeEnter: requireAuth,
       meta: {
-        root: true,
-        loginRequired: true
+        root: true
       }
     },
     {
