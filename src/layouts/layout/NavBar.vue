@@ -7,6 +7,7 @@
     v-model="_drawer"
   >
     <vue-pull-to
+      mode="element-scroll"
       :top-load-method="loadAccount"
     >
     <v-toolbar flat class="transparent pt-3 pb-3" v-if="isAuthenticated" @click="$router.push('/profile/' + getUserId)">

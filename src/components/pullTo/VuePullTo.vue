@@ -356,6 +356,7 @@ export default {
     flex: 1;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
   }
 
   .vue-pull-to-wrapper .action-block {

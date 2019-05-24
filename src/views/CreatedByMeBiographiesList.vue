@@ -34,7 +34,7 @@
 <script>
 import List from '../components/list/List'
 import biographyService from '../services/cache-biography-service'
-import { MODERATION_STATUS, TREE_CLAMP_SIZE, BIOGRAPHY_CLAMP_SIZE } from '../config'
+import { MODERATION_STATUS, TREE_CLAMP_SIZE, BIOGRAPHY_CLAMP_SIZE, TITLE } from '../config'
 import BiographyCard from '../components/biography/card/BiographyCard'
 
 export default {
@@ -44,6 +44,9 @@ export default {
       deleteIndex: 0,
       deleteId: +new Date()
     }
+  },
+  metaInfo: {
+    title: TITLE.MY_BIOGRAPHIES
   },
   methods: {
     showPublish (item) {

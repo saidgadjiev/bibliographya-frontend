@@ -5,14 +5,17 @@ import {
   SET_PULL_TO_LOAD_MORE_METHOD,
   REMOVE_PULL_TO_LOAD_MORE_METHOD,
   REMOVE_PULL_TO_REFRESH_METHOD,
+  SET_TITLE
 } from '../mutation-types'
+import { TITLE } from '../../config'
 
 const state = {
   drawer: false,
   pullToRefreshMethod: null,
   pullToLoadMoreMethod: null,
   showSearch: false,
-  history: []
+  history: [],
+  title: TITLE.MAIN
 }
 
 const mutations = {
@@ -33,6 +36,9 @@ const mutations = {
   },
   [REMOVE_PULL_TO_REFRESH_METHOD] (state) {
     state.pullToRefreshMethod = null
+  },
+  [SET_TITLE] (state, title) {
+    state.title = title
   }
 }
 
@@ -48,6 +54,9 @@ const getters = {
   },
   isShowSearch: state => {
     return state.showSearch
+  },
+  getTitle: state => {
+    return state.title
   }
 }
 

@@ -74,7 +74,7 @@ import request from '../mixins/request'
 import settingsService from '../services/settings-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import { PASSWORD_CHANGE_SUCCESS } from '../messages'
-import { REQUEST } from '../config'
+import { REQUEST, TITLE } from '../config'
 import ProgressCircular from '../components/progress/ProgressCircular'
 import pullToRefresh from '../mixins/pullToRefresh'
 
@@ -82,6 +82,11 @@ export default {
   name: 'Settings',
   mixins: [alert, request, pullToRefresh],
   components: { ProgressCircular, AlertMessage },
+  metaInfo () {
+    return {
+      title: TITLE.SETTINGS
+    }
+  },
   data () {
     return {
       settingsLoading: true,

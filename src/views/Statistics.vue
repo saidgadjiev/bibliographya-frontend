@@ -30,6 +30,7 @@
 
 <script>
 import statsService from '../services/stats-service'
+import { TITLE } from '../config'
 
 export default {
   name: 'Statistics',
@@ -37,6 +38,9 @@ export default {
     return {
       statistics: undefined
     }
+  },
+  metaInfo: {
+    title: TITLE.STATISTIC
   },
   computed: {
     _usersStats () {

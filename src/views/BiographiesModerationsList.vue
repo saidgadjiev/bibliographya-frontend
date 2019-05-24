@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { MODERATION_STATUS, TREE_CLAMP_SIZE, BIOGRAPHY_CLAMP_SIZE } from '../config'
+import { MODERATION_STATUS, TREE_CLAMP_SIZE, BIOGRAPHY_CLAMP_SIZE, TITLE } from '../config'
 import SideBar from '../components/moderation/sidebar/SideBar.vue'
 import SideList from '../components/moderation/sidebar/SideList.vue'
 import { mapGetters } from 'vuex'
@@ -67,6 +67,9 @@ export default {
       deleteIndex: -1,
       infiniteId: +new Date()
     }
+  },
+  metaInfo: {
+    title: TITLE.MODERATION
   },
   computed: {
     _treeClampSize () {

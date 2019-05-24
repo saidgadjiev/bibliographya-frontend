@@ -34,6 +34,8 @@ const CategoriesList = () => import('./views/CategoriesList')
 const SignIn = () => import('./views/SignInView')
 const SignUp = () => import('./views/SignUpView')
 const ConfirmSignUp = () => import('./views/ConfirmSignUp')
+const CreateFeedback = () => import('./views/CreateFeedback')
+const FeedbackList = () => import('./views/FeedbackList')
 
 Vue.use(Router)
 
@@ -158,7 +160,7 @@ let router = new Router({
       }
     },
     {
-      path: '/create/bug',
+      path: '/bug',
       name: 'createBug',
       component: CreateBug,
       meta: {
@@ -390,6 +392,13 @@ let router = new Router({
       name: 'oauthSignUpCallback',
       component: OAuthSignUpCallback,
       props: (route) => ({ providerId: route.params.providerId }),
+      beforeEnter: function (to, from, next) {
+        if (from.name) {
+          next(false)
+        } else {
+          next()
+        }
+      },
       meta: {
         root: true
       }
@@ -399,6 +408,29 @@ let router = new Router({
       name: 'oauthSignInCallback',
       component: OAuthSignInCallback,
       props: (route) => ({ providerId: route.params.providerId }),
+      beforeEnter: function (to, from, next) {
+        if (from.name) {
+          next(false)
+        } else {
+          next()
+        }
+      },
+      meta: {
+        root: true
+      }
+    },
+    {
+      path: '/feedback',
+      name: 'feedback',
+      component: CreateFeedback,
+      meta: {
+        root: true
+      }
+    },
+    {
+      path: '/reviews',
+      name: 'reviews',
+      component: FeedbackList,
       meta: {
         root: true
       }

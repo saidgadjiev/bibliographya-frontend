@@ -23,6 +23,7 @@ import List from '../components/list/List'
 import CategoryCard from '../components/category/CategoryCard'
 import biographyCategoryService from '../services/cache-biography-category-service'
 import pullToRefresh from '../mixins/pullToRefresh'
+import { TITLE } from '../config'
 
 export default {
   name: 'CategoriesList',
@@ -31,6 +32,9 @@ export default {
     return {
       resetId: +new Date()
     }
+  },
+  metaInfo: {
+    title: TITLE.LIBRARY
   },
   methods: {
     pullToRefresh (loaded) {

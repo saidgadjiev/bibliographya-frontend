@@ -50,6 +50,7 @@ import { BUG_CREATED } from '../messages'
 import bugTrackingService from '../services/bug-tracking-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import alert from '../mixins/alert'
+import { TITLE } from '../config'
 
 export default {
   name: 'BugsList',
@@ -63,6 +64,9 @@ export default {
         bugCase: ''
       }
     }
+  },
+  metaInfo: {
+    title: TITLE.CREATE_BUG
   },
   created () {
     this.$validator.localize('ru', {

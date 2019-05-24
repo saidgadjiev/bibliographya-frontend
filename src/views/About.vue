@@ -231,12 +231,19 @@
 </template>
 
 <script>
+import { TITLE } from '../config'
+
 export default {
   name: 'About',
   data () {
     return {
       shares: true,
       menuVisible: false
+    }
+  },
+  metaInfo () {
+    return {
+      title: TITLE.ABOUT
     }
   },
   computed: {

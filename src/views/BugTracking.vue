@@ -43,7 +43,7 @@ import SideBar from '../components/bug/sidebar/SideBar'
 import BugCard from '../components/bug/card/BugCard'
 import bugTrackingService from '../services/bug-tracking-service'
 import SideList from '../components/bug/sidebar/SideList'
-import { BUG_STATUS } from '../config'
+import { BUG_STATUS, TITLE } from '../config'
 import { mapGetters } from 'vuex'
 import pullToRefresh from '../mixins/pullToRefresh'
 
@@ -56,6 +56,9 @@ export default {
       resetId: +new Date(),
       infiniteId: +new Date()
     }
+  },
+  metaInfo: {
+    title: TITLE.BUG_TRACKING
   },
   components: { SideList, BugCard, SideBar, List },
   computed: {

@@ -26,6 +26,7 @@ import usersService from '../services/users-service'
 import rolesService from '../services/roles-service'
 import SideBar from '../components/user/sidebar/SideBar'
 import SideCard from '../components/user/sidebar/SideCard'
+import { TITLE } from '../config'
 
 export default {
   name: 'UsersList',
@@ -37,6 +38,9 @@ export default {
       resetId: +new Date(),
       roleFilter: undefined
     }
+  },
+  metaInfo: {
+    title: TITLE.USERS
   },
   components: { SideCard, SideBar, UserCard, List },
   methods: {

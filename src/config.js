@@ -30,7 +30,26 @@ export const REQUEST = {
   OAUTH_REQUEST: 19
 }
 
-export const TITLE = 'Биографии'
+export const TITLE = {
+  MAIN: 'Биографии',
+  LIBRARY: 'Библиотека',
+  BIOGRAPHIES: 'Биографии',
+  MY_BIOGRAPHIES: 'Биографии созданные мной',
+  CREATE_BIOGRAPHY: 'Новая биография',
+  SETTINGS: 'Настройки',
+  CREATE_BUG: 'Сообщить об ошибке',
+  MODERATION: 'Модерация',
+  FIXES: 'Исправления',
+  BUG_TRACKING: 'Баг трекинг',
+  CATEGORIES: 'Категории',
+  USERS: 'Пользователи',
+  STATISTIC: 'Статистика',
+  REVIEWS: 'Отзывы',
+  FEEDBADCK: 'Обратная связь',
+  ABOUT: 'О нас',
+  SIGN_IN: 'Биографии Вход',
+  SIGN_UP: 'Биографии Регистрация'
+}
 
 export const DATE_FORMAT = 'DD-MM-YYYY HH:mm:ss.SSSSSS'
 

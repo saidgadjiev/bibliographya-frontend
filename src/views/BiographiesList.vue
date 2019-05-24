@@ -90,6 +90,11 @@ export default {
       searchQuery: undefined
     }
   },
+  metaInfo () {
+    return {
+      title: 'Биографии'
+    }
+  },
   props: {
     categoryId: {
       type: Number

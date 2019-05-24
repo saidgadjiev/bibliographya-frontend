@@ -22,14 +22,28 @@ import viewCounterService from '../services/view-counter-service'
 import AlertMessage from '../components/alert/AlertMessage'
 import ProgressCircular from '../components/progress/ProgressCircular'
 import pullToRefresh from '../mixins/pullToRefresh'
+import { TITLE } from '../config'
 
 export default {
   name: 'Profile',
   mixins: [alert, pullToRefresh],
   data () {
     return {
+      title: TITLE,
       biographyLoading: true,
       biography: undefined
+    }
+  },
+  metaInfo () {
+    return {
+      title: this.title,
+      meta: [
+        {
+          'property': 'og:title',
+          'content': this.title,
+          'vmid': 'og:title'
+        }
+      ]
     }
   },
   props: {
@@ -62,6 +76,7 @@ export default {
         .then(
           response => {
             that.biography = response.data.biography
+            that.title = that.biography.firstName + ' ' + that.biography.lastName
             viewCounterService.hit(that.biography.id)
           },
           e => {

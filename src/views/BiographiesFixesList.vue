@@ -45,7 +45,7 @@ import biographyFixService from '../services/biography-fix-service'
 import List from '../components/list/List'
 import SideList from '../components/fix/sidebar/SideList'
 
-import { FIX_STATUS, BIOGRAPHY_CLAMP_SIZE, TREE_CLAMP_SIZE } from '../config'
+import { FIX_STATUS, BIOGRAPHY_CLAMP_SIZE, TREE_CLAMP_SIZE, TITLE } from '../config'
 import { mapGetters } from 'vuex'
 import BiographyFixCard from '../components/fix/card/BiographyFixCard'
 import pullToRefresh from '../mixins/pullToRefresh'
@@ -59,6 +59,9 @@ export default {
       resetId: +new Date(),
       infiniteId: +new Date()
     }
+  },
+  metaInfo: {
+    title: TITLE.FIXES
   },
   computed: {
     ...mapGetters([

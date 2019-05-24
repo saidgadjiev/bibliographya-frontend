@@ -33,6 +33,8 @@ export const PHONE_CHANGE_SUCCESS = 'Телефон успешно измене�
 
 export const EMAIL_VERIFY_SUCCESS = 'Почта успешно подтверждена.'
 
+export const THANK_FOR_REPLY = 'Спасибо, что помогаете сделать наш сервис лучше!'
+
 export function getShareDescription (firstName, lastName, middleName) {
   let gender = 'androgynous'
 

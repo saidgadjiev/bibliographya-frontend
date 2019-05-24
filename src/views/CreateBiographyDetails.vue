@@ -13,6 +13,7 @@
 import EditBiographyCard from '../components/biography/card/EditBiographyCard.vue'
 import AlertMessage from '../components/alert/AlertMessage'
 import alert from '../mixins/alert'
+import { TITLE } from '../config'
 
 export default {
   name: 'CreateBiographyDetails',
@@ -20,6 +21,9 @@ export default {
   components: {
     AlertMessage,
     EditBiographyCard
+  },
+  metaInfo: {
+    title: TITLE.CREATE_BIOGRAPHY
   }
 }
 </script>

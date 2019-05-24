@@ -10,14 +10,6 @@
           <v-list-tile-title>Моя биография</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile v-if="isAuthenticated && isAuthorized([Roles.ROLE_USER])" to="/settings">
-        <v-list-tile-action>
-          <v-icon size="24">fas fa-cog</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Настройки</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
       <v-list-tile to="/categories">
         <v-list-tile-action>
           <v-icon size="24">mdi-library-books</v-icon>
@@ -34,14 +26,6 @@
           <v-list-tile-title>Биографии</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile to="/create/biography" v-if="isAuthenticated">
-        <v-list-tile-action>
-          <v-icon size="24">fas fa-plus</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Создать биографию</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
       <v-list-tile to="/created" v-if="isAuthenticated">
         <v-list-tile-action>
           <v-icon size="24">fas fa-list</v-icon>
@@ -50,7 +34,23 @@
           <v-list-tile-title>Созданные мной</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile to="/create/bug">
+      <v-list-tile to="/create/biography" v-if="isAuthenticated">
+        <v-list-tile-action>
+          <v-icon size="24">fas fa-plus</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>Создать биографию</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+      <v-list-tile v-if="isAuthenticated && isAuthorized([Roles.ROLE_USER])" to="/settings">
+        <v-list-tile-action>
+          <v-icon size="24">fas fa-cog</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>Настройки</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
+      <v-list-tile to="/bug">
         <v-list-tile-action>
           <v-icon size="24">fas fa-bug</v-icon>
         </v-list-tile-action>
@@ -125,7 +125,32 @@
       </v-list-tile>
     </v-list>
   </v-list>
-  <v-list v-if="$vuetify.breakpoint.smAndDown" dense class="pb-0">
+  <v-list dense class="grey lighten-4" :class="{'pt-0': $vuetify.breakpoint.smAndDown}">
+    <v-list-tile to="/reviews">
+      <v-list-tile-action>
+        <v-icon>fas fa-clipboard-list</v-icon>
+      </v-list-tile-action>
+      <v-list-tile-content>
+        <v-list-tile-title>Отзывы</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-list-tile to="/feedback">
+      <v-list-tile-action>
+        <v-icon>mdi-thumbs-up-down</v-icon>
+      </v-list-tile-action>
+      <v-list-tile-content>
+        <v-list-tile-title>Обратная связь</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-list-tile to="/about">
+      <v-list-tile-action>
+        <v-icon>fas fa-question-circle</v-icon>
+      </v-list-tile-action>
+      <v-list-tile-content>
+        <v-list-tile-title>О нас</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <template v-if="$vuetify.breakpoint.smAndDown">
     <v-list-tile v-if="isAuthenticated" @click="signOut">
       <v-list-tile-action>
         <progress-circular v-if="_isRequest(Request.SIGN_OUT)" :size="20"/>
@@ -153,16 +178,7 @@
         </v-list-tile-content>
       </v-list-tile>
     </template>
-  </v-list>
-  <v-list dense class="grey lighten-4" :class="{'pt-0': $vuetify.breakpoint.smAndDown}">
-    <v-list-tile to="/about">
-      <v-list-tile-action>
-        <v-icon>fas fa-question-circle</v-icon>
-      </v-list-tile-action>
-      <v-list-tile-content>
-        <v-list-tile-title>О нас</v-list-tile-title>
-      </v-list-tile-content>
-    </v-list-tile>
+    </template>
   </v-list>
   </div>
 </template>

@@ -50,6 +50,7 @@ import biographyCategoryService from '../services/cache-biography-category-servi
 import List from '../components/list/List'
 import CategoryCard from '../components/category/CategoryCard'
 import pullToRefresh from '../mixins/pullToRefresh'
+import { TITLE } from '../config'
 
 export default {
   name: 'CategoriesAdmin',
@@ -62,6 +63,9 @@ export default {
       resetId: +new Date(),
       deleteIndex: -1
     }
+  },
+  metaInfo: {
+    title: TITLE.CATEGORIES
   },
   methods: {
     pullToRefresh (loaded) {

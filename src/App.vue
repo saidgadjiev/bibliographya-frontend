@@ -27,7 +27,7 @@ export default {
     }
   },
   metaInfo: {
-    title: TITLE,
+    title: TITLE.MAIN,
     titleTemplate: null
   },
   computed: {

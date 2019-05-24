@@ -22,12 +22,12 @@
           </v-btn>
         </router-link>
         <v-toolbar-side-icon v-else @click.stop="doDrawer"></v-toolbar-side-icon>
-        <router-link to="/" class="title pl-2 white--text font-weight-light">{{ _title }}</router-link>
+        <router-link to="/" class="title pl-2 white--text font-weight-light">{{ getTitle }}</router-link>
       </div>
       <div style="height: 50px; width: 290px" v-else>
         <div class="d-inline-flex align-center" style="height: 100%">
           <bibliographya-icon/>
-        <router-link to="/" class="title pl-2 white--text font-weight-regular">{{ _title }}</router-link>
+        <router-link to="/" class="title pl-2 white--text font-weight-regular">{{ getTitle }}</router-link>
       </div>
       </div>
     </v-toolbar-title>
@@ -102,7 +102,6 @@ import { SIGN_OUT, CANCEL_SIGN_UP } from '../../store/action-types'
 import { SET_DRAWER } from '../../store/mutation-types'
 import EventBus, { SEARCH } from '../../eventbus/eventbus'
 import utils from '../../assets/js/utils'
-import { TITLE } from '../../config'
 import BibliographyaIcon from '../../components/icon/BibliographyaIcon'
 
 export default {
@@ -119,7 +118,8 @@ export default {
       'getFirstName',
       'isAuthenticated',
       'drawer',
-      'isShowSearch'
+      'isShowSearch',
+      'getTitle'
     ]),
     _firstName () {
       return this.getFirstName
@@ -129,9 +129,6 @@ export default {
     },
     _throttleSearch () {
       return utils.throttle(this.search, 300)
-    },
-    _title () {
-      return TITLE
     }
   },
   methods: {
