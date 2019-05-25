@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <img :src="_img" class="background">
     <v-layout align-center justify-center row v-if="accountRequest">
       <progress-circular/>
     </v-layout>
@@ -33,10 +32,7 @@ export default {
   computed: {
     ...mapGetters([
       'getStatus'
-    ]),
-    _img () {
-      return process.env.BASE_URL + 'static/img/Bibliographya.jpg'
-    }
+    ])
   },
   created () {
     let that = this
