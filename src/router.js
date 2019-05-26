@@ -391,13 +391,19 @@ let router = new Router({
       path: '/signUp/:providerId/callback',
       name: 'oauthSignUpCallback',
       component: OAuthSignUpCallback,
-      props: (route) => ({ providerId: route.params.providerId })
+      props: (route) => ({ providerId: route.params.providerId }),
+      meta: {
+        root: true
+      }
     },
     {
       path: '/signIn/:providerId/callback',
       name: 'oauthSignInCallback',
       component: OAuthSignInCallback,
-      props: (route) => ({ providerId: route.params.providerId })
+      props: (route) => ({ providerId: route.params.providerId }),
+      meta: {
+        root: true
+      }
     },
     {
       path: '/403',
