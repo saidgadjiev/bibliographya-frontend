@@ -32,6 +32,20 @@ img {
   font-family: Verdana, sans-serif !important;
 }
 
+.biography-content a {
+  color: #007bff !important;
+  text-decoration: none !important;
+  background-color: transparent !important;
+  -webkit-text-decoration-skip: objects !important;
+}
+
+.biography-content a:hover {
+  color: #0056b3 !important;
+  text-decoration: underline !important;
+  background-color: transparent !important;
+  -webkit-text-decoration-skip: objects !important;
+}
+
 .biography-content h1,
 .biography-content h2,
 .biography-content h3,
