@@ -2,6 +2,7 @@
   <v-content>
     <nav-bar v-if="$vuetify.breakpoint.smAndDown"></nav-bar>
     <tool-bar></tool-bar>
+    <open-native-bar v-if="_isSupportedBrowser && runAppAlert" @close="runAppAlert = false"/>
     <vue-pull-to
       :top-load-method="pullToRefreshMethod"
       :bottom-load-method="pullToLoadMoreMethod"
@@ -33,6 +34,7 @@ import { mapGetters } from 'vuex'
 import VuePullTo from '../../components/pullTo/VuePullTo'
 import Sidebar from './Sidebar'
 import utils from '../../assets/js/utils'
+import OpenNativeBar from './OpenNativeBar'
 
 export default {
   name: 'Layout',
@@ -42,6 +44,7 @@ export default {
     }
   },
   components: {
+    OpenNativeBar,
     Sidebar,
     VuePullTo,
     NavBar,

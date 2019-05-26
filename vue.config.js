@@ -13,5 +13,8 @@ module.exports = {
     plugins: [
       new VuetifyLoaderPlugin()
     ]
+  },
+  devServer: {
+    port: 8081
   }
 }
