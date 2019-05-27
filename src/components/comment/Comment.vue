@@ -113,10 +113,10 @@ export default {
       return this.user.lastName + ' ' + this.user.firstName
     },
     _authorAccountLink () {
-      return '/profile/' + this.userId
+      return '/biographies/' + this.userId
     },
     _repliedBiographyLink () {
-      return '/profile/' + this.parentUser.userId
+      return '/biographies/' + this.parentUser.userId
     },
     _showCommentButtons () {
       return this.$vuetify.breakpoint.smAndDown

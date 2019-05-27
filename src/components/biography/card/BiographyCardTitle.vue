@@ -125,7 +125,7 @@ export default {
     },
     _creatorAccountLink () {
       if (this.creator) {
-        return '/profile/' + this.creator.userId
+        return '/biographies/' + this.creator.userId
       }
 
       return ''

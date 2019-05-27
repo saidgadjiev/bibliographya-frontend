@@ -73,10 +73,10 @@ export default {
       return this.creator.lastName + ' ' + this.creator.firstName
     },
     _fixerAccountLink () {
-      return '/profile/' + this.fixer.userId
+      return '/biographies/' + this.fixer.userId
     },
     _creatorAccountLink () {
-      return '/profile/' + this.creator.userId
+      return '/biographies/' + this.creator.userId
     }
   }
 }

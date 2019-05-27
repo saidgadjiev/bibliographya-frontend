@@ -18,7 +18,7 @@
           <template v-for="(item, index) in items">
             <v-list-tile :key="'user' + item.id">
               <v-list-tile-content>
-                <router-link :to="'/profile/' + item.userId" class="bib-a">
+                <router-link :to="'/biographies/' + item.userId" class="bib-a">
                   <h3>{{ userName(item) }}</h3>
                 </router-link>
               </v-list-tile-content>

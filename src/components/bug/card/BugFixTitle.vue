@@ -52,7 +52,7 @@ export default {
       return this.fixer.lastName + ' ' + this.fixer.firstName
     },
     _fixerAccountLink () {
-      return '/profile/' + this.fixer.userId
+      return '/biographies/' + this.fixer.userId
     }
   }
 }

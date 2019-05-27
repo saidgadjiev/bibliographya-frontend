@@ -49,7 +49,7 @@ export default {
     },
     _accountLink () {
       if (this.moderator) {
-        return '/profile/' + this.moderator.userId
+        return '/biographies/' + this.moderator.userId
       }
 
       return ''
