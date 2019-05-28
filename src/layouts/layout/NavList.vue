@@ -142,14 +142,6 @@
         <v-list-tile-title>Обратная связь</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
-    <v-list-tile to="/about">
-      <v-list-tile-action>
-        <v-icon>fas fa-question-circle</v-icon>
-      </v-list-tile-action>
-      <v-list-tile-content>
-        <v-list-tile-title>О нас</v-list-tile-title>
-      </v-list-tile-content>
-    </v-list-tile>
     <template v-if="$vuetify.breakpoint.smAndDown">
     <v-list-tile v-if="isAuthenticated" @click="signOut">
       <v-list-tile-action>
@@ -179,6 +171,22 @@
       </v-list-tile>
     </template>
     </template>
+    <v-list-tile to="/about">
+      <v-list-tile-action>
+        <v-icon>fas fa-question-circle</v-icon>
+      </v-list-tile-action>
+      <v-list-tile-content>
+        <v-list-tile-title>О нас</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-list-tile :href="_intent" v-if="_isSupportedBrowser">
+      <v-list-tile-action>
+        <v-icon>fas fa-external-link-alt</v-icon>
+      </v-list-tile-action>
+      <v-list-tile-content>
+        <v-list-tile-title>Открыть в приложении</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
   </v-list>
   </div>
 </template>
