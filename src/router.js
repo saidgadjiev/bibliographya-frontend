@@ -40,7 +40,7 @@ const FeedbackList = () => import('./views/FeedbackList')
 Vue.use(Router)
 
 const waitForAccount = function (callback) {
-  if (store.getters.getStatus === USER_STATE.NONE && store.getters['request/request'] === REQUEST.GET_ACCOUNT) {
+  if (store.getters.getStatus === USER_STATE.NONE || store.getters['request/request'] === REQUEST.GET_ACCOUNT) {
     store.watch(store.getters.watchState, function () {
       if (store.getters.getStatus !== USER_STATE.NONE) {
         callback()
