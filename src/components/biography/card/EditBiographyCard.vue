@@ -3,7 +3,7 @@
     <v-card-text>
       <v-form>
         <v-layout row wrap>
-          <v-flex xs12 sm6 md3>
+          <v-flex xs12 md4>
             <v-text-field
               v-model="biographyForm.lastName"
               :error-messages="errors.collect('lastName')"
@@ -13,7 +13,7 @@
               type="text"
             ></v-text-field>
           </v-flex>
-          <v-flex xs12 sm6 md3>
+          <v-flex xs12 md4>
             <v-text-field
               v-model="biographyForm.firstName"
               :error-messages="errors.collect('firstName')"
@@ -23,7 +23,7 @@
               type="text"
             ></v-text-field>
           </v-flex>
-          <v-flex xs12 sm6 md3>
+          <v-flex xs12 md4>
             <v-text-field
               v-model="biographyForm.middleName"
               label="Отчество"
@@ -35,7 +35,7 @@
             <p v-html="fioConflict" class="title font-weight-light"></p>
             <strong class="subheading">Ваша версия:</strong>
             <v-layout row wrap>
-              <v-flex xs12 sm6 md3 class="pl-0">
+              <v-flex xs12 md4 class="pl-0">
                 <v-text-field
                   v-model="myBiographyVersion.lastName"
                   readonly
@@ -43,7 +43,7 @@
                   type="text"
                 ></v-text-field>
               </v-flex>
-              <v-flex xs12 sm6 md3>
+              <v-flex xs12 md4>
                 <v-text-field
                   v-model="myBiographyVersion.firstName"
                   readonly
@@ -51,7 +51,7 @@
                   type="text"
                 ></v-text-field>
               </v-flex>
-              <v-flex xs12 sm6 md3>
+              <v-flex xs12 md4>
                 <v-text-field
                   v-model="myBiographyVersion.middleName"
                   readonly
@@ -60,6 +60,39 @@
                 ></v-text-field>
               </v-flex>
             </v-layout>
+          </v-flex>
+          <v-flex xs12>
+            <v-combobox
+              :loading="countriesLoading"
+              :items="countries"
+              v-model="biographyForm.country"
+              v-validate="'required'"
+              :error-messages="errors.collect('country')"
+              name="countryId"
+              :menu-props="{ maxHeight: '400', closeOnContentClick: true, offsetY: true }"
+              item-text="name"
+              item-value="id"
+              label="Страна"
+              no-data-text="Нет данных"
+              return-object
+            >
+            </v-combobox>
+          </v-flex>
+          <v-flex xs12>
+            <v-select
+              :loading="professionsLoading"
+              :items="professions"
+              v-model="biographyForm.professions"
+              :menu-props="{ maxHeight: '400', closeOnContentClick: true, offsetY: true }"
+              item-text="name"
+              item-value="id"
+              label="Род деятельности"
+              chips
+              multiple
+              deletable-chips
+              no-data-text="Нет данных"
+            >
+            </v-select>
           </v-flex>
           <v-flex xs12>
             <span>Биография:</span>
@@ -86,13 +119,16 @@
               :loading="categoriesLoading"
               :items="categories"
               v-model="biographyForm.categories"
-              :menu-props="{ maxHeight: '400' }"
+              :menu-props="{ maxHeight: '400', closeOnContentClick: true, top: true, offsetY: true }"
               item-text="name"
               item-value="id"
               label="Категории"
               chips
               multiple
-            ></v-select>
+              deletable-chips
+              no-data-text="Нет данных"
+            >
+            </v-select>
           </v-flex>
         </v-layout>
       </v-form>
@@ -109,6 +145,8 @@ import biographyCategoryService from '../../../services/cache-biography-category
 import TinyEditor from '../../tinymce/TinyEditor'
 import alert from '../../../mixins/alert'
 import fileService from '../../../services/file-service'
+import professionService from '../../../services/profession-service'
+import countryService from '../../../services/country-service'
 
 const diff = require('diff')
 const he = require('he')
@@ -121,8 +159,12 @@ export default {
   data () {
     return {
       saveLoading: false,
-      categoriesLoading: false,
+      categoriesLoading: true,
+      professionsLoading: true,
+      countriesLoading: true,
       categories: [],
+      professions: [],
+      countries: [],
       fioConflict: '',
       biographyConflict: '',
       categoriesConflict: '',
@@ -131,8 +173,10 @@ export default {
         lastName: '',
         middleName: '',
         bio: '',
+        country: {},
         updatedAt: undefined,
-        categories: []
+        categories: [],
+        professions: []
       },
       myBiographyVersion: {
         firstName: '',
@@ -160,24 +204,11 @@ export default {
     }
   },
   created () {
-    let that = this
-
-    biographyCategoryService.getCategories(2147483647, 0)
-      .then(
-        response => {
-          if (response.status === that.HttpStatus.OK) {
-            for (let i = 0; i < response.data.content.length; i++) {
-              that.categories.push(response.data.content[i])
-            }
-          }
-        },
-        e => {}
-      ).finally(() => {
-        that.categoriesLoading = false
-      })
-
     this.$validator.localize('ru', {
       custom: {
+        countryId: {
+          required: () => 'Выберите страну'
+        },
         firstName: {
           required: () => 'Введите имя'
         },
@@ -186,6 +217,9 @@ export default {
         }
       }
     })
+    this.loadCategories()
+    this.loadCountries()
+    this.loadProfessions()
   },
   mounted () {
     if (this.mode === 'edit') {
@@ -193,6 +227,57 @@ export default {
     }
   },
   methods: {
+    loadCategories () {
+      let that = this
+
+      biographyCategoryService.getCategories(2147483647, 0)
+        .then(
+          response => {
+            if (response.status === that.HttpStatus.OK) {
+              for (let i = 0; i < response.data.content.length; i++) {
+                that.categories.push(response.data.content[i])
+              }
+            }
+          },
+          e => {}
+        ).finally(() => {
+          that.categoriesLoading = false
+        })
+    },
+    loadCountries () {
+      let that = this
+
+      countryService.getCountries()
+        .then(
+          response => {
+            if (response.status === that.HttpStatus.OK) {
+              for (let i = 0; i < response.data.length; i++) {
+                that.countries.push(response.data[i])
+              }
+            }
+          },
+          e => {}
+        ).finally(() => {
+          that.countriesLoading = false
+        })
+    },
+    loadProfessions () {
+      let that = this
+
+      professionService.getProfessions()
+        .then(
+          response => {
+            if (response.status === that.HttpStatus.OK) {
+              for (let i = 0; i < response.data.length; i++) {
+                that.professions.push(response.data[i])
+              }
+            }
+          },
+          e => {}
+        ).finally(() => {
+          that.professionsLoading = false
+        })
+    },
     getUploads () {
       let currentImgs = this.editor.getBody().getElementsByTagName('img')
       let currentImgPaths = []
@@ -280,6 +365,19 @@ export default {
               }
             })
 
+            let professionsDiff = diff.diffArrays(that.inBiography.professions, that.biographyForm.professions)
+
+            let addedProfessions = []
+            let deletedProfessions = []
+
+            professionsDiff.forEach(function (element) {
+              if (element.added) {
+                addedProfessions.push(...element.value)
+              } else if (element.removed) {
+                deletedProfessions.push(...element.value)
+              }
+            })
+
             biographyService.update({
               id: that.biographyForm.id,
               firstName: that.biographyForm.firstName,
@@ -288,7 +386,10 @@ export default {
               bio: that.biographyForm.bio,
               addCategories: added,
               deleteCategories: deleted,
-              updatedAt: that.biographyForm.updatedAt
+              updatedAt: that.biographyForm.updatedAt,
+              countryId: that.biographyForm.country.id,
+              addProfessions: addedProfessions,
+              deleteProfessions: deletedProfessions
             })
               .then(
                 response => {
@@ -326,7 +427,9 @@ export default {
               lastName: that.biographyForm.lastName,
               middleName: that.biographyForm.middleName,
               bio: that.biographyForm.bio,
-              addCategories: that.biographyForm.categories
+              addCategories: that.biographyForm.categories,
+              countryId: that.biographyForm.country.id,
+              addProfessions: that.biographyForm.professions
             })
               .then(
                 () => {

@@ -38,6 +38,7 @@ export default {
         response => {
           that.biography = response.data
           that.biography.categories = response.data.categories.map(e => e.id)
+          that.biography.professions = response.data.professions.map(e => e.id)
         },
         e => {}
       )
