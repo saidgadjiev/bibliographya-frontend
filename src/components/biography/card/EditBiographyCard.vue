@@ -62,21 +62,20 @@
             </v-layout>
           </v-flex>
           <v-flex xs12>
-            <v-combobox
+            <v-select
               :loading="countriesLoading"
               :items="countries"
-              v-model="biographyForm.country"
-              v-validate="'required'"
-              :error-messages="errors.collect('country')"
-              name="countryId"
-              :menu-props="{ maxHeight: '400', closeOnContentClick: true, offsetY: true }"
               item-text="name"
               item-value="id"
+              name="countryId"
+              v-model="biographyForm.countryId"
+              v-validate="'required'"
+              :error-messages="errors.collect('countryId')"
+              :menu-props="{ maxHeight: '400', closeOnContentClick: true, offsetY: true }"
               label="Страна"
               no-data-text="Нет данных"
-              return-object
             >
-            </v-combobox>
+            </v-select>
           </v-flex>
           <v-flex xs12>
             <v-select
@@ -173,7 +172,7 @@ export default {
         lastName: '',
         middleName: '',
         bio: '',
-        country: {},
+        countryId: null,
         updatedAt: undefined,
         categories: [],
         professions: []
@@ -387,7 +386,7 @@ export default {
               addCategories: added,
               deleteCategories: deleted,
               updatedAt: that.biographyForm.updatedAt,
-              countryId: that.biographyForm.country.id,
+              countryId: that.biographyForm.countryId,
               addProfessions: addedProfessions,
               deleteProfessions: deletedProfessions
             })
@@ -428,7 +427,7 @@ export default {
               middleName: that.biographyForm.middleName,
               bio: that.biographyForm.bio,
               addCategories: that.biographyForm.categories,
-              countryId: that.biographyForm.country.id,
+              countryId: that.biographyForm.countryId,
               addProfessions: that.biographyForm.professions
             })
               .then(
