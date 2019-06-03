@@ -10,11 +10,11 @@ module.exports = {
     cordovaPath: 'src-cordova'
   },
   configureWebpack: {
+    devServer: {
+      port: 8081
+    },
     plugins: [
       new VuetifyLoaderPlugin()
     ]
-  },
-  devServer: {
-    port: 8081
   }
 }

@@ -5,7 +5,7 @@
       <div v-if="showPublish">
         Публикация: <strong>{{ _publishTitle }}</strong>
       </div>
-      <div>
+      <div v-if="categories && categories.length > 0">
         <span v-for="(category, index) in categories" :key="index">
           <router-link class="bib-a" :to="'/categories/' + category.id">{{ category.name }}</router-link>&nbsp;&nbsp;
         </span>
@@ -23,6 +23,16 @@
       <div :class="{'pt-3': _showAuthor || showPublish || showModerationBlock}">
         <span :class="_fullNameClasses" class="word-break-word">{{ _fullName }}
           <v-icon v-if="_isMarked" small color="blue darken-3" class="pb-1">mdi-check-decagram</v-icon>
+        </span>
+      </div>
+      <span class="d-block pt-1" v-if="country">
+        <span style="color: #78909C">Страна: </span>
+        <span>{{ country.name }}</span>
+      </span>
+      <div v-if="professions && professions.length > 0">
+        <span style="color: #78909C">Род деятельности: </span>
+        <span v-for="(profession, index) in professions" :key="index">
+          <span>{{ profession.name }}</span>&nbsp;&nbsp;
         </span>
       </div>
       <biography-card-menu v-bind="_attrs" v-on="$listeners"/>
@@ -88,6 +98,13 @@ export default {
     updatedAt: {
       type: String,
       required: true
+    },
+    country: {
+      type: String
+    },
+    professions: {
+      type: Array,
+      default: () => []
     }
   },
   computed: {
