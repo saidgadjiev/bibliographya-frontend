@@ -334,6 +334,7 @@ export default {
         middleName: '',
         bio: '',
         updatedAt: undefined,
+        countryId: null,
         categories: []
       })
     },
