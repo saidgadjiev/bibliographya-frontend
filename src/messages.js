@@ -9,6 +9,8 @@ export const UNPUBLISHED = 'Ваша биография снята с публи
 
 export const SERVER_ERROR = 'Произошла ошибка. Попробуйте повторить позже.'
 
+export const SESSION_EXPIRED = 'Сессия истекла. Пожалуйста попробуйте еще раз.'
+
 export const TOO_MANY_REQUESTS = 'Вы совершили слишком много одинаковых действий. Повторите попытку позже.'
 
 export const RESOURCE_NOT_FOUND = 'Ресурс не найден.'

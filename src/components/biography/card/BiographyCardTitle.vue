@@ -100,7 +100,7 @@ export default {
       required: true
     },
     country: {
-      type: String
+      type: Object
     },
     professions: {
       type: Array,

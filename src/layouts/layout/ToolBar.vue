@@ -13,8 +13,8 @@
       <div v-if="$vuetify.breakpoint.smAndDown">
         <router-link
           class="title"
-          v-if="$routerHistory.hasPrevious()"
-          :to="{ path: $routerHistory.previous().path }">
+          v-if="hasPrevious"
+          :to="{ path: previous.path }">
           <v-btn icon>
           <v-icon>
             fas fa-arrow-left
@@ -82,7 +82,7 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-      <v-list-tile v-else-if="_isConfirmation" @click="cancelSignUp">
+      <v-list-tile v-else-if="isConfirmation" @click="cancelSignUp">
         <v-list-tile-content>
           <v-list-tile-title>Выйти</v-list-tile-title>
         </v-list-tile-content>
@@ -119,13 +119,13 @@ export default {
       'isAuthenticated',
       'drawer',
       'isShowSearch',
-      'getTitle'
+      'getTitle',
+      'isConfirmation',
+      'hasPrevious',
+      'previous'
     ]),
     _firstName () {
       return this.getFirstName
-    },
-    _isConfirmation () {
-      return this.$route.name === 'signUpConfirm'
     },
     _throttleSearch () {
       return utils.throttle(this.search, 300)

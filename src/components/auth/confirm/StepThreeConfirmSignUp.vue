@@ -1,5 +1,8 @@
 <template>
   <v-card>
+    <v-card-title primary class="pb-0">
+      <strong class="d-block">Придумайте пароль длинной 6 символов.</strong>
+    </v-card-title>
     <v-card-text>
       <v-form>
         <v-text-field
@@ -33,7 +36,7 @@
 <script>
 import alert from '../../../mixins/alert'
 import request from '../../../mixins/request'
-import { SERVER_ERROR, WELCOME_TITLE, WELCOME } from '../../../messages'
+import { SESSION_EXPIRED, WELCOME_TITLE, WELCOME } from '../../../messages'
 import { CONFIRM_SIGN_UP } from '../../../store/action-types'
 
 export default {
@@ -83,12 +86,13 @@ export default {
                 that.$router.push('/')
               },
               e => {
-                if (e.response.status === this.HttpStatus.BAD_REQUEST) {
+                if (e.response.status === this.HttpStatus.BAD_REQUEST || e.response.status === this.HttpStatus.PRECONDITION_FAILED) {
                   that.$swal.fire({
-                    text: SERVER_ERROR,
-                    type: 'error',
+                    text: SESSION_EXPIRED,
+                    type: 'warning',
                     showCloseButton: true
                   })
+                  that.$router.push('/signUp')
                 }
               }
             )

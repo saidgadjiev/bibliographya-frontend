@@ -9,10 +9,6 @@ import { mapGetters } from 'vuex'
 // Import TinyMCE
 import tinymce from 'tinymce/tinymce'
 
-// A theme is also required
-import 'tinymce/themes/silver/theme'
-import 'tinymce/themes/mobile/theme'
-
 // Any plugins you want to use has to be imported
 import 'tinymce/plugins/advlist'
 import 'tinymce/plugins/wordcount'
@@ -138,7 +134,9 @@ export default {
       removeMenuItems = 'code visualblocks visualchars visualaid template media codesample charmap pagebreak nonbreaking anchor toc codeformat'
 
       let options = {
+        theme_url: '/static/js/themes/silver/theme.min.js',
         mobile: {
+          theme_url: '/static/js/themes/mobile/theme.min.js',
           toolbar: mobileToolbar,
           plugins: ['autosave', 'lists', 'autolink']
         },

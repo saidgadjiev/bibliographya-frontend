@@ -36,6 +36,7 @@ const SignUp = () => import('./views/SignUpView')
 const ConfirmSignUp = () => import('./views/ConfirmSignUp')
 const CreateFeedback = () => import('./views/CreateFeedback')
 const FeedbackList = () => import('./views/FeedbackList')
+const BiographyPrivacy = () => import('./views/BiographyPrivacy')
 
 Vue.use(Router)
 
@@ -332,7 +333,10 @@ let router = new Router({
       path: '/signUp',
       name: 'signUp',
       component: SignUp,
-      beforeEnter: ifNotAuthenticated
+      beforeEnter: ifNotAuthenticated,
+      meta: {
+        root: true
+      }
     },
     {
       path: '/signUp/confirm',
@@ -386,6 +390,11 @@ let router = new Router({
       meta: {
         root: true
       }
+    },
+    {
+      path: '/biography/privacy',
+      name: 'biographyPrivacy',
+      component: BiographyPrivacy
     },
     {
       path: '/signUp/:providerId/callback',

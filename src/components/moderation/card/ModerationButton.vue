@@ -61,7 +61,7 @@ export default {
           this.dialogVisible = true
           break
         case MODERATION_BUTTON.USER_PENDING:
-          this.okFunction = this.userComplete
+          this.userComplete()
           break
         default:
           this.complete()
