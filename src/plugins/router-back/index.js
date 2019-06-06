@@ -1,8 +1,7 @@
-import routerHistory from './history'
 import writeHistory from './writeHistory'
+import store from '../../store/store'
 
 export {
-  routerHistory,
   writeHistory
 }
 
@@ -13,7 +12,7 @@ export default {
       return
     }
 
-    Vue.use(routerHistory, options)
+    store.commit('rootRoutes', options.rootRoutes)
     options.router.afterEach(writeHistory)
   }
 }

@@ -1,19 +1,19 @@
-import History from './history'
+import store from '../../store/store'
 
 export default (to, from) => {
-  if (History.isInTheFuture(to.fullPath)) {
-    const amount = History.howFarIntheFuture(to.fullPath)
+  if (store.getters.isInTheFuture(to.fullPath)) {
+    const amount = store.getters.howFarIntheFuture(to.fullPath)
 
-    History.forward(amount)
-  } else if (History.visitedRecently(to.fullPath)) {
-    const amount = History.indexOfRecentHistory(to.fullPath)
+    store.dispatch('forward', amount)
+  } else if (store.getters.visitedRecently(to.fullPath)) {
+    const amount = store.getters.indexOfRecentHistory(to.fullPath)
 
-    History.back(amount)
+    store.dispatch('back', amount)
   } else {
     /**
          * Ignore navigation to a route with the same name
          */
-    if (History.ignoreRoutesWithSameName && to.name && from.name && to.name === from.name) {
+    if (store.getters.ignoreRoutesWithSameName && to.name && from.name && to.name === from.name) {
       return
     }
 
@@ -21,10 +21,10 @@ export default (to, from) => {
          * Save the new route
          */
 
-    if (History.rootRoutes.indexOf(to.name) !== -1) {
-      History.clear()
+    if (store.getters.rootRoutes.indexOf(to.name) !== -1) {
+      store.dispatch('clear')
     }
 
-    History.push(to.fullPath)
+    store.dispatch('push', to.fullPath)
   }
 }

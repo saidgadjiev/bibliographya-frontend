@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title primary class="pb-0">
-      <strong class="d-block">Придумайте пароль.</strong>
+      <strong class="d-block">Придумайте пароль длинной 6 символов.</strong>
     </v-card-title>
     <v-card-text>
       <v-form>

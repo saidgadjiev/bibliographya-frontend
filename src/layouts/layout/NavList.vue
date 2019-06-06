@@ -186,9 +186,9 @@
               <v-list-tile-title>Войти</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile to="/signIn">
+          <v-list-tile to="/signUp">
             <v-list-tile-action>
-              <v-icon>fas fa-sign-in-alt</v-icon>
+              <v-icon>fas fa-user-plus</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>Регистрация</v-list-tile-title>

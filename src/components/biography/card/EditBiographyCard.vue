@@ -1,11 +1,14 @@
 <template>
   <v-card tile>
+    <v-card-title>
+      <h4>Перед тем как начать писать биографию ознакомтесь с&nbsp;<router-link to="/biography/privacy" class="bib-a subheading">правилами оформления биографий</router-link>.</h4>
+    </v-card-title>
     <v-card-text>
       <v-form>
         <v-layout row wrap>
           <v-flex xs12 md4>
             <v-text-field
-              v-model="biographyForm.lastName"
+              v-model.trim="biographyForm.lastName"
               :error-messages="errors.collect('lastName')"
               v-validate="'required'"
               name="lastName"
@@ -15,7 +18,7 @@
           </v-flex>
           <v-flex xs12 md4>
             <v-text-field
-              v-model="biographyForm.firstName"
+              v-model.trim="biographyForm.firstName"
               :error-messages="errors.collect('firstName')"
               v-validate="'required'"
               name="firstName"
@@ -25,7 +28,7 @@
           </v-flex>
           <v-flex xs12 md4>
             <v-text-field
-              v-model="biographyForm.middleName"
+              v-model.trim="biographyForm.middleName"
               label="Отчество"
               type="text"
             ></v-text-field>
@@ -97,7 +100,7 @@
             <span>Биография:</span>
             <tiny-editor
               id="biography_editor"
-              v-model="biographyForm.bio"
+              v-model.trim="biographyForm.bio"
               :media-url="_mediaUrl"
               :media-base-path="_mediaBasePath"
               @save="doSave"
