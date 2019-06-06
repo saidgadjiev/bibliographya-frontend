@@ -83,7 +83,7 @@
 import alert from '../../../mixins/alert'
 import request from '../../../mixins/request'
 import { REQUEST } from '../../../config'
-import { SERVER_ERROR } from '../../../messages'
+import { SESSION_EXPIRED } from '../../../messages'
 import authService from '../../../services/auth-service'
 import VueTelInput from 'vue-tel-input'
 import verificationService from '../../../services/verification-service'
@@ -222,10 +222,12 @@ export default {
                   that.startTimer(e.response.data.time)
                 } else {
                   that.$swal.fire({
-                    text: SERVER_ERROR,
-                    type: 'error',
+                    text: SESSION_EXPIRED,
+                    type: 'warning',
                     showCloseButton: true
                   })
+
+                  that.$router.push('/signUp')
                 }
               }
             }

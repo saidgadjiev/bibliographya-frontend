@@ -24,6 +24,16 @@
         <v-toolbar-side-icon v-else @click.stop="doDrawer"></v-toolbar-side-icon>
         <router-link to="/" class="title pl-2 white--text font-weight-light">{{ getTitle }}</router-link>
       </div>
+      <router-link
+        class="title"
+        v-if="$routerHistory.hasPrevious()"
+        :to="{ path: $routerHistory.previous().path }">
+        <v-btn icon>
+          <v-icon>
+            fas fa-arrow-left
+          </v-icon>
+        </v-btn>
+      </router-link>
       <div style="height: 50px; width: 290px" v-else>
         <div class="d-inline-flex align-center" style="height: 100%">
           <bibliographya-icon/>

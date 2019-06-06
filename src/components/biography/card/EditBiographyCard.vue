@@ -335,6 +335,7 @@ export default {
         bio: '',
         updatedAt: undefined,
         countryId: null,
+        professions: [],
         categories: []
       })
     },
