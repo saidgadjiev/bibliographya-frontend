@@ -90,13 +90,13 @@ function getBiographies (cancelToken, categoryId, limit, offset, autobiographies
 }
 
 function remove (categoryId) {
-  getCategoriesCache.del(categoryId)
+  getCategoriesCache.remove(categoryId)
 
   return biographyCategoryService.remove(categoryId)
 }
 
 function edit (id, category) {
-  getCategoriesCache.del(id)
+  getCategoriesCache.remove(id)
 
   return biographyCategoryService.edit(id, category)
 }
