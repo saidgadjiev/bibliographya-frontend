@@ -91,7 +91,7 @@ function unPublish (biographyId) {
 }
 
 function deleteBiography (biographyId) {
-  getBiographiesCache.del(biographyId)
+  getBiographiesCache.remove(biographyId)
 
   return biographyService.deleteBiography(biographyId)
 }
