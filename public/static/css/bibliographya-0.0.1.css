@@ -62,15 +62,15 @@ img {
   object-fit: cover;
 }
 
-li {
+.biography-content li {
   margin-top: 15px;
 }
 
-ul {
+.biography-content ul {
   list-style-type: none;
 }
 
-li::before {
+.biography-content li::before {
   content: "\2014";
   margin-right: 4px;
   font-weight: 600;
