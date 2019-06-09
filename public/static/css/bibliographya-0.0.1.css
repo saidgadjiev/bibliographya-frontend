@@ -68,6 +68,7 @@ img {
 
 .biography-content ul {
   list-style-type: none;
+  padding-left: 0;
 }
 
 .biography-content li::before {
