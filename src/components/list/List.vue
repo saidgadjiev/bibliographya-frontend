@@ -74,7 +74,6 @@ export default {
     return {
       loading: false,
       activeRequest: undefined,
-      limit: 50,
       offset: 0,
       items: []
     }
@@ -108,6 +107,10 @@ export default {
     },
     infiniteLoad: {
       type: Function
+    },
+    limit: {
+      type: Number,
+      default: 25
     }
   },
   methods: {

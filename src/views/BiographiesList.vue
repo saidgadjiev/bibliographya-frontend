@@ -6,6 +6,7 @@
     :delete-id="deleteId"
     :delete-index="deleteIndex"
     :header-slot="categoryId"
+    :limit="5"
   >
     <template #listHeader v-if="$vuetify.breakpoint.smAndDown">
       <v-text-field
