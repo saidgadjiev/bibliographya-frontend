@@ -5,6 +5,7 @@
     :infinite-load="infiniteLoad"
     :delete-id="deleteId"
     :delete-index="deleteIndex"
+    :limit="5"
   >
     <template slot="item" slot-scope="{ item, index }">
       <biography-card
