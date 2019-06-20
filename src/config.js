@@ -125,3 +125,5 @@ export const METRIKA_ID = 52534486
 export const TOKEN_NAME = 'x-token'
 
 export const isMobilePlatform = () => process.env.CORDOVA_PLATFORM === 'android' || process.env.CORDOVA_PLATFORM === 'ios'
+
+export const TG_LINK = 'tg://join?invite=AAAAAFKeu3tfxyCJGUHFbQ'

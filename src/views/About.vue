@@ -3,13 +3,16 @@
     <v-flex xs12>
       <v-card class="blue darken-3" :class="{'pa-5': $vuetify.breakpoint.mdAndUp}">
         <v-card-text>
+          <router-link to="/social" class="white--text" style="position: absolute; top: 10px; right: 10px;">
+            <h3 style="color: #FFEE58">Мы в соц. сетях</h3>
+          </router-link>
           <h3 style="color: #64B5F6">Биографии это</h3>
           <h1
             class="font-weight-black white--text"
             style="font-size: 2.20rem;letter-spacing: -.1rem"
           >
             Cервис, где вы можете написать свою автобиографию и поделиться ею с другими людьми. Так же вы можете
-            поделиться биографиями людей, о которых вы хотели бы рассказать.
+            поделиться биографиями людей, о которых вы хотели бы рассказать. Расскажите о себе и станьте известными!
           </h1>
         </v-card-text>
       </v-card>
@@ -215,7 +218,7 @@
                 small
                 color="blue lighten-1"
               >
-                <v-icon dark style="font-size: 24px;">fab fa-telegram</v-icon>
+                <v-icon dark style="font-size: 24px;">fab fa-telegram-plane</v-icon>
               </v-btn>
             </v-speed-dial>
             <v-spacer></v-spacer>

@@ -6,7 +6,7 @@
     color="blue lighten-1"
     @click.prevent="showShareWindow"
   >
-    <v-icon dark style="font-size: 24px;">fab fa-telegram</v-icon>
+    <v-icon dark style="font-size: 24px;">fab fa-telegram-plane</v-icon>
   </v-btn>
 </template>
 

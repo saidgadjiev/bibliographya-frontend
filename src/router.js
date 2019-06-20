@@ -37,6 +37,7 @@ const ConfirmSignUp = () => import('./views/ConfirmSignUp')
 const CreateFeedback = () => import('./views/CreateFeedback')
 const FeedbackList = () => import('./views/FeedbackList')
 const BiographyPrivacy = () => import('./views/BiographyPrivacy')
+const Social = () => import('./views/Social')
 
 Vue.use(Router)
 
@@ -432,6 +433,14 @@ let router = new Router({
       path: '/feedback',
       name: 'feedback',
       component: CreateFeedback,
+      meta: {
+        root: true
+      }
+    },
+    {
+      path: '/social',
+      name: 'social',
+      component: Social,
       meta: {
         root: true
       }
