@@ -243,31 +243,36 @@ const actions = {
         })
     })
   },
-  [GET_ACCOUNT] ({ dispatch, commit }) {
+  [GET_ACCOUNT] ({ dispatch, commit, getters }) {
     dispatch('request/' + SET_REQUEST, REQUEST.GET_ACCOUNT)
 
     return new Promise((resolve, reject) => {
-      authService.getAccount()
-        .then(
-          accountResponse => {
-            commit(SIGN_IN_SUCCESS, {
-              user: accountResponse.data
-            })
+      if (getUserToken()) {
+        authService.getAccount()
+          .then(
+            accountResponse => {
+              commit(SIGN_IN_SUCCESS, {
+                user: accountResponse.data
+              })
 
-            resolve()
-          },
-          e => {
-            if (e.response && e.response.status === HttpStatus.UNAUTHORIZED) {
               resolve()
-              commit(SIGN_OUT_SUCCESS)
-            }
+            },
+            e => {
+              if (e.response && e.response.status === HttpStatus.UNAUTHORIZED) {
+                resolve()
+                commit(SIGN_OUT_SUCCESS)
+              }
 
-            reject(e)
-          }
-        )
-        .finally(() => {
-          dispatch('request/' + CLEAR)
-        })
+              reject(e)
+            }
+          )
+          .finally(() => {
+            dispatch('request/' + CLEAR)
+          })
+      } else {
+        resolve()
+        commit(SIGN_OUT_SUCCESS)
+      }
     })
   }
 }
