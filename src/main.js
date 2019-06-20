@@ -22,7 +22,6 @@ import VueMoment from 'vue-moment'
 import VueYandexMetrika from 'vue-yandex-metrika'
 import { METRIKA_ID, TOKEN_NAME, REQUEST } from './config'
 import Meta from 'vue-meta'
-import VueCountdown from '@chenfengyuan/vue-countdown'
 import { getUserToken } from './store/modules/user-module'
 import VueOffline from 'vue-offline'
 
@@ -31,7 +30,6 @@ import store from './store/store'
 
 import 'vuetify/src/stylus/app.styl'
 import '@mdi/font/css/materialdesignicons.min.css'
-import 'vue-tel-input/dist/vue-tel-input.css'
 import { INTERNET_ERROR, SERVER_ERROR, TOO_MANY_REQUESTS } from './messages'
 
 require('moment/locale/ru')
@@ -43,8 +41,6 @@ Vue.use(VueRouterBackButton, { router, rootRoutes: rootRoutes })
 Vue.use(VueMoment)
 
 Vue.use(VueOffline)
-
-Vue.component(VueCountdown.name, VueCountdown)
 
 Vue.use(Meta, {
   keyName: 'metaInfo', // the component option name that vue-meta looks for meta info on.

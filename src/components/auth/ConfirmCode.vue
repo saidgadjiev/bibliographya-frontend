@@ -49,6 +49,7 @@ import alert from '../../mixins/alert'
 import request from '../../mixins/request'
 import { REQUEST } from '../../config'
 import verificationService from '../../services/verification-service'
+import VueCountdown from '@chenfengyuan/vue-countdown'
 
 export default {
   name: 'ConfirmCode',
@@ -134,6 +135,9 @@ export default {
         this.startTimer(this.time)
       }
     }
+  },
+  components: {
+    'countdown': VueCountdown
   }
 }
 </script>
