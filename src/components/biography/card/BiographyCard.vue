@@ -14,10 +14,10 @@
 </template>
 
 <script>
-const BiographyCardActions = () => import('./BiographyCardActions')
-const BiographyCardText = () => import('./BiographyCardText')
-const BiographyComments = () => import('./BiographyComments')
-const BiographyCardTitle = () => import('./BiographyCardTitle')
+import BiographyCardActions from './BiographyCardActions'
+import BiographyCardTitle from './BiographyCardTitle'
+import BiographyCardText from './BiographyCardText'
+import BiographyComments from './BiographyComments'
 
 export default {
   name: 'BiographyCard',
