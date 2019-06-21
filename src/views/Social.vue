@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title primary-title style="justify-content: center">
       <div class="text-xs-center">
-        <h3 style="color: #455A64">Наши сообщества в соц. сетях.</h3>
+        <h3 style="color: #455A64">Все самые интересные биографии и факты только у нас.</h3>
         <h2>Присоединяйся!</h2>
       </div>
     </v-card-title>

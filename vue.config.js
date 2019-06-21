@@ -1,4 +1,5 @@
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 const target = process.env.npm_lifecycle_event
 const isMobile = target.includes('android') || target.includes('ios')
@@ -14,7 +15,10 @@ module.exports = {
       port: 8081
     },
     plugins: [
-      new VuetifyLoaderPlugin()
+      new VuetifyLoaderPlugin(),
+      new MomentLocalesPlugin({
+        localesToKeep: ['ru'],
+      })
     ]
   }
 }

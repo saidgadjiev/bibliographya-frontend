@@ -18,7 +18,6 @@ import VeeValidate from 'vee-validate'
 import russia from 'vee-validate/dist/locale/ru'
 import axios from 'axios'
 import VueSweetalert2 from 'vue-sweetalert2'
-import VueMoment from 'vue-moment'
 import VueYandexMetrika from 'vue-yandex-metrika'
 import { METRIKA_ID, TOKEN_NAME, REQUEST } from './config'
 import Meta from 'vue-meta'
@@ -32,13 +31,9 @@ import 'vuetify/src/stylus/app.styl'
 import '@mdi/font/css/materialdesignicons.min.css'
 import { INTERNET_ERROR, SERVER_ERROR, TOO_MANY_REQUESTS } from './messages'
 
-require('moment/locale/ru')
-
 let rootRoutes = router.options.routes.filter(route => route.meta && route.meta.root).map(route => route.name)
 
 Vue.use(VueRouterBackButton, { router, rootRoutes: rootRoutes })
-
-Vue.use(VueMoment)
 
 Vue.use(VueOffline)
 

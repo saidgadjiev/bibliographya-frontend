@@ -54,6 +54,8 @@ import EditComment from './EditComment'
 import { mapGetters } from 'vuex'
 import twemoji from 'twemoji'
 
+const moment = require('moment')
+
 export default {
   name: 'Comment',
   inheritAttrs: false,
@@ -145,7 +147,7 @@ export default {
       return this.getUserId === this.userId
     },
     _getTimeDiff () {
-      return this.$moment(this.createdAt, DATE_FORMAT).fromNow()
+      return moment(this.createdAt, DATE_FORMAT).fromNow()
     },
     _content () {
       return twemoji.parse(this.content)
