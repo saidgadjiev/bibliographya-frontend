@@ -45,6 +45,8 @@ import { PUBLISH_STATUS, DATE_FORMAT } from '../../../config'
 import BiographyCardMenu from '../card/BiographyCardMenu'
 import BiographyCardTitleModeration from '../../moderation/card/BiographyCardTitleModeration'
 
+const moment = require('moment')
+
 export default {
   name: 'BiographyCardTitle',
   inheritAttrs: false,
@@ -157,8 +159,8 @@ export default {
       return this.publishStatus === PUBLISH_STATUS.PUBLISHED ? 'Опубликовано' : 'Снято с публикации'
     },
     _isUpdated () {
-      let momentUpdated = this.$moment(this.updatedAt, DATE_FORMAT)
-      let momentCreated = this.$moment(this.createdAt, DATE_FORMAT)
+      let momentUpdated = moment(this.updatedAt, DATE_FORMAT)
+      let momentCreated = moment(this.createdAt, DATE_FORMAT)
 
       return momentUpdated > momentCreated
     }
@@ -166,10 +168,10 @@ export default {
   methods: {
     format (time, withTime) {
       if (withTime) {
-        return this.$moment(time, DATE_FORMAT).format('DD MMMM YYYY h:mm')
+        return moment(time, DATE_FORMAT).format('DD MMMM YYYY h:mm')
       }
 
-      return this.$moment(time, DATE_FORMAT).format('DD MMMM YYYY')
+      return moment(time, DATE_FORMAT).format('DD MMMM YYYY')
     }
   },
   components: {

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import BiographiesList from './views/BiographiesList'
 import store from './store/store'
 import error403 from './views/403'
 import error404 from './views/404'
@@ -38,6 +37,7 @@ const CreateFeedback = () => import('./views/CreateFeedback')
 const FeedbackList = () => import('./views/FeedbackList')
 const BiographyPrivacy = () => import('./views/BiographyPrivacy')
 const Social = () => import('./views/Social')
+const BiographiesList = () => import('./views/BiographiesList')
 
 Vue.use(Router)
 

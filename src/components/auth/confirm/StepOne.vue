@@ -88,11 +88,17 @@ import authService from '../../../services/auth-service'
 import VueTelInput from 'vue-tel-input'
 import verificationService from '../../../services/verification-service'
 import utils from '../../../assets/js/utils'
+import VueCountdown from '@chenfengyuan/vue-countdown'
+
+import 'vue-tel-input/dist/vue-tel-input.css'
 
 export default {
   name: 'StepOne',
   mixins: [alert, request],
-  components: { VueTelInput },
+  components: {
+    VueTelInput,
+    'countdown': VueCountdown
+  },
   props: {
     step: Number,
     phone: String,
